@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:contentDescription="mcc206-music"
+    tools:ignore="HardcodedText">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/zj_bg">
+
+            <com.hcn.media_view.CircleImageView
+                android:id="@+id/ivMusicImage"
+                android:layout_width="@dimen/zj_bg_width"
+                android:layout_height="@dimen/zj_bg_height"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/id3_bg"
+            android:layout_marginStart="60dp"
+            android:layout_gravity="start|center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTotalValue"
+                android:layout_width="160dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/id3_text_color"
+                android:textSize="16sp" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="160dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:gravity="center|center_vertical|start"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="-2"
+                android:shadowRadius="1.5"
+                android:singleLine="true"
+                android:textColor="@color/id3_text_color"
+                android:textSize="20sp" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvAlbum"
+                android:layout_width="160dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:gravity="center|center_vertical|start"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="0.6"
+                android:singleLine="true"
+                android:textColor="@color/id3_text_color"
+                android:textSize="16sp" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvArtist"
+                android:layout_width="160dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:gravity="center|center_vertical|start"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="0.6"
+                android:singleLine="true"
+                android:textColor="@color/id3_text_color"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/lyric_freq_layout"
+            android:layout_width="@dimen/lyric_width"
+            android:layout_height="@dimen/lyric_height"
+            android:layout_marginEnd="20dp"
+            android:layout_gravity="end|center_vertical"
+            android:background="@drawable/lrc_bg">
+
+            <LinearLayout
+                android:id="@+id/lin_lyric"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.hcn.media_view.lyrics.LyricsView
+                    android:id="@+id/lyrics_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp" />
+
+                <TextView
+                    android:id="@+id/tvNoLyrics"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="0.6"
+                    android:singleLine="true"
+                    android:text="@string/StrNoLrc"
+                    android:textColor="@color/id3_text_color"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_freq"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.hcn.media_view.PlayFlashView
+                    android:id="@+id/FrequencyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.5" />
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+
+    <include
+        layout="@layout/layout_music_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

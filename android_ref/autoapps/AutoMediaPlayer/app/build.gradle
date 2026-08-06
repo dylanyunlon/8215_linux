@@ -1,0 +1,337 @@
+plugins {
+    id 'com.android.application'
+}
+
+apply from:'./config_res.gradle'
+
+// support generate R2.java
+if (BuildConfig.supportGenR2Plugin) {
+    apply plugin: 'com.hcn.gen_r2'
+}
+
+// support HBusPlugin inject
+if (BuildConfig.supportHBusPluginInject) {
+    apply plugin: 'com.hcn.bus'
+}
+
+android {
+    namespace 'com.hcn.AutoMediaPlayer'
+    compileSdk project.compileSdk as int
+
+    defaultConfig {
+        applicationId "com.hcn.AutoMediaPlayer"
+        minSdk project.minSdk as int
+        //noinspection OldTargetApi
+        targetSdk project.targetSdk as int
+        versionCode project.appVersionCode as int
+        versionName project.appVersionName
+        ndkVersion project.appNdkVersion
+
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters "armeabi-v7a"
+        }
+
+        buildConfigField("boolean", "LOG_DEBUG", "false")
+        buildConfigField("boolean", "SUPPORT_HBUS_PLUGIN_INJECT", "${BuildConfig.supportHBusPluginInject}")
+
+        // music provider 配置
+        String platform = project.hardwareConfig
+        switch (platform) {
+            case ["sm6225", "mt8768"]:
+                buildConfigField("boolean", "SUPPORT_MUSIC_PROVIDER", "true")
+                break;
+            default:
+                buildConfigField("boolean", "SUPPORT_MUSIC_PROVIDER", "false")
+                break
+        }
+
+        manifestPlaceholders = [
+                MANIFEST_CHANNEL_KEY : project.MANIFEST_CHANNEL_KEY as String,
+                MANIFEST_MACHINE_KEY : project.MANIFEST_MACHINE_KEY as String,
+        ]
+
+        flavorDimensions.add("automotive")
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("../security/media.jks")
+            storePassword 'android'
+            keyAlias 'platform'
+            keyPassword 'android'
+        }
+
+        release {
+            storeFile file("../security/media.jks")
+            storePassword 'android'
+            keyAlias 'platform'
+            keyPassword 'android'
+        }
+
+        AC82xx {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_8257.jks')
+            storePassword 'hcnrd123'
+        }
+
+        MT8163 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_8163.jks')
+            storePassword 'hcnrd123'
+        }
+
+        UIS8581 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_8581.jks')
+            storePassword 'hcnrd123'
+        }
+
+        SM6225 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_6225.jks')
+            storePassword 'hcnrd123'
+        }
+    }
+
+    // # 不压缩优化所有 so 库
+    // packagingOptions {
+    //    doNotStrip "*/armeabi-v7a/*.so"
+    //    doNotStrip "*/arm64-v8a/*.so"
+    // }
+
+    productFlavors {
+        // 开发版
+        development {
+            dimension "automotive"
+            versionName project.appVersionName \
+                    + "." + new Date().format("yyyyMMdd") \
+                    + "-" + project.hardwareConfig \
+                    + "<" + "bate" + ">"
+            signingConfig signingConfigs.release
+        }
+
+        // 稳定版
+        automotive {
+            dimension "automotive"
+            versionName project.appVersionName \
+                    + "." + new Date().format("yyyyMMdd") \
+                    + "-" + project.hardwareConfig
+
+            String platform = project.hardwareConfig
+            switch (platform) {
+                case ["mt8163", "mt8321"]:
+                    signingConfig signingConfigs.MT8163
+                    break
+                case ["ac82xx", "ac8227l"]:
+                    signingConfig signingConfigs.AC82xx
+                    break
+                case ["uis8581"]:
+                    signingConfig signingConfigs.UIS8581
+                    break
+                case ["sm6225", "mt8768"]:
+                    signingConfig signingConfigs.SM6225
+                    break;
+                default:
+                    signingConfig signingConfigs.release
+                    break
+            }
+        }
+    }
+
+    productFlavors.configureEach {
+        flavor ->
+            String channel = name
+            String platform = project.hardwareConfig
+            flavor.manifestPlaceholders += [
+                    MANIFEST_CHANNEL_VALUE : channel,
+                    MANIFEST_MACHINE_VALUE : platform
+            ]
+            // 不支持增量编译（需要每次都删除它）
+            delete "./app/build/generated/source/r2"
+            println("> delete file: $name ./app/build/generated/source/r2/../R2.java")
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.MT8163
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            // assets.srcDirs = ['src/assets']
+
+            res {
+                // 平台公共资源
+                srcDirs += project.build_resDirs
+                srcDirs += project.compat_resDirs
+
+                // 平台特有资源
+                String platform = project.hardwareConfig
+                if (platform.contentEquals("sm6225") || platform.contentEquals("mt8768")) {
+                    srcDirs += project.sm6225_resDirs
+                } else if (platform.contentEquals("uis8581")) {
+                    srcDirs += project.uis8581_resDirs
+                } else if (platform.contentEquals("mt8321")) {
+                    srcDirs += project.mt8321_resDirs
+                } else if (platform.contentEquals("ac8257")) {
+                    srcDirs += project.ac8257_resDirs
+                } else if (platform.contentEquals("ac8227l")) {
+                    srcDirs += project.ac8227l_resDirs
+                } else {
+                    srcDirs += project.mt8163_resDirs
+                }
+            }
+        }
+
+        // reserve
+        development {
+            res {
+                // 其实符合规则的路径默认无需特别指定
+                srcDirs += "src/development/res"
+            }
+        }
+    }
+
+    // channel shared Java files
+    sourceSets.configureEach {
+        flavor ->
+            java {
+                srcDirs += "src/build/java"
+                exclude 'src/build/java/media/lang/R.java'
+            }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(project.javaVersion)
+        }
+    }
+
+    buildFeatures {
+        aidl true
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+
+    lint {
+        checkReleaseBuilds false
+    }
+
+    android.applicationVariants.configureEach { variant ->
+        def releaseDir = rootProject.getRootDir().getAbsolutePath() + "/output/";
+
+        variant.outputs.configureEach {
+            if (outputFile != null && outputFileName.endsWith('.apk')){
+                outputFileName = "app-${buildType.name}.apk"
+            }
+        }
+
+        def flavorName = variant.flavorName
+        if (flavorName.contentEquals("development")) {
+            return
+        }
+
+        variant.getAssembleProvider().configure() {
+            it.doLast {
+                File out = new File(releaseDir)
+                copy {
+                    variant.outputs.forEach { file ->
+                        copy {
+                            from file.outputFile
+                            into out
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation project(path: ':media-theme')
+    implementation project(path: ':media-model')
+
+    implementation files('../libs/theme-utils.jar')
+    implementation files('../libs/rxrelay-3.0.1.aar')
+    implementation files('../libs/rxandroid-3.0.0.aar')
+    implementation files('../libs/logger-2.2.0.aar')
+    implementation files('../libs/rxjava-3.0.8.jar')
+
+    implementation files('../release/media-api-release.aar')
+    implementation files('../release/transformer-release.aar')
+    implementation files('../release/media-view-release.aar')
+    implementation files('../release/media-vitamio-release.aar')
+    implementation files('../release/media-base-release.aar')
+    implementation files('../release/media-common-release.aar')
+    implementation files('../release/media-data-release.aar')
+    implementation files('../release/lang/media-lang-release.aar')
+
+    implementation files('../libs/lifecycle/lifecycle-service-2.4.1.aar')
+
+    implementation BuildConfig.libs.reactive_streams.path
+    implementation BuildConfig.libs.android_guava.path
+    implementation BuildConfig.libs.androidx_material.path
+
+    implementation BuildConfig.libs.androidx_fragment.path
+    implementation BuildConfig.libs.androidx_appcompat.path
+    implementation BuildConfig.libs.androidx_drawerlayout.path
+    implementation BuildConfig.libs.androidx_viewpager2.path
+    implementation BuildConfig.libs.androidx_swiperefreshlayout.path
+    implementation BuildConfig.libs.androidx_media.path
+    implementation BuildConfig.libs.androidx_cardview.path
+
+    implementation BuildConfig.libs.androidx_room_runtime.path
+    annotationProcessor BuildConfig.libs.androidx_room_compiler.path
+    implementation BuildConfig.libs.mmkv.path
+
+    implementation BuildConfig.libs.auto_sdk.path
+    implementation BuildConfig.libs.common_utils.path
+    implementation BuildConfig.libs.auto_compat.path
+    implementation BuildConfig.libs.skinx_base.path
+    implementation BuildConfig.libs.mediaservice_api.path
+
+    // 调试使用配置
+    if (!project.USE_LOCAL_MEDIA_SKINX_LIBS) {
+        implementation BuildConfig.libs.media_skinx.path
+    } else {
+        implementation files('../release/media-skinx-release.aar')
+    }
+
+    // 可以按如下语法指定 Flavors 特殊关联的库
+    // GrammaticalRule: ${flavorsName} + Implementation/CompileOnly
+    // automotiveCompileOnly files('library-path')
+    // developmentImplementation files('library-path')
+
+    // 插件升级后出现 kotlin-stdlib-jdk 版本冲突在这里解决
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20"
+    implementation BuildConfig.libs.kotlin_stdlib_jdk8.path
+}

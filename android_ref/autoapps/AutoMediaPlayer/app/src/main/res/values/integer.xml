@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 频谱上面短线的宽度 -->
+    <integer name="freq_line_width">0</integer>
+
+    <!-- 两条频谱间隔宽度 -->
+    <integer name="freq_divider_width">5</integer>
+
+    <!-- 频谱宽度因子，值越大，宽度越小 -->
+    <integer name="freq_width_factor">0</integer>
+
+    <!-- 歌曲名称的阴影效果偏移 -->
+    <integer name="song_title_shadowDx">2</integer>
+    <integer name="song_title_shadowDy">-2</integer>
+    <integer name="gallery_cover_width">135</integer>
+    <integer name="gallery_cover_height">170</integer>
+</resources>

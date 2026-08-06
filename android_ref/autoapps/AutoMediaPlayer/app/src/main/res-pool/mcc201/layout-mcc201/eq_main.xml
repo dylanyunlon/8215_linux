@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/eq_main_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="@drawable/background_eq_zx">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="110dp">
+
+        <include
+            android:id="@+id/id_band_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            layout="@layout/eq_bands" />
+
+        <include
+            android:id="@+id/id_other_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="35dp"
+            layout="@layout/eq_other" />
+    </LinearLayout>
+
+
+    <include
+        android:id="@+id/id_reverb_view"
+        android:layout_marginLeft="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        layout="@layout/eq_reverb_view" />
+
+</LinearLayout>

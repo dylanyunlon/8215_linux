@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="music_search_edittext_paddingStart">10dp</dimen>
+    <dimen name="album_cover_height">182dp</dimen>
+    <dimen name="album_cover_width">-1dp</dimen>
+
+    <dimen name="music_info_card_marginStart">16dp</dimen>
+    <dimen name="music_info_card_marginEnd">16dp</dimen>
+
+    <dimen name="layout_progress_info_marginStart">24dp</dimen>
+    <dimen name="layout_progress_info_marginEnd">24dp</dimen>
+
+    <dimen name="music_album_margin_start">30dp</dimen>
+    <dimen name="music_album_margin_end">30dp</dimen>
+</resources>

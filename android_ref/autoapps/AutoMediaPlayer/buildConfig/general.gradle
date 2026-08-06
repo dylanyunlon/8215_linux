@@ -1,0 +1,11 @@
+project.ext {
+    // Configure manifestPlaceholders
+    MANIFEST_CHANNEL_KEY = "channel-name"
+    MANIFEST_MACHINE_KEY = "machine-name"
+
+    // media-skinx
+    USE_LOCAL_MEDIA_SKINX_LIBS = false
+
+    // media-dependencies:skin2-support
+    USE_LOCAL_SKIN2_SUPPORT_LIBS = true
+}

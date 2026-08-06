@@ -1,0 +1,4 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
+    <string name="overlay_package_name">com.hcn.AutoMediaPlayer.overlay</string>
+</resources>

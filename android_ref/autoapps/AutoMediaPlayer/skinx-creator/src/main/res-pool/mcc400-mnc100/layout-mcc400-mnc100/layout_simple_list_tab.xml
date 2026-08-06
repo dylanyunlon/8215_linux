@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:ignore="MissingDefaultResource">
+
+    <RadioButton
+        android:id="@+id/rbListLeftTab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/simple_list_tab"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/play_list_tab_title"
+        android:textColor="@drawable/simple_list_tab_text_color"
+        android:textSize="@dimen/simple_list_tab_textSize" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/music_list_top_line"
+        android:scaleType="center"
+        android:clickable="false"
+        tools:ignore="ContentDescription" />
+
+    <RadioButton
+        android:id="@+id/rbListRightTab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/simple_list_tab"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/favorite_list_tab_title"
+        android:textColor="@drawable/simple_list_tab_text_color"
+        android:textSize="@dimen/simple_list_tab_textSize" />
+</RadioGroup>

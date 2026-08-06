@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:contentDescription="mcc401-music-port"
+    tools:ignore="HardcodedText">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rel_id3_infos"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/id3_info_layout_height"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="60dp">
+
+            <ImageView
+                android:id="@+id/ivDefault"
+                android:layout_width="@dimen/zj_default_bg_width"
+                android:layout_height="@dimen/zj_default_bg_height"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:id="@+id/ivMusicImage"
+                android:layout_width="@dimen/zj_bg_width"
+                android:layout_height="@dimen/zj_bg_height"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="68dp"
+                android:scaleType="fitXY" />
+
+            <com.hcn.media_view.CustomClickScrollViewPager
+                android:id="@+id/viewpager_info"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:visibility="visible"
+                android:layout_toEndOf="@+id/ivDefault"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="25dp"/>
+
+            <include
+                android:id="@+id/controls"
+                layout="@layout/layout_music_ctrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="20dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_pages"
+            android:layout_width="wrap_content"
+            android:layout_height="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/rel_id3_infos"
+            android:layout_marginTop="15dp">
+
+            <RadioButton
+                android:id="@+id/rb_page1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:checked="true"
+                android:button="@null"
+                android:background="@drawable/iv_pageitem"/>
+
+            <RadioButton
+                android:id="@+id/rb_page2"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:checked="false"
+                android:button="@null"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/iv_pageitem"/>
+
+        </LinearLayout>
+
+        <include
+            layout="@layout/layout_music_seek"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>

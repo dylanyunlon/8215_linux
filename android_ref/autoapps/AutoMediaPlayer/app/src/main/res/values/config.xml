@@ -1,0 +1,8 @@
+<resources>
+    <bool name="config_largeHeap">true</bool>
+
+    <bool name="video_eq_trigger_pip_enable">false</bool>
+
+    <!--  Video list folder function  -->
+    <bool name="video_list_folder_feature">false</bool>
+</resources>

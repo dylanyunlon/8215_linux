@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Медіаплеєр</string>
+  <string name="overlay_version">не визначений</string>
+
+  <!--  musicinfo-->
+  <string name="todo">TODO</string>
+  <string name="frequency_label">Частота</string>
+  <string name="StrNoLrc">Немає файлу LRC</string>
+  <string name="text_unknown">Невідомо</string>
+  <string name="lyric_label">Лірика</string>
+  <string name="show_lyric">Показати текст пісні</string>
+  <!--  musiclist-->
+  <string name="storage_flash_label">Flash</string>
+  <string name="storage_usb1_label">USB</string>
+  <string name="storage_sdcard_label">SD</string>
+  <string name="StrPlaying">Відтворення</string>
+  <string name="StrSongList">Список</string>
+  <string name="StrAlbumList">Альбом</string>
+  <string name="StrArtistList">Виконавець</string>
+  <string name="StrFavoriteList">Папка</string>
+  <string name="StrArtist">Виконавець</string>
+  <string name="StrFolder">Папка</string>
+  <string name="StrMusic">Трек</string>
+  <string name="StrFavorite">Вибрати все</string>
+  <string name="tip_refresh_music_info">Немає музичного файлу \n торкніться екрану, щоб оновити список</string>
+  <string name="tip_no_music_file">Немає аудіо файлу</string>
+  <string name="text_search">Пошук</string>
+
+  <string name="search_icon_hint_tip">Пошук</string>
+  <string name="play_list_tab_title">Список відтворення</string>
+  <string name="favorite_list_tab_title" >Вибране</string>
+  <string name="go_back_folder">На один рівень вище</string>
+
+  <!--  search-->
+  <string name="text_search_hint">Пошук тексту</string>
+
+  <!--  videolist-->
+  <string name="tip_no_video_file">Немає відео файлу</string>
+  <string name="tip_refresh_video_info">Немає відео файлу \n торкніться екрану, щоб оновити список</string>
+  <string name="tip_parking_info">Під час керування звертайте увагу на безпеку!</string>
+
+  <!--  musiclist-->
+  <string name="text_refresh">Оновити</string>
+  <!--folder-->
+  <string name="ellipsis_symbol">...</string>
+
+
+  <!--  eq-->
+  <string name="eq_default">За замовчуванням</string>
+  <string name="eq_mode_user">Користувач</string>
+  <string name="eq_mode_rock">Рок-музика</string>
+  <string name="eq_mode_pop">Поп</string>
+  <string name="eq_mode_live">Жива музика</string>
+  <string name="eq_mode_dance">Танець</string>
+  <string name="eq_mode_classic">Класика</string>
+  <string name="eq_mode_soft">м’який</string>
+  <string name="Balance">Баланс</string>
+  <string name="eq_balance_locat">C:+XX C:+XX</string>
+  <string name="Loudness">Тонкомпенсація</string>
+  <string name="Reverb">Реверберація</string>
+  <string name="BAND_60HZ">60Hz</string>
+  <string name="BAND_230HZ">230Hz</string>
+  <string name="BAND_910HZ">910Hz</string>
+  <string name="BAND_3600HZ">3,6 кГц</string>
+  <string name="BAND_14000HZ">14kHz</string>
+  <string name="BAND_1KHZ">1kHz</string>
+  <string name="BAND_2KHZ">2kHz</string>
+  <string name="BAND_4KHZ">4kHz</string>
+  <string name="BAND_8KHZ">8kHz</string>
+  <string name="BAND_16KHZ">16kHz</string>
+  <string name="eq_reverb_off">ВИМК.</string>
+  <string name="eq_reverb_live">жива музика</string>
+  <string name="eq_reverb_hall">зала</string>
+  <string name="eq_reverb_concert">концерт</string>
+  <string name="eq_reverb_cave">печера</string>
+  <string name="eq_reverb_bathroom">ванна кімната</string>
+  <string name="eq_reverb_arena">арена</string>
+  <string name="eq_subwoofer">Сабвуфер</string>
+  <string name="eq_surround">Об’ємний</string>
+  <string name="eq_lound">Гучно</string>
+  <string name="title_subwoofer">Сабвуфер</string>
+  <string name="title_bass">НЧ</string>
+  <string name="title_treble">ВЧ</string>
+  <string name="eq_reverb_user">Користувач</string>
+  <string name="eq_reverb_jazz">Джаз</string>
+  <string name="eq_reverb_pop">Поп</string>
+  <string name="eq_reverb_classiz">Класика</string>
+  <string name="eq_reverb_rock">Рок-музика</string>
+  <string name="eq_reverb_lift">Життя</string>
+  <string name="eq_reverb_dance">Танець</string>
+  <string name="eq_reverb_electronic">Електронний</string>
+  <string name="eq_reverb_rb">RnB</string>
+  <string name="eq_reverb_Absolute_music">Акустичний</string>
+  <string name="eq_remind">Цей автомобіль підтримує оригінальну функцію підсилювача потужності автомобіля. Перейдіть до коригування оригінального комплекту автомобіля.</string>
+  <string name="label_eq">EQ</string>
+  <string name="isplaying_refuse_cancel">Під час виконання пісні її неможливо внести до списку уподобань</string>
+  <string name="favor_all_label">Зібрати все</string>
+  <string name="delete_all_label">Видалити все</string>
+  <string name="StrMyMusic">Моя музика</string>
+  <string name="duration_label">Тривалість:</string>
+  <string name="format_label">Формат:</string>
+  <string name="_3">3</string>
+  <string name="_2">2</string>
+  <string name="_1">1</string>
+  <string name="empty_play_list_prompt">Список відтворення порожній</string>
+  <string name="empty_collect_list_prompt">Список обраного порожній</string>
+  <string name="media_notification_name">Медіаплеєр</string>
+  <string name="media_notification_title">Пояснити</string>
+  <string name="media_notification_info">фонова служба медіаплеєра</string>
+  <string name="maximum_collection_limit_prompt">Список обраного переповнений, відкоригуйте його.</string>
+
+  <!--  tip-->
+  <string name="tip_loading">Завантаження…</string>
+  <string name="tip_loading_id3">Завантаження мультимедіа ID3…</string>
+  <string name="tip_unsupport_file">Файл не підтримується</string>
+  <string name="tip_file_not_exist">Файл не існує, оновіть список</string>
+  <string name="tip_unsupport_audio">Аудіо не підтримується</string>
+  <string name="tip_unsupport_video">Відео не підтримується</string>
+  <string name="tip_unsupport_seek">Пошук не підтримується</string>
+  <!--  other-->
+  <string name="app_music_label">Музика</string>
+  <string name="app_video_label">Відео</string>
+  <string name="StrTipCanDoThat">Під час виконання пісні ця операція неможлива</string>
+  <string name="StrTipStop">Стоп</string>
+  <string name="text_add_all">Додати все</string>
+  <string name="all_list">Весь список</string>
+  <string name="all_file_list">Весь список файлів музики</string>
+  <string name="play_notice">Примітка</string>
+  <string name="play_error">Помилка відтворення медіаплеєра!</string>
+  <string name="ok">OK</string>
+  <string name="storage_usb2_label">USB2</string>
+  <string name="none">Немає</string>
+</resources>

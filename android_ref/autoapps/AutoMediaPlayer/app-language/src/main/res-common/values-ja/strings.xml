@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_music_label">音楽</string>
+    <string name="app_video_label">動画</string>
+</resources>

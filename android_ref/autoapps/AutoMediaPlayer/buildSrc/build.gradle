@@ -1,0 +1,32 @@
+repositories {
+    google()
+    mavenCentral()
+}
+
+apply {
+    plugin 'groovy'
+    plugin 'java-gradle-plugin'
+}
+
+// Plugin Definition
+gradlePlugin {
+    plugins {
+        mediaApiDoc {
+            id = 'update-media-api-doc'
+            implementationClass = 'com.hcn.plugin.ApiDocumentPlugin'
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs += 'src/main/java'
+        }
+    }
+}

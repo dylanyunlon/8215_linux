@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/gridview_musics"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        android:stretchMode="columnWidth"
+        android:divider="#00000000"
+        android:dividerHeight="4dp"
+        android:layout_marginBottom="20dp"
+        android:unselectedAlpha="0.8" />
+
+    <TextView
+        android:id="@+id/tvShowTip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/tip_no_music_file"
+        android:textSize="40.0sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

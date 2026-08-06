@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:contentDescription="mcc406-music"
+    tools:ignore="HardcodedText">
+
+    <include
+        layout="@layout/layout_music_id3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager_center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/ivPageBg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:visibility="gone"
+            android:background="@drawable/page_1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnPage0"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:alpha="0" />
+
+            <Button
+                android:id="@+id/btnPage1"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:alpha="0" />
+        </LinearLayout>
+    </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/volume_ly"
+            android:visibility="invisible"
+            android:layout_marginStart="680dp"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/mcc406_volume_img"/>
+
+            <SeekBar
+                android:id="@+id/volume_seekbar"
+                android:layout_width="175dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:progress="0"
+                android:progressDrawable="@drawable/mcc406_seekbar"
+                android:thumb="@null" />
+
+            <TextView
+                android:id="@+id/volume_value"
+                android:layout_width="33dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="#028EFF"
+                android:textSize="13sp" />
+        </LinearLayout>
+    <include
+        android:id="@+id/layout_bottom"
+        layout="@layout/layout_music_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

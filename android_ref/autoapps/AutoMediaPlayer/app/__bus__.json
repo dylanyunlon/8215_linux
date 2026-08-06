@@ -1,0 +1,21 @@
+{
+  "HBusUtilsClass": "com.hcn.common.misc.HBusUtils",
+  "rightBus": {
+    "music-play-info": [
+      "{ desc: com.hcn.media.external.ReceptionService#onUpdateMusicPlayInfo(com.hcn.mediaservice.data.MusicInfo info) }"
+    ],
+    "music-play-state": [
+      "{ desc: com.hcn.media.external.ReceptionService#onUpdateMusicPlayState(java.lang.String param) }"
+    ],
+    "music-play-time": [
+      "{ desc: com.hcn.media.external.ReceptionService#onUpdateMusicPlayTime(com.hcn.mediaservice.data.MediaTimeInfo param) }"
+    ],
+    "music-lyrics-info": [
+      "{ desc: com.hcn.media.external.ReceptionService#onUpdateMusicPlayLyrics(java.lang.Object param) }"
+    ],
+    "media-app-will-exit": [
+      "{ desc: com.hcn.media.external.ReceptionService#onMediaAppWillExit(), threadMode: MAIN }"
+    ]
+  },
+  "wrongBus": {}
+}

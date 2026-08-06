@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/center_tip_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvStorageType"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:layout_marginStart="30dp" />
+
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/small_search_n" />
+
+        <EditText
+            android:id="@+id/etSearchText"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:background="@drawable/search_text_bg"
+            android:hint="@string/text_search_hint"
+            android:maxLength="24"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textColor="#FFBDC0C5"
+            android:textSize="24.0sp"
+            android:layout_marginEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/gridview_music"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:gravity="center"
+        android:divider="@color/list_divider_color"
+        android:dividerHeight="1dp"
+        android:listSelector="@android:color/transparent" />
+
+</LinearLayout>

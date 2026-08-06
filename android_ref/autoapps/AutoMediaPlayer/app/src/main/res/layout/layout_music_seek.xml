@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_progress"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tvCurrentTime"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:shadowColor="@color/duration_text_shadow_color"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:gravity="center_horizontal"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="50dp"
+        android:textColor="@color/duration_text_color"
+        android:textSize="24.0sp"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    <com.hcn.media_view.ScrollableSeekBar
+        android:id="@+id/seekbar_progress"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:maxHeight="2dp"
+        android:minHeight="2dp"
+        android:paddingTop="33dp"
+        android:paddingBottom="33dp"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:layout_toEndOf="@+id/tvCurrentTime"
+        android:layout_toStartOf="@+id/tvTotalTime"
+        android:layout_centerVertical="true"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:thumb="@drawable/seekbar_thumb"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    <TextView
+        android:id="@+id/tvTotalTime"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:shadowColor="@color/duration_text_shadow_color"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:layout_marginEnd="50dp"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:textColor="@color/duration_text_color"
+        android:textSize="24.0sp"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+</RelativeLayout>

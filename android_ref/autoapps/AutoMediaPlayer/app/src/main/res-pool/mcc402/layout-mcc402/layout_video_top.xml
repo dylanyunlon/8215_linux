@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/top_bg"
+    android:paddingTop="4dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="8dp"
+    android:orientation="horizontal">
+
+    <RadioGroup
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/btnPlaying"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/small_playing_bg"
+            android:button="@null"
+            android:visibility="visible" />
+
+        <RadioButton
+            android:id="@+id/btnStorageFlash"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/small_local_bg"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/btnStorageUSB1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/small_usb1_bg"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/btnStorageSD1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/small_sd1_bg"
+            android:button="@null" />
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/layout_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/small_search_bg" />
+
+    <ImageView
+        android:id="@+id/btnUpdate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/small_update_bg" />
+
+</LinearLayout>

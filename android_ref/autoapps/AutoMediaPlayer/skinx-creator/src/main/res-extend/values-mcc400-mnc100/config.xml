@@ -1,0 +1,10 @@
+<resources>
+    <!-- LocalService/LocalServiceExtend -->
+    <bool name="local_service_extend">true</bool>
+
+    <!-- MusicInfoFragment/MusicInfoPageExtend -->
+    <bool name="music_info_page_extend">true</bool>
+
+    <!-- VideoInfoFragment/VideoInfoPageExtend -->
+    <bool name="video_info_page_extend">true</bool>
+</resources>

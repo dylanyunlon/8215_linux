@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_music_item"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants">
+
+    <LinearLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:background="@drawable/mcc201_gridview_item_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginEnd="10dp"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/ivMusicIcon"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:contentDescription="@string/todo" />
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="20dp">
+
+            <TextView
+                android:id="@+id/tvSongTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:layout_marginStart="10dp" />
+
+            <TextView
+                android:id="@+id/tvSongArtist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/button_text_color_p"
+                android:textSize="16.0sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_btns"
+            android:layout_width="100dp"
+            android:layout_height="70dp">
+
+            <ImageButton
+                android:id="@+id/ivFavoriteIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:focusable="false"
+                android:src="@drawable/mcc201_btn_list_add"
+                android:background="@null"
+                android:layout_marginEnd="5dp"
+                android:contentDescription="@string/todo" />
+
+            <ImageButton
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/btn_delete"
+                android:background="@null"
+                android:focusable="false"
+                android:visibility="gone"
+                android:layout_marginEnd="5dp"
+                android:contentDescription="@string/todo" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/ivPlayingIcon"
+            android:layout_width="41dp"
+            android:layout_height="38dp"
+            android:background="@drawable/playing"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/todo" />
+    </LinearLayout>
+</LinearLayout>

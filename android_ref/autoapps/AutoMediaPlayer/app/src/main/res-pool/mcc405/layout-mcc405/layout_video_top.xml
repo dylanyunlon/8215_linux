@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:weightSum="5.5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/layout_search"
+            android:layout_width="match_parent"
+            android:layout_weight="3"
+            android:layout_height="60dp"
+            android:layout_marginBottom="11dp"
+            android:background="@drawable/search_bg"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_search_n" />
+
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/small_update_bg" />
+        </RelativeLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="81dp"
+            android:layout_weight="2.5"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btnStorageFlash"
+                android:layout_width="0px"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:background="@drawable/small_local_bg"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/storage_flash_label"
+                android:textColor="@drawable/btn_text_color"
+                android:textSize="24.0sp" />
+
+            <RadioButton
+                android:id="@+id/btnStorageUSB1"
+                android:layout_width="0px"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:background="@drawable/small_usb1_bg"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/storage_usb1_label"
+                android:textColor="@drawable/btn_text_color"
+                android:textSize="24.0sp" />
+
+            <RadioButton
+                android:id="@+id/btnStorageSD1"
+                android:layout_width="0px"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:background="@drawable/small_sd1_bg"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/storage_sdcard_label"
+                android:textColor="@drawable/btn_text_color"
+                android:textSize="24.0sp" />
+
+            <RadioButton
+                android:id="@+id/btnPlaying"
+                android:layout_width="0px"
+                android:layout_height="60dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:background="@drawable/small_playing_bg"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/StrPlaying"
+                android:textColor="@drawable/btn_text_color"
+                android:textSize="24.0sp"
+                android:visibility="visible" />
+        </RadioGroup>
+    </LinearLayout>
+
+</LinearLayout>

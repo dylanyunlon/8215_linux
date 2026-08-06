@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'tv.danmaku.ijk.media.player'
+    compileSdk project.compileSdk as int
+
+    defaultConfig {
+        minSdk project.minSdk as int
+        targetSdk project.targetSdk as int
+        consumerProguardFiles "consumer-rules.pro"
+
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters "armeabi-v7a"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(javaVersion)
+        }
+    }
+
+    sourceSets {
+        main {
+            // jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    libraryVariants.configureEach { variant ->
+        def releaseDir = rootProject.getRootDir().getAbsolutePath() + "/release/";
+        def buildType = variant.buildType.name
+        def fileName
+
+        variant.outputs.each {
+            if (buildType == "release") {
+                fileName = "media-ijk-${buildType}.aar"
+                it.outputFileName = fileName
+            }
+        }
+
+        variant.getAssembleProvider().configure() {
+            it.doLast {
+                File out = new File(releaseDir)
+                copy {
+                    variant.outputs.forEach {
+                        def provider = variant.packageLibraryProvider.get()
+                        def file = provider.destinationDirectory.getAsFile().get()
+                        copy {
+                            from file
+                            into out
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compileOnly BuildConfig.libs.androidx_appcompat.path
+    compileOnly BuildConfig.libs.androidx_material.path
+}

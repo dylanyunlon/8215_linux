@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 背景图 -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="3dp" />
+            <solid android:color="#ffffff" />
+        </shape>
+    </item>
+
+    <!-- 进和能量图 -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="3dp" />
+                <solid android:color="#00C6FF" />
+            </shape>
+        </clip>
+    </item>
+</layer-list>

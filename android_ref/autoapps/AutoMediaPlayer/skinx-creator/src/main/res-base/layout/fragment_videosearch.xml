@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llVideoSearch"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_page_header_height"
+        android:background="@drawable/center_tip_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/layout_top_layout_marginTop">
+
+        <TextView
+            android:id="@+id/tvStorageType"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:textColor="@color/list_text_color_n"
+            android:layout_weight="1"
+            android:textSize="@dimen/fragment_search_text_size"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/search_icon_layout_marginStart"
+            android:background="@drawable/search_icon"
+            android:contentDescription="@string/todo" />
+
+        <EditText
+            android:id="@+id/etSearchText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/search_editText_layout_marginEnd"
+            android:autofillHints=""
+            android:background="@drawable/search_text_bg"
+            android:hint="@string/text_search_hint"
+            android:inputType="text"
+            android:maxLength="24"
+            android:maxLines="1"
+            android:paddingStart="@dimen/music_search_edittext_paddingStart"
+            android:paddingEnd="@dimen/music_search_edittext_paddingEnd"
+            android:textColor="#FFBDC0C5"
+            android:textColorHint="@color/search_hint_color"
+            android:textSize="@dimen/fragment_search_text_size" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/gridview_music"
+        android:tag="@string/search_list_special_tag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/video_search_list_layout_marginStart"
+        android:layout_marginEnd="@dimen/video_search_list_layout_marginEnd"
+        android:layout_marginTop="@dimen/video_search_list_layout_marginTop"
+        android:layout_marginBottom="10dp"
+        android:paddingStart="@dimen/video_search_list_paddingStart"
+        android:paddingEnd="@dimen/video_search_list_paddingEnd"
+        android:cacheColorHint="@android:color/transparent"
+        android:gravity="center"
+        android:listSelector="@android:color/transparent"
+        android:divider="@color/video_list_divider_color"
+        android:dividerHeight="1dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarThumbVertical="@drawable/list_slider_thumb"
+        android:scrollbarTrackVertical="@drawable/list_slider_bg"
+        android:scrollbarSize="2dp"
+        android:numColumns="1"
+        android:stretchMode="columnWidth"
+        tools:ignore="RtlSymmetry" />
+</LinearLayout>

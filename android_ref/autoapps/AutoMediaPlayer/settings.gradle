@@ -1,0 +1,53 @@
+pluginManagement {
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            url = 'http://ssh.light-comm.com:6081/repository/hcnlibs-releases/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://ssh.light-comm.com:6081/repository/maven-central/'
+        }
+        maven { url "https://jitpack.io" }
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            url = 'http://ssh.light-comm.com:6081/repository/hcnlibs-releases/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://ssh.light-comm.com:6081/repository/maven-central/'
+        }
+        maven { url "https://jitpack.io" }
+        mavenCentral()
+        google()
+    }
+}
+
+rootProject.name = "HMediaPlayer"
+include ':app'
+include ':app-language'
+include ':app-overlay'
+include ':media-api'
+include ':media-vitamio'
+include ':metadata-native'
+include ':media-view'
+include ':media-common'
+include ':media-base'
+include ':media-data'
+include ':media-model'
+include ':media-theme'
+include ':skinx-creator'
+include ':media-ijk'
+include ':media-dummy'
+include ':media-cache'
+
+

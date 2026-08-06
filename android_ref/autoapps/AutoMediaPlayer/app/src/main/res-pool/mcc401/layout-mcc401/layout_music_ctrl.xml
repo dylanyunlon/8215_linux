@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/btnPrev"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/btn_prev_bg" />
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/btn_play_bg"
+        android:layout_marginStart="50dp"/>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/btn_next_bg"
+        android:layout_marginStart="50dp"/>
+
+    <Button
+        android:id="@+id/btnRepeatMode"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/btn_repeat_queue_bg"
+        android:layout_marginStart="50dp"/>
+
+    <RadioButton
+        android:id="@+id/rbShowLyric"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:background="@null"
+        android:button="@null"
+        android:textSize="25sp"
+        android:singleLine="true"
+        android:text="@string/show_lyric"
+        android:textColor="@color/rb_text_color_401"
+        android:gravity="center_vertical"
+        android:layout_marginStart="50dp"/>
+
+</LinearLayout>

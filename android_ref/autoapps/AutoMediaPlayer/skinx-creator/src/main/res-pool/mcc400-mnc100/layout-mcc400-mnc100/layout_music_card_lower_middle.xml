@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+    </Space>
+
+    <Space
+        android:id="@+id/progress_left_space"
+        android:layout_width="@dimen/progress_space_layout_width"
+        android:layout_height="match_parent">
+    </Space>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="@dimen/progress_connect_width_layout_weight"
+        android:orientation="vertical">
+
+        <SeekBar
+            android:id="@+id/seekbar_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="@dimen/music_seekbar_max_height"
+            android:minHeight="@dimen/music_seekbar_min_height"
+            android:progressDrawable="@drawable/seekbar"
+            android:thumb="@drawable/seekbar_thumb"
+            android:thumbOffset="@dimen/music_seekbar_thumb_offset"
+            android:splitTrack="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
+            <TextView
+                android:id="@+id/tvCurrentTime"
+                android:layout_width="@dimen/duration_layout_width"
+                android:layout_height="@dimen/duration_layout_height"
+                android:layout_gravity="start"
+                android:gravity="center|start"
+                android:singleLine="true"
+                android:textColor="@color/music_duration_textColor"
+                android:textSize="@dimen/music_duration_textSize"
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </Space>
+
+            <TextView
+                android:id="@+id/tvTotalTime"
+                android:layout_width="@dimen/duration_layout_width"
+                android:layout_height="@dimen/duration_layout_height"
+                android:layout_gravity="end"
+                android:gravity="center|end"
+                android:singleLine="true"
+                android:textColor="@color/music_duration_textColor"
+                android:textSize="@dimen/music_duration_textSize"
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Space
+        android:id="@+id/progress_right_space"
+        android:layout_width="@dimen/progress_space_layout_width"
+        android:layout_height="match_parent">
+    </Space>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+    </Space>
+</LinearLayout>

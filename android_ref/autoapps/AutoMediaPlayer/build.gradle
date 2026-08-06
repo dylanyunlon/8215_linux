@@ -1,0 +1,105 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ConfigUtils.init(gradle)
+
+    dependencies {
+        // 需要搭建本地 mavenLocal
+        if (BuildConfig.publishMavenLocal) {
+            for (def entrySet : ConfigUtils.getApplyPlugins().entrySet()) {
+                classpath entrySet.value.path
+            }
+        } else {
+            classpath files('./media-plugin/base-transform/base-transform.jar')
+            classpath files('./media-plugin/bus-plugin/bus-plugin.jar')
+            classpath files('./media-plugin/genr2-plugin/genr2-plugin.jar')
+        }
+    }
+
+    ext {
+        gradlePluginVersion = "${BuildConfig.gradlePluginVersion}"
+    }
+}
+
+plugins {
+    id 'com.android.application' version "${gradlePluginVersion}" apply false
+    id 'com.android.library' version "${gradlePluginVersion}" apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.0-RC' apply false
+}
+
+// Load local gradle plug-in
+apply from:'./buildConfig/general.gradle'
+apply from:'./buildConfig/platform.gradle'
+apply from:'./buildConfig/projectConfig.gradle'
+apply from:'./buildConfig/skinxConfig.gradle'
+
+tasks.register('clean', Delete) {
+    delete rootProject.buildDir
+    delete ".records"
+    delete "./app/automotive"
+    delete "./app/development"
+    delete("./app/lint-baseline.xml")
+    delete("./skinx-creator/lint-baseline.xml")
+}
+
+tasks.register('deleteR2Java') {
+    delete "./app/build/generated/source/r2"
+    delete "./skinx-creator/build/generated/source/r2"
+    println(" ---- Task :deleteR2Java ----")
+}
+
+tasks.configureEach { task ->
+    if (task.name == "lint") {
+        // this is for speed up build
+        task.enabled = false
+    }
+
+    if (task.name.contains("Test")) {
+        // this is what you need
+        task.enabled = false
+    }
+}
+
+// display compiler warning [unchecked, deprecation]
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(Jar).configureEach {
+            duplicatesStrategy 'exclude'
+        }
+
+        tasks.withType(JavaCompile).tap {
+            configureEach {
+                if (BuildConfig.xLintUnchecked) {
+                    options.compilerArgs << "-Xlint:unchecked"
+                }
+
+                if (BuildConfig.xLintDeprecation) {
+                    options.compilerArgs << "-Xlint:deprecation"
+                }
+            }
+        }
+    }
+}
+
+def copy_aar_file(Set<Task> tasks , Project project) {
+    for (task in tasks) {
+        def dir = project.getProjectDir().getAbsolutePath()
+        println "assemble release dir = $dir"
+        def file = new File(dir + "/build/outputs/aar")
+
+        if (file.exists()) {
+            def source = delete(dir + "/build/outputs/aar")
+            def target = delete(rootProject.getRootDir().getAbsolutePath()
+                    + "/release/" + project.getName() + "-release.aar")
+            println "clear before create $source, $target"
+        }
+
+        task.doLast {
+            if (file.exists()) {
+                copy {
+                    from dir + "/build/outputs/aar/" + project.getName() + "-release.aar"
+                    into rootProject.getRootDir().getAbsolutePath() + "/release"
+                }
+            }
+        }
+    }
+}

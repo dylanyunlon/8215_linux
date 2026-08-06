@@ -1,0 +1,137 @@
+plugins {
+    id 'com.android.application'
+}
+
+// skinx type config set
+apply from:'./config_res.gradle'
+
+// support generate R2.java
+if (BuildConfig.supportGenR2Plugin) {
+    apply plugin: 'com.hcn.gen_r2'
+}
+
+android {
+    // R.java class package name
+    namespace project.skinx_blue01_namespace
+    compileSdk project.compileSdk as int
+
+    defaultConfig {
+        // package name
+        applicationId namespace
+        minSdk 28
+        // noinspection OldTargetApi
+        targetSdk project.targetSdk as int
+        versionCode 1
+        versionName "1.0"
+    }
+
+    productFlavors.configureEach {
+        flavor ->
+            // 不支持增量编译（需要每次都删除它）
+            delete "./skinx-creator/build/generated/source/r2"
+            println("> delete file: $name ./skinx-creator/build/generated/source/r2/../R2.java")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lint {
+        checkAllWarnings true
+        disable 'MissingTranslation', 'MissingDefaultResource'
+        warningsAsErrors true
+
+        // If you want to generate baseline.xml
+        // baseline = file("lint-baseline.xml")
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+
+            res {
+                srcDirs += project.compat_resDirs
+
+                // drawable + values
+                String skinxName = skinxBlue01Name.toString();
+                switch (skinxName) {
+                    case "blue01":
+                    case "gb01":
+                        srcDirs += project.blue01_resDirs
+                        break
+                    default:
+                        srcDirs += project.default_resDirs
+                        break
+                }
+            }
+        }
+    }
+
+    // channel shared Java files
+    sourceSets.configureEach {
+        flavor ->
+            java {
+                srcDirs += "src/build/java"
+            }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(javaVersion)
+        }
+    }
+
+    android.applicationVariants.configureEach { variant ->
+        def releaseDir = rootProject.getRootDir().getAbsolutePath() + "/output/";
+
+        variant.outputs.configureEach {
+            if (outputFile != null && outputFileName.endsWith('.apk')){
+                String skinxName = skinxBlue01Name.toString();
+                outputFileName = "skinx-media-" + skinxName + ".apk"
+            }
+        }
+
+        variant.getAssembleProvider().configure() {
+            it.doLast {
+                File out = new File(releaseDir)
+                copy {
+                    variant.outputs.forEach { file ->
+                        copy {
+                            from file.outputFile
+                            into out
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compileOnly BuildConfig.libs.androidx_appcompat.path
+    compileOnly BuildConfig.libs.androidx_viewpager2.path
+    compileOnly BuildConfig.libs.androidx_viewpager.path
+
+    compileOnly BuildConfig.libs.skinx_base.path
+    compileOnly BuildConfig.libs.auto_compat.path
+    compileOnly BuildConfig.libs.common_utils.path
+
+    // 调试使用配置
+    if (!project.USE_LOCAL_MEDIA_SKINX_LIBS) {
+        compileOnly BuildConfig.libs.media_skinx.path
+    } else {
+        compileOnly files('../release/media-skinx-release.aar')
+    }
+
+    compileOnly files('../release/media-base-release.aar')
+    compileOnly files('../release/media-data-release.aar')
+    compileOnly files('../release/media-common-release.aar')
+    compileOnly BuildConfig.libs.androidx_swiperefreshlayout.path
+
+    compileOnly files('../release/media-view-release.aar')
+    implementation files('../release/lang/skinx-lang-release.aar')
+    implementation BuildConfig.libs.androidx_drawerlayout.path
+}

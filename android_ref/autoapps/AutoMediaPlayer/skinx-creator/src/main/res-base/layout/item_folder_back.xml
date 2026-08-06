@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_folder_back"
+    android:layout_width="@dimen/music_folder_item_width"
+    android:layout_height="@dimen/music_folder_item_height"
+    android:layout_marginBottom="@dimen/music_folder_back_margin_bottom"
+    android:orientation="vertical"
+    android:background="@drawable/gridview_item_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/music_folder_item_icon_width"
+            android:layout_height="@dimen/music_folder_item_icon_height"
+            android:layout_marginStart="@dimen/music_folder_back_layout_marginStart"
+            android:layout_marginEnd="@dimen/music_folder_back_layout_marginEnd"
+            android:scaleType="fitXY"
+            android:src="@drawable/icon_list_return"
+            android:contentDescription="@string/todo" />
+
+        <TextView
+            android:id="@+id/folder_back_prompt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="70dp"
+            android:singleLine="true"
+            android:text="@string/ellipsis_symbol"
+            android:textColor="@drawable/list_text_color"
+            android:textSize="22sp"
+            tools:ignore="NestedWeights" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/list_divider_color" />
+
+</LinearLayout>

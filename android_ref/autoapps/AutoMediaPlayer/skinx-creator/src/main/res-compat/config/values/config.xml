@@ -1,0 +1,10 @@
+<resources>
+    <!-- adapt to different skin types -->
+    <integer name="simple_list_item_style_type">-1</integer>
+    <integer name="music_song_item_style_type">-1</integer>
+    <integer name="music_folder_item_style_type">-1</integer>
+    <integer name="video_list_item_style_type">-1</integer>
+
+    <!-- support wallpaper list -->
+    <bool name="support_wallpaper_customized">true</bool>
+</resources>

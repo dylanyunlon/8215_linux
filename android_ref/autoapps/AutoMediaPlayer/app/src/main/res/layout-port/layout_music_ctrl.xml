@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btnPrev"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/btn_prev_bg" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/btn_play_bg" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/btn_next_bg" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btnRepeatMode"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/btn_repeat_queue_bg" />
+
+</LinearLayout>

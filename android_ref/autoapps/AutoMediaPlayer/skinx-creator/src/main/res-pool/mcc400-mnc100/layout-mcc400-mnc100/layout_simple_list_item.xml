@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/simple_list_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/simple_list_item"
+    tools:ignore="MissingDefaultResource">
+
+    <ImageView
+        android:id="@+id/ivSimpleIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/simple_icon_layout_marginStart"
+        android:scaleType="fitXY"
+        android:src="@drawable/simple_icon_music"
+        android:contentDescription="@string/todo" />
+
+    <TextView
+        android:id="@+id/tvSimpleTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/simple_title_layout_marginStart"
+        android:paddingBottom="2dp"
+        android:gravity="start"
+        android:singleLine="true"
+        android:textColor="@drawable/simple_list_text_color"
+        android:textSize="@dimen/music_list_item_song_title" />
+</LinearLayout>

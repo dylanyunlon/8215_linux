@@ -1,0 +1,211 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionCode="1"
+    android:versionName="1.0"
+    package="com.hcn.AutoMediaPlayer">
+
+    <uses-sdk tools:overrideLibrary="androidx.lifecycle.runtime"/>
+
+    <permission
+        android:description="@string/media_notification_name"
+        android:name="media.permission.ACCESS_MEDIA_API_BROADCAST"
+        android:protectionLevel="normal" />
+
+    <permission
+        android:description="@string/media_notification_info"
+        android:name="media.permission.ACCESS_RECEPTION_SERVICE"
+        android:protectionLevel="normal" />
+
+    <uses-permission android:name="media.service.permission.ACCESS_MEDIA_SERVICE" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"
+        tools:ignore="ProtectedPermissions" />
+
+    <application
+        android:name=".HApplication"
+        android:allowBackup="true"
+        android:label="@string/app_music_label"
+        android:icon="@mipmap/ic_music"
+        android:launchMode="singleTask"
+        android:largeHeap="@bool/config_largeHeap"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:hardwareAccelerated="true"
+        android:requestLegacyExternalStorage="true"
+        tools:ignore="ExtraText,RtlEnabled">
+
+        <meta-data
+            android:name="${MANIFEST_CHANNEL_KEY}"
+            android:value="${MANIFEST_CHANNEL_VALUE}"/>
+
+        <meta-data
+            android:name="${MANIFEST_MACHINE_KEY}"
+            android:value="${MANIFEST_MACHINE_VALUE}"/>
+
+        <activity
+            android:name="com.hcn.MediaActivity.MusicPlayerUiActivity"
+            android:icon="@mipmap/ic_music"
+            android:launchMode="singleTask"
+            android:taskAffinity=".music"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:configChanges="uiMode"
+            android:exported="true"
+            tools:ignore="Instantiatable">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter android:scheme="http"
+                tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="application/ogg" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.hcn.MediaActivity.VideoPlayerUiActivity"
+            android:icon="@mipmap/ic_video"
+            android:label="@string/app_video_label"
+            android:launchMode="singleTask"
+            android:supportsPictureInPicture="true"
+            android:taskAffinity=".video"
+            android:windowAnimationStyle="@style/Animation"
+            android:configChanges="uiMode|screenSize|smallestScreenSize|screenLayout|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            tools:ignore="Instantiatable,ManifestResource"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:scheme="http"
+                tools:ignore="AppLinkUrlError">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.hcn.AutoMediaPlayer.action.PLAY_VIDEO" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.hcn.eq.EQMainUI"
+            android:icon="@mipmap/ic_eq"
+            android:exported="true"
+            android:label="@string/label_eq"
+            android:resizeableActivity="false"
+            tools:ignore="NonResizeableActivity">
+            <intent-filter>
+                <!-- <action android:name="android.intent.action.MAIN" /> -->
+                <action android:name="android.intent.action.EQ_PLAYER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name="com.hcn.media.local.event.MusicIntentReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.hcn.media.external.debug.MediaApiReceiver"
+            android:exported="true"
+            android:permission="media.permission.ACCESS_MEDIA_API_BROADCAST">
+            <intent-filter>
+                <action android:name="com.hcn.media.api.action" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="com.hcn.media_model.impl.Instrumentation"
+            android:value="MediaModule" />
+
+        <service
+            android:name="com.hcn.media.local.LocalService"
+            android:exported="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="HMEDIAPLAYER.ACTION.LOCALSERVICE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.hcn.media.external.ReceptionService"
+            android:exported="true"
+            android:permission="media.permission.ACCESS_RECEPTION_SERVICE">
+            <intent-filter>
+                <action android:name="HMEDIAPLAYER.ACTION.RECEPTIONSERVICE" />
+            </intent-filter>
+        </service>
+
+        <provider android:name="androidx.core.content.FileProvider"
+            android:authorities="com.hcn.AutoMediaPlayer.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <provider android:name="com.hcn.media.provider.MusicProvider"
+            android:authorities="com.hcn.media.provider.MusicProvider"
+            android:exported="true">
+        </provider>
+
+</application>
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"
+        tools:ignore="ManifestOrder" />
+    <uses-permission android:name="android.permission.DUMP"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="ManifestOrder" />
+    <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW"
+        tools:ignore="ManifestOrder,ProtectedPermissions" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.DEVICE_POWER"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.CHANGE_OVERLAY_PACKAGES"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MANAGE_APP_OPS_RESTRICTIONS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MANAGE_APP_OPS_MODES"
+        tools:ignore="ProtectedPermissions" />
+</manifest>

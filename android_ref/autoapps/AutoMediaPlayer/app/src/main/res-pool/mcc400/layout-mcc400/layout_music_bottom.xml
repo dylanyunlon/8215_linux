@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvCurrentTime"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:gravity="center|end"
+            android:singleLine="true"
+            android:textColor="@color/duration_text_color"
+            android:textSize="20sp"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+
+        <SeekBar
+            android:id="@+id/seekbar_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxHeight="@dimen/music_seekbar_maxheight"
+            android:minHeight="@dimen/music_seekbar_minheight"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:progressDrawable="@drawable/seekbar_bg"
+            android:thumb="@drawable/seekbar_thumb"
+            android:thumbOffset="@dimen/music_seekbar_thumb_offset"
+            android:splitTrack="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+
+        <TextView
+            android:id="@+id/tvTotalTime"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:gravity="center|start"
+            android:singleLine="true"
+            android:textColor="@color/duration_text_color"
+            android:textSize="20sp"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/music_info_bottom_bg_width"
+        android:layout_height="@dimen/music_info_bottom_bg_height"
+        android:background="@drawable/music_bottom_ctrl_bg"
+        android:gravity="center">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/btnRepeatMode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_repeat_queue_bg"
+            android:contentDescription="@string/todo" />
+
+        <ImageView
+            android:id="@+id/btnPrev"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_prev_bg"
+            android:contentDescription="@string/todo" />
+
+        <ImageView
+            android:id="@+id/btnPlay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_play_bg"
+            android:contentDescription="@string/todo" />
+
+        <ImageView
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_next_bg"
+            android:contentDescription="@string/todo" />
+
+        <ImageView
+            android:id="@+id/btnList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_list_bg"
+            android:contentDescription="@string/todo" />
+
+        <ImageView
+            android:id="@+id/btnEQ"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_eq_bg"
+            android:contentDescription="@string/todo" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,63 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.hcn.media_model'
+    compileSdk project.compileSdk as int
+
+    defaultConfig {
+        minSdk project.minSdk as int
+        //noinspection OldTargetApi
+        targetSdk project.targetSdk as int
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(javaVersion)
+        }
+    }
+}
+
+dependencies {
+    compileOnly BuildConfig.libs.androidx_appcompat.path
+
+    compileOnly BuildConfig.libs.skinx_base.path
+    compileOnly BuildConfig.libs.auto_compat.path
+    compileOnly BuildConfig.libs.common_utils.path
+    compileOnly BuildConfig.libs.mediaservice_api.path
+
+    // 调试使用配置
+    if (!project.USE_LOCAL_MEDIA_SKINX_LIBS) {
+        compileOnly BuildConfig.libs.media_skinx.path
+    } else {
+        compileOnly files('../release/media-skinx-release.aar')
+    }
+
+    compileOnly project(path: ':media-theme')
+
+    compileOnly files('../libs/rxrelay-3.0.1.aar')
+    compileOnly files('../libs/rxandroid-3.0.0.aar')
+    compileOnly files('../libs/logger-2.2.0.aar')
+    compileOnly files('../libs/rxjava-3.0.8.jar')
+
+    compileOnly files('../release/media-api-release.aar')
+    compileOnly files('../release/media-base-release.aar')
+    compileOnly files('../release/media-data-release.aar')
+    compileOnly files('../release/media-common-release.aar')
+    compileOnly files('../release/media-vitamio-release.aar')
+    compileOnly files('../release/media-view-release.aar')
+
+    compileOnly BuildConfig.libs.androidx_room_runtime.path
+    annotationProcessor BuildConfig.libs.androidx_room_compiler.path
+}

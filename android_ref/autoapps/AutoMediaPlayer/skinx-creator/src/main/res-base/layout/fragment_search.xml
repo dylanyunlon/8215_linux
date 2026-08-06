@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_page_header_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/layout_top_layout_marginTop">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/search_icon_layout_marginStart"
+            android:src="@drawable/search_icon"
+            android:contentDescription="@string/todo" />
+
+        <EditText
+            android:id="@+id/etSearchText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/search_editText_layout_marginEnd"
+            android:background="@drawable/search_text_bg"
+            android:hint="@string/text_search_hint"
+            android:textColorHint="@color/search_hint_color"
+            android:maxLength="24"
+            android:textColor="@color/search_text_color"
+            android:textSize="@dimen/search_text_textSize"
+            android:paddingStart="@dimen/music_search_edittext_paddingStart"
+            android:paddingEnd="@dimen/music_search_edittext_paddingEnd"
+            android:autofillHints=""
+            android:maxLines="1"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/gridview_music"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/music_search_list_layout_marginStart"
+        android:layout_marginTop="@dimen/music_search_list_layout_marginTop"
+        android:layout_marginEnd="@dimen/music_search_list_layout_marginEnd"
+        android:layout_marginBottom="10dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/list_divider_color"
+        android:dividerHeight="1dp"
+        android:gravity="center"
+        android:listSelector="@android:color/transparent"
+        android:paddingStart="@dimen/music_search_list_paddingStart"
+        android:paddingEnd="@dimen/music_search_list_paddingEnd"
+        android:scrollbarSize="2dp"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarThumbVertical="@drawable/list_slider_thumb"
+        android:scrollbarTrackVertical="@drawable/list_slider_bg"
+        android:tag="@string/search_list_special_tag"
+        tools:ignore="RtlSymmetry" />
+</LinearLayout>

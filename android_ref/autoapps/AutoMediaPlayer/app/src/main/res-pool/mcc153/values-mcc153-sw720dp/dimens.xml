@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010-2011 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="item_artist_height">81dp</dimen>
+    <dimen name="music_list_item_height">81dp</dimen>
+    <dimen name="music_folder_item_height">81dp</dimen>
+
+    <dimen name="video_list_layout_marginTop">5dp</dimen>
+
+    <dimen name="music_search_list_layout_marginTop" tools:ignore="MissingDefaultResource">10dp</dimen>
+    <dimen name="music_search_list_layout_marginBottom" tools:ignore="MissingDefaultResource">12dp</dimen>
+
+    <dimen name="video_search_list_layout_marginTop">10dp</dimen>
+    <dimen name="video_search_list_layout_marginBottom">12dp</dimen>
+
+    <dimen name="video_info_title_size">22sp</dimen>
+</resources>

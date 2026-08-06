@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#4CFFFFFF</color>
+
+    <color name="colorPrimaryDark">#FF000000</color>
+
+    <color name="id3_text_color">#55ffffff</color>
+    <color name="duration_text_color">#ffffffff</color>
+
+    <color name="button_text_color_n">#ffffffff</color>
+    <color name="button_text_color_p">#ff00F6F8</color>
+    <color name="button_text_color_d">#ff00F6F8</color>
+
+    <color name="lyric_view_cur_paint_color">#ff05bbc6</color>
+    <color name="lyric_view_not_cur_paint_color">#ffffffff</color>
+
+    <color name="loading_text_color">#ffffffff</color>
+
+    <!--media list page-->
+    <color name="search_hint_color">#ffc4c4c4</color>
+
+    <color name="list_divider_color">#ff343647</color>
+    <color name="list_text_color_n">#ffffffff</color>
+    <color name="list_text_color_p">#ff00F6F8</color>
+    <color name="list_text_color_d">#ff00F6F8</color>
+
+    <color name="search_text_color">#ffffffff</color>
+
+    <!--video list page-->
+    <color name="video_list_divider_color">#ff343647</color>
+    <color name="video_list_text_color_n">#ffffffff</color>
+    <color name="video_list_text_color_p">#ff00F6F8</color>
+    <color name="video_list_text_color_d">#ff00F6F8</color>
+    <color name="video_list_text_color_tip">#ff00F6F8</color>
+
+    <!--drawable-->
+    <drawable name="transparent">#00000000</drawable>
+    <drawable name="center_tip_bg">#00000000</drawable>
+    <drawable name="divider_vertical">#00000000</drawable>
+    <drawable name="music_bottom_ctrl_bg">#00000000</drawable>
+
+    <drawable name="list_slider_thumb">#ffffffff</drawable>
+
+    <!-- id3 info -->
+    <color name="music_title_textColor">#ffffffff</color>
+    <color name="music_album_textColor">#4cffffff</color>
+    <color name="music_artist_textColor">#4cffffff</color>
+
+    <color name="music_lyrics_textColor">#4cffffff</color>
+    <color name="music_lyrics_focus_textColor">#ffffffff</color>
+
+    <color name="music_duration_textColor">#7fffffff</color>
+
+    <!-- MissingDefaultResource -->
+    <drawable name="btn_collect_n">#00000000</drawable>
+    <drawable name="btn_collect_p">#00000000</drawable>
+    <drawable name="btn_uncollect_n">#00000000</drawable>
+    <drawable name="btn_uncollect_p">#00000000</drawable>
+    <drawable name="drawer_handle_n">#00000000</drawable>
+    <drawable name="drawer_handle_p">#00000000</drawable>
+    <drawable name="empty_list_icon">#00000000</drawable>
+    <drawable name="music_list_top_line">#00000000</drawable>
+    <drawable name="simple_icon_music_n">#00000000</drawable>
+    <drawable name="simple_icon_music_p">#00000000</drawable>
+    <drawable name="simple_list_item_n">#00000000</drawable>
+    <drawable name="simple_list_item_p">#00000000</drawable>
+    <drawable name="simple_list_tab_n">#00000000</drawable>
+    <drawable name="simple_list_tab_p">#00000000</drawable>
+    <drawable name="simple_repeat_all">#00000000</drawable>
+    <drawable name="simple_repeat_one">#00000000</drawable>
+    <drawable name="simple_shuffle">#00000000</drawable>
+</resources>

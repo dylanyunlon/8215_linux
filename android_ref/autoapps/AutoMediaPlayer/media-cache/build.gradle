@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.hcn.media_cache'
+    compileSdk project.compileSdk as int
+
+    defaultConfig {
+        minSdk project.minSdk as int
+        targetSdk project.targetSdk as int
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String", "LIBRARY_VERSION", "\". Version: $projectVersion\"")
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(javaVersion)
+        }
+    }
+
+    libraryVariants.configureEach { variant ->
+        def releaseDir = rootProject.getRootDir().getAbsolutePath() + "/release/";
+        def buildType = variant.buildType.name
+        def fileName
+
+        variant.outputs.each {
+            if (buildType == "release") {
+                fileName = "media-cache-${buildType}.aar"
+                it.outputFileName = fileName
+            }
+        }
+
+        variant.getAssembleProvider().configure() {
+            it.doLast {
+                File out = new File(releaseDir)
+                copy {
+                    variant.outputs.forEach {
+                        def provider = variant.packageLibraryProvider.get()
+                        def file = provider.destinationDirectory.getAsFile().get()
+                        copy {
+                            from file
+                            into out
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation BuildConfig.libs.androidx_appcompat.path
+    implementation BuildConfig.libs.androidx_material.path
+}

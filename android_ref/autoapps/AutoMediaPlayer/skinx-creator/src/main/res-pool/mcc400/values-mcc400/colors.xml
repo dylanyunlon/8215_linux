@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#00000000</color>
+
+    <color name="list_text_color_n">#ffffffff</color>
+    <color name="list_text_color_p">#4cffffff</color>
+    <color name="list_text_color_d">#4cffffff</color>
+</resources>

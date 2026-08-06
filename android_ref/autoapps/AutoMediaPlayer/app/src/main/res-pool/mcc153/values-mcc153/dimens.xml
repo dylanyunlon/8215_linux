@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2010-2011 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="music_list_item_height">75dp</dimen>
+    <dimen name="music_list_item_width">-1dp</dimen>
+    <dimen name="music_list_item_icon_margin_start">0dp</dimen>
+    <dimen name="music_list_item_icon_margin_end">0dp</dimen>
+
+    <dimen name="music_folder_item_height">78dp</dimen>
+    <dimen name="music_folder_item_width">-1dp</dimen>
+    <dimen name="music_folder_item_icon_height">70dp</dimen>
+    <dimen name="music_folder_item_icon_width">70dp</dimen>
+    <dimen name="music_folder_item_icon_marginstart">0dp</dimen>
+    <dimen name="music_folder_item_icon_marginend">0dp</dimen>
+    <dimen name="music_folder_back_margin_bottom">0dp</dimen>
+
+    <dimen name="eq_slider_margin">0dip</dimen>
+    <dimen name="eq_slider_height">300dip</dimen>
+    <dimen name="eq_thumb_offset">4dip</dimen>
+    <dimen name="eq_seekbar_top">2dip</dimen>
+    <dimen name="eq_bandtext_top">20dip</dimen>
+    <dimen name="eq_seekbar_width">75dip</dimen>
+    <dimen name="eq_sother_width">50dip</dimen>
+
+    <dimen name="id3_info_layout_height">360dp</dimen>
+    <dimen name="album_cover_default_height">218dp</dimen>
+    <dimen name="album_cover_default_width">218dp</dimen>
+    <dimen name="album_cover_height">180dp</dimen>
+    <dimen name="album_cover_width">180dp</dimen>
+
+    <dimen name="tv_title_margin_top">20dp</dimen>
+    <dimen name="lyric_width">300dp</dimen>
+
+    <dimen name="music_folder_item_song_title">26sp</dimen>
+    <dimen name="tv_showtip_size">44sp</dimen>
+    <dimen name="rb_top_contrl" tools:ignore="MissingDefaultResource">26sp</dimen>
+    <dimen name="music_list_item_music_icon" tools:ignore="MissingDefaultResource">70dp</dimen>
+    <dimen name="music_bottom_totaltime" tools:ignore="MissingDefaultResource">20sp</dimen>
+    <dimen name="music_id3_songstorage" tools:ignore="MissingDefaultResource">20sp</dimen>
+    <dimen name="music_id3_artist" tools:ignore="MissingDefaultResource">26sp</dimen>
+    <dimen name="music_id3_title" tools:ignore="MissingDefaultResource">30sp</dimen>
+    <dimen name="music_id3_totalvalue" tools:ignore="MissingDefaultResource">26sp</dimen>
+
+    <dimen name="item_music_list_songtitle" tools:ignore="MissingDefaultResource">24sp</dimen>
+    <dimen name="item_music_list_artist" tools:ignore="MissingDefaultResource">18sp</dimen>
+    <dimen name="item_artist_height" tools:ignore="MissingDefaultResource">75dp</dimen>
+    <dimen name="item_artist_list_albumtotal" tools:ignore="MissingDefaultResource">18sp</dimen>
+    <dimen name="item_artist_list_albumicon" tools:ignore="MissingDefaultResource">68dp</dimen>
+    <dimen name="item_artist_list_albumname" tools:ignore="MissingDefaultResource">22sp</dimen>
+    <dimen name="item_artist_child_songtitle" tools:ignore="MissingDefaultResource">22sp</dimen>
+    <dimen name="item_artist_child_artist" tools:ignore="MissingDefaultResource">16sp</dimen>
+
+    <dimen name="fragment_search_text_size" tools:ignore="MissingDefaultResource">26sp</dimen>
+    <dimen name="item_video_list_video_text">22sp</dimen>
+    <dimen name="item_video_list_video_info">18sp</dimen>
+    <dimen name="fragment_videolist_tips_size">46sp</dimen>
+    <dimen name="layout_lrc_freq_nolyrics" tools:ignore="MissingDefaultResource">34sp</dimen>
+    <dimen name="video_list_item_icon_width">98dp</dimen>
+    <dimen name="video_list_item_icon_height">70dp</dimen>
+
+    <dimen name="music_search_list_layout_marginTop" tools:ignore="MissingDefaultResource">10dp</dimen>
+    <dimen name="music_search_list_layout_marginBottom" tools:ignore="MissingDefaultResource">10dp</dimen>
+
+    <dimen name="video_title_info_margin_top">0dp</dimen>
+
+    <dimen name="video_list_center_layout_marginBottom">10dp</dimen>
+    <dimen name="video_list_layout_marginTop">5dp</dimen>
+    <dimen name="video_list_layout_marginBottom">1dp</dimen>
+    <dimen name="video_list_top_layout_height">81dp</dimen>
+</resources>

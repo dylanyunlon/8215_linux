@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout_et"
+        android:layout_width="match_parent"
+        android:layout_height="64.px"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etSearchText"
+            android:layout_width="333dp"
+            android:layout_height="56dp"
+            android:background="@drawable/mcc201_search_edit_bg"
+            android:hint="@string/text_search_hint"
+            android:maxLength="24"
+            android:textColor="#ffffff"
+            android:textSize="24.0sp"
+            android:paddingStart="60dp"
+            android:layout_marginEnd="20dp"
+            android:paddingEnd="20dp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/gridview_music"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_et"
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        android:stretchMode="columnWidth"
+        android:divider="#00000000"
+        android:dividerHeight="4dp"
+        android:layout_marginBottom="20dp"
+        android:unselectedAlpha="0.8" />
+
+    <TextView
+        android:id="@+id/tvShowTip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/tip_no_music_file"
+        android:textSize="40.0sp"
+        android:visibility="gone" />
+
+</RelativeLayout>

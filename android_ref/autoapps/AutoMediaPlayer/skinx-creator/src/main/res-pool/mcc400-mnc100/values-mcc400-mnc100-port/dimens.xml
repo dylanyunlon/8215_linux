@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- drawer layout -->
+    <dimen name="progress_space_layout_width" tools:ignore="MissingDefaultResource">0dp</dimen>
+    <dimen name="progress_connect_width_layout_weight" tools:ignore="MissingDefaultResource">9</dimen>
+
+    <!-- drawer layout -->
+    <dimen name="id3_space_layout_width" tools:ignore="MissingDefaultResource">24dp</dimen>
+    <dimen name="music_icon_card_layout_marginTop" tools:ignore="MissingDefaultResource">24dp</dimen>
+</resources>

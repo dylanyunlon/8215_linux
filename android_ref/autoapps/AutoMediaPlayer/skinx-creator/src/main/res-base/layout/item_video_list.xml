@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/video_list_item_layout_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:id="@+id/ivVideoIcon"
+        android:layout_width="@dimen/video_list_item_icon_layout_width"
+        android:layout_height="@dimen/video_list_item_icon_layout_height"
+        android:layout_margin="@dimen/video_list_item_icon_margin_start"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/todo" />
+
+    <include layout="@layout/video_list_item_body" />
+</LinearLayout>

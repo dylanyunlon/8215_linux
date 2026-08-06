@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/id_reverb_group"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/id_reverb_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/hcn_eq_mode_user"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_user"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="160dp"
+                android:layout_marginTop="-84dp"
+                android:background="@drawable/hcn_eq_mode_news"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_lift"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_jazz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/hcn_eq_mode_jazz"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_jazz"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="160dp"
+                android:layout_marginTop="-84dp"
+                android:background="@drawable/hcn_eq_mode_city"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_dance"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_pop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/hcn_eq_mode_pop"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_pop"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_electronic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="160dp"
+                android:layout_marginTop="-84dp"
+                android:background="@drawable/hcn_eq_mode_electronic"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_electronic"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_classiz"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/hcn_eq_mode_classic"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_classiz"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="160dp"
+                android:layout_marginTop="-84dp"
+                android:background="@drawable/hcn_eq_mode_movie"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_rb"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_rock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/hcn_eq_mode_rock"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_rock"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_reverb_techno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="160dp"
+                android:layout_marginTop="-84dp"
+                android:background="@drawable/hcn_eq_mode_techno"
+                android:button="@null"
+                android:gravity="center_horizontal|bottom"
+                android:paddingBottom="8dp"
+                android:text="@string/eq_reverb_Absolute_music"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </RadioGroup>
+
+    </LinearLayout>
+</FrameLayout>

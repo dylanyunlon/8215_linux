@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/center_tip_bg"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btnPlaying"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/small_playing_bg" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/small_search_bg" />
+
+        <ImageView
+            android:id="@+id/btnUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/small_update_bg" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/btnStorageFlash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/small_local_bg"
+                    android:button="@null"
+                    android:gravity="center" />
+
+                <RadioButton
+                    android:id="@+id/btnStorageUSB1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/small_usb1_bg"
+                    android:button="@null"
+                    android:gravity="center" />
+
+                <RadioButton
+                    android:id="@+id/btnStorageSD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/small_sd1_bg"
+                    android:button="@null"
+                    android:gravity="center" />
+
+                <RadioButton
+                    android:id="@+id/btnListFolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/small_folder_bg"
+                    android:button="@null"
+                    android:gravity="center" />
+            </RadioGroup>
+        </ScrollView>
+
+        <View
+            android:layout_width="11dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/divider_vertical" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager_center"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>

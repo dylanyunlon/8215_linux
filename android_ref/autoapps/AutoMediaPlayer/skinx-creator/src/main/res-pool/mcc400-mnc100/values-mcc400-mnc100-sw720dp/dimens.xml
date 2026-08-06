@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- layout weight -->
+    <dimen name="music_card_top_height_layout_weight" tools:ignore="MissingDefaultResource">37</dimen>
+    <dimen name="music_card_upper_middle_height_layout_weight" tools:ignore="MissingDefaultResource">60</dimen>
+    <dimen name="music_card_lower_middle_height_layout_weight" tools:ignore="MissingDefaultResource">18</dimen>
+    <dimen name="music_card_bottom_height_layout_weight" tools:ignore="MissingDefaultResource">28</dimen>
+
+    <!-- drawer layout -->
+    <dimen name="music_list_pager_layout_marginBottom">5dp</dimen>
+
+    <dimen name="drawer_view_layout_width" tools:ignore="MissingDefaultResource">472dp</dimen>
+    <dimen name="drawer_handle_paddingStart" tools:ignore="MissingDefaultResource">12dp</dimen>
+
+    <dimen name="music_icon_card_layout_marginTop" tools:ignore="MissingDefaultResource">11dp</dimen>
+    <dimen name="music_icon_card_layout_marginEnd" tools:ignore="MissingDefaultResource">3dp</dimen>
+
+    <dimen name="music_info_bottom_bg_height">154dp</dimen>
+    <dimen name="bottom_menu_layout_paddingBottom">48dp</dimen>
+
+    <dimen name="lower_middle_layout_marginTop" tools:ignore="MissingDefaultResource">20dp</dimen>
+    <dimen name="progress_space_layout_width" tools:ignore="MissingDefaultResource">70dp</dimen>
+
+    <dimen name="music_lyrics_layout_marginStart" tools:ignore="MissingDefaultResource">54dp</dimen>
+    <dimen name="music_lyrics_layout_marginEnd" tools:ignore="MissingDefaultResource">54dp</dimen>
+
+    <dimen name="id3_space_layout_width" tools:ignore="MissingDefaultResource">198dp</dimen>
+
+    <!-- music id3 info -->
+    <dimen name="music_title_textSize">36sp</dimen>
+    <dimen name="music_album_textSize">24sp</dimen>
+    <dimen name="music_artist_textSize">24sp</dimen>
+
+    <dimen name="music_duration_textSize">20sp</dimen>
+    <dimen name="simple_list_tab_textSize">26sp</dimen>
+    <dimen name="simple_prompt_info_textSize">32sp</dimen>
+
+    <!-- simple list -->
+    <dimen name="simple_icon_layout_marginStart">40dp</dimen>
+    <dimen name="simple_title_layout_marginStart">40dp</dimen>
+
+    <dimen name="ivSimpleIcon_layout_marginTop">42dp</dimen>
+    <dimen name="tvSimplePrompt_layout_marginTop">60dp</dimen>
+</resources>

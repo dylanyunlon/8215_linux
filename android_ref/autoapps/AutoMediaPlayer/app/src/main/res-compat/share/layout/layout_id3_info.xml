@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvTotalValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@id/tvAlbum"
+        android:gravity="center|center_vertical|start"
+        android:textColor="@color/id3_text_color"
+        android:textSize="20sp" />
+
+    <com.hcn.media_view.HTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tv_title_margin_top"
+        android:drawableStart="@drawable/title_img"
+        android:focusableInTouchMode="true"
+        android:gravity="center|center_vertical|start"
+        android:padding="2dp"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="-2"
+        android:shadowRadius="1.5"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textColor="@color/id3_text_color"
+        android:textSize="28sp" />
+
+    <!--
+        android:marqueeRepeatLimit="marquee_forever" -->
+
+    <com.hcn.media_view.HTextView
+        android:id="@+id/tvAlbum"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginTop="@dimen/tv_title_margin_top"
+        android:layout_alignStart="@+id/tvTitle"
+        android:drawableStart="@drawable/album_img"
+        android:focusableInTouchMode="true"
+        android:gravity="center|center_vertical|start"
+        android:padding="2dp"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:textColor="@color/id3_text_color"
+        android:textSize="20sp" />
+
+    <com.hcn.media_view.HTextView
+        android:id="@+id/tvArtist"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvAlbum"
+        android:layout_marginTop="@dimen/tv_title_margin_top"
+        android:layout_alignStart="@+id/tvTitle"
+        android:drawableStart="@drawable/artist_img"
+        android:focusableInTouchMode="true"
+        android:gravity="center|center_vertical|start"
+        android:padding="2dp"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:textColor="@color/id3_text_color"
+        android:textSize="20sp" />
+
+</RelativeLayout>

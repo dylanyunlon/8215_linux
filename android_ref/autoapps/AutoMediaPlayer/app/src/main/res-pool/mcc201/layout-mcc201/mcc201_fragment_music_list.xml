@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rel_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mcc201_title_bg"
+        android:visibility="gone"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        tools:ignore="ObsoleteLayoutParam">
+
+        <ImageButton
+            android:id="@+id/btnHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mcc201_btn_home"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@null" />
+
+        <com.hcn.media_view.HTextView
+            android:id="@+id/tvTitleBar"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:focusableInTouchMode="true"
+            android:layout_toEndOf="@+id/btnHome"
+            android:layout_centerVertical="true"
+            android:gravity="center|center_vertical|start"
+            android:padding="2dp"
+            android:shadowColor="#000000"
+            android:shadowDx="3"
+            android:shadowDy="-3"
+            android:shadowRadius="1.5"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="28sp"
+            android:text="本地音乐"
+            android:layout_marginStart="40dp"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mcc201_btn_back"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:background="@null" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RadioGroup
+            android:id="@+id/rgList"
+            android:layout_width="500dp"
+            android:layout_height="79.0dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="3.0px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btnMusics"
+                android:layout_width="0dp"
+                android:layout_height="79.0dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="-20dp"
+                android:checked="true"
+                android:textColor="@drawable/btn_text_color"
+                android:text="@string/StrMusic"
+                android:textSize="24.0sp" />
+
+            <RadioButton
+                android:id="@+id/btnFiles"
+                android:layout_width="0dp"
+                android:layout_height="79.0dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="-20dp"
+                android:textColor="@drawable/btn_text_color"
+                android:text="@string/StrFolder"
+                android:textSize="24.0sp" />
+
+            <RadioButton
+                android:id="@+id/btnArtists"
+                android:layout_width="0dp"
+                android:layout_height="79.0dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="-20dp"
+                android:text="@string/StrArtist"
+                android:textColor="@drawable/btn_text_color"
+                android:textSize="24.0sp" />
+
+            <RadioButton
+                android:id="@+id/btnSearch"
+                android:layout_width="0dp"
+                android:layout_height="79.0dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="-20dp"
+                android:text="@string/text_search"
+                android:textColor="@drawable/btn_text_color"
+                android:textSize="24.0sp" />
+
+            <RadioButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="0dp"
+                android:layout_height="79.0dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="-20dp"
+                android:text="@string/StrFavorite"
+                android:textColor="@drawable/btn_text_color"
+                android:textSize="24.0sp"
+                android:visibility="gone"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="6dp"
+            android:textSize="28sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/mcc201_btn_auto"
+            android:text="@string/favor_all_label"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvSongSums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/btnAuto"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="10dp"
+            android:singleLine="true"
+            android:text="共 10 首歌曲"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            android:textSize="16.0sp"
+            tools:ignore="HardcodedText" />
+
+        <com.hcn.media_view.NoScrollViewPager
+            android:id="@+id/viewpager_center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rgList"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp" />
+    </RelativeLayout>
+</LinearLayout>

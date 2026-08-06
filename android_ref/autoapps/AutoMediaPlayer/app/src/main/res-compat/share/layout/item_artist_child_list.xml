@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_music_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_artist_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_marginEnd="10dp"
+    tools:ignore="MissingDefaultResource">
+
+    <ImageView
+        android:id="@+id/ivMusicIcon"
+        android:layout_width="@dimen/music_list_item_music_icon"
+        android:layout_height="@dimen/music_list_item_music_icon"
+        android:scaleType="fitXY"
+        android:layout_marginStart="35dp"
+        android:contentDescription="@string/todo" />
+
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="20dp">
+
+        <TextView
+            android:id="@+id/tvSongTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@drawable/list_text_color"
+            android:textSize="@dimen/item_artist_child_songtitle" />
+
+        <TextView
+            android:id="@+id/tvSongArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/button_text_color_p"
+            android:textSize="@dimen/item_artist_child_artist" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivFavoriteIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/icon_favorite"
+        android:visibility="gone"
+        android:layout_marginEnd="5dp"
+        android:contentDescription="@string/todo" />
+
+    <ImageView
+        android:id="@+id/ivPlayingIcon"
+        android:layout_width="41dp"
+        android:layout_height="38dp"
+        android:background="@drawable/playing"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/todo" />
+</LinearLayout>

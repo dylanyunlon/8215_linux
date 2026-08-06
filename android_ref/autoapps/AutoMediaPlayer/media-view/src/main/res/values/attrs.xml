@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- CircleImageView -->
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+
+    <!-- RoundRectImageView -->
+    <declare-styleable name="RoundRectImageView">
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+    <!-- DrawerLayout -->
+    <declare-styleable name="DrawerLayout">
+        <attr name="elevation" format="dimension"/>
+    </declare-styleable>
+
+    <!-- RoundImageView -->
+    <declare-styleable name="RoundImageView">
+        <attr name="is_circular" format="boolean" />
+        <attr name="is_cover_src" format="boolean" />
+        <attr name="corner_radius" format="dimension" />
+        <attr name="corner_top_left_radius" format="dimension" />
+        <attr name="corner_top_right_radius" format="dimension" />
+        <attr name="corner_bottom_left_radius" format="dimension" />
+        <attr name="corner_bottom_right_radius" format="dimension" />
+        <attr name="external_border_width" format="dimension" />
+        <attr name="external_border_color" format="color" />
+        <attr name="inner_border_width" format="dimension" />
+        <attr name="inner_border_color" format="color" />
+        <attr name="mask_color" format="color" />
+    </declare-styleable>
+
+    <!-- DrawerLayout -->
+    <declare-styleable name="VerticalSeekBar">
+        <attr name="is_top_to_bottom" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="LyricsView">
+        <attr name="lyrics_other_lrc" format="integer"/>
+        <attr name="lyrics_hightlight_lrc" format="integer"/>
+        <attr name="lyrics_lineSpacing_lrc" format="integer"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_music_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/music_folder_item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/gridview_item_bg">
+
+    <ImageView
+        android:id="@+id/ivMusicIcon"
+        android:layout_width="@dimen/music_folder_item_icon_width"
+        android:layout_height="@dimen/music_folder_item_icon_height"
+        android:layout_marginStart="@dimen/music_folder_item_icon_marginStart"
+        android:layout_marginEnd="@dimen/music_folder_item_icon_marginEnd"
+        android:contentDescription="@string/folder_list_song_icon_special_resource"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/tvSongTitle"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@drawable/list_text_color"
+        android:textSize="@dimen/music_folder_item_song_title" />
+
+    <ImageView
+        android:id="@+id/ivPlayingIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/playing"
+        android:contentDescription="@string/todo" />
+</LinearLayout>

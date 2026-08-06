@@ -1,0 +1,14 @@
+*.iml
+.gradle
+.idea
+.DS_Store
+build
+captures
+output/*
+app/release/*
+skinx-creator/release/*
+.externalNativeBuild
+.cxx
+local.properties
+gradle.properties
+.records

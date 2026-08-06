@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginStart="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/small_search_n" />
+
+        <EditText
+            android:id="@+id/etSearchText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_text_bg"
+            android:hint="@string/text_search_hint"
+            android:maxLength="24"
+            android:textColor="@color/search_text_color"
+            android:textSize="24.0sp"
+            android:paddingStart="@dimen/music_search_edittext_paddingStart"
+            android:paddingEnd="@dimen/music_search_edittext_paddingEnd"
+            android:layout_marginStart="@dimen/music_search_edittext_marginstart"
+            android:layout_marginEnd="@dimen/music_search_edittext_marginend"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/gridview_music"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:gravity="center"
+        android:divider="@color/list_divider_color"
+        android:dividerHeight="1dp"
+        android:listSelector="@android:color/transparent" />
+
+</LinearLayout>

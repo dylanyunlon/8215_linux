@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llVideoList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/status_bar_height"
+    android:orientation="horizontal">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:paddingStart="29dp"
+        android:paddingEnd="29dp">
+
+        <RadioButton
+            android:id="@+id/btnPlaying"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/small_playing_bg"
+            android:button="@null"
+            android:visibility="visible" />
+
+        <RadioButton
+            android:id="@+id/btnStorageFlash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/small_local_bg"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/btnStorageUSB1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/small_usb1_bg"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/btnStorageSD1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/small_sd1_bg"
+            android:button="@null" />
+
+    </RadioGroup>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="452dp"
+        android:layout_gravity="bottom"
+        android:background="@color/video_list_divider_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/layout_top"
+            layout="@layout/layout_video_top"
+            android:layout_width="match_parent"
+            android:layout_height="98dp"
+            android:layout_marginEnd="29dp"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/main_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="29dp"
+                android:layout_marginEnd="29dp"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@color/list_divider_color"
+                android:dividerHeight="1dp"
+                android:fastScrollEnabled="true"
+                android:focusable="true"
+                android:listSelector="@android:color/transparent"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="none" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/iv_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/pb_loading"
+                    android:visibility="invisible"
+                    android:contentDescription="@string/todo" />
+
+                <TextView
+                    android:id="@+id/tv_main_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/tip_no_video_file"
+                    android:textColor="@color/video_list_text_color_tip"
+                    android:textSize="46.0sp"
+                    android:visibility="invisible" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>
+

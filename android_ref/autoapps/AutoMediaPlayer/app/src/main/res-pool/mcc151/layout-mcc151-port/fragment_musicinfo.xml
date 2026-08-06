@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:contentDescription="mcc151-music-port"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rel_id3_infos"
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/playing_bg"
+            android:padding="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+
+            <ImageView
+                android:id="@+id/ivDefault"
+                android:layout_width="168dp"
+                android:layout_height="168dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:background="@drawable/zj_bg"
+                android:scaleType="fitXY"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:id="@+id/ivMusicImage"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="12dp"
+                android:scaleType="fitXY"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="18dp" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/ivDefault"
+                android:drawableLeft="@drawable/title_img"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical|start"
+                android:padding="2.0px"
+                android:shadowColor="#000000"
+                android:shadowDx="3"
+                android:shadowDy="-3"
+                android:shadowRadius="1.5"
+                android:singleLine="true"
+                android:textColor="@color/id3_text_color"
+                android:textSize="20sp"
+                android:layout_marginStart="10dp"
+                android:drawableStart="@drawable/title_img"
+                android:layout_toEndOf="@id/ivDefault" />
+
+            <!-- android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever" -->
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvAlbum"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTitle"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/ivDefault"
+                android:drawableLeft="@drawable/album_img"
+                android:focusableInTouchMode="true"
+                android:gravity="center|center_vertical|start"
+                android:padding="2.0px"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="0.6"
+                android:singleLine="true"
+                android:textColor="@color/id3_text_color"
+                android:textSize="20sp"
+                android:drawableStart="@drawable/album_img"
+                android:layout_toEndOf="@id/ivDefault"
+                android:layout_marginStart="10dp" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvArtist"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvAlbum"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/ivDefault"
+                android:drawableLeft="@drawable/artist_img"
+                android:focusableInTouchMode="true"
+                android:gravity="center|center_vertical|start"
+                android:padding="2.0px"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="0.6"
+                android:singleLine="true"
+                android:textColor="@color/id3_text_color"
+                android:textSize="20sp"
+                android:layout_toEndOf="@id/ivDefault"
+                android:layout_marginStart="10dp"
+                android:drawableStart="@drawable/artist_img" />
+
+            <TextView
+                android:id="@+id/tvTotalValue"
+                android:layout_width="168dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivDefault"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textColor="@color/id3_text_color"
+                android:textSize="20.0sp" />
+
+            <Button
+                android:id="@+id/btn_change_lyric"
+                android:layout_width="120.0px"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTotalValue"
+                android:layout_toRightOf="@id/tvAlbum"
+                android:background="@null"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/id3_text_color"
+                android:textSize="24.0sp"
+                android:visibility="gone"
+                android:text="@string/frequency_label"
+                android:layout_toEndOf="@id/tvAlbum" />
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                layout="@layout/layout_music_ctrl" />
+
+            <FrameLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tvTitle"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentEnd="true">
+
+                <LinearLayout
+                    android:id="@+id/lin_lyric"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.hcn.media_view.lyrics.LyricsView
+                        android:id="@+id/lyrics_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15.0px"
+                        android:layout_marginRight="15.0px"
+                        android:layout_marginEnd="15.0px"
+                        android:layout_marginStart="15.0px" />
+
+                    <TextView
+                        android:id="@+id/tvNoLyrics"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="15.0px"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center"
+                        android:padding="2.0px"
+                        android:shadowColor="#000000"
+                        android:shadowDx="2"
+                        android:shadowDy="2"
+                        android:shadowRadius="0.6"
+                        android:singleLine="true"
+                        android:text="@string/StrNoLrc"
+                        android:textColor="@color/id3_text_color"
+                        android:textSize="32.0sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_freq"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.hcn.media_view.PlayFlashView
+                        android:id="@+id/FrequencyView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0.5" />
+                </LinearLayout>
+
+            </FrameLayout>
+        </RelativeLayout>
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/rel_id3_infos"
+            android:layout_centerHorizontal="true"
+            layout="@layout/layout_music_seek" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llVideoSearch"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvStorageType"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#515151"
+            android:textSize="24sp"
+            android:layout_marginStart="30dp" />
+
+        <ImageView
+            android:layout_width="106dp"
+            android:layout_height="60dp"
+            android:background="@drawable/small_search_n"
+            android:contentDescription="@string/todo" />
+
+        <EditText
+            android:id="@+id/etSearchText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_text_bg"
+            android:hint="@string/text_search_hint"
+            android:textColorHint="@color/gray_white"
+            android:maxLength="24"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textColor="#FFFFFFFF"
+            android:textSize="24.0sp"
+            android:layout_marginEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:autofillHints="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="992dp"
+        android:layout_height="434dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="98dp"
+        android:background="@drawable/playing_bg"
+        android:orientation="vertical"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp">
+
+        <ListView
+            android:id="@+id/gridview_music"
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="6dp"
+            android:cacheColorHint="@android:color/transparent"
+            android:fastScrollEnabled="true"
+            android:focusable="true"
+            android:listSelector="@android:color/transparent"
+            android:divider="@color/video_list_divider_color"
+            android:dividerHeight="1dp"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="none"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp" />
+    </LinearLayout>
+</FrameLayout>

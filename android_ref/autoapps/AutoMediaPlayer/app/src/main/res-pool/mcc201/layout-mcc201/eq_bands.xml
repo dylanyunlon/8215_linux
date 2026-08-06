@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="@dimen/eq_seekbar_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/one_value"
+            style="@style/scroll_values"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+
+        <com.hcn.media_view.SeekBarRotator
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/eq_seekbar_top"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="@dimen/eq_slider_height">
+
+            <SeekBar
+                android:id="@+id/one_seek"
+                android:layout_margin="@dimen/eq_slider_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tag="0"
+                android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                android:thumbOffset="@dimen/eq_thumb_offset" />
+        </com.hcn.media_view.SeekBarRotator>
+
+
+        <TextView
+            style="@style/scroll_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_bandtext_top"
+            android:text="@string/BAND_60HZ" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/eq_seekbar_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/two_value"
+            style="@style/scroll_values"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+
+        <com.hcn.media_view.SeekBarRotator
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/eq_seekbar_top"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="@dimen/eq_slider_height">
+
+            <SeekBar
+                android:id="@+id/two_seek"
+                android:layout_margin="@dimen/eq_slider_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tag="1"
+                android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                android:thumbOffset="@dimen/eq_thumb_offset" />
+        </com.hcn.media_view.SeekBarRotator>
+
+
+        <TextView
+            style="@style/scroll_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_bandtext_top"
+            android:text="@string/BAND_230HZ" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/eq_seekbar_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/three_value"
+            style="@style/scroll_values"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+
+        <com.hcn.media_view.SeekBarRotator
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_seekbar_top"
+            android:layout_height="@dimen/eq_slider_height">
+
+            <SeekBar
+                android:id="@+id/three_seek"
+                android:layout_margin="@dimen/eq_slider_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tag="2"
+                android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                android:thumbOffset="@dimen/eq_thumb_offset" />
+        </com.hcn.media_view.SeekBarRotator>
+
+
+        <TextView
+            style="@style/scroll_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_bandtext_top"
+            android:text="@string/BAND_910HZ" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/eq_seekbar_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/four_value"
+            style="@style/scroll_values"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+
+        <com.hcn.media_view.SeekBarRotator
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_seekbar_top"
+            android:layout_height="@dimen/eq_slider_height">
+
+            <SeekBar
+                android:id="@+id/four_seek"
+                android:layout_margin="@dimen/eq_slider_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tag="3"
+                android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                android:thumbOffset="@dimen/eq_thumb_offset" />
+        </com.hcn.media_view.SeekBarRotator>
+
+        <TextView
+            style="@style/scroll_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_bandtext_top"
+            android:text="@string/BAND_3600HZ" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/eq_seekbar_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/five_value"
+            style="@style/scroll_values"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+
+        <com.hcn.media_view.SeekBarRotator
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_seekbar_top"
+            android:layout_height="@dimen/eq_slider_height">
+
+            <SeekBar
+                android:id="@+id/five_seek"
+                android:layout_margin="@dimen/eq_slider_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tag="4"
+                android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                android:thumbOffset="@dimen/eq_thumb_offset" />
+        </com.hcn.media_view.SeekBarRotator>
+
+
+        <TextView
+            style="@style/scroll_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_bandtext_top"
+            android:text="@string/BAND_14000HZ" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/eq_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="130dp"
+        android:background="@drawable/hcn_eq_reset" />
+
+</LinearLayout>

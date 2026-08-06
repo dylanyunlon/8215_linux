@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="#FF000000"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/music_notify_icon"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/todo" />
+
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        tools:ignore="RtlHardcoded">
+
+        <TextView
+            android:id="@+id/tvMusicTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="24.0sp" />
+
+        <TextView
+            android:id="@+id/tvMusicArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/gray"
+            android:textSize="16.0sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/btnPrev"
+        android:layout_width="134dp"
+        android:layout_height="46dp"
+        android:background="@drawable/notify_prev_bg" />
+
+    <ImageView
+        android:id="@+id/btnPlayPause"
+        android:layout_width="134dp"
+        android:layout_height="46dp" />
+
+    <ImageView
+        android:id="@+id/btnNext"
+        android:layout_width="134dp"
+        android:layout_height="46dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/notify_next_bg"
+        android:layout_marginEnd="20dp"
+        tools:ignore="RtlHardcoded" />
+
+</LinearLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llVideoList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <include
+        android:id="@+id/layout_top"
+        layout="@layout/layout_video_list_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/layout_top_layout_marginTop"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/btnStorageFlash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/small_local_bg"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/btnStorageUSB1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/small_usb1_bg"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/btnStorageSD1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/small_sd1_bg"
+                android:button="@null" />
+        </RadioGroup>
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/divider_vertical" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/main_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="@dimen/video_list_layout_marginEnd"
+                android:layout_marginBottom="10dp"
+                android:paddingEnd="@dimen/video_list_paddingEnd"
+                android:cacheColorHint="@android:color/transparent"
+                android:listSelector="@android:color/transparent"
+                android:divider="@color/list_divider_color"
+                android:dividerHeight="1dp"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbarThumbVertical="@drawable/list_slider_thumb"
+                android:scrollbarTrackVertical="@drawable/list_slider_bg"
+                android:scrollbarSize="2dp"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/tv_main_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/tip_no_video_file"
+                android:textColor="@drawable/list_text_color"
+                android:textSize="40.0sp"
+                android:visibility="invisible" />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>
+

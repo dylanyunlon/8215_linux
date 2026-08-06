@@ -1,0 +1,10 @@
+project.ext {
+    /**
+     * skinx-creator 皮肤配置（支持别名配置）
+     * 蓝白色: blue01
+     *        uis8581 默认设计
+     * ...
+     */
+    skinxBlue01Name="blue01"
+    skinx_blue01_namespace="com.hcn.media.skinx_" + skinxBlue01Name
+}

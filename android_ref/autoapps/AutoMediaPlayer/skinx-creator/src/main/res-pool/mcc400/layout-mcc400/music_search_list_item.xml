@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_music_item"
+    android:layout_width="@dimen/music_list_item_layout_width"
+    android:layout_height="@dimen/music_list_item_layout_height"
+    android:background="@drawable/gridview_item_bg"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    tools:ignore="MissingDefaultResource">
+
+    <ImageView
+        android:id="@+id/ivMusicIcon"
+        android:layout_width="@dimen/music_list_item_icon_layout_width"
+        android:layout_height="@dimen/music_list_item_icon_layout_height"
+        android:layout_margin="@dimen/music_search_list_item_icon_margin_start"
+        android:scaleType="fitXY"
+        android:contentDescription="@string/todo" />
+
+    <include layout="@layout/music_list_item_body" />
+</LinearLayout>

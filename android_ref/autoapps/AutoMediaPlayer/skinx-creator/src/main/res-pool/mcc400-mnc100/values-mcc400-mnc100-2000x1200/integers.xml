@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="lrc_text_size">30</integer>
+    <integer name="lrc_hightlight_text_size">40</integer>
+    <integer name="lyrics_lineSpacing_lrc">30</integer>
+</resources>

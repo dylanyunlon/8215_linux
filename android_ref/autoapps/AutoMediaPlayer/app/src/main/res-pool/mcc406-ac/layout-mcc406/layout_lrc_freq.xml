@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layoutDirection="ltr"
+    android:orientation="vertical">
+
+    <com.hcn.media_view.PlayFlashView
+        android:id="@+id/FrequencyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5" />
+
+    <com.hcn.media_view.lyrics.LyricsView
+        android:id="@+id/lyrics_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp" />
+
+    <TextView
+        android:id="@+id/tvNoLyrics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2dp"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:text="@string/StrNoLrc"
+        android:textColor="#ffffff"
+        android:textSize="32.0sp" />
+
+    <ImageView
+        android:id="@+id/ivLeftShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/anim_left_show" />
+
+</FrameLayout>

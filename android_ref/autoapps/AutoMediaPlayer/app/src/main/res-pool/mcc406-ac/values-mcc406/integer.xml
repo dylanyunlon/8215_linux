@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--频谱上面短线的宽度-->
+    <integer name="freq_line_width">0</integer>
+    <!--两条频谱间隔宽度-->
+    <integer name="freq_divider_width">5</integer>
+    <!--频谱宽度因子，值越大，宽度越小-->
+    <integer name="freq_width_factor">0</integer>
+    <!--Gallery宽高参数-->
+    <integer name="gallery_width_factor">168</integer>
+    <integer name="gallery_height_factor">222</integer>
+    <!--设置歌词页面是否添加，2为添加，1为不添加-->
+    <integer name="viewpager_number_factor">1</integer>
+</resources>

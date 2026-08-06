@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:background="@drawable/eq_right_bg"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/scroll_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/eq_bandtext_top"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:paddingEnd="6dp"
+                android:paddingRight="6dp"
+                android:text="@string/title_bass" />
+
+            <com.hcn.media_view.SeekBarRotator
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/eq_slider_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/eq_seekbar_top">
+
+                <SeekBar
+                    android:id="@+id/six_seek"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/eq_slider_margin"
+                    android:maxHeight="40dp"
+                    android:minHeight="40dp"
+                    android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                    android:tag="5"
+                    android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                    android:thumbOffset="@dimen/eq_thumb_offset" />
+            </com.hcn.media_view.SeekBarRotator>
+
+            <TextView
+                android:id="@+id/six_value"
+                style="@style/scroll_values"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/scroll_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/eq_bandtext_top"
+                android:gravity="center"
+                android:paddingEnd="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/eq_surround" />
+
+            <com.hcn.media_view.SeekBarRotator
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/eq_slider_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/eq_seekbar_top">
+
+                <SeekBar
+                    android:id="@+id/seven_seek"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/eq_slider_margin"
+                    android:maxHeight="40dp"
+                    android:minHeight="40dp"
+                    android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                    android:tag="6"
+                    android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                    android:thumbOffset="@dimen/eq_thumb_offset" />
+            </com.hcn.media_view.SeekBarRotator>
+
+            <TextView
+                android:id="@+id/seven_value"
+                style="@style/scroll_values"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:gravity="center" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

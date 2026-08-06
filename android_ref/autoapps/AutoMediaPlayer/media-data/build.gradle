@@ -1,0 +1,77 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.hcn.media_data'
+    compileSdk project.compileSdk as int
+
+    defaultConfig {
+        minSdk project.minSdk as int
+        targetSdk project.targetSdk as int
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    libraryVariants.configureEach { variant ->
+        def releaseDir = rootProject.getRootDir().getAbsolutePath() + "/release/";
+        def buildType = variant.buildType.name
+        def fileName
+
+        variant.outputs.each {
+            if (buildType == "release") {
+                fileName = "media-data-${buildType}.aar"
+                it.outputFileName = fileName
+            }
+        }
+
+        variant.getAssembleProvider().configure() {
+            it.doLast {
+                File out = new File(releaseDir)
+                copy {
+                    variant.outputs.forEach { file ->
+                        copy {
+                            from file.outputFile
+                            into out
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(javaVersion)
+        }
+    }
+}
+
+dependencies {
+    compileOnly BuildConfig.libs.androidx_appcompat.path
+
+    compileOnly files('../release/media-base-release.aar')
+    compileOnly files('../release/media-common-release.aar')
+
+    compileOnly BuildConfig.libs.common_utils.path
+    compileOnly BuildConfig.libs.auto_compat.path
+    compileOnly BuildConfig.libs.mediaservice_api.path
+    compileOnly BuildConfig.libs.androidx_room_runtime.path
+    compileOnly BuildConfig.libs.mmkv.path
+    annotationProcessor BuildConfig.libs.androidx_room_compiler.path
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- layout weight -->
+    <dimen name="music_card_top_height_layout_weight" tools:ignore="MissingDefaultResource">36</dimen>
+    <dimen name="music_card_upper_middle_height_layout_weight" tools:ignore="MissingDefaultResource">57</dimen>
+    <dimen name="music_card_lower_middle_height_layout_weight" tools:ignore="MissingDefaultResource">18</dimen>
+    <dimen name="music_card_bottom_height_layout_weight" tools:ignore="MissingDefaultResource">29</dimen>
+    <dimen name="progress_connect_width_layout_weight" tools:ignore="MissingDefaultResource">5.3</dimen>
+
+    <!-- drawer layout -->
+    <dimen name="drawer_view_layout_width" tools:ignore="MissingDefaultResource">378dp</dimen>
+    <dimen name="drawer_handle_paddingStart" tools:ignore="MissingDefaultResource">10dp</dimen>
+
+    <dimen name="music_icon_card_layout_marginTop" tools:ignore="MissingDefaultResource">8dp</dimen>
+    <dimen name="music_icon_card_layout_marginEnd" tools:ignore="MissingDefaultResource">2dp</dimen>
+
+    <dimen name="lower_middle_layout_marginTop" tools:ignore="MissingDefaultResource">10dp</dimen>
+    <dimen name="progress_space_layout_width" tools:ignore="MissingDefaultResource">56dp</dimen>
+
+    <dimen name="music_lyrics_layout_marginStart" tools:ignore="MissingDefaultResource">42dp</dimen>
+    <dimen name="music_lyrics_layout_marginEnd" tools:ignore="MissingDefaultResource">42dp</dimen>
+
+    <dimen name="id3_space_layout_width" tools:ignore="MissingDefaultResource">158dp</dimen>
+
+    <dimen name="wallpaper_layout_marginBottom" tools:ignore="MissingDefaultResource">18dp</dimen>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2010-2011 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+    <dimen name="music_list_item_height">70dp</dimen>
+    <dimen name="music_list_item_width">-1dp</dimen>
+    <dimen name="music_list_item_icon_marginstart">5dp</dimen>
+    <dimen name="music_list_item_icon_marginend">0dp</dimen>
+
+    <dimen name="music_folder_item_height">70dp</dimen>
+    <dimen name="music_folder_item_width">-1dp</dimen>
+    <dimen name="music_folder_item_icon_height">62dp</dimen>
+    <dimen name="music_folder_item_icon_width">68dp</dimen>
+    <dimen name="music_folder_item_icon_marginstart">10dp</dimen>
+    <dimen name="music_folder_item_icon_marginend">0dp</dimen>
+    <dimen name="music_folder_back_margin_bottom">1dp</dimen>
+
+    <dimen name="music_search_edittext_marginstart">20dp</dimen>
+    <dimen name="music_search_edittext_marginend">20dp</dimen>
+    <dimen name="music_search_edittext_paddingStart">20dp</dimen>
+    <dimen name="music_search_edittext_paddingEnd">20dp</dimen>
+
+    <dimen name="eq_slider_margin">0dip</dimen>
+    <dimen name="eq_slider_height">300dip</dimen>
+    <dimen name="eq_thumb_offset">4dip</dimen>
+    <dimen name="eq_seekbar_top">2dip</dimen>
+    <dimen name="eq_bandtext_top">20dip</dimen>
+    <dimen name="eq_seekbar_width">75dip</dimen>
+    <dimen name="eq_sother_width">50dip</dimen>
+
+    <dimen name="id3_bg_height">360dp</dimen>
+    <dimen name="zj_default_bg_height">218dp</dimen>
+    <dimen name="zj_default_bg_width">218dp</dimen>
+    <dimen name="zj_bg_height">190dp</dimen>
+    <dimen name="zj_bg_width">190dp</dimen>
+
+    <dimen name="tv_title_margin_top">20dp</dimen>
+    <dimen name="lyric_width">342dp</dimen>
+    <dimen name="lyric_height">290dp</dimen>
+
+    <dimen name="video_thumbnail_width">288dp</dimen>
+    <dimen name="video_thumbnail_height">176dp</dimen>
+</resources>

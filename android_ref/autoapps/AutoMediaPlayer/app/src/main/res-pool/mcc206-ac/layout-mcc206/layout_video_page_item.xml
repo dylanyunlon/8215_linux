@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_row_one"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        tools:ignore="DisableBaselineAlignment">
+
+        <FrameLayout
+            android:id="@+id/video_layout1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@drawable/video_gridview_item_bg"
+            tools:ignore="NestedWeights">
+
+            <ImageView
+                android:id="@+id/img_slt1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/tvTitle1"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textSize="20sp"
+                android:textColor="@color/video_list_text_color_tip"
+                android:background="@drawable/video_item_textview_bg" />
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/video_layout2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@drawable/video_gridview_item_bg">
+
+            <ImageView
+                android:id="@+id/img_slt2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/tvTitle2"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textSize="20sp"
+                android:textColor="@color/video_list_text_color_tip"
+                android:background="@drawable/video_item_textview_bg" />
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/video_layout3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@drawable/video_gridview_item_bg">
+
+            <ImageView
+                android:id="@+id/img_slt3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/tvTitle3"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textSize="20sp"
+                android:textColor="@color/video_list_text_color_tip"
+                android:background="@drawable/video_item_textview_bg" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_row_two"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        tools:ignore="DisableBaselineAlignment">
+        <FrameLayout
+            android:id="@+id/video_layout4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@drawable/video_gridview_item_bg"
+            tools:ignore="NestedWeights">
+
+            <ImageView
+                android:id="@+id/img_slt4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/tvTitle4"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textSize="20sp"
+                android:textColor="@color/video_list_text_color_tip"
+                android:background="@drawable/video_item_textview_bg" />
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/video_layout5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@drawable/video_gridview_item_bg">
+
+            <ImageView
+                android:id="@+id/img_slt5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/tvTitle5"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textSize="20sp"
+                android:textColor="@color/video_list_text_color_tip"
+                android:background="@drawable/video_item_textview_bg" />
+
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/video_layout6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@drawable/video_gridview_item_bg">
+
+            <ImageView
+                android:id="@+id/img_slt6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"/>
+            <TextView
+                android:id="@+id/tvTitle6"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:textSize="20sp"
+                android:textColor="@color/video_list_text_color_tip"
+                android:background="@drawable/video_item_textview_bg" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

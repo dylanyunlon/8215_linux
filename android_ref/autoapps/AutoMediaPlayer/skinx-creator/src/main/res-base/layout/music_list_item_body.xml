@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvSongTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:paddingBottom="2dp"
+            android:singleLine="true"
+            android:textColor="@drawable/list_text_color"
+            android:textSize="@dimen/music_list_item_song_title" />
+
+        <TextView
+            android:id="@+id/tvSongArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@drawable/list_text_color"
+            android:textSize="16.0sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivPlayingIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/playing"
+        android:contentDescription="@string/todo" />
+</LinearLayout>

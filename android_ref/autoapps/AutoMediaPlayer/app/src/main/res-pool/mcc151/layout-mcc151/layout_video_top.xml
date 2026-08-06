@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/layout_search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/search_bg"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/btn_search_n"
+            android:contentDescription="@string/todo" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="0dp"
+            android:background="@drawable/small_update_bg" />
+    </FrameLayout>
+
+    <RadioGroup
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/btnStorageFlash"
+            android:layout_width="0px"
+            android:singleLine="true"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/small_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/storage_flash_label"
+            android:textColor="@drawable/btn_text_color"
+            android:textSize="24.0sp" />
+
+        <RadioButton
+            android:id="@+id/btnStorageUSB1"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/small_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/storage_usb1_label"
+            android:textColor="@drawable/btn_text_color"
+            android:textSize="24.0sp" />
+
+        <RadioButton
+            android:id="@+id/btnStorageSD1"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/small_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/storage_sdcard_label"
+            android:textColor="@drawable/btn_text_color"
+            android:textSize="24.0sp" />
+
+        <RadioButton
+            android:id="@+id/btnPlaying"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/small_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:singleLine="true"
+            android:text="@string/StrPlaying"
+            android:textColor="@drawable/btn_text_color"
+            android:textSize="24.0sp" />
+    </RadioGroup>
+</LinearLayout>

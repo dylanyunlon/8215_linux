@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llVideoList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/status_bar_height">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <include
+            android:id="@+id/layout_top"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            layout="@layout/layout_video_top"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+        <FrameLayout
+            android:id="@+id/layout_center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/list_bg"
+            android:orientation="vertical"
+            android:layout_marginBottom="18dp"
+            android:layout_marginEnd="16dp">
+
+            <ListView
+                android:id="@+id/main_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:cacheColorHint="@android:color/transparent"
+                android:fastScrollEnabled="true"
+                android:focusable="true"
+                android:listSelector="@android:color/transparent"
+                android:divider="@color/list_divider_color"
+                android:dividerHeight="1dp"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="none"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp" />
+
+            <ImageView
+                android:id="@+id/iv_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/pb_loading"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/tv_main_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="@string/tip_no_video_file"
+                android:textColor="@color/list_text_color_tip"
+                android:textSize="46.0sp"
+                android:visibility="invisible" />
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

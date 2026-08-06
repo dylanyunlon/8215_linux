@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutSeekTime"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <TextView
+        android:id="@+id/tvNewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textColor="@color/button_text_color_n"
+        android:textSize="40.0sp" />
+
+    <TextView
+        android:id="@+id/tvDelayTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textColor="@color/button_text_color_n"
+        android:textSize="24.0sp" />
+
+</LinearLayout>

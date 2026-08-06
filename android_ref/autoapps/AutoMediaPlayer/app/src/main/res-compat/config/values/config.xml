@@ -1,0 +1,26 @@
+<resources>
+    <!-- adapt to different skin types -->
+    <integer name="simple_list_item_style_type">-1</integer>
+    <integer name="music_song_item_style_type">-1</integer>
+    <integer name="music_folder_item_style_type">-1</integer>
+    <integer name="video_list_item_style_type">-1</integer>
+
+    <!-- simple list item count -->
+    <integer name="simple_list_item_count">2</integer>
+
+    <bool name="support_storage_button_disable">true</bool>
+
+    <!-- split screen hide layout element -->
+    <bool name="split_screen_hide_progress_layout">false</bool>
+
+    <!-- support wallpaper list -->
+    <bool name="support_wallpaper_customized">false</bool>
+    <!-- lyrics_view align left -->
+    <bool name="lyrics_view_align_left">false</bool>
+    <!-- merge folder back button -->
+    <bool name="folder_unify_back_button">false</bool>
+    <!-- only show folder item -->
+    <bool name="folder_interface_only">false</bool>
+
+    <bool name="n91_style_folder_item">false</bool>
+</resources>

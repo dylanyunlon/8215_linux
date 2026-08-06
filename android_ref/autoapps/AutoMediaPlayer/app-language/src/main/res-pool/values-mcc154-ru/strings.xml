@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">MediaPlayer</string>
+
+    <string name="tip_loading">Загрузка...</string>
+    <string name="tip_no_video_file">Нет видео фалов</string>
+    <string name="tip_no_music_file">Нет аудио файлов</string>
+    <string name="tip_refresh_music_info">Аудиофайлы отсутствуют</string>
+    <string name="tip_refresh_video_info">Видеофайлы отсутствуют</string>
+    <string name="storage_flash_label">Flash</string>
+    <string name="storage_usb2_label">USB</string>
+    <string name="storage_usb1_label">USB</string>
+    <string name="storage_sdcard_label">SD</string>
+    <string name="StrPlaying">Воспр</string>
+    <string name="StrSongList">Плейлист</string>
+    <string name="StrAlbumList">Альбом</string>
+    <string name="StrArtistList">Исполнитель</string>
+    <string name="StrFavoriteList">Папки</string>
+    <string name="StrNoLrc">Нет файлов меток</string>
+    <string name="app_music_label">Музыка</string>
+    <string name="app_video_label">Видео</string>
+    <string name="StrTipCanDoThat">Не могу выполнить,воспр.композ.</string>
+    <string name="tip_unsupport_file">Файл не поддерживается</string>
+    <string name="StrTipStop">Стоп</string>
+    <string name="tip_file_not_exist">Нет файлов медиа,обновите список</string>
+    <string name="tip_unsupport_audio">Аудио не поддерживается</string>
+    <string name="tip_unsupport_video">Видео не поддерживается</string>
+    <string name="tip_unsupport_seek">Перемотка не поддерживается</string>
+    <string name="tip_parking_info">Просмотр видео заблокирован</string>
+    <string name="search_hint" tools:ignore="ExtraTranslation">Поиск</string>
+    <string name="text_unknown">Неизвестный</string>
+</resources>

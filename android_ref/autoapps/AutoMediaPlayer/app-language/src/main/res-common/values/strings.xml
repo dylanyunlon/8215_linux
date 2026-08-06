@@ -1,0 +1,187 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ExtraTranslation">
+    <string name="todo" translatable="false">TODO</string>
+
+    <string name="app_name" translatable="false">Media Player</string>
+    <string name="overlay_version" translatable="false">undefined</string>
+    <string name="none" translatable="false">None</string>
+
+    <string name="app_music_label">Music</string>
+    <string name="app_video_label">Video</string>
+    <string name="tip_no_music_file" translatable="false">No Music File</string>
+    <string name="tip_no_video_file" translatable="false">No Video File</string>
+    <string name="tip_refresh_music_info" translatable="false">No Music File \n clap screen to refresh list</string>
+    <string name="tip_refresh_video_info" translatable="false">No Video File \n clap screen to refresh list</string>
+
+    <!-- 使用特定资源的标签用法 -->
+    <string name="folder_list_song_icon_special_resource" translatable="false">icon_list_music_</string>
+    <string name="search_list_special_tag" translatable="false">search_list_special_tag</string>
+
+    <string name="StrNoLrc" translatable="false">No lyrics</string>
+    <string name="show_lyric" translatable="false">Show lyric</string>
+    <string name="play_list_tab_title" translatable="false">PlayList</string>
+    <string name="favorite_list_tab_title" translatable="false">Favorite</string>
+
+    <string name="storage_flash_label" translatable="false">Flash</string>
+    <string name="storage_usb1_label" translatable="false">USB</string>
+    <string name="storage_usb2_label" translatable="false">USB2</string>
+    <string name="storage_sdcard_label" translatable="false">SD</string>
+
+    <string name="StrPlaying" translatable="false">Playing</string>
+    <string name="StrSongList" translatable="false">Playlist</string>
+    <string name="StrAlbumList" translatable="false">Album List</string>
+    <string name="StrArtistList" translatable="false">Artist List</string>
+    <string name="StrFavoriteList" translatable="false">Folder</string>
+
+    <string name="text_search_hint" translatable="false">Search Text</string>
+    <string name="tip_parking_info" translatable="false">Driving,please pay attention to safety!</string>
+    <string name="search_icon_hint_tip" translatable="false">Enter search mode</string>
+    <string name="ellipsis_symbol" translatable="false">...</string>
+    <string name="go_back_folder" translatable="false">Up One Level</string>
+
+    <!-- music list -->
+    <string name="StrArtist" translatable="false">Artist</string>
+    <string name="StrFolder" translatable="false">Folder</string>
+    <string name="StrMusic" translatable="false">Song</string>
+    <string name="StrFavorite" translatable="false">Favorites</string>
+
+    <!-- eq -->
+    <string name="eq_default" translatable="false">Default</string>
+    <string name="eq_mode_user" translatable="false">user</string>
+    <string name="eq_mode_rock" translatable="false">rock</string>
+    <string name="eq_mode_pop" translatable="false">pop</string>
+    <string name="eq_mode_live" translatable="false">live</string>
+    <string name="eq_mode_dance" translatable="false">dance</string>
+    <string name="eq_mode_classic" translatable="false">classic</string>
+    <string name="eq_mode_soft" translatable="false">soft</string>
+    <string name="Balance" translatable="false">Balance</string>
+    <string name="eq_balance_locat" translatable="false">C:+XX C:+XX</string>
+    <string name="Loudness" translatable="false">Loudness</string>
+    <string name="Reverb" translatable="false">Reverb</string>
+    <string name="BAND_60HZ" translatable="false">60Hz</string>
+    <string name="BAND_230HZ" translatable="false">230Hz</string>
+    <string name="BAND_910HZ" translatable="false">910Hz</string>
+    <string name="BAND_3600HZ" translatable="false">3.6kHz</string>
+    <string name="BAND_14000HZ" translatable="false">14kHz</string>
+    <string name="BAND_1KHZ" translatable="false">1kHz</string>
+    <string name="BAND_2KHZ" translatable="false">2kHz</string>
+    <string name="BAND_4KHZ" translatable="false">4kHz</string>
+    <string name="BAND_8KHZ" translatable="false">8kHz</string>
+    <string name="BAND_16KHZ" translatable="false">16kHz</string>
+    <string name="eq_reverb_off" translatable="false">off</string>
+    <string name="eq_reverb_live" translatable="false">live</string>
+    <string name="eq_reverb_hall" translatable="false">hall</string>
+    <string name="eq_reverb_concert" translatable="false">concert</string>
+    <string name="eq_reverb_cave" translatable="false">cave</string>
+    <string name="eq_reverb_bathroom" translatable="false">bathroom</string>
+    <string name="eq_reverb_arena" translatable="false">arena</string>
+    <string name="eq_subwoofer" translatable="false">subwoofer</string>
+    <string name="eq_surround" translatable="false">Surround</string>
+    <string name="eq_lound" translatable="false">Loud</string>
+    <string name="title_subwoofer" translatable="false">Subwoofer</string>
+    <string name="title_bass" translatable="false">Bass</string>
+    <string name="title_treble" translatable="false">Treble</string>
+    <string name="eq_reverb_user" translatable="false">User</string>
+    <string name="eq_reverb_jazz" translatable="false">Jazz</string>
+    <string name="eq_reverb_pop" translatable="false">Pop</string>
+    <string name="eq_reverb_classiz" translatable="false">Classic</string>
+    <string name="eq_reverb_rock" translatable="false">Rock</string>
+    <string name="eq_reverb_lift" translatable="false">Life</string>
+    <string name="eq_reverb_dance" translatable="false">Dance</string>
+    <string name="eq_reverb_electronic" translatable="false">Electronic</string>
+    <string name="eq_reverb_rb" translatable="false">RnB</string>
+    <string name="eq_reverb_Absolute_music" translatable="false">Acoustic</string>
+    <string name="eq_remind" translatable="false">This car supports the original car power amplifier function, please go to the original car setting interface to adjust</string>
+    <string name="label_eq" translatable="false">EQ</string>
+    <string name="isplaying_refuse_cancel" translatable="false">This song is playing, cannot be unfavored</string>
+
+    <string name="favor_all_label" translatable="false">Favorite all</string>
+    <string name="delete_all_label" translatable="false">Delete All</string>
+    <string name="StrMyMusic" translatable="false">My Music</string>
+    <string name="duration_label" translatable="false">Duration:</string>
+    <string name="format_label" translatable="false">Format:</string>
+
+    <!--  tip-->
+    <string name="tip_loading" translatable="false">Loading&#8230;</string>
+    <string name="tip_loading_id3" translatable="false">Loading Media ID3&#8230;</string>
+    <string name="tip_unsupport_file" translatable="false">Unsupport File</string>
+    <string name="tip_file_not_exist" translatable="false">The file does not exist, please update the list</string>
+    <string name="tip_unsupport_audio" translatable="false">Unsupported Audio</string>
+    <string name="tip_unsupport_video" translatable="false">Unsupported Video</string>
+    <string name="tip_unsupport_seek" translatable="false">Unsupport Seek</string>
+
+    <!-- other -->
+    <string name="StrTipStop" translatable="false">Stop</string>
+    <string name="StrTipCanDoThat" translatable="false">Song is playing, this operation cannot be performed</string>
+
+    <string name="frequency_label" translatable="false">Frequency</string>
+    <string name="lyric_label" translatable="false">Lyric</string>
+
+    <string name="all_list" translatable="false">All List</string>
+    <string name="all_file_list" translatable="false">All Music File List</string>
+    <string name="play_notice" translatable="false">Notice</string>
+    <string name="play_error" translatable="false">MediaPlayer Play Error!</string>
+    <string name="ok" translatable="false">ok</string>
+
+    <string name="text_unknown" translatable="false">Unknown</string>
+    <string name="text_refresh" translatable="false">Refresh</string>
+    <string name="text_search" translatable="false">Search</string>
+    <string name="text_add_all" translatable="false">Add All</string>
+
+    <string name="empty_play_list_prompt" translatable="false">EMPTY PLAY LIST</string>
+    <string name="empty_collect_list_prompt" translatable="false">EMPTY COLLECT LIST</string>
+
+    <string name="media_notification_name" translatable="false">Media Player</string>
+    <string name="media_notification_title" translatable="false">Explain</string>
+    <string name="media_notification_info" translatable="false">media player background service</string>
+
+    <string name="maximum_collection_limit_prompt" translatable="false">The favorites list is full, please adjust it.</string>
+
+    <string name="_3" translatable="false">3</string>
+    <string name="_2" translatable="false">2</string>
+    <string name="_1" translatable="false">1</string>
+
+    <!--  gb04 media language -->
+    <string name="list_tab_title">List</string>
+    <string name="favorite_tab_title">Favorites</string>
+    <string name="all_list_tab_title">All</string>
+    <string name="music_left_handle_empty_collect_list_prompt">Songs not collected</string>
+    <string name="music_title_local">Local music</string>
+    <string name="music_title_usb">USB Music</string>
+    <string name="music_title_sdcard">SD Music</string>
+    <string name="album_name">Album title</string>
+    <string name="artist_name">Singer name</string>
+    <string name="no_lyrics">No lyrics yet</string>
+    <string name="search_hint">Search</string>
+    <string name="local_list_file">This device</string>
+    <string name="usb_list_file">USB</string>
+    <string name="sd_list_file">SD card</string>
+    <string name="music_list_song">Songs</string>
+    <string name="music_list_song_num">Front</string>
+    <string name="music_list_singer">Singer</string>
+    <string name="music_list_playing_song">Song title</string>
+    <string name="music_list_playing_singer">Singer name</string>
+    <string name="music_list_rg_list">List</string>
+    <string name="music_list_rg_file">File</string>
+    <string name="music_list_song_num_unit">Front</string>
+    <string name="btn_play_bluetooth_music">Play Bluetooth music</string>
+    <string name="music_search_page_no_info">No content available temporarily </string>
+    <string name="current_music_abnormal">The current song is abnormal, the next one will be played soon</string>
+    <string name="usb_no_connection_title">USB audio source not inserted\nPlease insert the USB drive and play music</string>
+    <string name="usb_no_music_title">No songs to play\nPlease choose another audio source to play</string>
+
+    <string name="video_number_select">01/15</string>
+    <string name="video_name">Video name.avi</string>
+    <string name="video_scale_auto">AUTO</string>
+    <string name="video_scale_11">1:1</string>
+    <string name="video_scale_43">4:3</string>
+    <string name="video_scale_169">16:9</string>
+    <string name="video_list_title">Video</string>
+    <string name="video_list_item_title">Video title</string>
+    <string name="video_list_empty_file">No video files available</string>
+
+    <string name="search_info_cancel">Cancel</string>
+    <string name="search_info_no_content">No content available temporarily </string>
+    <string name="default_wallpaper_title">Default background</string>
+    <string name="usb_connection_disconnected">The USB connection has been disconnected</string>
+</resources>

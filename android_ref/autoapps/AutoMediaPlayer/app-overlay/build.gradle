@@ -1,0 +1,96 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.hcn.AutoMediaPlayer.overlay'
+    compileSdk project.compileSdk as int
+
+    defaultConfig {
+        applicationId "com.hcn.AutoMediaPlayer.overlay"
+
+        minSdk project.minSdk as int
+        //noinspection OldTargetApi
+        targetSdk project.targetSdk as int
+        versionCode project.overlayVersionCode as int
+        versionName project.overlayVersionName
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("../security/media.jks")
+            storePassword 'android'
+            keyAlias 'platform'
+            keyPassword 'android'
+        }
+
+        release {
+            storeFile file("../security/media.jks")
+            storePassword 'android'
+            keyAlias 'platform'
+            keyPassword 'android'
+        }
+
+        MT8163 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_8163.jks')
+            storePassword 'hcnrd123'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.MT8163
+        }
+    }
+
+    lint {
+        checkReleaseBuilds false
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+
+            res {
+                srcDirs += "../app-language/src/main/res-common"
+                srcDirs += "../app-language/src/main/res-pool"
+                srcDirs += "../app-language/src/skinx/res-ext"
+                srcDirs += "../app-language/src/skinx/res-ext-pool"
+            }
+        }
+    }
+
+    android.applicationVariants.configureEach { variant ->
+        def releaseDir = rootProject.getRootDir().getAbsolutePath() + "/output/lang/"
+
+        variant.outputs.configureEach {
+            if (outputFile != null
+                    && buildType.name.contains("release")
+                    && outputFileName.endsWith('.apk')) {
+                outputFileName = "media-overlay-lang.apk"
+            }
+        }
+
+        variant.getAssembleProvider().configure() {
+            it.doLast {
+                File out = new File(releaseDir)
+                copy {
+                    variant.outputs.forEach { file ->
+                        copy {
+                            from file.outputFile
+                            into out
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    // 单纯的语言 apk 不需要依赖外部代码库
+}

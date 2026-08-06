@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:ignore="MissingDefaultResource">
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <FrameLayout
+        android:id="@+id/music_content_card"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4">
+
+        <FrameLayout
+            android:id="@+id/music_album_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/ivPlayingAnim"
+                android:layout_width="@dimen/album_cover_width"
+                android:layout_height="@dimen/album_cover_height"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/music_album_anim_margin_start"
+                android:layout_marginEnd="@dimen/music_album_anim_margin_end"
+                android:scaleType="fitXY"
+                android:src="@drawable/album_img"
+                android:contentDescription="@string/todo" />
+
+            <ImageView
+                android:id="@+id/ivMusicImage"
+                android:layout_width="@dimen/album_cover_default_width"
+                android:layout_height="@dimen/album_cover_default_height"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/music_album_margin_start"
+                android:layout_marginEnd="@dimen/music_album_margin_end"
+                android:layout_marginTop="@dimen/music_album_margin_top"
+                android:layout_marginBottom="@dimen/music_album_margin_bottom"
+                android:scaleType="fitXY"
+                android:contentDescription="@string/todo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/music_album_shade"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/transparent"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/music_lyrics_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/music_lyrics_layout_marginStart"
+            android:layout_marginEnd="@dimen/music_lyrics_layout_marginEnd"
+            android:focusableInTouchMode="false"
+            android:visibility="invisible">
+
+            <com.hcn.media_view.lyrics.LyricsView
+                android:id="@+id/lyrics_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/tvNoLyrics"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="0.6"
+                android:singleLine="true"
+                android:text="@string/StrNoLrc"
+                android:textColor="@color/music_lyrics_textColor"
+                android:textSize="@dimen/music_lyrics_textSize" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/music_lyrics_shade"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/transparent"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </FrameLayout>
+    </FrameLayout>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="MissingDefaultResource">
+
+    <!-- 按下状态 -->
+    <item android:drawable="@drawable/mcc201_music_progress_thumb"
+          android:state_focused="true" android:state_pressed="true" />
+
+    <!-- 普通无焦点状态 -->
+    <item android:drawable="@drawable/mcc201_music_progress_thumb"
+          android:state_focused="false" android:state_pressed="false" />
+
+</selector>

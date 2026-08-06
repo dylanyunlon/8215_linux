@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_progress"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="horizontal">
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/tvCurrentTime"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:shadowColor="@color/duration_text_shadow_color"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:paddingEnd="5dp"
+        android:gravity="center_vertical|end"
+        android:textColor="@color/duration_text_color"
+        android:textSize="@dimen/music_seek_text_size"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    <SeekBar
+        android:id="@+id/seekbar_progress"
+        android:layout_width="0dp"
+        android:layout_weight="@integer/music_seek_weight"
+        android:layout_height="70dp"
+        android:paddingTop="25dp"
+        android:paddingBottom="25dp"
+        android:maxHeight="70dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:thumb="@drawable/seekbar_thumb"
+        android:splitTrack="false"
+        android:focusable="false"
+        android:thumbOffset="@dimen/eq_thumb_offset"
+        android:focusableInTouchMode="false" />
+
+    <TextView
+        android:id="@+id/tvTotalTime"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:shadowColor="@color/duration_text_shadow_color"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:textColor="@color/duration_text_color"
+        android:textSize="@dimen/music_seek_text_size"
+        android:paddingStart="5dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+</LinearLayout>

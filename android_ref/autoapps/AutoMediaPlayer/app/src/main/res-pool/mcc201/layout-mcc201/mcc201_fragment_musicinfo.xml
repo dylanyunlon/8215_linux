@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mcc201_music_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rel_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+            android:background="@drawable/mcc201_title_bg">
+
+            <ImageButton
+                android:id="@+id/btnHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mcc201_btn_home"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:layout_marginStart="10dp" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvTitleBar"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:focusableInTouchMode="true"
+                android:layout_toEndOf="@+id/btnHome"
+                android:layout_centerVertical="true"
+                android:gravity="center|center_vertical|start"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="3"
+                android:shadowDy="-3"
+                android:shadowRadius="1.5"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="28sp"
+                android:text="@string/StrMyMusic"
+                android:layout_marginStart="40dp" />
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mcc201_btn_back"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:layout_marginEnd="10dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_volume"
+            android:layout_width="128dp"
+            android:layout_height="425dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/mcc201_music_vol_bg">
+
+            <com.hcn.media_view.widget.VerticalSeekBar
+                android:id="@+id/seekbar_volume"
+                android:layout_width="30dp"
+                android:layout_height="281dp"
+                android:progressDrawable="@drawable/progress_vertical_drawable"
+                android:thumb="@drawable/mcc201_seekbar_thumb"
+                android:thumbOffset="2dp"
+                android:maxHeight="20dp"
+                android:minHeight="12dp"
+                android:splitTrack="false"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="12dp"/>
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvVolumeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/seekbar_volume"
+                android:focusableInTouchMode="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center|center_vertical"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="3"
+                android:shadowDy="-3"
+                android:shadowRadius="1.5"
+                android:singleLine="true"
+                android:text="10"
+                android:textColor="#ffffff"
+                android:textSize="28sp"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/btnVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/tvVolumeValue"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/mcc201_music_volume" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_id3_infos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/layout_volume"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:padding="20dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp">
+
+            <ImageView
+                android:id="@+id/ivDefault"
+                android:layout_width="234dp"
+                android:layout_height="234dp"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:background="@drawable/mcc201_music_cover_bg"
+                android:scaleType="fitXY"
+                android:layout_alignParentStart="true" />
+
+            <com.hcn.media_view.CircleImageView
+                android:id="@+id/ivMusicImage"
+                android:layout_width="210dp"
+                android:layout_height="210dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/mcc201_music_cover"
+                android:layout_alignParentStart="true" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="6dp"
+                android:focusableInTouchMode="true"
+                android:gravity="center|center_vertical|start"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="3"
+                android:shadowDy="-3"
+                android:shadowRadius="1.5"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="28sp"
+                android:drawableStart="@drawable/mcc201_icon_music_title"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/ivDefault" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvArtist"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTitle"
+                android:layout_marginTop="6dp"
+                android:focusableInTouchMode="true"
+                android:gravity="center|center_vertical|start"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="0.6"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="24sp"
+                android:layout_toEndOf="@id/ivDefault"
+                android:drawableStart="@drawable/mcc201_icon_music_artist"
+                android:layout_marginStart="10dp" />
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvRes"
+                android:layout_width="800dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvArtist"
+                android:layout_marginTop="6dp"
+                android:focusableInTouchMode="true"
+                android:gravity="center|center_vertical|start"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="0.6"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="24sp"
+                android:text="udisk"
+                android:layout_toEndOf="@id/ivDefault"
+                android:drawableStart="@drawable/mcc201_icon_music_usb"
+                android:layout_marginStart="10dp"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/btnFavor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvRes"
+                android:layout_marginTop="6dp"
+                android:layout_toEndOf="@id/ivDefault"
+                android:padding="10dp"
+                android:background="@null"
+                android:src="@drawable/mcc201_icon_favor_n"
+                android:layout_marginStart="10dp"
+                android:visibility="invisible"/>
+
+            <com.hcn.media_view.HTextView
+                android:id="@+id/tvMusicTitle"
+                android:layout_width="800dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnFavor"
+                android:focusableInTouchMode="true"
+                android:gravity="center|center_vertical|start"
+                android:padding="2dp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="0.6"
+                android:singleLine="true"
+                android:textColor="#00ffff"
+                android:textSize="24sp"
+                android:layout_toEndOf="@id/ivDefault"
+                android:layout_marginStart="-20dp" />
+
+            <RelativeLayout
+                android:id="@+id/layout_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvMusicTitle"
+                android:gravity="center">
+
+                <com.hcn.media_view.ScrollableSeekBar
+                    android:id="@+id/seekbar_progress"
+                    android:layout_width="738dp"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="12dp"
+                    android:minHeight="12dp"
+                    android:focusable="true"
+                    android:layout_centerVertical="true"
+                    android:progressDrawable="@drawable/mcc201_seekbar_bg"
+                    android:thumb="@drawable/mcc201_seekbar_video_thumb"
+                    android:thumbOffset="30dp"
+                    android:splitTrack="false"
+                    android:focusableInTouchMode="false" /> />
+
+                <TextView
+                    android:id="@+id/tvTotalTime"
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/seekbar_progress"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:paddingEnd="10dp"
+                    android:shadowRadius="0.6"
+                    android:singleLine="true"
+                    android:text="10:00"
+                    android:textColor="#ffffff"
+                    android:textSize="24.0sp"
+                    tools:ignore="HardcodedText,RtlSymmetry" />
+
+                <TextView
+                    android:id="@+id/tvCurrentTime"
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="0.6"
+                    android:singleLine="true"
+                    android:gravity="start"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@+id/seekbar_progress"
+                    android:textColor="#ffffff"
+                    android:text="00:00"
+                    android:textSize="24.0sp"
+                    tools:ignore="HardcodedText" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/mcc201_btn_menu_bg" />
+
+            <ImageButton
+                android:id="@+id/btnRepeatMode"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/mcc201_btn_rpt_bg"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btnPrev"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/mcc201_btn_prev_bg" />
+
+            <ImageButton
+                android:id="@+id/btnPlay"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/mcc201_btn_play_bg" />
+
+            <ImageButton
+                android:id="@+id/btnNext"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/mcc201_btn_next_bg"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/btnEQ"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/mcc201_btn_eq_bg"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

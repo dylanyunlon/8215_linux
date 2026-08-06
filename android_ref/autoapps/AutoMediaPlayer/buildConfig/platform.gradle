@@ -1,0 +1,5 @@
+project.ext {
+    // Configure build hardware platform
+    // support platform {"ac8227l", "ac8257", "uis8581", "mt8163", "mt8321", "sun50iw9p1", "sm6225", "rk3326", "mt8768"}
+    hardwareConfig="sm6225"
+}

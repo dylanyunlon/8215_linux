@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="horizontal">
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+    <ImageView
+        android:id="@+id/btnPrev"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/btn_prev_bg" />
+
+    <ImageView
+        android:id="@+id/btnPlay"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@null"
+        android:src="@drawable/btn_play_bg"/>
+
+    <ImageView
+        android:id="@+id/btnNext"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/btn_next_bg"/>
+
+    <ImageView
+        android:id="@+id/btnRepeatMode"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/btn_repeat_queue_bg"/>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
+</LinearLayout>

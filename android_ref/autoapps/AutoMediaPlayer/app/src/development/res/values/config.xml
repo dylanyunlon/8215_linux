@@ -1,0 +1,3 @@
+<resources>
+    <bool name="development_debug_version">true</bool>
+</resources>

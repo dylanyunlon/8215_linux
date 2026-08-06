@@ -1,0 +1,6 @@
+<resources>
+    <bool name="enable_video_list_file_feature">false</bool>
+
+    <!--  Video list folder function  -->
+    <bool name="video_list_folder_feature">true</bool>
+</resources>

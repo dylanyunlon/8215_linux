@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:contentDescription="mcc204-music"
+    tools:ignore="HardcodedText">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/playing_bg"
+            android:contentDescription="@string/todo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="DisableBaselineAlignment">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivDefault"
+                        android:layout_width="@dimen/album_cover_default_width"
+                        android:layout_height="@dimen/album_cover_default_height"
+                        android:layout_gravity="center"
+                        android:background="@drawable/zj_bg"
+                        android:scaleType="fitXY"
+                        android:contentDescription="@string/todo" />
+
+                    <ImageView
+                        android:id="@+id/ivMusicImage"
+                        android:layout_width="@dimen/album_cover_width"
+                        android:layout_height="@dimen/album_cover_height"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:contentDescription="@string/todo" />
+                </FrameLayout>
+
+                <com.hcn.media_view.HTextView
+                    android:id="@+id/tvAlbum"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/tv_title_margin_top"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="0.6"
+                    android:singleLine="true"
+                    android:textColor="@color/id3_text_color"
+                    android:textSize="24sp" />
+
+                <com.hcn.media_view.HTextView
+                    android:id="@+id/tvArtist"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/tv_title_margin_top"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="0.6"
+                    android:singleLine="true"
+                    android:textColor="@color/id3_text_color"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.hcn.media_view.HTextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/tv_title_margin_top"
+                    android:ellipsize="marquee"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:shadowColor="#000000"
+                    android:shadowDx="3"
+                    android:shadowDy="-3"
+                    android:shadowRadius="1.5"
+                    android:singleLine="true"
+                    android:textColor="@color/id3_text_color"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/tvTotalValue"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:textColor="@color/id3_text_color"
+                    android:textSize="24.0sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/lin_lyric"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.hcn.media_view.lyrics.LyricsView
+                            android:id="@+id/lyrics_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/tvNoLyrics"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="15dp"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center_horizontal|bottom"
+                            android:padding="2dp"
+                            android:shadowColor="#000000"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="0.6"
+                            android:singleLine="true"
+                            android:text="@string/StrNoLrc"
+                            android:textColor="@color/id3_text_color"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+
+                    <com.hcn.media_view.PlayFlashView
+                        android:id="@+id/FrequencyView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0.5"
+                        android:visibility="gone"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingTop="30dp"
+                android:paddingEnd="30dp"
+                android:paddingBottom="30dp"
+                tools:ignore="RtlSymmetry">
+
+                <Button
+                    android:id="@+id/btnRepeatMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@drawable/btn_repeat_queue_bg" />
+
+                <Button
+                    android:id="@+id/btnEQ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:background="@drawable/btn_eq_bg" />
+
+                <Button
+                    android:id="@+id/btnList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|top"
+                    android:background="@drawable/btn_list_bg" />
+
+                <Button
+                    android:id="@+id/btnFolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:background="@drawable/btn_folder_bg" />
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+    <include
+        layout="@layout/layout_music_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

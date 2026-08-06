@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="30dp">
+
+    <include layout="@layout/layout_musiclist_top_ctrl"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="20dp"/>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_folder_back" />
+
+            <ListView
+                android:id="@+id/gridview_music"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="@color/list_divider_color"
+                android:dividerHeight="1dp"
+                android:gravity="center"
+                android:listSelector="@android:color/transparent" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvShowTip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/tip_no_music_file"
+            android:textColor="@color/list_text_color_tip"
+            android:textSize="30sp"
+            android:visibility="gone" />
+
+    </FrameLayout>
+</LinearLayout>
+
+

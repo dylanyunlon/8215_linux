@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PlayFlashView -->
+    <color name="freq_bottom">#ff01fde2</color>
+    <color name="freq_top">#ff0692db</color>
+    <color name="freq_top_line">#ff0692db</color>
+</resources>

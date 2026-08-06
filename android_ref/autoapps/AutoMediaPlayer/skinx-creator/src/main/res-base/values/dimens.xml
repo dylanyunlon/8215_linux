@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="status_bar_height">58dp</dimen>
+
+    <dimen name="album_cover_height">182dp</dimen>
+    <dimen name="album_cover_width">182dp</dimen>
+    <dimen name="album_cover_default_height">200dp</dimen>
+    <dimen name="album_cover_default_width">200dp</dimen>
+
+    <dimen name="music_album_anim_margin_start">78dp</dimen>
+    <dimen name="music_album_anim_margin_end">0dp</dimen>
+
+    <dimen name="music_album_margin_start">0dp</dimen>
+    <dimen name="music_album_margin_end">0dp</dimen>
+    <dimen name="music_album_margin_top">0dp</dimen>
+    <dimen name="music_album_margin_bottom">0dp</dimen>
+
+    <dimen name="tv_title_margin_top">60dp</dimen>
+
+    <dimen name="music_seekbar_max_height">34dp</dimen>
+    <dimen name="music_seekbar_min_height">34dp</dimen>
+    <dimen name="music_seekbar_thumb_offset">8dp</dimen>
+
+    <dimen name="music_info_card_marginStart">48dp</dimen>
+    <dimen name="music_info_card_marginEnd">64dp</dimen>
+
+    <dimen name="layout_progress_info_marginStart">50dp</dimen>
+    <dimen name="layout_progress_info_marginEnd">50dp</dimen>
+
+    <dimen name="music_info_bottom_bg_width">-1dp</dimen>
+    <dimen name="music_info_bottom_bg_height">-2dp</dimen>
+
+    <dimen name="info_img_loading_width">-2dp</dimen>
+    <dimen name="info_img_loading_height">-2dp</dimen>
+
+    <!-- music song list -->
+    <dimen name="music_list_item_layout_height">70dp</dimen>
+    <dimen name="music_list_item_layout_width">-1dp</dimen>
+    <dimen name="music_list_item_icon_margin_start">8dp</dimen>
+    <dimen name="music_list_item_icon_margin_end">0dp</dimen>
+
+    <dimen name="music_list_item_icon_layout_width">56dp</dimen>
+    <dimen name="music_list_item_icon_layout_height">56dp</dimen>
+    <dimen name="music_list_item_song_title">22sp</dimen>
+
+    <dimen name="search_button_layout_marginStart">32dp</dimen>
+    <dimen name="search_button_layout_marginEnd">15dp</dimen>
+    <dimen name="update_button_layout_marginStart">15dp</dimen>
+    <dimen name="update_button_layout_marginEnd">32dp</dimen>
+
+    <dimen name="search_page_header_height">100dp</dimen>
+    <dimen name="search_icon_layout_marginStart">32dp</dimen>
+    <dimen name="search_editText_layout_marginEnd">32dp</dimen>
+
+    <dimen name="video_seekbar_max_height">15dp</dimen>
+    <dimen name="video_seekbar_min_height">15dp</dimen>
+    <dimen name="video_seekbar_thumb_offset">8dp</dimen>
+
+    <dimen name="video_info_bottom_bg_width">-1dp</dimen>
+    <dimen name="video_info_bottom_bg_height">-2dp</dimen>
+
+    <dimen name="music_search_edittext_marginstart">20dp</dimen>
+    <dimen name="music_search_edittext_marginend">20dp</dimen>
+    <dimen name="music_search_edittext_paddingStart">0dp</dimen>
+    <dimen name="music_search_edittext_paddingEnd">20dp</dimen>
+
+    <dimen name="fragment_search_text_size">24sp</dimen>
+
+    <!-- music folder list -->
+    <dimen name="music_folder_item_height">70dp</dimen>
+    <dimen name="music_folder_item_width">-1dp</dimen>
+
+    <dimen name="music_folder_item_icon_height">64dp</dimen>
+    <dimen name="music_folder_item_icon_width">64dp</dimen>
+
+    <dimen name="folder_list_layout_marginStart">32dp</dimen>
+
+    <dimen name="music_folder_back_margin_bottom">0dp</dimen>
+    <dimen name="music_folder_back_layout_marginStart">4dp</dimen>
+    <dimen name="music_folder_back_layout_marginEnd">0dp</dimen>
+
+    <dimen name="music_folder_item_icon_marginStart">4dp</dimen>
+    <dimen name="music_folder_item_icon_marginEnd">0dp</dimen>
+
+    <dimen name="music_folder_item_song_title">22sp</dimen>
+
+    <dimen name="progress_layout_marginBottom">12dp</dimen>
+    <dimen name="bottom_menu_layout_paddingBottom">6dp</dimen>
+    <dimen name="video_bottom_menu_layout_paddingBottom">5dp</dimen>
+
+    <dimen name="btn_playing_layout_marginStart">46dp</dimen>
+
+    <!-- media list -->
+    <dimen name="search_hint_paddingStart">92dp</dimen>
+
+    <dimen name="music_list_paddingEnd">4dp</dimen>
+    <dimen name="music_list_layout_marginEnd">24dp</dimen>
+    <dimen name="video_list_paddingEnd">4dp</dimen>
+    <dimen name="video_list_layout_marginEnd">24dp</dimen>
+
+    <dimen name="video_list_item_layout_height">86dp</dimen>
+    <dimen name="video_list_item_icon_layout_width">117dp</dimen>
+    <dimen name="video_list_item_icon_layout_height">72dp</dimen>
+    <dimen name="video_list_item_icon_margin_start">12dp</dimen>
+
+    <!-- music search list -->
+    <dimen name="music_search_list_layout_marginStart">32dp</dimen>
+    <dimen name="music_search_list_layout_marginEnd">32dp</dimen>
+    <dimen name="music_search_list_layout_marginTop">5dp</dimen>
+    <dimen name="music_search_list_paddingStart">2dp</dimen>
+    <dimen name="music_search_list_paddingEnd">7dp</dimen>
+    <dimen name="music_search_list_item_icon_margin_start">3dp</dimen>
+
+    <!-- video search list -->
+    <dimen name="video_search_list_layout_marginStart">32dp</dimen>
+    <dimen name="video_search_list_layout_marginEnd">32dp</dimen>
+    <dimen name="video_search_list_paddingStart">2dp</dimen>
+    <dimen name="video_search_list_paddingEnd">7dp</dimen>
+    <dimen name="video_search_list_item_icon_margin_start">3dp</dimen>
+
+    <!-- drawer layout -->
+    <dimen name="drawer_elevation">10dp</dimen>
+    <dimen name="music_list_pager_layout_marginBottom">4dp</dimen>
+
+    <!-- music id3 info -->
+    <dimen name="music_title_textSize">30sp</dimen>
+    <dimen name="music_album_textSize">20sp</dimen>
+    <dimen name="music_artist_textSize">20sp</dimen>
+
+    <dimen name="music_lyrics_textSize">26sp</dimen>
+    <dimen name="simple_list_tab_textSize">25sp</dimen>
+    <dimen name="simple_prompt_info_textSize">26sp</dimen>
+
+    <dimen name="duration_layout_width">80sp</dimen>
+    <dimen name="duration_layout_height">30sp</dimen>
+    <dimen name="music_duration_textSize">18sp</dimen>
+
+    <!-- simple list -->
+    <dimen name="simple_icon_layout_marginStart">32dp</dimen>
+    <dimen name="simple_title_layout_marginStart">32dp</dimen>
+
+    <dimen name="ivSimpleIcon_layout_marginTop">35dp</dimen>
+    <dimen name="tvSimplePrompt_layout_marginTop">50dp</dimen>
+
+    <dimen name="layout_top_layout_marginTop">0dp</dimen>
+
+    <dimen name="search_text_textSize">24sp</dimen>
+
+    <!-- wallpaper list -->
+    <dimen name="wallpaper_layout_paddingLR">27dp</dimen>
+    <dimen name="wallpaper_layout_paddingTB">30dp</dimen>
+    <dimen name="wallpaper_rv_item_width">128dp</dimen>
+    <dimen name="wallpaper_rv_item_height">74dp</dimen>
+    <dimen name="wallpaper_layout_marginLR">20dp</dimen>
+</resources>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_music_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/music_list_item_height"
+    android:layout_marginRight="10.0px"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_marginEnd="10.0px">
+
+    <ImageView
+        android:id="@+id/ivMusicIcon"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginLeft="35.0px"
+        android:scaleType="fitXY"
+        android:layout_marginStart="35.0px" />
+
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20.0px"
+        android:layout_marginRight="10.0px"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginEnd="10.0px"
+        android:layout_marginStart="20.0px">
+
+        <TextView
+            android:id="@+id/tvSongTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@drawable/list_text_color"
+            android:textSize="17.0sp" />
+
+        <TextView
+            android:id="@+id/tvSongArtist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/button_text_color_p"
+            android:textSize="13.0sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivFavoriteIcon"
+        android:layout_width="30.0px"
+        android:layout_height="30.0px"
+        android:layout_marginRight="5.0px"
+        android:background="@drawable/icon_favorite"
+        android:visibility="gone"
+        android:layout_marginEnd="5.0px" />
+
+    <ImageView
+        android:id="@+id/ivPlayingIcon"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:layout_marginRight="10.0px"
+        android:background="@drawable/playing"
+        android:layout_marginEnd="10.0px" />
+
+</LinearLayout>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/top_bg"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="108.0px"
+        android:layout_height="108.0px"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10.0px"
+        android:layout_marginStart="10.0px">
+
+        <ImageView
+            android:layout_width="98.0px"
+            android:layout_height="98.0px"
+            android:layout_gravity="center"
+            android:background="@drawable/default_thumbnails_bg"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/ivMusicImage"
+            android:layout_width="108.0px"
+            android:layout_height="108.0px"
+            android:layout_gravity="center"
+            android:scaleType="fitXY" />
+    </FrameLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="133.0px"
+        android:layout_marginTop="48.0px"
+        android:src="@drawable/icon_album"
+        android:layout_marginStart="133.0px" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="133.0px"
+        android:layout_marginTop="83.0px"
+        android:src="@drawable/icon_artist"
+        android:layout_marginStart="133.0px" />
+
+    <com.hcn.media_view.HTextView
+        android:id="@+id/tvSongStorage"
+        android:layout_width="232.0px"
+        android:layout_height="35.0px"
+        android:layout_marginLeft="133.0px"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:gravity="center|center_vertical|start"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2.0px"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:layout_marginStart="133.0px" />
+
+    <com.hcn.media_view.HTextView
+        android:id="@+id/tvAlbum"
+        android:layout_width="232.0px"
+        android:layout_height="35.0px"
+        android:layout_marginLeft="178.0px"
+        android:layout_marginTop="48.0px"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:gravity="center|center_vertical|start"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2.0px"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:layout_marginStart="178.0px" />
+
+    <com.hcn.media_view.HTextView
+        android:id="@+id/tvArtist"
+        android:layout_width="232.0px"
+        android:layout_height="35.0px"
+        android:layout_marginLeft="178.0px"
+        android:layout_marginTop="83.0px"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:gravity="center|center_vertical|start"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2.0px"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:layout_marginStart="178.0px" />
+
+    <com.hcn.media_view.HTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="480.0px"
+        android:layout_height="57.0px"
+        android:layout_marginLeft="450.0px"
+        android:layout_marginTop="15.0px"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical|start"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2.0px"
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="-3"
+        android:shadowRadius="1.5"
+        android:singleLine="true"
+        android:textColor="#ffffff"
+        android:textSize="40sp"
+        android:layout_marginStart="450.0px" />
+
+    <TextView
+        android:id="@+id/tvTotalValue"
+        android:layout_width="300.0px"
+        android:layout_height="30.0px"
+        android:layout_marginLeft="470.0px"
+        android:layout_marginTop="85.0px"
+        android:ellipsize="marquee"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical|start"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="2.0px"
+        android:shadowColor="#000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="0.6"
+        android:singleLine="true"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:layout_marginStart="470.0px" />
+
+    <Button
+        android:id="@+id/btnFavorite"
+        android:layout_width="78.0px"
+        android:layout_height="49.0px"
+        android:layout_marginLeft="838.0px"
+        android:layout_marginTop="45.0px"
+        android:background="@drawable/btn_favorite_bg"
+        android:visibility="gone"
+        android:layout_marginStart="838.0px" />
+
+    <Button
+        android:id="@+id/btnEQ"
+        android:layout_width="78.0px"
+        android:layout_height="49.0px"
+        android:layout_marginLeft="936.0px"
+        android:layout_marginTop="45.0px"
+        android:background="@drawable/btn_eq_bg"
+        android:layout_marginStart="936.0px" />
+
+</FrameLayout>

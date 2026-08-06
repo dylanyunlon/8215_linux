@@ -1,0 +1,3 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
+    <bool name="support_landscape_screen_compat">false</bool>
+</resources>

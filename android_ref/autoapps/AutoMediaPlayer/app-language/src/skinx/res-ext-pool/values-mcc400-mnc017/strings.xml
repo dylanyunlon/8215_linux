@@ -1,0 +1,4 @@
+<resources>
+    <!-- 使用特定资源的标签用法 -->
+    <string name="folder_list_song_icon_special_resource" translatable="false" />
+</resources>

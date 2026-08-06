@@ -1,0 +1,27 @@
+project.ext {
+    // 声明默认的公共打包资源
+    compat_resDirs = [
+        // base
+        "src/main/res-base",
+
+        // build
+        "src/main/res-extend",
+        "src/main/res-compat/build",
+        "src/build/res/build",
+
+        // config
+        "src/main/res-compat/config",
+    ]
+
+    // ["default"]
+    default_resDirs = [
+        "src/main/res-compat/share/blue-common",
+    ]
+
+    // ["blue01"]
+    blue01_resDirs = [
+        "src/main/res-compat/share/blue-common",
+        "src/main/res-pool/mcc400",
+        "src/main/res-pool/mcc400-mnc100",
+    ]
+}

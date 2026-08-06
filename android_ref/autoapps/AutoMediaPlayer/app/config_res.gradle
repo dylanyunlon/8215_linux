@@ -1,0 +1,116 @@
+project.ext {
+    // 声明编译时警告资源处理
+    build_resDirs = [
+        // build
+        "src/build/res/build",
+    ]
+
+    // 声明默认的公共打包资源
+    compat_resDirs = [
+        // share + config
+        "src/main/res-compat/share",
+        "src/main/res-compat/config",
+    ]
+
+    // 声明 MT8163 打包资源
+    mt8163_resDirs = [
+        "src/main/res-pool/mcc152",
+        "src/main/res-pool/mcc153",
+
+        "src/main/res-pool/mcc201",
+        "src/main/res-pool/mcc202",
+        "src/main/res-pool/mcc204",
+        "src/main/res-pool/mcc207",
+
+        "src/main/res-pool/mcc400",
+        "src/main/res-pool/mcc400-mnc011",
+        "src/main/res-pool/mcc400-mnc014",
+        "src/main/res-pool/mcc400-mnc021",
+        "src/main/res-pool/mcc400-mnc025",
+        "src/main/res-pool/mcc400-mnc026",
+
+        "src/main/res-pool/mcc402",
+        "src/main/res-pool/mcc405",
+    ]
+
+    // 声明 MT8321 打包资源
+    mt8321_resDirs = [
+        "src/main/res-pool/mcc153",
+        "src/main/res-pool/mcc202",
+        "src/main/res-pool/mcc207",
+        "src/main/res-pool/mcc321",
+
+        "src/main/res-pool/mcc400",
+        "src/main/res-pool/mcc400-mnc011",
+        "src/main/res-pool/mcc400-mnc014",
+        "src/main/res-pool/mcc405",
+    ]
+
+    // 声明 AC8257 打包资源
+    ac8257_resDirs = [
+        "src/main/res-pool/mcc151",
+        "src/main/res-pool/mcc152",
+        "src/main/res-pool/mcc153",
+        "src/main/res-pool/mcc155",
+
+        "src/main/res-pool/mcc202",
+
+        "src/main/res-pool/mcc400",
+        "src/main/res-pool/mcc400-mnc011",
+        "src/main/res-pool/mcc400-mnc015",
+        "src/main/res-pool/mcc400-mnc025",
+
+        "src/main/res-pool/mcc401",
+        "src/main/res-pool/mcc402",
+        "src/main/res-pool/mcc403",
+        "src/main/res-pool/mcc405",
+    ]
+
+    // 声明 AC8227L 打包资源
+    ac8227l_resDirs = [
+        "src/main/res-pool/mcc110",
+        "src/main/res-pool/mcc150",
+        "src/main/res-pool/mcc151",
+        "src/main/res-pool/mcc152",
+        "src/main/res-pool/mcc153",
+        "src/main/res-pool/mcc154",
+
+        "src/main/res-pool/mcc201",
+        "src/main/res-pool/mcc202",
+        "src/main/res-pool/mcc204",
+        "src/main/res-pool/mcc206",
+        "src/main/res-pool/mcc207",
+        "src/main/res-pool/mcc209",
+
+        "src/main/res-pool/mcc300",
+
+        "src/main/res-pool/mcc400",
+        "src/main/res-pool/mcc401",
+        "src/main/res-pool/mcc402",
+        "src/main/res-pool/mcc405",
+
+        "src/main/res-pool/mcc206-ac",
+        "src/main/res-pool/mcc209-ac",
+
+        "src/main/res-pool/mcc400",
+        "src/main/res-pool/mcc400-ac",
+        "src/main/res-pool/mcc400-mnc015-ac",
+        "src/main/res-pool/mcc400-mnc017-ac",
+
+        "src/main/res-pool/mcc406-ac",
+    ]
+
+    // 声明 UIS8581 打包资源
+    uis8581_resDirs = [
+        // 8581 只使用扩展皮肤包（400 无扩展皮肤包时的默认显示）
+        "src/main/res-pool/mcc400",
+        "src/main/res-pool/mcc400-mnc021",
+        "src/main/res-pool/mcc405",
+    ]
+
+    // 声明 SM6225 打包资源
+    sm6225_resDirs = [
+            // 6225 只使用扩展皮肤包（400 无扩展皮肤包时的默认显示）
+            "src/main/res-pool/mcc400",
+    ]
+}

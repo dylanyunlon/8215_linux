@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/eq_right_bg"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/scroll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/eq_bandtext_top"
+            android:paddingLeft="8dp"
+            android:paddingRight="6dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="@string/title_bass"
+            android:paddingEnd="6dp"
+            android:paddingStart="8dp" />
+
+        <com.hcn.media_view.SeekBarRotator
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/eq_seekbar_top"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="@dimen/eq_slider_height">
+
+            <SeekBar
+                android:id="@+id/six_seek"
+                android:layout_margin="@dimen/eq_slider_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxHeight="40dp"
+                android:minHeight="40dp"
+                android:tag="5"
+                android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                android:thumbOffset="@dimen/eq_thumb_offset" />
+        </com.hcn.media_view.SeekBarRotator>
+
+        <TextView
+            android:id="@+id/six_value"
+            style="@style/scroll_values"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/scroll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/eq_bandtext_top"
+            android:text="@string/eq_surround"
+            android:paddingEnd="10dp" />
+
+        <com.hcn.media_view.SeekBarRotator
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/eq_seekbar_top"
+            android:layout_height="@dimen/eq_slider_height">
+
+            <SeekBar
+                android:id="@+id/seven_seek"
+                android:layout_margin="@dimen/eq_slider_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxHeight="40dp"
+                android:minHeight="40dp"
+                android:tag="6"
+                android:progressDrawable="@drawable/hcn_eq_band_seekbar_bg"
+                android:thumb="@drawable/hcn_eq_band_seekbar_thumb"
+                android:thumbOffset="@dimen/eq_thumb_offset" />
+        </com.hcn.media_view.SeekBarRotator>
+
+        <TextView
+            android:id="@+id/seven_value"
+            style="@style/scroll_values"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,9 @@
+class PluginDemo implements Plugin<Project> {
+
+    @Override
+    void apply(Project project) {
+        println 'Hi, I\'m a multimedia player!!!'
+    }
+}
+
+apply plugin: PluginDemo

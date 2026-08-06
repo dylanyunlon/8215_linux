@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Trình phát đa phương tiện tự động</string>
+    <string name="tip_loading">Đang tải…</string>
+    <string name="tip_loading_id3">Đang tải trình phương tiện ID3</string>
+    <string name="tip_no_video_file">Không có tập tin video</string>
+    <string name="tip_no_music_file">Không có tập tin âm thanh</string>
+    <string name="tip_refresh_music_info">Không có tập tin âm nhạc \n nhấn màn hình để làm mới danh sách
+    </string>
+    <string name="tip_refresh_video_info">Không có tập tin video \n nhấn màn hình để làm mới danh sách
+    </string>
+    <string name="storage_flash_label">Nhấp nháy</string>
+    <string name="storage_usb2_label">USB2</string>
+    <string name="storage_usb1_label">USB1</string>
+    <string name="storage_sdcard_label">SD</string>
+    <string name="StrPlaying">Đang phát</string>
+    <string name="StrSongList">Danh sách phát</string>
+    <string name="StrAlbumList">Album</string>
+    <string name="StrArtistList">Nghệ sĩ</string>
+    <string name="StrFavoriteList">Thư mục</string>
+    <string name="StrNoLrc">Không có tập tin LRC</string>
+    <string name="app_music_label">Âm nhạc</string>
+    <string name="app_video_label">Video</string>
+    <string name="StrTipCanDoThat">Bài hát đang phát không thể hoạt động</string>
+    <string name="tip_unsupport_file">Tập tin không được hỗ trợ</string>
+    <string name="StrTipStop">Dừng lại</string>
+    <string name="tip_file_not_exist">Các tập tin không tồn tại, vui lòng cập nhật danh sách</string>
+    <string name="tip_unsupport_audio">Âm thanh không hỗ trợ</string>
+    <string name="tip_unsupport_video">Video không hỗ trợ</string>
+    <string name="tip_unsupport_seek">Tìm kiếm không hỗ trợ</string>
+    <string name="tip_parking_info">Đang lái xe, chú ý an toàn!</string>
+    <string name="text_search_hint">Tìm kiếm văn bản</string>
+    <string name="text_unknown">Chưa xác định</string>
+    <string name="text_refresh">Làm mới</string>
+    <string name="text_search">Tìm kiếm</string>
+    <string name="text_add_all">Thêm tất cả</string>
+    <string name="frequency_label">tần số</string>
+    <string name="lyric_label">Lời bài hát</string>
+    <string name="all_list">Tất cả danh sách</string>
+    <string name="all_file_list">Tất cả danh sách tập tin nhạc</string>
+    <string name="eq_default">Mặc định</string>
+    <string name="eq_mode_user">người sử dụng</string>
+    <string name="eq_mode_rock">Nhạc rock</string>
+    <string name="eq_mode_pop">nhạc pop</string>
+    <string name="eq_mode_live">trực tiếp</string>
+    <string name="eq_mode_dance">nhảy</string>
+    <string name="eq_mode_classic">kinh điển</string>
+    <string name="eq_mode_soft">Mềm mại</string>
+    <string name="Balance">Cân bằng</string>
+    <string name="eq_balance_locat">C:+XX C:+XX</string>
+    <string name="Loudness">Sự ồn ào</string>
+    <string name="Reverb">Vang lại</string>
+    <string name="BAND_60HZ">60Hz</string>
+    <string name="BAND_230HZ">230Hz</string>
+    <string name="BAND_910HZ">910Hz</string>
+    <string name="BAND_3600HZ">3.6kHz</string>
+    <string name="BAND_14000HZ">14kHz</string>
+    <string name="BAND_1KHZ">1kHz</string>
+    <string name="BAND_2KHZ">2kHz</string>
+    <string name="BAND_4KHZ">4kHz</string>
+    <string name="BAND_8KHZ">8kHz</string>
+    <string name="BAND_16KHZ">16kHz</string>
+    <string name="eq_reverb_off">tắt</string>
+    <string name="eq_reverb_live">trực tiếp</string>
+    <string name="eq_reverb_hall">đại sảnh</string>
+    <string name="eq_reverb_concert">buổi hòa nhạc</string>
+    <string name="eq_reverb_cave">chia sẻ</string>
+    <string name="eq_reverb_bathroom">phòng tắm</string>
+    <string name="eq_reverb_arena">đấu trường</string>
+    <string name="eq_subwoofer">loa siêu trầm</string>
+    <string name="eq_surround">Âm vòm</string>
+    <string name="eq_lound">ồn ào</string>
+    <string name="title_subwoofer">loa siêu trầm</string>
+    <string name="title_bass">Âm trầm</string>
+    <string name="title_treble">Âm cao</string>
+    <string name="eq_reverb_user">người sử dụng</string>
+    <string name="eq_reverb_jazz">Nhạc Jazz</string>
+    <string name="eq_reverb_pop">nhạc pop</string>
+    <string name="eq_reverb_classiz">kinh điển</string>
+    <string name="eq_reverb_rock">Nhạc rock</string>
+    <string name="eq_reverb_lift">Đời sống</string>
+    <string name="eq_reverb_dance">nhảy</string>
+    <string name="eq_reverb_electronic">Điện tử</string>
+    <string name="eq_reverb_rb">RnB</string>
+    <string name="eq_reverb_Absolute_music">Âm thanh</string>
+    <string name="eq_remind">Chiếc xe này hỗ trợ chức năng khuếch đại công suất xe nguyên bản, vui
+        lòng vào phần điều chỉnh giao diện cài đặt gốc của xe.
+    </string>
+    <string name="label_eq">EQ</string>
+    <string name="isplaying_refuse_cancel">Phát nhạc này, từ chối hủy bỏ tín hiệu âm nhạc này
+    </string>
+</resources>

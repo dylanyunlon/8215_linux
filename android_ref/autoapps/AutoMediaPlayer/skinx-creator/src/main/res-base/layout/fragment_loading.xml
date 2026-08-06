@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lin_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginBottom="20dp"
+        tools:ignore="UseCompoundDrawables,UselessParent">
+
+        <ImageView
+            android:id="@+id/iv_loading"
+            android:layout_width="@dimen/info_img_loading_width"
+            android:layout_height="@dimen/info_img_loading_height"
+            android:background="@drawable/pb_loading"
+            android:visibility="invisible"
+            android:contentDescription="@string/todo" />
+
+        <TextView
+            android:id="@+id/tv_main_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@string/tip_refresh_music_info"
+            android:textColor="@color/loading_text_color"
+            android:textSize="40sp"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+    </LinearLayout>
+</FrameLayout>

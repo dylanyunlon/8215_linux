@@ -1,0 +1,116 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ExtraTranslation">
+    <string name="todo">TODO</string>
+    <string name="app_name">音頻播放器</string>
+
+    <string name="StrNoLrc">沒有歌詞</string>
+    <string name="tip_no_video_file">沒有視頻檔</string>
+    <string name="tip_no_music_file">沒有音樂檔</string>
+
+    <string name="tip_refresh_music_info">沒有音樂檔 \n 點擊屏幕刷新音樂列表</string>
+    <string name="tip_refresh_video_info">沒有視頻檔 \n 點擊屏幕刷新視頻列表</string>
+
+    <string name="tip_unsupport_audio">不支援音頻解碼</string>
+    <string name="tip_unsupport_video">不支援視頻解碼</string>
+
+    <string name="tip_parking_info">行車中,請注意安全!</string>
+    <string name="search_icon_hint_tip">點擊進入搜索模式</string>
+    <string name="text_search_hint">搜索文本</string>
+    <string name="go_back_folder" translatable="false">返回上一級</string>
+
+    <string name="play_list_tab_title">播放列表</string>
+    <string name="favorite_list_tab_title">收藏列表</string>
+
+    <!-- 默认缺失的字符串资源定义 -->
+    <string name="frequency_label">頻譜</string>
+    <string name="storage_flash_label">內部存儲</string>
+    <string name="storage_usb2_label">U盤2</string>
+    <string name="storage_usb1_label">U盤</string>
+    <string name="storage_sdcard_label">SD卡</string>
+    <string name="StrPlaying">正在播放</string>
+    <string name="StrSongList">歌曲列表</string>
+    <string name="StrAlbumList">專輯列表</string>
+    <string name="StrArtistList">藝術家列表</string>
+    <string name="StrFavoriteList">文件夾</string>
+    <string name="text_refresh">刷新</string>
+    <string name="text_search">搜索</string>
+
+    <string name="tip_loading">載入&#8230;</string>
+    <string name="tip_loading_id3">載入音頻ID3&#8230;</string>
+    <string name="app_music_label">音樂</string>
+    <string name="app_video_label">視頻</string>
+    <string name="StrTipCanDoThat">歌曲正在播放，不能進行此操作</string>
+    <string name="tip_unsupport_file">不支援檔</string>
+    <string name="StrTipStop">停止</string>
+    <string name="tip_file_not_exist">文件不存在，請更新列表</string>
+    <string name="tip_unsupport_seek">不支援拖動播放</string>
+    <string name="text_unknown">未知</string>
+    <string name="text_add_all">全部添加</string>
+    <string name="lyric_label">歌詞</string>
+    <string name="show_lyric">顯示歌詞</string>
+    <string name="all_file_list">全部文件夾列表</string>
+
+    <!--eq  -->
+    <string name="eq_default">默認</string>
+    <string name="eq_mode_user">用戶</string>
+    <string name="eq_mode_rock">搖滾</string>
+    <string name="eq_mode_pop">流行</string>
+    <string name="eq_mode_live">生活</string>
+    <string name="eq_mode_dance">舞蹈</string>
+    <string name="eq_mode_classic">古典</string>
+    <string name="eq_mode_soft">爵士</string>
+    <string name="Balance">平衡</string>
+    <string name="eq_balance_locat">C:+XX C:+XX</string>
+    <string name="Loudness">等響度</string>
+    <string name="Reverb">混響</string>
+    <string name="BAND_1KHZ">1kHz</string>
+    <string name="BAND_2KHZ">2kHz</string>
+    <string name="BAND_4KHZ">4kHz</string>
+    <string name="BAND_8KHZ">8kHz</string>
+    <string name="BAND_16KHZ">16kHz</string>
+    <string name="eq_reverb_off">關閉</string>
+    <string name="eq_reverb_live">生活</string>
+    <string name="eq_reverb_hall">大廳</string>
+    <string name="eq_reverb_concert">演唱會</string>
+    <string name="eq_reverb_cave">洞穴</string>
+    <string name="eq_reverb_bathroom">浴室</string>
+    <string name="eq_reverb_arena">競技場</string>
+    <string name="eq_reverb_user">用戶</string>
+    <string name="eq_reverb_jazz">爵士</string>
+    <string name="eq_reverb_pop">流行</string>
+    <string name="eq_reverb_classiz">古典</string>
+    <string name="eq_reverb_rock">搖滾</string>
+    <string name="eq_reverb_lift">生活</string>
+    <string name="eq_reverb_dance">舞蹈</string>
+    <string name="eq_reverb_electronic">電子</string>
+    <string name="eq_reverb_rb">布魯斯</string>
+    <string name="eq_reverb_Absolute_music">原聲</string>
+    <string name="eq_subwoofer">重低音</string>
+    <string name="eq_surround">環繞音</string>
+    <string name="eq_lound">響度</string>
+    <string name="title_subwoofer">重低音</string>
+    <string name="title_bass">低音</string>
+    <string name="title_treble">高音</string>
+    <string name="eq_remind">此車支持原車功放功能,請去原車設置界面調節</string>
+    <string name="label_eq">音效</string>
+    <string name="isplaying_refuse_cancel">正在播放該歌曲,不可取消收藏</string>
+
+    <string name="StrArtist">歌手</string>
+    <string name="StrFolder">文件夾</string>
+    <string name="StrMusic">歌曲</string>
+    <string name="StrFavorite">收藏夾</string>
+    <string name="favor_all_label">收藏全部</string>
+    <string name="delete_all_label">刪除全部</string>
+    <string name="StrMyMusic">我的音樂</string>
+    <string name="duration_label">時長:</string>
+    <string name="format_label">格式:</string>
+
+    <string name="empty_play_list_prompt">空的播放列表</string>
+    <string name="empty_collect_list_prompt">空的收藏列表</string>
+
+    <string name="media_notification_name">媒體播放</string>
+    <string name="media_notification_title">說明</string>
+    <string name="media_notification_info">播放器後臺服務</string>
+
+    <string name="maximum_collection_limit_prompt">已達到最大收藏上限，請取消部分收藏信息後再操作！</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <integer name="music_seek_weight" tools:ignore="MissingDefaultResource">38</integer>
+
+    <!--fragment_music_viewpaper.xml-->
+    <integer name="music_viewpaper_weight" tools:ignore="MissingDefaultResource">8</integer>
+    <integer name="music_bottom_radiogroup_weight" tools:ignore="MissingDefaultResource">1</integer>
+
+    <integer name="video_list_l_layout_weight" tools:ignore="MissingDefaultResource">12</integer>
+    <integer name="video_list_m_layout_weight" tools:ignore="MissingDefaultResource">1</integer>
+    <integer name="video_list_r_layout_weight" tools:ignore="MissingDefaultResource">4</integer>
+</resources>

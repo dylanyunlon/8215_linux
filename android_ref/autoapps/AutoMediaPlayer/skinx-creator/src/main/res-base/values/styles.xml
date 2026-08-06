@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 皮肤包不要这个东西
+    <style name="SkinTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/background</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">#00000000</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>-->
+</resources>

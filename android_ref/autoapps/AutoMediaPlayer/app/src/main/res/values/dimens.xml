@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010-2011 The Android Open Source Project
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="status_bar_height">58dp</dimen>
+
+    <dimen name="music_list_item_height">70dp</dimen>
+    <dimen name="music_list_item_width">-1dp</dimen>
+    <dimen name="music_list_item_icon_margin_start">5dp</dimen>
+    <dimen name="music_list_item_icon_margin_end">0dp</dimen>
+
+    <dimen name="music_folder_item_height">70dp</dimen>
+    <dimen name="music_folder_item_width">-1dp</dimen>
+    <dimen name="music_folder_item_icon_height">62dp</dimen>
+    <dimen name="music_folder_item_icon_width">68dp</dimen>
+    <dimen name="music_folder_item_icon_marginstart">10dp</dimen>
+    <dimen name="music_folder_item_icon_marginend">0dp</dimen>
+    <dimen name="music_folder_back_margin_bottom">1dp</dimen>
+
+    <dimen name="music_search_edittext_marginstart">20dp</dimen>
+    <dimen name="music_search_edittext_marginend">20dp</dimen>
+    <dimen name="music_search_edittext_paddingStart">20dp</dimen>
+    <dimen name="music_search_edittext_paddingEnd">20dp</dimen>
+
+    <dimen name="info_img_loading_width">-2dp</dimen>
+    <dimen name="info_img_loading_height">-2dp</dimen>
+
+    <dimen name="eq_slider_margin">0dip</dimen>
+    <dimen name="eq_slider_height">300dip</dimen>
+    <dimen name="eq_thumb_offset">4dip</dimen>
+    <dimen name="eq_seekbar_top">2dip</dimen>
+    <dimen name="eq_bandtext_top">20dip</dimen>
+    <dimen name="eq_seekbar_width">75dip</dimen>
+    <dimen name="eq_sother_width">50dip</dimen>
+    <dimen name="eq_band_width">430dip</dimen>
+    <dimen name="eq_band_height">410dip</dimen>
+    <dimen name="eq_bass_width">200dip</dimen>
+    <dimen name="eq_bass_height">410dip</dimen>
+    <dimen name="eq_reverb_width">160dip</dimen>
+    <dimen name="eq_reverb_height">84dip</dimen>
+    <dimen name="eq_reverb_top_padding">-84dip</dimen>
+    <dimen name="eq_reverb_text_padding">10dip</dimen>
+    <dimen name="eq_reset_top_padding">170dip</dimen>
+    <dimen name="eq_text_size">16sp</dimen>
+
+    <dimen name="id3_info_layout_height">360dp</dimen>
+    <dimen name="id3_info_layout_marginTop">20dp</dimen>
+
+    <dimen name="album_cover_default_height">218dp</dimen>
+    <dimen name="album_cover_default_width">218dp</dimen>
+    <dimen name="album_cover_height">180dp</dimen>
+    <dimen name="album_cover_width">180dp</dimen>
+    <dimen name="music_album_cover_layout_marginStart">18dp</dimen>
+
+    <dimen name="tv_title_margin_top">20dp</dimen>
+    <dimen name="lyric_width">300dp</dimen>
+
+    <dimen name="tv_showtip_size">40sp</dimen>
+    <dimen name="video_info_title_size">20sp</dimen>
+    <dimen name="item_video_list_video_text">22sp</dimen>
+    <dimen name="item_video_list_video_info">16sp</dimen>
+    <dimen name="fragment_search_text_size">24sp</dimen>
+    <dimen name="fragment_videolist_tips_size">46sp</dimen>
+    <dimen name="music_folder_item_song_title">22sp</dimen>
+
+    <dimen name="video_list_item_height">70dp</dimen>
+    <dimen name="video_list_item_icon_width">88dp</dimen>
+    <dimen name="video_list_item_icon_height">65dp</dimen>
+
+    <dimen name="video_title_info_margin_start">314dp</dimen>
+    <dimen name="video_title_info_margin_top">10dp</dimen>
+    <dimen name="video_index_info_layout_width">100dp</dimen>
+
+    <dimen name="video_list_center_layout_marginBottom">18dp</dimen>
+    <dimen name="video_list_layout_marginTop">10dp</dimen>
+    <dimen name="video_list_layout_marginBottom">10dp</dimen>
+    <dimen name="video_list_top_layout_height">86dp</dimen>
+
+    <dimen name="video_search_list_layout_marginTop">10dp</dimen>
+    <dimen name="video_search_list_layout_marginBottom">10dp</dimen>
+
+    <dimen name="video_search_menu_layout_height">-2dp</dimen>
+    <dimen name="search_EditText_layout_marginBottom">0dp</dimen>
+
+    <dimen name="progress_layout_info_marginStart">48dp</dimen>
+    <dimen name="progress_layout_info_marginEnd">48dp</dimen>
+    <dimen name="play_duration_layout_width">82dp</dimen>
+
+    <dimen name="layout_video_top_btnUpdate_layout_marginBottom">0dp</dimen>
+
+    <dimen name="layout_musiclist_top_ctrl_btn_refresh_paddingBottom">2dp</dimen>
+
+    <dimen name="video_seekbar_progress_paddingStart">10dp</dimen>
+    <dimen name="video_seekbar_progress_paddingLeft">10dp</dimen>
+    <dimen name="video_seekbar_progress_paddingEnd">10dp</dimen>
+    <dimen name="video_seekbar_progress_paddingRight">10dp</dimen>
+
+    <dimen name="video_search_update_button_marginTop">0.0dp</dimen>
+</resources>

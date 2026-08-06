@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--LRC-->
+    <color name="lyric_view_cur_paint_color">#ff9400</color>
+
+    <!--FREQ-->
+    <color name="freq_bottom">#ff9400</color>
+    <color name="freq_top">#402d14</color>
+    <color name="freq_top_line">#402d14</color>
+
+</resources>

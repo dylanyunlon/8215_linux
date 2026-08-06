@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--page1 musicinfo-->
+    <color name="id3_text_color">#55ffffff</color>
+    <!--playing time text-->
+    <color name="duration_text_color">#ffffffff</color>
+    <color name="button_text_color_n">#ffffffff</color>
+    <color name="button_text_color_p">#ff00F6F8</color>
+    <color name="button_text_color_d">#ff00F6F8</color>
+    <!--page2 musiclist-->
+    <color name="list_divider_color">#ff343647</color>
+    <color name="list_text_color_n">#ffffffff</color>
+    <color name="list_text_color_p">#ff00F6F8</color>
+    <color name="list_text_color_d">#ff00F6F8</color>
+    <color name="list_text_color_tip">#ff00F6F8</color>
+    <!--page searchlist-->
+    <color name="search_text_color">#ffffffff</color>
+    <!--page videolist-->
+    <color name="video_list_divider_color">#ff343647</color>
+    <color name="video_list_text_color_n">#ffffffff</color>
+    <color name="video_list_text_color_p">#ff00F6F8</color>
+    <color name="video_list_text_color_d">#ff00F6F8</color>
+    <color name="video_list_text_color_tip">#ff00F6F8</color>
+    <!--eq  -->
+    <color name="white">#ffffffff</color>
+    <color name="deep_yellow">#ffd45b3e</color>
+    <color name="black">#ff000000</color>
+    <color name="yellow">#fffefe41</color>
+    <color name="green">#ff00ff00</color>
+    <color name="eq_mode_text_color_n">#ffffffff</color>
+    <color name="eq_mode_text_color_p">#ff1559bf</color>
+    <color name="eq_mode_text_color_f">#fffefe41</color>
+    <color name="preset_text_color_n">#ffffab7d</color>
+    <color name="preset_text_color_p">#ffff9900</color>
+    <!--LRC-->
+    <color name="lyric_view_cur_paint_color">#ff05bbc6</color>
+    <color name="lyric_view_not_cur_paint_color">#ffffffff</color>
+    <!--FREQ-->
+    <color name="freq_bottom">#ff01fde2</color>
+    <color name="freq_top">#ff0692db</color>
+    <color name="freq_top_line">#ff0692db</color>
+
+</resources>

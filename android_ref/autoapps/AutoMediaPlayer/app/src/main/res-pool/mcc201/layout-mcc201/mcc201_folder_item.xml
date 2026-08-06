@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/item_recyclerview_ll">
+
+    <TextView
+        android:id="@+id/tv_path_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="textview"
+        android:gravity="center"
+        android:background="@drawable/mcc201_folder_item_bg"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@drawable/btn_text_color"
+        android:textSize="24sp"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

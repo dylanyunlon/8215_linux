@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- page music loading -->
+    <color name="loading_text_color">#ffffffff</color>
+
+    <!-- page music info -->
+    <color name="id3_text_color">#ffffffff</color>
+    <color name="song_title_shadowColor">#7F7F7F7F</color>
+
+    <!-- playing time text -->
+    <color name="duration_text_color">#ffffffff</color>
+    <color name="duration_text_shadow_color">#ff000000</color>
+    <color name="button_text_color_n">#ffffffff</color>
+    <color name="button_text_color_p">#FF717171</color>
+    <color name="button_text_color_d">#FF414141</color>
+
+    <!-- page music list -->
+    <color name="list_divider_color">#00000000</color>
+    <color name="list_text_color_n">#ff142334</color>
+    <color name="list_text_color_p">#ff142334</color>
+    <color name="list_text_color_d">#ff142334</color>
+    <color name="list_text_color_tip">#ffbebebe</color>
+
+    <!-- page search list -->
+    <color name="search_text_color">#FFBDC0C5</color>
+
+    <!-- page video list -->
+    <color name="video_list_divider_color">#ffffffff</color>
+    <color name="video_list_text_color_n">#ffffffff</color>
+    <color name="video_list_text_color_p">#FF717171</color>
+    <color name="video_list_text_color_d">#FF414141</color>
+    <color name="video_list_text_color_tip">#ffffffff</color>
+
+    <!-- page eq -->
+    <color name="white">#ffffffff</color>
+    <color name="deep_yellow">#ffd45b3e</color>
+    <color name="black">#ff000000</color>
+    <color name="yellow">#fffefe41</color>
+    <color name="green">#ff00ff00</color>
+    <color name="eq_mode_text_color_n">#ffffffff</color>
+    <color name="eq_mode_text_color_p">#ff1559bf</color>
+    <color name="eq_mode_text_color_f">#fffefe41</color>
+    <color name="preset_text_color_n">#ffffab7d</color>
+    <color name="preset_text_color_p">#ffff9900</color>
+
+    <!-- LRC -->
+    <color name="lyric_view_cur_paint_color">#ffff00</color>
+    <color name="lyric_view_not_cur_paint_color">#00ff00</color>
+
+    <!-- custom color -->
+    <color name="red">#ffff0000</color>
+    <color name="gray">#ff888888</color>
+    <color name="gray_white">#ffc4c4c4</color>
+
+    <!-- FREQ -->
+    <color name="freq_bottom">#ff00ff00</color>
+    <color name="freq_top">#ffffff00</color>
+    <color name="freq_top_line">#ffff0000</color>
+
+    <!-- no share background -->
+    <color name="share_background_none">#20210821</color>
+</resources>

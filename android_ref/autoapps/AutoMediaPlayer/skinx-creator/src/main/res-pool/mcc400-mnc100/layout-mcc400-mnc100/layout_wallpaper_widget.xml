@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_wallpaper"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/wallpaper_layout_marginBottom"
+        android:layout_marginStart="@dimen/wallpaper_layout_marginLR"
+        android:layout_marginEnd="@dimen/wallpaper_layout_marginLR"
+        android:layout_gravity="bottom|center_horizontal"
+        android:paddingStart="@dimen/wallpaper_layout_paddingLR"
+        android:paddingEnd="@dimen/wallpaper_layout_paddingLR"
+        android:paddingTop="@dimen/wallpaper_layout_paddingTB"
+        android:paddingBottom="@dimen/wallpaper_layout_paddingTB"
+        android:background="@drawable/wallpaper_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wallpaper_recyclerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbarThumbHorizontal="@color/gray"
+            android:scrollbarSize="1.0dp"
+            tools:ignore="RtlSymmetry" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item
+        android:drawable="@drawable/right_show_01"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_02"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_03"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_04"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_05"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_06"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_07"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_08"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_09"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_10"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_11"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/right_show_12"
+        android:duration="100" />
+
+</animation-list>

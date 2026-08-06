@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rel_id3_infos"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:background="@drawable/playing_bg">
+
+    <LinearLayout
+        android:id="@+id/lin_freq"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="102dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="135dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:visibility="visible">
+
+        <com.hcn.media_view.PlayFlashView
+            android:id="@+id/FrequencyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.9" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:ignore="NestedWeights">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+                        <ImageView
+                            android:id="@+id/ivDefault"
+                            android:layout_width="@dimen/album_cover_default_width"
+                            android:layout_height="@dimen/album_cover_default_height"
+                            android:layout_gravity="center"
+                            android:background="@drawable/zj_bg"
+                            android:scaleType="fitXY" />
+
+                        <com.hcn.media_view.RoundRectImageView
+                            android:id="@+id/ivMusicImage"
+                            android:layout_width="@dimen/album_cover_width"
+                            android:layout_height="@dimen/album_cover_height"
+                            android:layout_gravity="center"
+                            app:radius="35dp"/>
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tvTotalValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center"
+                        android:shadowColor="#000000"
+                        android:shadowDx="2"
+                        android:shadowDy="2"
+                        android:shadowRadius="0.6"
+                        android:singleLine="true"
+                        android:textColor="@color/id3_text_color"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginEnd="40dp"
+                    android:orientation="vertical">
+
+                    <com.hcn.media_view.HTextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/title_img"
+                        android:ellipsize="marquee"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center_vertical|start"
+                        android:marqueeRepeatLimit="1"
+                        android:shadowColor="#000000"
+                        android:shadowDx="3"
+                        android:shadowDy="-3"
+                        android:shadowRadius="1.5"
+                        android:singleLine="true"
+                        android:textColor="@color/id3_text_color"
+                        android:textSize="30sp" />
+
+                    <com.hcn.media_view.HTextView
+                        android:id="@+id/tvAlbum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:drawableStart="@drawable/album_img"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center_vertical|start"
+                        android:shadowColor="#000000"
+                        android:shadowDx="2"
+                        android:shadowDy="2"
+                        android:shadowRadius="0.6"
+                        android:singleLine="true"
+                        android:textColor="@color/id3_text_color"
+                        android:textSize="26sp" />
+
+                    <com.hcn.media_view.HTextView
+                        android:id="@+id/tvArtist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/artist_img"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center_vertical|start"
+                        android:shadowColor="#000000"
+                        android:shadowDx="2"
+                        android:shadowDy="2"
+                        android:shadowRadius="0.6"
+                        android:singleLine="true"
+                        android:textColor="@color/id3_text_color"
+                        android:textSize="26sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2" >
+
+                <LinearLayout
+                    android:id="@+id/lin_lyric"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:visibility="gone">
+
+                    <com.hcn.media_view.lyrics.LyricsView
+                        android:id="@+id/lyrics_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp" />
+
+                    <TextView
+                        android:id="@+id/tvNoLyrics"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="15dp"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:shadowColor="#000000"
+                        android:shadowDx="2"
+                        android:shadowDy="2"
+                        android:shadowRadius="0.6"
+                        android:singleLine="true"
+                        android:text="@string/StrNoLrc"
+                        android:textColor="@color/id3_text_color"
+                        android:textSize="25sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/layout_progress"
+            layout="@layout/layout_music_seek"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/play_control_layout"
+            layout="@layout/layout_music_ctrl"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+</FrameLayout>
