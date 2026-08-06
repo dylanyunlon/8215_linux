@@ -1,0 +1,3 @@
+lib
+project/evb_8317/target
+kernel/kernel-3.18/drivers/media/platform/atc/aud/lib

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_ATC_COMBO
+	bool "atc_combo"
+	help
+	  atc_combo service

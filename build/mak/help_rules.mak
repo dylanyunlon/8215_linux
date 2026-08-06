@@ -1,0 +1,143 @@
+###############################################################################
+# Copyright Statement:                                                        #
+#                                                                             #
+#   This software/firmware and related documentation ("Autochips Software")    #
+# are protected under international and related jurisdictions'copyright laws  #
+# as unpublished works. The information contained herein is confidential and  #
+# proprietary to Autochips Inc. Without the prior written permission of        #
+# Autochips Inc., any reproduction, modification, use or disclosure of         #
+# Autochips Software, and information contained herein, in whole or in part,   #
+# shall be strictly prohibited.                                               #
+# Autochips Inc. Copyright (C) 2015. All rights reserved.                      #
+#                                                                             #
+#   BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND      #
+# AGREES TO THE FOLLOWING:                                                    #
+#                                                                             #
+#   1)Any and all intellectual property rights (including without             #
+# limitation, patent, copyright, and trade secrets) in and to this            #
+# Software/firmware and related documentation ("Autochips Software") shall     #
+# remain the exclusive property of Autochips Inc. Any and all intellectual     #
+# property rights (including without limitation, patent, copyright, and       #
+# trade secrets) in and to any modifications and derivatives to Autochips      #
+# Software, whoever made, shall also remain the exclusive property of         #
+# Autochips Inc.  Nothing herein shall be construed as any transfer of any     #
+# title to any intellectual property right in Autochips Software to Receiver.  #
+#                                                                             #
+#   2)This Autochips Software Receiver received from Autochips Inc. and/or its  #
+# representatives is provided to Receiver on an "AS IS" basis only.           #
+# Autochips Inc. expressly disclaims all warranties, expressed or implied,     #
+# including but not limited to any implied warranties of merchantability,     #
+# non-infringement and fitness for a particular purpose and any warranties    #
+# arising out of course of performance, course of dealing or usage of trade.  #
+# Autochips Inc. does not provide any warranty whatsoever with respect to the  #
+# software of any third party which may be used by, incorporated in, or       #
+# supplied with the Autochips Software, and Receiver agrees to look only to    #
+# such third parties for any warranty claim relating thereto.  Receiver       #
+# expressly acknowledges that it is Receiver's sole responsibility to obtain  #
+# from any third party all proper licenses contained in or delivered with     #
+# Autochips Software.  Autochips is not responsible for any Autochips Software   #
+# releases made to Receiver's specifications or to conform to a particular    #
+# standard or open forum.                                                     #
+#                                                                             #
+#   3)Receiver further acknowledge that Receiver may, either presently        #
+# and/or in the future, instruct Autochips Inc. to assist it in the            #
+# development and the implementation, in accordance with Receiver's designs,  #
+# of certain softwares relating to Receiver's product(s) (the "Services").    #
+# Except as may be otherwise agreed to in writing, no warranties of any       #
+# kind, whether express or implied, are given by Autochips Inc. with respect   #
+# to the Services provided, and the Services are provided on an "AS IS"       #
+# basis. Receiver further acknowledges that the Services may contain errors   #
+# that testing is important and it is solely responsible for fully testing    #
+# the Services and/or derivatives thereof before they are used, sublicensed   #
+# or distributed. Should there be any third party action brought against      #
+# Autochips Inc. arising out of or relating to the Services, Receiver agree    #
+# to fully indemnify and hold Autochips Inc. harmless.  If the parties         #
+# mutually agree to enter into or continue a business relationship or other   #
+# arrangement, the terms and conditions set forth herein shall remain         #
+# effective and, unless explicitly stated otherwise, shall prevail in the     #
+# event of a conflict in the terms in any agreements entered into between     #
+# the parties.                                                                #
+#                                                                             #
+#   4)Receiver's sole and exclusive remedy and Autochips Inc.'s entire and     #
+# cumulative liability with respect to Autochips Software released hereunder   #
+# will be, at Autochips Inc.'s sole discretion, to replace or revise the       #
+# Autochips Software at issue.                                                 #
+#                                                                             #
+#   5)The transaction contemplated hereunder shall be construed in            #
+# accordance with the laws of Singapore, excluding its conflict of laws       #
+# principles.  Any disputes, controversies or claims arising thereof and      #
+# related thereto shall be settled via arbitration in Singapore, under the    #
+# then current rules of the International Chamber of Commerce (ICC).  The     #
+# arbitration shall be conducted in English. The awards of the arbitration    #
+# shall be final and binding upon both parties and shall be entered and       #
+# enforceable in any court of competent jurisdiction.                         #
+###############################################################################
+###########################################################################
+# $RCSfile: help.mak,v $
+# $Revision: #2 $
+# $Date: 2015/07/03 $
+# $Author: jianghong.lin $
+#############################################################################
+
+ifneq "$(ANDROID)" "true"
+help:
+	@echo "===================================================================="
+	@echo "Purpose -- Build ALL target or Clean ALL Target"
+	@echo "--------"
+	@echo -e "\tall: $(ALL_TARGET)"
+	@echo "--------"
+	@echo -e "\tclean: $(CLEAN_TARGET)"
+	@echo "===================================================================="
+	@echo "Purpose -- Build Partial Build target"
+	@echo "--------"
+	@echo -e "\trootfs_all:  Rebuild rootfs, generate rootfs.bin"
+	@echo "--------"
+#	@echo -e "\tdriver_all:  Rebuild driver drv_apt, generate dtv_driver_adpt.ko and basic_apfile"
+	@echo "--------"
+	@echo -e "\tuboot_all:   Rebuild uboot, generate $(MODEL)_$(BOOT)boot.bin"
+	@echo "--------"
+	@echo -e "\tbasic_all:   Rebuild rootfs_all driver_all wifi_ko dtv_svc_all and basic_apfile"
+	@echo "--------"
+	@echo -e "\tkernel_all: Rebuild init prepare kernel"
+	@echo "--------"
+endif
+
+	
+	
+help_definition:
+	@echo "================================================================================================================="
+	@echo "MEM_ROM_MAP = true/false"
+	@/bin/echo -e "\tWhile MEM_ROM_MAP set true, the memory map would be generated"
+	@/bin/echo -e "\tDefault: MEM_ROM_MAP=false"
+	@echo "--------"
+	@echo "JOBS = 1 .. 12"
+	@/bin/echo -e "\tJOBS is used to do parallel build subtask number. Once the build"
+	@/bin/echo -e "\tsystem did not afford parallel build, set it to be 1"
+	@/bin/echo -e "\tDefault: JOBS=12"
+	@echo "--------"
+	
+	@echo "FIND_AUTHOR = true/false"
+	@/bin/echo -e "\tIt is used to find the file author while build warning/error happened"
+	@/bin/echo -e "\tHowever, it might need the correctness of P4 seting, and it might also task long"
+	@/bin/echo -e "\ttime to process it."
+	@/bin/echo -e "\tDefault: FIND_AUTHOR=false"
+	@/bin/echo "--------"
+	
+	@echo "CHECK_WARNING_BUILD = true/false"
+	@/bin/echo -e "\tIt is used to find the warning and produce a excel file"
+	@/bin/echo -e "\tDefault: CHECK_WARNING_BUILD=false"
+	@echo "--------"
+	
+	
+help_show_root:
+	@/bin/echo "================================================================================================================="
+	@/bin/echo "THIS_ROOT           : $(THIS_ROOT)"
+	@/bin/echo "DA_TOP              : $(DA_TOP)"
+	@/bin/echo "TOOL_ROOT           : $(TOOL_ROOT)"
+	@/bin/echo "LIBATC_ROOT         : $(LIBATC_ROOT)"
+	@/bin/echo "THIRDPARTY_ROOT     : $(THIRDPARTY_ROOT)"
+	@/bin/echo "THIRDPARTY_SRC_ROOT : $(THIRDPARTY_SRC_ROOT)"
+	@/bin/echo "THIRDPARTY_LIB_ROOT : $(THIRDPARTY_LIB_ROOT)"
+	@/bin/echo "OSS_ROOT            : $(OSS_ROOT)"
+	@/bin/echo "OSS_SRC_ROOT        : $(OSS_SRC_ROOT)"
+	@/bin/echo "OSS_LIB_ROOT        : $(OSS_LIB_ROOT)"

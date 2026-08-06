@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<NFLASH desc="--------- AC8317 EVB Upgrade Scatter File ---------"  boardtype="AC8317 EVB_EXT4">
+ <partition name="boot"   type="raw" startaddress="0x0" size="0x400000" imagename="ac83xx_bootloader_ddr3.bin" >
+ </partition>
+ <partition name="arm2"   type="raw" startaddress="0x600000" size="0x200000" imagename="arm2.bin" >
+ </partition>
+ <partition name="logo"   type="raw" startaddress="0x800000" size="0x400000" imagename="logo.mrf">
+ </partition>  
+ <partition name="kernel" type="raw" startaddress="0xc00000" size="0x400000" imagename="uImage">
+ </partition>  
+ <partition name="rootfs" type="raw" startaddress="0x1000000" size="0x200000" imagename="ramdisk.gz">
+ </partition>  
+ <partition name="system" type="ext4" startaddress="0x1200000" size="0x12C00000" imagename="system.img.ext4">
+ </partition>  
+ <partition name="data"   type="ext4" startaddress="0x13E00000" size="0x12C00000" imagename="data.img.ext4">
+ </partition>
+ <partition name="cache"   type="ext4" startaddress="0x26A00000" size="0x6400000" imagename="cache.img.ext4">
+ </partition> 
+ <partition name="recovery"   type="raw" startaddress="0x2CE00000" size="0x400000" imagename="recovery.gz">
+ </partition> 
+ <partition name="backup"   type="ext4" startaddress="0x2D200000" size="0x3200000" imagename="databk.img.ext4">
+ </partition> 
+ <partition name="metazone"   type="raw" startaddress="0x30400000" size="0x400000" imagename="metazone.bin">
+ </partition> 
+ <partition name="dvp"   type="raw" startaddress="0x30800000" size="0x400000" imagename="target.bin">
+ </partition>  
+ <partition name="data4write"   type="ext4" startaddress="0x30C00000" size="0x12C00000" imagename="data4write.img.ext4">
+ </partition>  
+</NFLASH>
+
+

@@ -1,0 +1,22 @@
+menuconfig BR2_PACKAGE_WIFI
+	bool "wifi package group"
+	select BR2_PACKAGE_WIFI_PUBLIC
+	select BR2_PACKAGE_WIFI_PRIVATE
+	select BR2_PACKAGE_DBUS_CPP
+	select BR2_PACKAGE_CONNMAN
+	select BR2_PACKAGE_WPA_SUPPLICANT
+	select BR2_PACKAGE_ATC_COMBO
+	select BR2_PACKAGE_AIC8800
+	select BR2_PACKAGE_IPERF3
+	help
+	  wifi package group
+
+if BR2_PACKAGE_WIFI
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/wifi/wifi-public/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/wifi/wifi-private/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/wifi/dbus-cpp/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/wifi/connman/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/wifi/wpa_supplicant/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/wifi/atc_combo/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/wifi/aic8800/Config.in"
+endif

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBATCCRYPTO
+	bool "libatccrypto"
+	help
+	  this is a libatccrypto so

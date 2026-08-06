@@ -1,0 +1,4 @@
+config BR2_PACKAGE_FAST_DISPLAY_TEST
+	bool "Fastdisplay_test"
+	help
+		this is fast displaiy test

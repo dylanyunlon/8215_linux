@@ -1,0 +1,62 @@
+#!/bin/sh -
+# $RCSfile: env.sh,v $
+# $Revision: #21 $
+# $Date: 2015/11/27 $
+# $Author: ke.xu $
+#
+# Description:
+#         script to setup DA build environment 
+#         The following commands are supported:
+#             TARGET : ac8317 or ac8015 
+#             BOOTTYPE : sd2, nand or emmc
+#             BUILD_CFG: debug or rel
+#                 Builds the specified target with symbolic debug info#
+#=========================================================================
+#============ src root dir name can be changed=====================
+
+bb_exit_handler() {
+    ret=$?
+    case $ret in
+    0)  ;;
+    *)  case $BASH_VERSION in
+        "")   echo "WARNING: exit code $ret from a shell command.";;
+        *)    echo "WARNING: ${BASH_SOURCE[0]}:${BASH_LINENO[0]} exit $ret from
+  "$BASH_COMMAND"";;
+        esac
+        exit $ret
+    esac
+}
+trap 'bb_exit_handler' EXIT
+
+
+
+TOP_DIR_NAME=atc_linux
+
+CUR_DIR=`pwd`
+MAKE_ROOT=`echo ${CUR_DIR%/${TOP_DIR_NAME}*}`
+
+MAKE_ROOT=${MAKE_ROOT}/${TOP_DIR_NAME}/build
+
+if [ ! -d ${MAKE_ROOT} ]; then
+  echo -e "\033[40;31m No Build dir \033[0m"
+  exit 1
+fi
+
+#============change directory into build root=======================
+source ./env.sh
+
+PARAMS=$1
+
+if [ -z $PARAMS ]; then
+  PARAMS='all'
+fi
+
+echo "make $PARAMS start"
+buildlinux -t $PARAMS -s -b nand
+if [ $? = 0 ]; then
+	cp -rf $DA_TOP/tool/ATCUpgradeTool/ $IMG_REL/
+fi
+
+tar cf symbol_file.tar ./lib/
+mv symbol_file.tar $IMG_REL/
+

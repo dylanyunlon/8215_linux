@@ -1,0 +1,41 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("AutoChips Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to AutoChips Inc. and/or its licensors.
+ * 
+ * AutoChips Inc. (C) 2016. All rights reserved.
+ */
+
+/*******************************************************************************
+* Filename: dvr_types.h
+* Project: DVR Dual Camera System
+* Description: Common type definitions for DVR system
+* Author: DVR Team
+*******************************************************************************/
+
+#ifndef DVR_TYPES_H
+#define DVR_TYPES_H
+
+#include <linux/types.h>
+
+// Base video information structure - unified 32-bit types
+typedef struct
+{
+    __u32 u4Width;      // Video width
+    __u32 u4Height;     // Video height  
+    __u32 u4FrameRate;  // Frame rate (FPS)
+}VIDEO_INFO_T;
+
+// DVR video information - use base type
+typedef VIDEO_INFO_T DVR_VIDEO_INFO_T;
+
+// Dual camera type definition for independent control
+typedef enum
+{
+    DVR_CAM_TYPE_FRONT = 0,
+    DVR_CAM_TYPE_REAR = 1,
+    DVR_CAM_TYPE_MAX
+}DVR_CAM_TYPE_E;
+
+#endif /* DVR_TYPES_H */

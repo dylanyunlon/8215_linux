@@ -1,0 +1,6 @@
+config BR2_PACKAGE_ATCMEDIASCANNER
+	depends on BR2_PACKAGE_ATCMULTIMEDIA
+	depends on BR2_PACKAGE_MMISC
+	bool "atcmediascanner"
+	help
+	  Autochips atcmediascanner.

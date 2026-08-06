@@ -1,0 +1,5 @@
+config BR2_PACKAGE_CAMERA
+	bool "autochips avm"
+	select BR2_PACKAGE_LIBAVM
+	help
+	  this is a avm application

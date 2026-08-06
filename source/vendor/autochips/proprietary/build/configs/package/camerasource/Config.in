@@ -1,0 +1,5 @@
+config BR2_PACKAGE_CAMERASOURCE
+	bool "libcamerasource"
+	depends on BR2_PACKAGE_BUF_ALLOCATOR
+	help
+	  this is a camera source so

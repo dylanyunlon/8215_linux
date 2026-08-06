@@ -1,0 +1,4 @@
+config BR2_PACKAGE_MDNSRESPONDER
+	bool "mdnsresponder component"
+	help
+		libmdnssd, mdnsd.

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<APP>
+    <APPCONFIG
+        MinMemPCT="8%"
+        MaxAPPCount="9"
+    />
+
+    <APPObj
+        APPID="1"
+        name="HomeUI"
+        filePath="/usr/lib/libhome.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="39"
+        name="Cluster-App"
+        filePath="/usr/lib/libcluster-app.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="6"
+        name="BT"
+        filePath="/usr/lib/libbtapp.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="35"
+        name="CarPlay"
+        filePath="/usr/lib/libcarplayapp.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="37"
+        name="AndroidAuto"
+        filePath="/usr/lib/libandroidautoapp.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="40"
+        name="CarBit"
+        filePath="/usr/lib/libcarbitapp.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="19"
+        name="DVR"
+        filePath="/usr/lib/libdvrapp.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <!-- <APPObj
+        APPID="11"
+        name="Setting"
+        filePath="/app/libsettings_app.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="12"
+        name="FileBrowser"
+        filePath="/app/libfilebrowser.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="20"
+        name="GPS"
+        filePath="/app/libgps_app.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="22"
+        name="BTSPP"
+        filePath="/app/libbtspp.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="25"
+        name="AudioPlayer"
+        filePath="/app/libaudio_player2.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    /> -->
+
+    <!-- <APPObj
+        APPID="26"
+        name="VideoPlayer"
+        filePath="/app/libvideo_player2.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="30"
+        name="Recovery"
+        filePath="/app/librecoveryScanner.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    /> -->
+
+    <!-- <APPObj
+        APPID="31"
+        name="avm"
+        filePath="/usr/app/libavm_app.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="32"
+        name="rvc"
+        filePath="/app/librvc_app.so"
+        APPObjlib="libappobj.so"
+        Priority="1"
+    />
+
+
+    <APPObj
+        APPID="106"
+        name="BT Phone"
+        filePath="/app/libbtphone.so"
+        APPObjlib="libappobj.so"
+        Priority="9"
+    />
+
+    <APPObj
+        APPID="107"
+        name="BT_EM"
+        filePath="/app/libbtem_app.so"
+        APPObjlib="libappobj.so"
+        Priority="10"
+    /> -->
+</APP>

@@ -1,0 +1,16 @@
+[Unit]
+Description=ATC audio bt server daemon
+Requires=dbus.service dbus-session.service
+After=dbus.service dbus-session.service systemd-modules-load.service
+Wants=systemd-modules-load.service
+
+[Service]
+ExecStart=/usr/bin/audio_bt_server
+#Restart=always
+#Type=forking
+#PIDFile=/tmp/pulse/pid
+#RestartSec=500ms
+
+[Install]
+WantedBy=multi-user.target
+

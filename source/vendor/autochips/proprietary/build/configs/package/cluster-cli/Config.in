@@ -1,0 +1,4 @@
+config BR2_PACKAGE_CLUSTER_CLI
+	bool "cluster-cli"
+	help
+	  this is a cluster-cli

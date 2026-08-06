@@ -1,0 +1,237 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("AutoChips Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to AutoChips Inc. and/or its licensors. Without
+ * the prior written permission of AutoChips inc. and/or its licensors, any
+ * reproduction, modification, use or disclosure of AutoChips Software, and
+ * information contained herein, in whole or in part, shall be strictly
+ * prohibited.
+ *
+ * AutoChips Inc. (C) 2016. All rights reserved.
+ *
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("AUTOCHIPS SOFTWARE")
+ * RECEIVED FROM AUTOCHIPS AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+ * ON AN "AS-IS" BASIS ONLY. AUTOCHIPS EXPRESSLY DISCLAIMS ANY AND ALL
+ * WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES AUTOCHIPS PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ * INCORPORATED IN, OR SUPPLIED WITH THE AUTOCHIPS SOFTWARE, AND RECEIVER
+AGREES
+ * TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+ * RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+ * OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN AUTOCHIPS
+ * SOFTWARE. AUTOCHIPS SHALL ALSO NOT BE RESPONSIBLE FOR ANY AUTOCHIPS SOFTWARE
+ * RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND AUTOCHIPS'S
+ * ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE AUTOCHIPS SOFTWARE
+ * RELEASED HEREUNDER WILL BE, AT AUTOCHIPS'S OPTION, TO REVISE OR REPLACE THE
+ * AUTOCHIPS SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+ * CHARGE PAID BY RECEIVER TO AUTOCHIPS FOR SUCH AUTOCHIPS SOFTWARE AT ISSUE.
+ */
+
+
+#ifndef MM_COMMON_H
+#define MM_COMMON_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// *********************************************************************
+// Invalid timestamp
+// *********************************************************************
+/*! \name Invalid timestamp
+* @{
+*/
+#define INVALID_TIMESTAMP   ((__u64)(-1))
+#define INVALID_DURATION    ((__u32)(-1))
+/*! @} */
+
+typedef enum
+{
+    VCODEC_VERSION_NONE = 0,
+
+    //codec RV version definition here
+    VCODEC_VERSION_RV_10 = 1,
+    VCODEC_VERSION_RV_13 = 2,
+    VCODEC_VERSION_RV_20 = 3,
+    VCODEC_VERSION_RV_30 = 4,
+    VCODEC_VERSION_RV_40 = 5,
+
+    //codec H265 version definition here
+    VCODEC_VERSION_H265_HM62 = 6,
+    VCODEC_VERSION_H265_HM91 = 7,
+    VCODEC_VERSION_H265_HM10 = 8,
+    VCODEC_VERSION_H265_HMV  = 9,
+
+    //codec SCRV version definition here
+    VCODEC_VERSION_SCRV_2 = 10,
+
+    //codec VP6 version definition here
+    VCODEC_VERSION_VP6_WITH_ALPHA = 11
+                                    //add other codec version from here
+} VCODECVERSION_T;
+
+typedef enum {
+    PROFILE_NONE = 0,
+
+    //H264 Profile Definition here
+    PROFILE_H264_BASELINE = 1,
+    PROFILE_H264_MAIN = 2,
+    PROFILE_H264_EXTENDED = 3,
+    PROFILE_H264_HIGH = 4,
+    PROFILE_H264_HIGH10 = 5,
+    PROFILE_H264_HIGH422 = 6,
+    PROFILE_H264_HIGH444 = 7,
+
+    PROFILE_RESERVED = 8
+} VID_PROFILE_E;
+
+typedef enum {
+    LEVEL_NONE = 0,
+
+    //H264 Level Definition here
+    LEVEL_H264_L1  = 1, // L1
+    LEVEL_H264_L1b = 2, // L1b
+    LEVEL_H264_L11 = 3, // L1.1
+    LEVEL_H264_L12 = 4, // L1.2
+    LEVEL_H264_L13 = 5, // L1.3
+    LEVEL_H264_L2  = 6, // L2
+    LEVEL_H264_L21 = 7, // L2.1
+    LEVEL_H264_L22 = 8, // L2.2
+    LEVEL_H264_L3  = 9, // L3
+    LEVEL_H264_L31 = 10,// L3.1
+    LEVEL_H264_L32 = 11,// L3.2
+    LEVEL_H264_L4  = 12,// L4
+    LEVEL_H264_L41 = 13,// L4.1
+    LEVEL_H264_L42 = 14,// L4.2
+    LEVEL_H264_L5  = 15,// L5
+    LEVEL_H264_L51 = 16,// L5.1
+
+    LEVEL_RESERVED = 17
+} VID_LEVEL_E;
+
+typedef enum
+{
+    AVCODEC_ID_NONE = 0,
+    AVCODEC_ID_UNKNOWN = 1,
+
+    AVCODEC_ID_MPEG1 = 100,
+    AVCODEC_ID_MPEG2,
+    AVCODEC_ID_MPEG4,
+    AVCODEC_ID_MJPEG,
+    AVCODEC_ID_H263,
+    AVCODEC_ID_SORENSON, /*SH263*/
+    AVCODEC_ID_H264,
+    AVCODEC_ID_H265,
+    AVCODEC_ID_DIVX3,
+    AVCODEC_ID_DIVX4,
+    AVCODEC_ID_DIVX5, //110
+    AVCODEC_ID_DIVX6,
+    AVCODEC_ID_WMV1,
+    AVCODEC_ID_WMV2,
+    AVCODEC_ID_WMV3,
+    AVCODEC_ID_VC1,
+    AVCODEC_ID_VP6,
+    AVCODEC_ID_VP8,
+    AVCODEC_ID_VP9,
+    AVCODEC_ID_RV,
+    AVCODEC_ID_SCRV, //120
+    AVCODEC_ID_SVQ3,
+    AVCODEC_ID_AV1,
+
+    AVCODEC_ID_AC3 = 200,
+    AVCODEC_ID_EAC3,
+    AVCODEC_ID_MPEG,
+    AVCODEC_ID_MPEG_LAYER_I,
+    AVCODEC_ID_MP3,
+    AVCODEC_ID_DTS,
+    AVCODEC_ID_DTSCD,
+    AVCODEC_ID_DTSHD_NO_XLL,
+    AVCODEC_ID_DTSHD_XLL,
+    AVCODEC_ID_WMA,
+    AVCODEC_ID_AAC, //210
+    AVCODEC_ID_AAC_PURE,
+    AVCODEC_ID_VORBIS,
+    AVCODEC_ID_PCM,
+    AVCODEC_ID_AUDIO_RAW,
+    AVCODEC_ID_AUDIO_G711_ALAW,
+    AVCODEC_ID_AUDIO_G711_MLAW,
+    AVCODEC_ID_AUDIO_MSGSM,
+    AVCODEC_ID_AUDIO_MS_ADPCM,
+    AVCODEC_ID_AUDIO_DVI_IMA_ADPCM,
+    AVCODEC_ID_APE, //220
+    AVCODEC_ID_FLAC,
+    AVCODEC_ID_RA_COOK,
+    AVCODEC_ID_RA_LPCJ,
+    AVCODEC_ID_RA_28_8,
+    AVCODEC_ID_RA_DNET,
+    AVCODEC_ID_RA_SIPR,
+    AVCODEC_ID_RA_RALF,
+    AVCODEC_ID_RA_ATRC,
+    AVCODEC_ID_HDMI_PCM,
+    AVCODEC_ID_AMR, //230
+    AVCODEC_ID_AWB,
+    AVCODEC_ID_NELLYMOSER,
+    AVCODEC_ID_SPEEX,
+    AVCODEC_ID_OPUS,
+    AVCODEC_ID_ALAC,
+    AVCODEC_ID_QDMC,
+    AVCODEC_ID_AC4,
+
+    AVCODEC_ID_TEXT_SRT = 300,
+    AVCODEC_ID_TEXT,
+    AVCODEC_ID_SUB,
+    AVCODEC_ID_XSUB,
+    AVCODEC_ID_XSUB_PLUS,
+    AVCODEC_ID_CC,
+} AVCODECID_T;
+
+typedef enum {
+    MM_PLAY_RATE_RW_32X = (__s32) - 32,
+    MM_PLAY_RATE_RW_16X = (__s32) - 16,
+    MM_PLAY_RATE_RW_8X = (__s32) - 8,
+    MM_PLAY_RATE_RW_4X = (__s32) - 4,
+    MM_PLAY_RATE_RW_2X = (__s32) - 2,
+    MM_PLAY_RATE_NORMAL = (__s32) 1,
+    MM_PLAY_RATE_FF_2X = (__s32) 2,
+    MM_PLAY_RATE_FF_4X = (__s32) 4,
+    MM_PLAY_RATE_FF_8X = (__s32) 8,
+    MM_PLAY_RATE_FF_16X = (__s32) 16,
+    MM_PLAY_RATE_FF_32X = (__s32) 32,
+} E_MM_PLAYR_RATE_T;
+
+/* Fast Forward or Rewind Playback */
+#define MM_IS_FFRW_PLAY(i4Rate)   (((i4Rate) >= (__s32)MM_PLAY_RATE_FF_2X) || \
+                                   ((i4Rate) <= (__s32)MM_PLAY_RATE_RW_2X))
+
+/* Fast Forward Playback */
+#define MM_IS_FF_PLAY(i4Rate)       ((i4Rate) >= (__s32)MM_PLAY_RATE_FF_2X)
+
+/* Fast Rewind Playback */
+#define MM_IS_RW_PLAY(i4Rate)       ((i4Rate) <= (__s32)MM_PLAY_RATE_RW_2X)
+
+/* Normal Playback */
+#define MM_IS_NORMAL_PLAY(i4Rate)   ((__s32)MM_PLAY_RATE_NORMAL == (i4Rate))
+
+#define MM_DIVXHT31_USE_NEW_FFRW_MECHANISM  0
+
+#define AHW_LIMIT       "[ACODEC][Chip limitation]"
+#define ACONT_LIMIT     "[ACODEC][Container limitation]"
+#define VHW_LIMIT       "[VCODEC][Chip limitation]"
+#define VCONT_LIMIT     "[VCODEC][Container limitation]"
+
+#ifdef MM_UNSUSED
+#undef MM_UNSUSED
+#endif
+#define MM_UNSUSED(x) (void)x  //for build warning: unused parameter
+
+#ifdef __cplusplus
+}
+#endif  /*
+ */
+
+#endif  /* MM_COMMON_H */

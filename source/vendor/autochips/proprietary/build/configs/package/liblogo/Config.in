@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBLOGO
+	bool "liblogo"
+	help
+	  Autochips liblogo.

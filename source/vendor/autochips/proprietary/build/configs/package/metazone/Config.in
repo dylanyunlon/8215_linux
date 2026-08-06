@@ -1,0 +1,4 @@
+config BR2_PACKAGE_METAZONE
+	bool "metazone"
+	help
+	  Autochips metazone.

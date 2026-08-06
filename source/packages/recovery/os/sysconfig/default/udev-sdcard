@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+#
+#
+
+if [ -d /sys/block/mmcblk1 ]; 
+then
+	if [ -d /sys/block/mmcblk1/mmcblk1p1 ];
+	then
+		echo "add" >> /sys/block/mmcblk1/mmcblk1p1/uevent
+	else	
+		echo "add" >> /sys/block/mmcblk1/uevent
+	fi
+fi
+
+if [ -d /sys/block/mmcblk2 ]; 
+then
+	if [ -d /sys/block/mmcblk2/mmcblk2p1 ];
+	then
+		echo "add" >> /sys/block/mmcblk2/mmcblk2p1/uevent
+	else	
+		echo "add" >> /sys/block/mmcblk2/uevent
+	fi
+fi

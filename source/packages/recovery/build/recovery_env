@@ -1,0 +1,39 @@
+#!/bin/sh
+
+#export host_sysroot=/home/atctest/linux/sources/build/tmp/sysroots/x86_64-linux
+#export recovery_qttools_path=$host_sysroot/usr/bin/qt5
+export recovery_top=$PWD
+export recovery_build=$recovery_top/build
+export recovery_app=$recovery_top/app
+export recovery_app2=$recovery_top/app2
+export recovery_os=$recovery_top/os
+export recovery_out=$recovery_top/out
+export recovery_lib=$recovery_top/lib 
+export recovery_sysroot=$recovery_out/sysroot
+
+#export QMAKESPEC=$recovery_build/mkspecs/linux-oe-g++
+#export QMAKE=$recovery_qttools_path/qmake
+#export REC_QMAKE_UIC=$recovery_qttools_path/uic
+#export REC_QMAKE_RCC=$recovery_qttools_path/rcc
+#export REC_QMAKE_MOC=$recovery_qttools_path/moc
+#export REC_QMAKE_QDBUSCPP2XML=$recovery_qttools_path/qdbuscpp2xml
+
+#export REC_QMAKE_QDBUSXML2CPP=$recovery_qttools_path/qdbusxml2cpp
+#export REC_QMAKE_INCDIR_QT=$host_sysroot/usr/include/qt5
+
+#export REC_QMAKE_CXX="arm-poky-linux-gnueabi-g++  -march=armv7-a -mthumb-interwork -mfloat-abi=softfp -mfpu=neon --sysroot=$recovery_sysroot"
+#export REC_QMAKE_LINK="arm-poky-linux-gnueabi-g++  -march=armv7-a -mthumb-interwork -mfloat-abi=softfp -mfpu=neon --sysroot=$recovery_sysroot"
+#export REC_QMAKE_CC="arm-poky-linux-gnueabi-gcc  -march=armv7-a -mthumb-interwork -mfloat-abi=softfp -mfpu=neon --sysroot=$recovery_sysroot"
+#export REC_QMAKE_AR="arm-poky-linux-gnueabi-ar"
+#export REC_QMAKE_STRIP="arm-poky-linux-gnueabi-strip"
+#
+#export REC_QMAKE_CXXFLAGS=" -O2 -pipe -g -feliminate-unused-debug-types"
+#export REC_QMAKE_CFLAGS=" -O2 -pipe -g -feliminate-unused-debug-types"
+#export REC_QMAKE_LDFLAGS="-Wl,-O1 -Wl,--hash-style=gnu -Wl,--as-needed"
+
+#export REC_QMAKE_PATH_HOST_BINS="$recovery_qttools_path"
+#export REC_QMAKE_QT_CONFIG="$recovery_build/mkspecs/qconfig.pri"
+
+#export REC_QMAKE_LIBDIR_QT="$recovery_sysroot"
+
+echo "recovery env setup done!"

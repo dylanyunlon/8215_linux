@@ -1,0 +1,4 @@
+config BR2_PACKAGE_OPENSSLPREBUILT
+    bool "opensslprebuilt"
+    help
+      OpenSSL 1.1.1g prebuilt library for Android Auto

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBATCSURFACE
+	bool "libsurface_atc"
+	help
+	  this is a libsurface_atc

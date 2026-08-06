@@ -1,0 +1,140 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          dbus
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: D-Bus System Message Bus
+# Description:       D-Bus is a message bus system for inter-process communication.
+### END INIT INFO
+#dbus:x:103:103:D-Bus Message Daemon:/var/run/dbus:/usr/sbin/nologin
+#dbus:x:103:
+DAEMON=/usr/bin/dbus-daemon
+PIDFILE=/var/run/dbus/pid
+SOCKET=/var/run/dbus/system_bus_socket
+DESC="D-Bus Message Bus"
+USER=dbus
+MES_PIDFILE=/var/run/messagebus.pid
+# Fixed session bus address
+SESSION_BUS_ADDRESS="unix:abstract=/tmp/dbus-service"
+
+# Check prerequisites
+check_prerequisites() {
+    if [ ! -x "$DAEMON" ]; then
+        echo "Error: $DAEMON not found or not executable."
+        exit 1
+    fi
+
+    if ! command -v start-stop-daemon >/dev/null 2>&1; then
+        echo "Error: start-stop-daemon command not found."
+        exit 1
+    fi
+
+    if ! id "$USER" >/dev/null 2>&1; then
+        echo "Error: User $USER does not exist. Please create the user before starting $DESC."
+        exit 1
+    fi
+}
+
+start() {
+    echo "Starting $DESC..."
+    check_prerequisites
+
+    if [ ! -d "/var/run/dbus" ]; then
+        mkdir -p /var/run/dbus
+        chown dbus:dbus /var/run/dbus
+        chmod 755 /var/run/dbus
+    fi
+
+    # 检查并创建 system_bus_socket 文件
+    if [ -e "$SOCKET" ]; then
+        rm -rf "$SOCKET"
+    fi
+
+    if [ -e "$MES_PIDFILE" ]; then
+        rm -rf "$MES_PIDFILE"
+    fi
+
+    start-stop-daemon --start --quiet --pidfile "$PIDFILE" \
+        --exec "$DAEMON" -- --system --fork --print-pid > "$PIDFILE" 2>/dev/null
+
+    RETVAL=$?
+    if [ $RETVAL -eq 0 ] && [ -e "$PIDFILE" ]; then
+        echo "$DESC started successfully."
+        logger -t dbus-init "$DESC started successfully."
+    else
+        echo "Failed to start $DESC. Error code: $RETVAL."
+        logger -t dbus-init "Failed to start $DESC. Error code: $RETVAL."
+    fi
+
+    # Start the session bus with a fixed address
+    dbus-daemon --session --fork --address="$SESSION_BUS_ADDRESS" > /dev/null 2>&1
+    RETVAL=$?
+    if [ $RETVAL -eq 0 ]; then
+        echo "Session bus started successfully at $SESSION_BUS_ADDRESS."
+        export DBUS_SESSION_BUS_ADDRESS="$SESSION_BUS_ADDRESS"
+        echo "export DBUS_SESSION_BUS_ADDRESS=\"$SESSION_BUS_ADDRESS\"" >> /etc/environment
+        logger -t dbus-init "Session bus started successfully at $SESSION_BUS_ADDRESS."
+    else
+        echo "Failed to start session bus."
+        logger -t dbus-init "Failed to start session bus."
+    fi
+}
+
+stop() {
+    echo "Stopping $DESC..."
+    start-stop-daemon --stop --quiet --pidfile "$PIDFILE" --retry 5
+    RETVAL=$?
+    if [ $RETVAL -eq 0 ]; then
+        echo "$DESC stopped successfully."
+        rm -f "$PIDFILE" "$SOCKET"
+        logger -t dbus-init "$DESC stopped successfully."
+    else
+        echo "Failed to stop $DESC. Error code: $RETVAL."
+        logger -t dbus-init "Failed to stop $DESC. Error code: $RETVAL."
+    fi
+}
+
+restart() {
+    echo "Restarting $DESC..."
+    stop
+    start
+}
+
+status() {
+    if [ -e "$PIDFILE" ]; then
+        PID=$(cat "$PIDFILE")
+        if kill -0 "$PID" >/dev/null 2>&1; then
+            echo "$DESC is running (PID: $PID)."
+            return 0
+        else
+            echo "$DESC PID file exists but process not running."
+            return 1
+        fi
+    else
+        echo "$DESC is not running."
+        return 3
+    fi
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        restart
+        ;;
+    status)
+        status
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1
+        ;;
+esac
+
+exit 0

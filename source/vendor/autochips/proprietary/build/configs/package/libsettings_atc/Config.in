@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBSETTINGS_ATC
+	bool "libsettings_atc"
+	help
+	  this is a libsettings_atc

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_VIDEOIN_V4L2
+	bool "libvideoin_v4l2"
+	help
+	  this is a videoin v4l2 so

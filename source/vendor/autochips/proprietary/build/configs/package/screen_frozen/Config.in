@@ -1,0 +1,4 @@
+config BR2_PACKAGE_SCREEN_FROZEN
+	bool "screen frozen config"
+	help
+	  this is screen frozen configuration application.

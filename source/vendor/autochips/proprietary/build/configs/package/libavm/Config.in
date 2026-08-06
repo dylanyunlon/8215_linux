@@ -1,0 +1,5 @@
+config BR2_PACKAGE_LIBAVM
+	bool "libavm so"
+	select BR2_PACKAGE_OPENCV3
+	help
+	  this is a avm algo so

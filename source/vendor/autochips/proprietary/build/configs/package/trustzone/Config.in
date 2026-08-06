@@ -1,0 +1,4 @@
+config BR2_PACKAGE_TRUSTZONE
+	bool "trustzone"
+	help
+	  Autochips trustzone.

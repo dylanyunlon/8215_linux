@@ -1,0 +1,198 @@
+#!/bin/sh
+#
+# rcS		Call all S??* scripts in /etc/rcS.d in
+#		numerical/alphabetical order.
+#
+# Version:	@(#)/etc/init.d/rcS  2.76  19-Apr-1999  miquels@cistron.nl
+#
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/libexec:/usr/lib
+#PATH=$QTDIR/bin:$PATH
+#LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+export UDEV_CONFIG_FILE=/etc/udev/udev.conf
+
+runlevel=S
+prevlevel=N
+umask 022
+export PATH runlevel prevlevel QTDIR UDEV_CONFIG_FILE
+
+#	Make sure proc is mounted
+#
+[ -d "/proc/1" ] || mount /proc
+
+echo "path:" $PATH
+
+#
+#	Source defaults.
+#
+. /etc/default/rcS
+#load fstab
+mount -a
+mkdir -p /run/udev
+#mkdir /mnt/mysd
+
+#create udisk & sdcard point
+#mkdir /media/ext_sdcard1
+#mkdir /media/ext_sdcard2
+#mkdir /media/udisk1
+#mkdir /media/udisk2
+#mkdir /media/udisk3
+#mkdir /media/udisk4
+#mkdir /media/udisk5
+
+#create symlink at root
+#ln -s /media/ext_sdcard1/
+#ln -s /media/ext_sdcard2/
+#ln -s /media/udisk1/
+#ln -s /media/udisk2/
+#ln -s /media/udisk3/
+#ln -s /media/udisk4/
+#ln -s /media/udisk5/
+
+ln -s /bin/busybox /bin/insmod
+#exec /etc/init.d/atc_init
+##mkdir  /usr
+#mount -t ext4 -o rw,nosuid,nodev,noatime,nodiratime,nodelalloc,commit=1,barrier=1,auto_da_alloc /dev/system /usr
+#mount -t sysfs sysfs /sys
+
+# mount app partition
+mkdir -p /app
+mount -t ext4 -o rw,nosuid,nodev,noatime,nodiratime,nodelalloc,commit=1,barrier=1,auto_da_alloc /dev/mtkd10  /app
+
+#ln -s /usr/lib/* /lib
+ln -s /proc/mounts /etc/mtab
+mount -a
+mount -t debugfs none /sys/kernel/debug
+
+mkdir /media/sdcard
+mount -t vfat -o rw,umask=007,utf8 /dev/usrdata /media/sdcard
+ln -s /media/sdcard/ 
+
+#put system log under usrdata
+rm  -rf /var/log
+ln -s /media/sdcard /var/log
+
+
+#add rule for udev
+cp -rf /usr/libexec/udev/rules.d/75-tty-description.rules  /etc/udev/rules.d/
+
+rm -rf /usr/var/run/dbus/
+mkdir -p /usr/var/run/dbus/
+
+mkdir -p /var/lib/dbus/
+sh /etc/dbus-lunch.sh
+
+# Think __TWICE__ to modify this insmod order.
+#
+# Algrithm:
+#    1. Use three step;
+#    2. If the driver can insmod later, to insmod it later.
+#
+insmod0 () {
+	#insmod /usr/drivers/oal.ko &
+	#insmod /usr/drivers/libosal.ko &
+	insmod /usr/drivers/drvstc.ko &
+	insmod /usr/drivers/drvmmisc.ko &
+	insmod /usr/drivers/pwm.ko &
+	wait
+
+# depend drvstc.ko + drvmmisc.ko
+	insmod /usr/drivers/adec.ko &
+
+# depend pwm.ko
+	insmod /usr/drivers/atc_bl.ko &
+	
+# independent above, but need by insmod1, insmod2
+	insmod /usr/drivers/imgresz.ko &
+	insmod /usr/drivers/videobuf-core.ko &
+	insmod /usr/drivers/videobuf2-core.ko &
+	insmod /usr/drivers/videobuf2-memops.ko &
+	insmod /usr/drivers/mtz_drv.ko &
+	wait
+}
+
+insmod1 () {
+# depend drvstc.ko + drvmmisc.ko + adec.ko
+	insmod /usr/drivers/drvdmx.ko &
+
+# depend pwm.ko	+ imageresz.ko + atc_bl.ko
+	insmod /usr/drivers/atcfb.ko COLOR_DEPTH_32_BIT=1 &
+	insmod /usr/drivers/vcp.ko &
+
+# depend adec.ko + mtz_drv.ko
+	insmod /usr/drivers/mhldrv.ko &
+	
+# depend videobuf2-memops.ko
+	insmod /usr/drivers/videobuf2-vmalloc.ko &
+	insmod /usr/drivers/videobuf2-dma-contig.ko &
+
+# depend videobuf-core.ko
+	insmod /usr/drivers/videobuf-dma-contig.ko &
+
+# depend imgresz.ko
+	insmod /usr/drivers/imgcommon.ko &
+
+# independent above, but need by insmod2
+	insmod /usr/drivers/tvd.ko &
+	insmod /usr/drivers/libcomposite.ko &
+	insmod /usr/drivers/ump.ko &
+	insmod /usr/drivers/ybr.ko &
+	insmod /usr/drivers/wch.ko &
+
+	wait
+}
+
+insmod2 () {
+# depend videobuf-core.ko + videobuf_dma_contig + atcfb.ko + imgresz.ko + atc_bl.ko + pwm.ko + vcp.ko
+	insmod /usr/drivers/atc-vout.ko &
+
+# depend drvstc.ko + drvmmisc.ko + adec.ko + ybr.ko + wch.ko + tvd.ko
+# + videobuf2-core.ko + videobuf2-vmalloc.ko + videobuf2-memops.ko + videobuf2-dma-contig.ko 
+	insmod /usr/drivers/avin.ko &
+	
+# depend drvdmx.ko + adec.ko + mhldrv.ko + wch.ko + drvstc.ko + drvmmisc.ko
+# + videobuf2-core.ko + videobuf2-vmalloc.ko + videobuf2-memops.ko
+	insmod /usr/drivers/hdmi_in.ko &
+	
+# depend libcomposite.ko
+	insmod /usr/drivers/g_ether.ko &
+    
+# depend ump.ko
+	insmod /usr/drivers/mali.ko &
+	
+# depend atcfb.ko + imgresz.ko + atc_bl.ko + pwm.ko
+	insmod /usr/drivers/backcar.ko &
+	
+# depend adec.ko + drvstc.ko + drvmmisc.ko
+	insmod /usr/drivers/drvcli.ko &
+
+# depend imgcommon.ko + imgresz.ko + drvmmisc.ko
+	insmod /usr/drivers/pdec.ko &
+	insmod /usr/drivers/jdec.ko &
+	insmod /usr/drivers/gdec.ko &
+
+# depend imgresz.ko + drvmmisc.ko
+	insmod /usr/drivers/vdec.ko &
+    
+# independent above
+	#insmod /usr/drivers/gps.ko &
+	insmod /usr/drivers/gps_6630.ko &
+	#insmod /usr/drivers/usb_hcd_hub.ko usb_protocol=usb2.0 &
+	insmod /usr/drivers/mtk_wmt_detect.ko &
+}
+
+insmod0
+insmod1
+insmod2 
+
+#
+#	Trap CTRL-C &c only in this shell so we can interrupt subprocesses.
+#
+
+trap ":" INT QUIT TSTP
+
+#
+#	Call all parts in order.
+#
+#exec /etc/init.d/rc S
+

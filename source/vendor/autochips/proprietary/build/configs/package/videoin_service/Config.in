@@ -1,0 +1,5 @@
+config BR2_PACKAGE_VIDEOIN_SERVICE
+	bool "videoin_service"
+	depends on BR2_PACKAGE_VIDEOIN_PREVIEW
+	help
+	  this is a videoin service

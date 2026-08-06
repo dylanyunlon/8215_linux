@@ -1,0 +1,10 @@
+# For Ash
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/libexec
+#PATH=$QTDIR/bin:$PATH
+#LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+export UDEV_CONFIG_FILE=/etc/udev/udev.conf
+
+export TEST_ASH=/bin/sh
+
+export PATH runlevel prevlevel QTDIR UDEV_CONFIG_FILE

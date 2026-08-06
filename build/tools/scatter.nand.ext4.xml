@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<NFLASH desc="----------  AC8317 EVB Bootup Scatter File  ----------">
+ <partition name="boot"   type="raw" mount="0" startaddress="0x0" size="0x400000" imagename="ac83xx_bootloader_ddr3_dcon.bin" rw_attribute="RO" >
+ </partition>
+ <partition name="env"   type="raw" mount="0" startaddress="0x400000" size="0x200000" imagename="" rw_attribute="RW" >
+ </partition>
+ <partition name="trustzone"   type="raw" mount="0" startaddress="0x600000" size="0x400000" imagename="tz.bin" rw_attribute="RO" >
+ </partition>
+ <partition name="arm2"   type="raw" mount="0" startaddress="0xA00000" size="0x200000" imagename="arm2.bin" rw_attribute="RO" >
+ </partition>
+ <partition name="dvp"   type="raw" mount="0" startaddress="0xC00000" size="0x400000" imagename="target.bin" rw_attribute="RO" >
+ </partition>
+ <partition name="kernel"   type="raw" mount="0" startaddress="0x1000000" size="0xF00000" imagename="Image.bin" rw_attribute="RO" >
+ </partition>
+ <partition name="dtb"   type="raw" mount="0" startaddress="0x1F00000" size="0x100000" imagename="ac83xx.dtb.bin" rw_attribute="RO" >
+ </partition>
+ <partition name="system"   type="ext4" mount="1" startaddress="0x2000000" size="0x15E00000" imagename="system.img.ext4" rw_attribute="RO" >
+ </partition>
+ <partition name="recovery"   type="raw" mount="0" startaddress="0x17E00000" size="0xA00000" imagename="recovery.gz" rw_attribute="RO" >
+ </partition>
+ <partition name="appbk"   type="ext4" mount="1" startaddress="0x18800000" size="0x6400000" imagename="appbk.img.ext4" rw_attribute="RO" >
+ </partition>
+ <partition name="app"   type="ext4" mount="1" startaddress="0x1EC00000" size="0x6400000" imagename="app.img.ext4" rw_attribute="RW" >
+ </partition>
+ <partition name="data"   type="raw" mount="1" startaddress="0x25000000" size="0xA00000" imagename="" rw_attribute="RW" >
+ </partition>
+ <partition name="logo"   type="raw" mount="0" startaddress="0x25A00000" size="0x400000" imagename="logo.mrf" rw_attribute="RW" >
+ </partition>
+ <partition name="cache"   type="raw" mount="1" startaddress="0x25E00000" size="0x400000" imagename="" rw_attribute="RW" >
+ </partition>
+ <partition name="misc"   type="raw" mount="0" startaddress="0x26200000" size="0x200000" imagename="" rw_attribute="RW" >
+ </partition>
+ <partition name="metazone"   type="raw" mount="0" startaddress="0x26400000" size="0x400000" imagename="metazone.bin" rw_attribute="RW" >
+ </partition>
+ <partition name="backup"   type="ext4" mount="1" startaddress="0x26800000" size="0xA00000" imagename="fake.img.ext4" rw_attribute="RO" >
+ </partition>
+</NFLASH>

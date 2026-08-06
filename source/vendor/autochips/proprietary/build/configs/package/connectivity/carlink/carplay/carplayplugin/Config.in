@@ -1,0 +1,8 @@
+config BR2_PACKAGE_CARPLAYPLUGIN
+	bool "carplayplugin component"
+	select BR2_PACKAGE_APPLEPLUGIN
+	select BR2_PACKAGE_IAP
+	select BR2_PACKAGE_LIBATCSURFACE
+	help
+		libcarplaypluginclient, libcarplayplugincommon, libcarplay_av_core, libcarplay_plugin_impl, libcarplayhid,
+		libaudiostream, libscreenstream, libaudioconverter, carplaypluginservice.

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_VIDEOIN_DI
+	bool "libvideoin_di"
+	help
+	  this is a videoin di so

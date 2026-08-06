@@ -1,0 +1,6 @@
+config BR2_PACKAGE_SINGLEPANEL_APP
+	bool "singlepanel-app"
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
+	help
+	  this is a qt singlepanel-app

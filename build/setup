@@ -1,0 +1,130 @@
+#!/bin/bash
+
+TOPDIR=$PWD
+CONIG_DIR=$TOPDIR/out/config
+PROJ_DIR=$TOPDIR/build/project/evb_8317/
+TOOL_DIR=$TOPDIR/build/tools/
+KERNEL_DTS_DIR=$TOPDIR/source/kernel/kernel-3.18/arch/arm/boot/dts/
+AC83XX_BOOT_DEVICE="nand"
+AC83XX_BOOT_DEVICE_SIZE="128"
+PRODUCT_DEVICE="ac83xx"
+ATC_DEBUG_TYPE=userdebug
+ATC_AB_PARTITION_SUPPORT=false
+OPT_DEF=_all
+ATC_DDR_SIZE=128
+ATC_DDR_SIZE_HEX=8000000
+CONFIG_RSV_END=0
+ATC_SHOW_VBA=false
+#default is awtk
+#Optional value: awtk, qt, lvgl...
+#If use qt, nand size must be eq 256M
+UI_FRAMEWORK="awtk"
+# Submit build job to computing farm to avoid heavy build loading
+
+usage()
+{
+	echo "Usage:	$0 [-v] [-p <project>] [-t target] [platform] [-u qt/awtk/lvgl]";
+	echo "Examples: $0 -v -t atc-image-ivi-full ac8015_evb";
+	exit 1;
+}
+
+OPTIND=1
+while getopts "a:d:m:s:t:u:" opt
+do
+	case "$opt" in
+	a)
+		echo "OPTARG = $OPTARG";
+		IFS="-" read -r key value key2 value2<<< "$OPTARG"
+		AC83XX_BOOT_DEVICE=${key:-$AC83XX_BOOT_DEVICE}
+		AC83XX_BOOT_DEVICE_SIZE=${value:-$AC83XX_BOOT_DEVICE_SIZE}
+		ATC_DDR_SIZE=${value2:-$ATC_DDR_SIZE}
+		echo "ATC_DDR_SIZE = $ATC_DDR_SIZE";
+		ATC_DDR_SIZE_HEX_TMP=$((ATC_DDR_SIZE * 1024 * 1024))
+		echo "ATC_DDR_SIZE_TMP = $ATC_DDR_SIZE_HEX_TMP";
+		ATC_DDR_SIZE_HEX=$(printf "%X" $ATC_DDR_SIZE_HEX_TMP)
+	;;
+	r)
+		USER_ROOT=yes
+	;;
+	s)
+		ATC_SHOW_VBA="$OPTARG"
+	;;
+	m)
+		echo "ATC_AB_PARTITION_SUPPORT = $OPTARG";
+		ATC_AB_PARTITION_SUPPORT="$OPTARG"
+	;;
+	d)
+		echo "ATC_DEBUG_TYPE = $OPTARG";
+		ATC_DEBUG_TYPE="$OPTARG"
+	;;
+	p)
+		PRODUCT_DEVICE=$OPTARG
+	;;
+	t)
+		BUILD_TEST=$OPTARG
+	;;
+	u)
+		UI_FRAMEWORK="$OPTARG"
+	;;
+	*)
+		echo "Unknown option"
+		usage
+	;;
+	esac
+done
+
+shift $((OPTIND-1))
+
+_gen_rsv_cfg() {
+	if [ -d ${CONIG_DIR} ];then
+		echo "CONIG_DIR is exist"
+	else
+		mkdir -p ${CONIG_DIR}
+	fi
+
+	python3 ${TOOL_DIR}/gen_rsv_dtsi.py --in ${PROJ_DIR}/rsv.csv --out ${CONIG_DIR}/rsv.dtsi --top "0x$ATC_DDR_SIZE_HEX"
+	python3 ${TOOL_DIR}/gen_rsv.py  ${CONIG_DIR}/rsv.dtsi  ${CONIG_DIR}/  "0x$ATC_DDR_SIZE_HEX"
+	python3 ${TOOL_DIR}/gen_boot_misc.py  --in ${CONIG_DIR}/rsv.dtsi  --out ${CONIG_DIR}/boot_misc.bin
+}
+
+_gen_rsv_cfg
+#CONFIG_RSV_END=`grep -rn "CONFIG_RSV_END"  ${CONIG_DIR}/rsv.mk | awk '{print $3}'`
+#CONFIG_KERNEL_START=`grep -rn "CONFIG_KERNEL_START"  ${CONIG_DIR}/rsv.mk | awk '{print $3}'`
+CONFIG_ARGS_START=`grep -rn "CFG_ARGS_RESERVED_ADDR"  ${CONIG_DIR}/rsv.mk | awk '{print $3}'`
+CONFIG_ARGS_SIZE=`grep -rn "CFG_ARGS_RESERVED_SIZE"  ${CONIG_DIR}/rsv.mk | awk '{print $3}'`
+
+# BT/WiFi config
+if [[ -d source/packages/connectivity/wifi/public/
+        && ("${AC83XX_BOOT_DEVICE}-${ATC_AB_PARTITION_SUPPORT}" != "nand-true"
+            || ${AC83XX_BOOT_DEVICE_SIZE} -ge 512) ]]; then
+    export ATC_WIFI_CHIP="AIC8800"
+    export ATC_BT_CHIP="AIC8800"
+    export ATC_WLAN_TRANSMISSION_MODE="SDIO_MODE"
+    export ATC_QT5QUICKCONTROLS_SUPPORT="true"
+else
+    export ATC_WIFI_CHIP=""
+    export ATC_BT_CHIP=""
+    export ATC_WLAN_TRANSMISSION_MODE=""
+    export ATC_QT5QUICKCONTROLS_SUPPORT="false"
+fi
+
+export AC83XX_BOOT_DEVICE AC83XX_BOOT_DEVICE_SIZE ATC_DDR_SIZE ATC_DDR_SIZE_HEX
+export CONFIG_RSV_END CONFIG_KERNEL_START CONFIG_ARGS_START CONFIG_ARGS_SIZE
+export USER_ROOT ATC_DEBUG_TYPE PRODUCT_DEVICE ATC_AB_PARTITION_SUPPORT  ATC_SHOW_VBA BUILD_TEST UI_FRAMEWORK
+# Print configure param
+echo "****************************************************"
+echo "Confirm build param:"
+echo "  BOOT_DEVICE:		 ${AC83XX_BOOT_DEVICE}"
+echo "  BOOT_DEVICE_SIZE:		 ${AC83XX_BOOT_DEVICE_SIZE}"
+echo "  ATC_DEBUG_TYPE:		 ${ATC_DEBUG_TYPE}"
+echo "  ATC_AB_PARTITION_SUPPORT:		 ${ATC_AB_PARTITION_SUPPORT}"
+echo "  ATC_DDR_SIZE:		 ${ATC_DDR_SIZE}"
+echo "  ATC_DDR_SIZE_HEX:		 ${ATC_DDR_SIZE_HEX}"
+echo "  CONFIG_RSV_END:		 ${CONFIG_RSV_END}"
+echo "  CONFIG_KERNEL_START:		 ${CONFIG_KERNEL_START}"
+echo "  CONFIG_ARGS_START:		 ${CONFIG_ARGS_START}"
+echo "  ATC_SHOW_VBA:		 ${ATC_SHOW_VBA}"
+echo "  UI_FRAMEWORK:		 ${UI_FRAMEWORK}"
+echo "****************************************************"
+
+echo "env setup ok !!!!!!!!!!!!!!!!!!!"

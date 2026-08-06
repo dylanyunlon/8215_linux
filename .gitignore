@@ -1,0 +1,12 @@
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.zip
+*.bin
+*.img
+*.o
+*.so
+*.a
+*.d
+*.ko
+out/

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_VIDEOIN_SETTING
+	bool "libvideoin_setting"
+	help
+	  this is a videoin setting so

@@ -1,0 +1,23 @@
+Index,Label,Node Name,Size(B),Compatible,Mapped,Static,alignment (B),addr_flag,Config
+1,boot_reserved,boot,65536,"""atc-boot""",no-map,yes,0,1,0xFFFFFFFF
+2,lask_kmsg_reserved,last_kmsg,262144,"""atc-last_kmsg""",no-map,yes,0,1,0xFFFFFFFF
+3,trustzone_share_reserved,trustzoneshare,327680,"""atc-trustzone_share""",no-map,yes,0,1,0xFFFFFFFF
+4,trustzone_reserved,trustzone,1048576,"""atc-trustzone""",no-map,yes,1048576,1,0xFFFFFFFF
+5,arm2_reserved,arm2,5242880,"""atc-arm2-reserved""",no-map,yes,0,1,0xFFFFFFFF
+6,framebuffer_reserved,framebuffer,8388608,"""atc-framebuffer""",no-map,yes,0,1,0xFFFFFFFF
+7,args_reserved,args_rsv,4096,"""atc-args_rsv""",no-map,yes,0,1,0xFFFFFFFF
+8,metazone_reserved,metazone,131072,"""atc-metazone-mem""",no-map,yes,0,1,0xFFFFFFFF
+9,datazone_reserved,datazone,491520,"""atc-datazone""",no-map,yes,0,1,0xFFFFFFFF
+10,wch_reserved,wch_rsv,159744,"""atc-wch""",no-map,yes,0,1,0xFFFFFFFF
+11,animation_reserved,animation,15728640,"""atc-animation-reserved""",map,yes,0,0,0xFFFFFFFF
+12,dal_reserved,dal,1245184,"""atc-dal""",no-map,yes,0,0,0xFFFFFFFF
+13,audio_r1,dsp,2490368,"""atc-audio-dsp""",no-map,yes,1048576,0,0xFFFFFFFF
+14,audio_r2,afifo,655360,"""atc-audio-fifo""",no-map,yes,1048576,0,0xFFFFFFFF
+15,vba_reserved,vba,2097152,"""atc-vba""",no-map,yes,4096,0,0xFFFFFFFF
+16,mm_reserved,multimedia,8388608,"""atc-multimedia""",no-map,yes,4096,0,0xFFFFFFF1
+16,mm_reserved,multimedia,17825792,"""atc-multimedia""",no-map,yes,4096,0,0xFFFFFFFE
+17,imglinebuf_reserved,imglinebuf,24576,"""atc-image-linebuf""",map,yes,0,0,0xFFFFFFFF
+18,imageresize_reserved,imageresize,11534336,"""atc-imageresize""",map,yes,0,0,0xFFFFFFFF
+19,arm2_backcar_ui_reserved,arm2_backcar_ui,4096,"""atc-arm2-backcar-ui""",map,yes,0,0,0xFFFFFFFF
+20,console_reserved,console_rsv,2097152,"""atc-console_rsv""",map,yes,0,0,0xFFFFFFFF
+21,END,,,,,,,,

@@ -1,0 +1,21 @@
+TARGET := arm
+
+LOCAL_SRC_FILES := $(wildcard *.cpp)
+
+LOCAL_INCLUDES := .
+LOCAL_INCLUDES += ../include/
+LOCAL_INCLUDES += ../../utils/
+LOCAL_INCLUDES += ../../appobj/include/
+LOCAL_INCLUDES += ../../globalbus/include/
+LOCAL_INCLUDES += ../../../oss/lib/gnuarm-4.8.2_vfp/libxml2/2.9.1/usr/include/libxml2/
+
+LOCAL_LIB_PATH += $(DA_LIBDIR)/lib
+
+LOCAL_SHARE_LIBRARIES := -lpthread -ldl -lglobarbus -lxml2
+LOCAL_STATIC_LIBRARIES := -lapputils
+
+LOCAL_MODULE := appmanager
+
+LOCAL_DEBUG := true
+
+include $(BUILD_EXECUTABLE)

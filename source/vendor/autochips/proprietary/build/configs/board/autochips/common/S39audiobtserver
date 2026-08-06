@@ -1,0 +1,39 @@
+#! /bin/bash
+#
+# audio_bt_server
+#
+# description: Run audio_bt_server
+
+
+start() {
+	echo "audio_bt_server start"
+	/usr/bin/audio_bt_server &
+}
+
+stop() {
+	echo "audio_bt_server stop"
+	killall audio_bt_server
+}
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	stop
+	start
+	;;
+  status)
+	;;
+  condrestart)
+	stop
+	start
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart|condrestart}"
+	exit 1
+esac
+

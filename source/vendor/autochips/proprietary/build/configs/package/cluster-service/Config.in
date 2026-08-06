@@ -1,0 +1,4 @@
+config BR2_PACKAGE_CLUSTER_SERVICE
+	bool "cluster-service"
+	help
+	  this is a cluster-service

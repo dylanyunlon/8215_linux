@@ -1,0 +1,11 @@
+config BR2_PACKAGE_BTPTS_TOOL
+	bool "btpts_tool"
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_TINYXML2
+	select BR2_PACKAGE_BLUECOMMON
+	select BR2_PACKAGE_BLUECLIENT
+	select BR2_PACKAGE_UNIVERSAL_UTILS
+
+	help
+	  this is a btpts_tool

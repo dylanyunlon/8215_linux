@@ -1,0 +1,174 @@
+#define HMI_VERTEX_SHADER_OFFSET                                 (0x00000000+HMI_FLASH_OFFSET)
+#define HMI_VERTEX_SHADER_LEN                                    0x00002778
+#define HMI_FRAGMENT_SHADER_OFFSET                               (0x00002778+HMI_FLASH_OFFSET)
+#define HMI_FRAGMENT_SHADER_LEN                                  0x00003e10
+#define hmi_bck_left_image_lossyRGB888	{0,0,2,1,1,311,311}
+#define hmi_fuel_logo_image_lossyARGB8888_alpha	{0,0,1,1,1,15,20}
+#define hmi_empty_image1_lossyARGB8888_alpha	{0,0,1,1,23,8,11}
+#define hmi_full_image1_lossyARGB8888_alpha	{0,0,1,1,36,8,11}
+ static HMI_COMPRESS_IMAGE_LIST_STR CONST DISPLAY_FLASH_ROM hmi_speed_ten_image_list_lossyARGB8888_alpha10[ ]=
+{
+	 {0,0,1,18,1,27,32}
+	,{0,0,1,47,1,27,32}
+	,{0,0,1,76,1,27,32}
+	,{0,0,1,105,1,27,32}
+	,{0,0,1,134,1,27,32}
+	,{0,0,1,163,1,27,32}
+	,{0,0,1,192,1,27,32}
+	,{0,0,1,221,1,27,32}
+	,{0,0,1,250,1,27,32}
+	,{0,0,1,279,1,27,32}
+};
+
+#define hmi_speed_zero_image_list_lossyARGB8888_alpha10	hmi_speed_ten_image_list_lossyARGB8888_alpha10
+#define hmi_speed_hundred_image_list_lossyARGB8888_alpha10	hmi_speed_ten_image_list_lossyARGB8888_alpha10
+#define hmi_pointer_image_lossyARGB8888_alpha	{0,0,1,18,35,48,76}
+#define hmi_upper_bottom_image_lossyARGB8888_alpha	{0,0,1,68,35,192,37}
+#define hmi_upper_zone_image_lossyARGB8888_alpha	{0,0,1,68,74,433,87}
+#define hmi_hev_image_lossyARGB8888_alpha	{0,0,1,308,1,28,12}
+#define hmi_left_array_image_dxy_lossyARGB8888_alpha	{0,0,1,338,1,36,27}
+#define hmi_right_array_grey_image_lossyARGB8888_alpha	{0,0,1,376,1,36,27}
+#define hmi_charge_image_lossyARGB8888_alpha	{0,0,1,1,49,15,19}
+#define hmi_bck_right_image_lossyRGB888	{0,0,2,314,1,311,311}
+#define hmi_right_pointer_image_lossyARGB8888_alpha	hmi_pointer_image_lossyARGB8888_alpha
+#define hmi_rpm_image_list_lossyARGB8888_alpha10	hmi_speed_ten_image_list_lossyARGB8888_alpha10
+#define hmi_near_image_lossyARGB8888_alpha	{0,0,1,414,1,27,27}
+#define hmi_near_image_image19_lossyARGB8888_alpha	{0,0,1,443,1,27,27}
+#define hmi_middle_bck_image34_lossyARGB8888_alpha	{0,0,1,68,163,191,253}
+#define hmi_car_image_lossyARGB8888_alpha	{0,0,1,68,418,56,140}
+#define hmi_car_light_image_lossyARGB8888_alpha	{0,0,1,503,74,119,63}
+#define hmi_rear_light_left_image_dxy_lossyARGB8888_alpha	{0,0,1,472,1,16,19}
+#define hmi_rear_light_right_image_dxy_lossyARGB8888_alpha	{0,0,1,490,1,16,19}
+#define hmi_navi_arrow_image_lossyRGB888	{0,0,2,627,1,187,51}
+#define hmi_arrow_go_ahead_image_lossyARGB8888_alpha	{0,0,1,18,113,19,33}
+#define hmi_bck_left_motion_image_lossyRGB888	{0,0,2,1,314,327,401}
+#define hmi_left_motion_number_image260_lossyARGB8888_alpha	{0,0,1,508,1,52,27}
+#define hmi_left_motion_number_image200_lossyARGB8888_alpha	{0,0,1,562,1,52,27}
+#define hmi_left_motion_number_image140_lossyARGB8888_alpha	{0,0,1,616,1,44,27}
+#define hmi_left_motion_number_image100_lossyARGB8888_alpha	{0,0,1,662,1,44,27}
+#define hmi_left_motion_number_image60_lossyARGB8888_alpha	{0,0,1,708,1,33,27}
+#define hmi_left_motion_number_image40_lossyARGB8888_alpha	{0,0,1,743,1,33,27}
+#define hmi_left_motion_number_image20_lossyARGB8888_alpha	{0,0,1,778,1,33,27}
+#define hmi_left_motion_number_image0_lossyARGB8888_alpha	{0,0,1,1,70,15,27}
+ static HMI_COMPRESS_IMAGE_LIST_STR CONST DISPLAY_FLASH_ROM hmi_speed_motion_100_image_list_lossyARGB8888_alpha10[ ]=
+{
+	 {0,0,1,18,148,22,55}
+	,{0,0,1,42,148,22,55}
+	,{0,0,1,18,205,22,55}
+	,{0,0,1,42,205,22,55}
+	,{0,0,1,18,262,22,55}
+	,{0,0,1,42,262,22,55}
+	,{0,0,1,18,319,22,55}
+	,{0,0,1,42,319,22,55}
+	,{0,0,1,18,376,22,55}
+	,{0,0,1,42,376,22,55}
+};
+
+#define hmi_speed_motion_10_image_list_lossyARGB8888_alpha10	hmi_speed_motion_100_image_list_lossyARGB8888_alpha10
+#define hmi_speed_motion_1_image_list_lossyARGB8888_alpha10	hmi_speed_motion_100_image_list_lossyARGB8888_alpha10
+#define hmi_bck_right_motion_image_lossyRGB888	{0,0,2,330,314,328,401}
+#define hmi_speed_motion_right_100_image_list_image_list_lossyARGB8888_alpha10	hmi_speed_motion_100_image_list_lossyARGB8888_alpha10
+#define hmi_right_motion_number_image7_image_lossyARGB8888_alpha	{0,0,1,813,1,17,32}
+#define hmi_right_motion_number_image6_image_lossyARGB8888_alpha	{0,0,1,832,1,17,32}
+#define hmi_right_motion_number_image5_image_lossyARGB8888_alpha	{0,0,1,851,1,17,32}
+#define hmi_right_motion_number_image4_image_lossyARGB8888_alpha	{0,0,1,870,1,17,32}
+#define hmi_right_motion_number_image3_image_lossyARGB8888_alpha	{0,0,1,889,1,17,32}
+#define hmi_right_motion_number_image2_image_lossyARGB8888_alpha	{0,0,1,908,1,17,32}
+#define hmi_right_motion_number_image1_image_lossyARGB8888_alpha	{0,0,1,927,1,17,32}
+#define hmi_right_motion_number_image0_image_lossyARGB8888_alpha	{0,0,1,946,1,17,32}
+#define hmi_fuel_motion_flag_image_image_lossyARGB8888_alpha	{0,0,1,18,433,33,33}
+#define hmi_water_tem_flag_image_lossyARGB8888_alpha	{0,0,1,965,1,21,26}
+#define hmi_number_image0_lossyARGB8888_alpha	{0,0,1,1,99,11,16}
+#define hmi_number_image30_lossyARGB8888_alpha	{0,0,1,308,15,21,16}
+#define hmi_number_image60_lossyARGB8888_alpha	{0,0,1,988,1,20,16}
+#define hmi_number_image90_lossyARGB8888_alpha	{0,0,1,1010,1,20,16}
+#define hmi_number_image120_lossyARGB8888_alpha	{0,0,1,1032,1,28,16}
+#define hmi_number_image150_lossyARGB8888_alpha	{0,0,1,1062,1,28,16}
+#define hmi_number_image180_lossyARGB8888_alpha	{0,0,1,1092,1,28,16}
+#define hmi_number_image210_lossyARGB8888_alpha	{0,0,1,1122,1,31,16}
+#define hmi_number_image240_lossyARGB8888_alpha	{0,0,1,1155,1,31,16}
+#define hmi_number_image270_lossyARGB8888_alpha	{0,0,1,1188,1,31,16}
+#define hmi_fuel_bck_image_lossyARGB8888_alpha	{0,0,1,126,418,117,117}
+#define hmi_right_cluster_image0_lossyARGB8888_alpha	{0,0,1,1,117,10,16}
+#define hmi_right_cluster_image1_lossyARGB8888_alpha	{0,0,1,1,135,7,16}
+#define hmi_right_cluster_image2_lossyARGB8888_alpha	{0,0,1,1,153,12,16}
+#define hmi_right_cluster_image3_lossyARGB8888_alpha	{0,0,1,1,171,11,16}
+#define hmi_right_cluster_image4_lossyARGB8888_alpha	{0,0,1,1,189,11,16}
+#define hmi_right_cluster_image5_lossyARGB8888_alpha	{0,0,1,1,207,9,16}
+#define hmi_right_cluster_image6_lossyARGB8888_alpha	{0,0,1,1,225,10,16}
+#define hmi_right_cluster_image7_lossyARGB8888_alpha	{0,0,1,1,243,9,16}
+#define hmi_right_cluster_image8_lossyARGB8888_alpha	{0,0,1,1,261,11,16}
+#define hmi_right_cluster_image9_lossyARGB8888_alpha	{0,0,1,1,279,10,16}
+#define hmi_shader_map_image_lossyARGB8888_alpha	{0,0,1,261,163,1199,507}
+#define hmi_navi_distance_bck_image_lossyARGB8888_alpha	{0,0,1,1462,163,503,119}
+#define hmi_navi_arrow_left_image_lossyARGB8888_alpha	{0,0,1,624,74,69,75}
+#define hmi_navi_arrow_right_image_lossyARGB8888_alpha	{0,0,1,695,74,69,75}
+#define hmi_navi_arrow_direct_image_lossyARGB8888_alpha	{0,0,1,18,468,34,63}
+#define hmi_fuel_motion_bck_image_image_lossyARGB8888_alpha	{0,0,1,68,560,100,110}
+#define hmi_water_bck_image_lossyARGB8888_alpha	{0,0,1,68,672,100,110}
+#define hmi_right_motion_trail_image_image_lossyARGB8888_alpha	{0,0,1,1462,284,382,366}
+#define hmi_left_motion_trail_image_lossyARGB8888_alpha	{0,0,1,261,672,382,366}
+#define hmi_left_motion_pointer_image_lossyARGB8888_alpha	{0,0,1,1221,1,130,8}
+#define hmi_right_water_pointer_image_lossyARGB8888_alpha	{0,0,1,1221,11,130,9}
+#define hmi_trail_image_lossyARGB8888_alpha	{0,0,1,261,1040,264,264}
+#define hmi_navi_car_image_lossyARGB8888_alpha	{0,0,1,988,19,20,12}
+#define hmi_fuel_trail_image_lossyARGB8888_alpha	{0,0,1,170,560,82,97}
+#define hmi_trail_water_image_lossyARGB8888_alpha	{0,0,1,170,672,82,97}
+#define hmi_fuel_pointer_image_lossyARGB8888_alpha	{0,0,1,1353,1,65,22}
+#define hmi_pointer_water_image_lossyARGB8888_alpha	{0,0,1,1420,1,65,22}
+
+
+ static HMI_FMT_BIG_IMAGE_STR CONST DISPLAY_FLASH_ROM hmi_big_image0_rle_abgr8888[ ]=
+{
+	 {1965,1304,0x00006588+HMI_FLASH_OFFSET,1185745}
+
+};
+ static HMI_FMT_BIG_IMAGE_BUFFER_STR DISPLAY_SEGMENT_RAM hmi_big_image0_rle_abgr8888_mng[ ]=
+{
+	 {NULL,0,0,0}
+
+};
+ static HMI_FMT_BIG_IMAGE_STR CONST DISPLAY_FLASH_ROM hmi_big_image0_rle_bgr888[ ]=
+{
+	 {814,715,0x00127d5c+HMI_FLASH_OFFSET,591512}
+
+};
+ static HMI_FMT_BIG_IMAGE_BUFFER_STR DISPLAY_SEGMENT_RAM hmi_big_image0_rle_bgr888_mng[ ]=
+{
+	 {NULL,0,0,0}
+
+};
+ static HMI_SEGMENT_LIST_STR CONST DISPLAY_FLASH_ROM hmi_bmp_segment_tlb[ ]=
+{
+	 {{{0,NULL,NULL},{1,hmi_big_image0_rle_abgr8888,hmi_big_image0_rle_abgr8888_mng},{1,hmi_big_image0_rle_bgr888,hmi_big_image0_rle_bgr888_mng},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+	,{{{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL},{0,NULL,NULL}}}
+
+
+};

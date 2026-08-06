@@ -1,0 +1,8 @@
+config BR2_PACKAGE_BLUECOMMON
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_TINYXML2
+	select BR2_PACKAGE_PROTOBUF
+
+	bool "bluecommon"
+	help
+	  this is a bluecommon

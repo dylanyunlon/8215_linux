@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CameraList>
+
+<!--
+#####################################################################
+Enable:
+    TRUE: the camera device is exist and provided for use
+    FALSE: the device is not exist or is hide for special purpose
+StreamNum:
+    1: Camera Device provides Only one CameraStream
+    2: Camera Device provides  two CameraStream
+CameraId:
+    Camera ID: Logical Camera ID
+    0: Camera Device for BT656 2 channel 0 with port0 and port1 two streams. //Note: bt656 support two streams only if vip is enable 
+    1: Camera Device for BT656 2 channel 1 with port0 and port1 two streams.
+    2: Camera Device for BT656 2 channel 2 with port0 and port1 two streams.
+    3: Camera Device for BT656 2 channel 3 with port0 and port1 two streams.
+    4: Camera Device for BT656 2 four channels(AVM mode) with port0 and port1 two streams.
+    5: Camera Device for MIPI 1 channel 0 with port0 and port1 two streams.
+    6: Camera Device for MIPI 1 channel 1 with port0 and port1 two streams.
+    7: Camera Device for MIPI 1 channel 2 with port0 and port1 two streams.
+    8: Camera Device for MIPI 1 channel 3 with port0 and port1 two streams.
+    9: Camera Device for MIPI 1 four channels(AVM mode) with port0 and port1 two streams.
+    10: Camera Device for MIPI 2 channel 0 with port0 and port1 two streams.
+    11: Camera Device for MIPI 2 channel 1 with port0 and port1 two streams.
+    12: Camera Device for MIPI 2 channel 2 with port0 and port1 two streams.
+    13: Camera Device for MIPI 2 channel 3 with port0 and port1 two streams.
+    14: Camera Device for MIPI 2 four channels(AVM mode) with port0 and port1 two streams.
+    15: Camera Device for MIPI_1 And MIPI_2 mix four channels(AVM mode) with port0 and port1 two streams.
+
+CameraFacing:
+    Specify the facing of the camera device.
+    -1: undefined.
+    0 : back facing.
+    1 : front facing.
+
+CameraRotation:
+    Rotation angle for the camera device.
+    0: No rotation.
+    90  : rotate 90 degrees clockwise.
+    180 : rotate 180 degrees clockwise.
+    270 : rotate 270 degrees clockwise.
+
+VideoInId:
+    video in device Id. VideoinDevice defined in atccapture.h
+
+#####################################################################
+-->
+    <CameraDevice>
+        <Enable>TRUE</Enable>
+        <CameraId>0</CameraId>
+        <StreamNum>2</StreamNum>
+        <CameraFacing>0</CameraFacing>
+        <CameraRotation>0</CameraRotation>
+        <SystemCamera>FALSE</SystemCamera>
+        <Type>0</Type>
+        <CameraStream>
+            <VideoInId>BT656_CH0_PORT0</VideoInId>
+        </CameraStream>
+        <CameraStream>
+            <VideoInId>BT656_CH0_PORT1</VideoInId>
+        </CameraStream>
+    </CameraDevice>
+    <CameraDevice>
+        <Enable>TRUE</Enable>
+        <CameraId>5</CameraId>
+        <StreamNum>2</StreamNum>
+        <CameraFacing>0</CameraFacing>
+        <CameraRotation>0</CameraRotation>
+        <SystemCamera>FALSE</SystemCamera>
+        <Type>0</Type>
+        <CameraStream>
+            <VideoInId>MIPI1_CH0_PORT0</VideoInId>
+        </CameraStream>
+        <CameraStream>
+            <VideoInId>MIPI1_CH0_PORT1</VideoInId>
+        </CameraStream>
+    </CameraDevice>
+    <CameraDevice>
+        <Enable>TRUE</Enable>
+        <CameraId>9</CameraId>
+        <StreamNum>2</StreamNum>
+        <CameraFacing>0</CameraFacing>
+        <CameraRotation>0</CameraRotation>
+        <SystemCamera>FALSE</SystemCamera>
+        <Type>1</Type>
+        <CameraStream>
+            <VideoInId>MIPI1_CHFULL_PORT0</VideoInId>
+        </CameraStream>
+        <CameraStream>
+            <VideoInId>MIPI1_CHFULL_PORT1</VideoInId>
+        </CameraStream>
+    </CameraDevice>
+    <CameraDevice>
+        <Enable>TRUE</Enable>
+        <CameraId>10</CameraId>
+        <StreamNum>2</StreamNum>
+        <CameraFacing>0</CameraFacing>
+        <CameraRotation>0</CameraRotation>
+        <SystemCamera>FALSE</SystemCamera>
+        <Type>0</Type>
+        <CameraStream>
+            <VideoInId>MIPI2_CH0_PORT0</VideoInId>
+        </CameraStream>
+        <CameraStream>
+            <VideoInId>MIPI2_CH0_PORT1</VideoInId>
+        </CameraStream>
+    </CameraDevice>
+    <CameraDevice>
+        <Enable>TRUE</Enable>
+        <CameraId>14</CameraId>
+        <StreamNum>2</StreamNum>
+        <CameraFacing>0</CameraFacing>
+        <CameraRotation>0</CameraRotation>
+        <SystemCamera>FALSE</SystemCamera>
+        <Type>1</Type>
+        <CameraStream>
+            <VideoInId>MIPI2_CHFULL_PORT0</VideoInId>
+        </CameraStream>
+        <CameraStream>
+            <VideoInId>MIPI2_CHFULL_PORT1</VideoInId>
+        </CameraStream>
+    </CameraDevice>
+    <CameraDevice>
+        <Enable>TRUE</Enable>
+        <CameraId>15</CameraId>
+        <StreamNum>2</StreamNum>
+        <CameraFacing>0</CameraFacing>
+        <CameraRotation>0</CameraRotation>
+        <Type>1</Type>
+        <CameraStream>
+            <VideoInId>MIPI_MIX_CHFULL_PORT0</VideoInId>
+        </CameraStream>
+        <CameraStream>
+            <VideoInId>MIPI_MIX_CHFULL_PORT1</VideoInId>
+        </CameraStream>
+    </CameraDevice>
+</CameraList>

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBION
+	bool "libion"
+	help
+	  this is a libion

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_VIDEOIN_PREVIEW
+	bool "libvideoin_preview"
+	depends on BR2_PACKAGE_BUF_ALLOCATOR
+	help
+	  this is a videoin preview so

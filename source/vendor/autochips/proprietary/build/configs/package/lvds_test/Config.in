@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LVDS_TEST
+	bool "lvds_test"
+	help
+	  this is a lvds_test

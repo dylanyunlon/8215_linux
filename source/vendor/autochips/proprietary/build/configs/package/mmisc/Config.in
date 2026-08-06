@@ -1,0 +1,4 @@
+config BR2_PACKAGE_MMISC
+	bool "mmisc"
+	help
+	  Autochips multimedia misc.

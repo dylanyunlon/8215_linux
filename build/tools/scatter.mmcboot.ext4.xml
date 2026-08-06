@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<NFLASH desc="----------  AC8317 EVB Bootup Scatter File  ----------" wpg_size="32">
+ <partition name="preloader"   type="raw" mount="0" startaddress="0x0" size="0x10000" imagename="preloader.bin" rw_attribute="RO" flag="0x1F" >
+ </partition>
+ <partition name="datazone"   type="raw" mount="0" startaddress="0x10000" size="0x78000" imagename="rd_datazone.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="datazone_bk"   type="raw" mount="0" startaddress="0x88000" size="0x78000" imagename="rd_datazone.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="uboot"   type="raw" mount="0" startaddress="0x100000" size="0x300000" imagename="u-boot.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="trustzone"   type="raw" mount="0" startaddress="0x400000" size="0x400000" imagename="tz.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="arm2"   type="raw" mount="0" startaddress="0x800000" size="0x300000" imagename="arm2.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="kernel"   type="raw" mount="0" startaddress="0xB00000" size="0xA00000" imagename="Image.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="dtb"   type="raw" mount="0" startaddress="0x1500000" size="0x100000" imagename="ac83xx.dtb.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="recovery"   type="raw" mount="0" startaddress="0x1600000" size="0x3200000" imagename="recovery.gz" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="uboot_bk"   type="raw" mount="0" startaddress="0x4800000" size="0x300000" imagename="u-boot.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="trustzone_bk"   type="raw" mount="0" startaddress="0x4B00000" size="0x400000" imagename="tz.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="arm2_bk"   type="raw" mount="0" startaddress="0x4F00000" size="0x300000" imagename="arm2.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="kernel_bk"   type="raw" mount="0" startaddress="0x5200000" size="0xA00000" imagename="Image.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="dtb_bk"   type="raw" mount="0" startaddress="0x5C00000" size="0x100000" imagename="ac83xx.dtb.bin" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="recovery_bk"   type="raw" mount="0" startaddress="0x5D00000" size="0x3200000" imagename="recovery.gz" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="system"   type="ext4" mount="1" startaddress="0x8F00000" size="0x12C00000" imagename="system.img.ext4" rw_attribute="RO" flag="0x7F" >
+ </partition>
+ <partition name="systembk"   type="ext4" mount="1" startaddress="0x1BB00000" size="0x12C00000" imagename="system.img.ext4" rw_attribute="RO" flag="0x7F" >
+ </partition>
+ <partition name="appbk"   type="ext4" mount="1" startaddress="0x2E700000" size="0x3200000" imagename="appbk.img.ext4" rw_attribute="RO" flag="0x5F" >
+ </partition>
+ <partition name="app"   type="ext4" mount="1" startaddress="0x31900000" size="0x3200000" imagename="app.img.ext4" rw_attribute="RW" flag="0x7F" >
+ </partition>
+ <partition name="data"   type="ext4" mount="1" startaddress="0x36000000" size="0x500000" imagename="data.img.ext4" rw_attribute="RW" flag="0x6F" >
+ </partition>
+ <partition name="expdb"   type="raw" mount="0" startaddress="0x36500000" size="0x300000" imagename="" rw_attribute="RW" flag="0x4F" >
+ </partition>
+ <partition name="logo"   type="raw" mount="0" startaddress="0x36800000" size="0x800000" imagename="logo.mrf" rw_attribute="RW" flag="0x4F" >
+ </partition>
+ <partition name="cache"   type="raw" mount="1" startaddress="0x37000000" size="0x400000" imagename="" rw_attribute="RW" flag="0x4F" >
+ </partition>
+ <partition name="metazone"   type="raw" mount="0" startaddress="0x37400000" size="0x400000" imagename="metazone.bin" rw_attribute="RW" flag="0x4F" >
+ </partition>
+ <partition name="nvstore"   type="raw" mount="0" startaddress="0x37800000" size="0x200000" imagename="nvstore.bin" rw_attribute="RW" flag="0x4F" >
+ </partition>
+ <partition name="journal"   type="ext4" mount="1" startaddress="0x37A00000" size="0xC800000" imagename="journal.img.ext4" rw_attribute="RW" flag="0x6F" >
+ </partition>
+ <partition name="usrdata"   type="ext4" mount="1" startaddress="0x44200000" size="0xA0000000" imagename="usrdata.img.ext4" rw_attribute="RW" flag="0x6F" >
+ </partition>
+</NFLASH>

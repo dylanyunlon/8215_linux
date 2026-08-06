@@ -1,0 +1,4 @@
+config BR2_PACKAGE_STORAGE_UTILS
+	bool "storage_utils library"
+	help
+	  Autochips storage_utils library

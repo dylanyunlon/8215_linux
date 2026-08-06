@@ -1,0 +1,4 @@
+config BR2_PACKAGE_STRESSAPPTEST
+	bool "memory stress test"
+	help
+	  memory stress test tool

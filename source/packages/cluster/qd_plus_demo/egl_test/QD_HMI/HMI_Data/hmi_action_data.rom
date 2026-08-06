@@ -1,0 +1,3406 @@
+#ifndef HMI_ACTION_DATA
+#define HMI_ACTION_DATA	
+
+#if HMI_NO_ANIM_SET_POS_NUMBER>0
+ static HMI_SET_POS_STR CONST DISPLAY_SEGMENT_ROM hmi_set_pos_prop_table[]=
+{
+};
+#endif
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM speed_set_action_point[]=
+{
+	{0,0},
+	{178,0}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM speed_bck_set_action_point[]=
+{
+	{178,0},
+	{0,0}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM water_temp_set_action_point[]=
+{
+	 {5,119}
+	,{45,169}
+	,{124,58}
+	,{75,33}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM fuel_set_action_point[]=
+{
+	 {326,1}
+	,{327,-2}
+	,{222,13}
+	,{166,28}
+	,{114,39}
+	,{27,97}
+	,{0,173}
+	,{9,227}
+	,{60,334}
+	,{122,358}
+	,{193,363}
+	,{217,361}
+	,{212,359}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM water_set_action_point[]=
+{
+	 {205,362}
+	,{229,371}
+	,{294,365}
+	,{315,318}
+	,{333,294}
+	,{376,240}
+	,{385,181}
+	,{378,131}
+	,{294,60}
+	,{226,32}
+	,{153,9}
+	,{89,11}
+	,{87,8}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM fuel_small_left_set_action_point[]=
+{
+	 {33,32}
+	,{-26,42}
+	,{52,164}
+	,{89,123}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM move_left_cube_camera_set_action_point[]=
+{
+	{231,231},
+	{99,231}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM move_left_cube_camera_bck_set_action_point[]=
+{
+	{99,231},
+	{231,231}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM move_left_container_set_action_point[]=
+{
+	{156,189},
+	{226,210}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM move_right_cube_camera_set_action_point[]=
+{
+	{231,231},
+	{330,231}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM move_right_cube_camera_bck_set_action_point[]=
+{
+	{330,231},
+	{231,231}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM move_navi_cube_camera_set_action_point[]=
+{
+	{380,155},
+	{380,182}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM set_speed_fill_set_action_point[]=
+{
+	{172,0},
+	{0,0}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM set_speed_fill_bck_set_action_point[]=
+{
+	{0,0},
+	{172,0}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM new_set_action7_point[]=
+{
+	{0,0},
+	{0,0}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM new_set_action4_point[]=
+{
+	{0,0},
+	{0,0}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM new_set_action5_point[]=
+{
+	{0,0},
+	{0,-66}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM new_set_action6_point[]=
+{
+	{0,0},
+	{0,-100}
+};
+#if HMI_ANIM_STATIC_SET_POS_NUMBER>0
+ static HMI_ANIM_POS_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_pos_prop_table[]=
+{
+	{
+		0,
+		2,
+		(POINT32_TP *)speed_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)speed_bck_set_action_point
+	},
+	{
+		212,
+		4,
+		(POINT32_TP *)water_temp_set_action_point
+	},
+	{
+		902,
+		13,
+		(POINT32_TP *)fuel_set_action_point
+	},
+	{
+		840,
+		13,
+		(POINT32_TP *)water_set_action_point
+	},
+	{
+		205,
+		4,
+		(POINT32_TP *)fuel_small_left_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)move_left_cube_camera_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)move_left_cube_camera_bck_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)move_left_container_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)move_right_cube_camera_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)move_right_cube_camera_bck_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)move_navi_cube_camera_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)set_speed_fill_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)set_speed_fill_bck_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)new_set_action7_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)new_set_action4_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)new_set_action5_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)new_set_action6_point
+	}
+};
+#endif
+#if HMI_ANIM_STATIC_SET_POS_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_pos_execute_id[]=
+{
+		HMI_DXY_FILL,
+		HMI_DXY_FILL,
+		HMI_POINTER_WATER_CONTAINER,
+		HMI_POINTER_FUEL_MOTION_CONTAINER,
+		HMI_POINTER_WATER_MOTION_CONTAINER,
+		HMI_POINTER_FULE_LEFT_CONTAINER,
+		HMI_CAMERA_LEFT_CLUSTER_FILL,
+		HMI_CAMERA_LEFT_CLUSTER_FILL,
+		HMI_CAMERA_LEFT_CLUSTER_FILL,
+		HMI_CAMERA_RIGHT_CLUSTER_FILL,
+		HMI_CAMERA_RIGHT_CLUSTER_FILL,
+		HMI_CAMERA_NAVI_FILL,
+		HMI_SPEED_FILL,
+		HMI_SPEED_FILL,
+		HMI_POINTER_FUEL_MOTION_CONTAINER,
+		HMI_NAVI_CAMERA_FILL,
+		HMI_NAVI_CAMERA_FILL,
+		HMI_NAVI_CAMERA_FILL
+};
+#endif
+#if HMI_ANIM_STATIC_SET_POS_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_pos_anim_type[]=
+{
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_LINEAR_ANIMATION,
+		HMI_LINEAR_ANIMATION,
+		HMI_LINEAR_ANIMATION,
+		HMI_LINEAR_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_LINEAR_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_LINEAR_ANIMATION,
+		HMI_LINEAR_ANIMATION,
+		HMI_LINEAR_ANIMATION,
+		HMI_LINEAR_ANIMATION
+};
+#endif
+#if HMI_ANIM_DYN_SET_POS_NUMBER>0
+ static HMI_ANIM_POS_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_pos_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_POS_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_pos_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_POS_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_pos_anim_type[]=
+{
+};
+#endif
+#if HMI_SET_DELTA_POS_NUMBER>0
+ static HMI_SET_DELTA_POS_STR CONST DISPLAY_SEGMENT_ROM hmi_set_delta_pos_prop_table[]=
+{
+};
+#endif
+#if HMI_SET_W_H_NO_ANIM_NUMBER>0
+ static HMI_SET_W_H_STR CONST DISPLAY_SEGMENT_ROM hmi_set_w_h_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_W_H_NUMBER>0
+ static HMI_ANIM_W_H_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_w_h_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_W_H_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_w_h_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_W_H_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_w_h_anim_type[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_W_H_NUMBER>0
+ static HMI_ANIM_W_H_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_w_h_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_W_H_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_w_h_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_W_H_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_w_h_anim_type[]=
+{
+};
+#endif
+#if HMI_SET_DELTA_W_H_NUMBER>0
+ static HMI_SET_DELTA_W_H_STR CONST DISPLAY_SEGMENT_ROM hmi_set_delta_w_h_prop_table[]=
+{
+};
+#endif
+#if HMI_SET_DYN_CONTAINER_NUMBER>0
+ static HMI_SET_DYN_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_set_dyn_container_prop_table[]=
+{
+	{
+		HMI_FUEL_CONTAINER1,
+		HMI_DYN_FUEL_CONTAINER
+	},
+	{
+		HMI_FUEL_CONTAINER2,
+		HMI_DYN_FUEL_CONTAINER
+	},
+	{
+		HMI_FUEL_CONTAINER3,
+		HMI_DYN_FUEL_CONTAINER
+	},
+	{
+		HMI_FUEL_CONTAINER4,
+		HMI_DYN_FUEL_CONTAINER
+	},
+	{
+		HMI_FUEL_RIGHT_CONTAINER1,
+		HMI_DYN_RIGHT_FUEL_CONTAINER
+	},
+	{
+		HMI_FUEL_RIGHT_CONTAINER1,
+		HMI_DYN_RIGHT_FUEL_CONTAINER
+	},
+	{
+		HMI_FUEL_RIGHT_CONTAINER3,
+		HMI_DYN_RIGHT_FUEL_CONTAINER
+	},
+	{
+		HMI_FUEL_RIGHT_CONTAINER4,
+		HMI_DYN_RIGHT_FUEL_CONTAINER
+	},
+	{
+		HMI_LEFT_CLUSTER_CONTAINER_CUBE,
+		HMI_DYN_LEFT_CONTAINER
+	},
+	{
+		HMI_LEFT_CLUSTER_CONTAINER_XY_ZERO,
+		HMI_DYN_LEFT_CONTAINER
+	},
+	{
+		HMI_RIGHT_CLUSTER_CONTAINER_CUBE,
+		HMI_DYN_RIGHT_CONTAINER
+	},
+	{
+		HMI_RIGHT_CLUSTER_CONTAINER_XY,
+		HMI_DYN_RIGHT_CONTAINER
+	},
+	{
+		HMI_NAVI_CUBE_CONTAINER,
+		HMI_DYN_NAVI_MOTION_CONTAINER
+	}
+};
+#endif
+#if HMI_SET_PAGE_ON_OFF_NUMBER>0
+ static HMI_SET_PAGE_ON_OFF_STR CONST DISPLAY_SEGMENT_ROM hmi_set_page_on_off_prop_table[]=
+{
+};
+#endif
+#if HMI_SET_EDIT_TEXT_NUMBER>0
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM fuel1_text_set_actionset_text_string[]=
+{
+	 0x32,0x30,0x25,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM fuel2_text_set_actionset_text_string[]=
+{
+	 0x34,0x30,0x25,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM fuel3_text_set_actionset_text_string[]=
+{
+	 0x36,0x30,0x25,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM fuel4_text_set_actionset_text_string[]=
+{
+	 0x38,0x30,0x25,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM right_fuel1_text_set_actionset_text_string[]=
+{
+	 0x32,0x30,0x25,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM right_fuel2_text_set_actionset_text_string[]=
+{
+	 0x34,0x30,0x25,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM right_fuel3_text_set_actionset_text_string[]=
+{
+	 0x36,0x30,0x25,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM right_fuel4_text_set_actionset_text_string[]=
+{
+	 0x38,0x30,0x25,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM timer_9_30_set_actionset_text_string[]=
+{
+	 0x32,0x31,0x3a,0x33,0x30,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM timer_9_30_2_set_actionset_text_string[]=
+{
+	 0x32,0x31,0x20,0x33,0x30,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM fuel_dis_set_action1set_text_string[]=
+{
+	 0x31,0x30,0x30,0x20,0x4b,0x4d,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM fuel_dis_set_action2set_text_string[]=
+{
+	 0x32,0x30,0x30,0x20,0x4b,0x4d,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM fuel_dis_set_action3set_text_string[]=
+{
+	 0x33,0x30,0x30,0x20,0x4b,0x4d,'\0'
+};
+ static HMI_CHAR_STR CONST DISPLAY_SEGMENT_ROM fuel_dis_set_action4set_text_string[]=
+{
+	 0x34,0x30,0x30,0x20,0x4b,0x4d,'\0'
+};
+ static HMI_SET_EDIT_TEXT_STR CONST DISPLAY_SEGMENT_ROM hmi_set_edit_text_prop_table[]=
+{
+	{
+		fuel1_text_set_actionset_text_string,
+		HMI_FUEL_TEXT
+	},
+	{
+		fuel2_text_set_actionset_text_string,
+		HMI_FUEL_TEXT
+	},
+	{
+		fuel3_text_set_actionset_text_string,
+		HMI_FUEL_TEXT
+	},
+	{
+		fuel4_text_set_actionset_text_string,
+		HMI_FUEL_TEXT
+	},
+	{
+		right_fuel1_text_set_actionset_text_string,
+		HMI_RPM_TEXT20
+	},
+	{
+		right_fuel2_text_set_actionset_text_string,
+		HMI_RPM_TEXT20
+	},
+	{
+		right_fuel3_text_set_actionset_text_string,
+		HMI_RPM_TEXT20
+	},
+	{
+		right_fuel4_text_set_actionset_text_string,
+		HMI_RPM_TEXT20
+	},
+	{
+		timer_9_30_set_actionset_text_string,
+		HMI_TIME_TEXT
+	},
+	{
+		timer_9_30_2_set_actionset_text_string,
+		HMI_TIME_TEXT
+	},
+	{
+		fuel_dis_set_action1set_text_string,
+		HMI_SPEED_TEXT
+	},
+	{
+		fuel_dis_set_action2set_text_string,
+		HMI_SPEED_TEXT
+	},
+	{
+		fuel_dis_set_action3set_text_string,
+		HMI_SPEED_TEXT
+	},
+	{
+		fuel_dis_set_action4set_text_string,
+		HMI_SPEED_TEXT
+	}
+};
+#endif
+#if HMI_SET_TEXT_SCROLL_STEP_NUMBER>0
+ static HMI_SET_TEXT_SCROLL_STEP_STR CONST DISPLAY_SEGMENT_ROM hmi_set_text_scroll_step_prop_table[]=
+{
+	{
+		1,
+		HMI_QD_TEXT_SCROLL
+	}
+};
+#endif
+#if HMI_SET_FOR_COLOR_NO_ANIM_NUMBER>0
+ static HMI_SET_COLOR_STR CONST DISPLAY_SEGMENT_ROM hmi_set_for_color_prop_table[]=
+{
+	{
+		4278712101,
+		HMI_FUEL_TEXT_COLOUR
+	},
+	{
+		4278231296,
+		HMI_FUEL_TEXT_COLOUR
+	},
+	{
+		4294675203,
+		HMI_FUEL_TEXT_COLOUR
+	},
+	{
+		4294901760,
+		HMI_FUEL_TEXT_COLOUR
+	},
+	{
+		4288215556,
+		HMI_RPM_TEXT20_COLOUR
+	},
+	{
+		4278239488,
+		HMI_RPM_TEXT20_COLOUR
+	},
+	{
+		4294619140,
+		HMI_RPM_TEXT20_COLOUR
+	},
+	{
+		4294649859,
+		HMI_RPM_TEXT20_COLOUR
+	}
+};
+#endif
+#if HMI_ANIM_STATIC_SET_FOR_COLOR_NUMBER>0
+ static HMI_ANIM_COLOR_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_for_color_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_FOR_COLOR_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_fcolor_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_FOR_COLOR_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_for_color_anim_type[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_FOR_COLOR_NUMBER>0
+ static HMI_ANIM_COLOR_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_for_color_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_FOR_COLOR_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_for_color_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_FOR_COLOR_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_for_color_anim_type[]=
+{
+};
+#endif
+#if HMI_SET_SEND_EVENT_NUMBER>0
+ static HMI_SET_SEND_EVENT_STR CONST DISPLAY_SEGMENT_ROM hmi_set_send_event_prop_table[]=
+{
+};
+#endif
+#if HMI_SET_CALL_FUNC_NUMBER>0
+extern void set_left_cluster_speed(void);
+ static HMI_SET_CALL_FUNC_STR CONST DISPLAY_SEGMENT_ROM hmi_set_call_func_prop_table[]=
+{
+	{
+		set_left_cluster_speed
+	}
+};
+#endif
+#if HMI_SET_SCROLLBAR_RANGE_NUMBER>0
+ static HMI_SET_RANGE_STR CONST DISPLAY_SEGMENT_ROM hmi_set_scrollbar_range_prop_table[]=
+{
+};
+#endif
+#if HMI_SET_BUTTON_STATUS_NUMBER>0
+ static HMI_SET_RANGE_STR CONST DISPLAY_SEGMENT_ROM hmi_set_button_status_prop_table[]=
+{
+};
+#endif
+#if HMI_SET_IMAGELIST_INDEX_NO_ANIM_NUMBER>0
+ static HMI_SET_RANGE_STR CONST DISPLAY_SEGMENT_ROM hmi_set_imagelist_index_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_IMAGELIST_INDEX_NUMBER>0
+ static HMI_ANIM_RANGE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_imagelist_index_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_IMAGELIST_INDEX_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_imglist_index_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_IMAGELIST_INDEX_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_setimglist_index_anim_type[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_IMAGELIST_INDEX_NUMBER>0
+ static HMI_ANIM_RANGE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_imagelist_index_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_IMAGELIST_INDEX_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_imglist_index_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_IMAGELIST_INDEX_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_imglist_index_anim_type[]=
+{
+};
+#endif
+#if HMI_SET_ALPHA_NO_ANIM_NUMBER>0
+ static HMI_SET_ALPHA_STR CONST DISPLAY_SEGMENT_ROM hmi_set_alpha_prop_table[]=
+{
+};
+#endif
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM left_array_alpha_set_action_point[]=
+{
+	{0,0},
+	{0,255}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM rear_light_set_action_point[]=
+{
+	{0,0},
+	{0,255}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM rear_right_light_set_action_point[]=
+{
+	{0,0},
+	{0,255}
+};
+#if HMI_ANIM_STATIC_SET_ALPHA_NUMBER>0
+ static HMI_ANIM_ALPHA_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_alpha_prop_table[]=
+{
+	{
+		0,
+		2,
+		(POINT32_TP *)left_array_alpha_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)rear_light_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)rear_right_light_set_action_point
+	}
+};
+#endif
+#if HMI_ANIM_STATIC_SET_ALPHA_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_alpha_execute_id[]=
+{
+		HMI_LEFT_ARRAY_IMAGE_DXY,
+		HMI_REAR_LIGHT_LEFT_IMAGE_DXY,
+		HMI_REAR_LIGHT_RIGHT_IMAGE_DXY
+};
+#endif
+#if HMI_ANIM_STATIC_SET_ALPHA_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_alpha_anim_type[]=
+{
+		HMI_FAST_SLOW_ANIMATION,
+		HMI_FAST_SLOW_ANIMATION,
+		HMI_FAST_SLOW_ANIMATION
+};
+#endif
+#if HMI_ANIM_DYN_SET_ALPHA_NUMBER>0
+ static HMI_ANIM_ALPHA_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_alpha_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_ALPHA_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_alpha_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_ALPHA_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_alpha_anim_type[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_SCALE_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_scale_anim_type[]=
+{
+};
+#endif
+#if HMI_SET_SCALE_NO_ANIM_NUMBER>0
+ static HMI_SET_SCALE_STR CONST DISPLAY_SEGMENT_ROM hmi_set_scale_prop_table[]=
+{
+};
+#endif
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM scale_middle_set_action_point[]=
+{
+	{0,1.0f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action0_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action20_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action3_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action4_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action5_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action6_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action7_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1113_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1116_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1119_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1122_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1125_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1128_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1131_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM left_num_scale_set_action1134_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action140_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action143_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action146_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action149_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action152_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action155_point[]=
+{
+	{0,0.6f},
+	{0,1.0f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action158_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action140161_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action143164_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action146167_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action149170_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action152173_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+ static POINT_FLOAT_TP CONST DISPLAY_SEGMENT_ROM right_num_set_action155176_point[]=
+{
+	{0,1.0f},
+	{0,0.6f}
+};
+#if HMI_ANIM_STATIC_SET_SCALE_NUMBER>0
+ static HMI_ANIM_SCALE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_scale_prop_table[]=
+{
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)scale_middle_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action0_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action20_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action3_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action4_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action5_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action6_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action7_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1113_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1116_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1119_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1122_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1125_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1128_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1131_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)left_num_scale_set_action1134_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action140_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action143_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action146_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action149_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action152_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action155_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action158_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action140161_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action143164_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action146167_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action149170_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action152173_point
+	},
+	{
+		0,
+		2,
+		(POINT_FLOAT_TP *)right_num_set_action155176_point
+	}
+};
+#endif
+#if HMI_ANIM_STATIC_SET_SCALE_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_scale_execute_id[]=
+{
+		HMI_DXY_MIDDLE_ZONE_CONTAINER,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER200,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER0,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER20,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER40,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER60,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER100,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER140,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER260,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER0,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER20,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER40,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER60,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER100,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER140,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER200,
+		HMI_LEFT_MOTION_NUMBER_CONTAINER260,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER6_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER5_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER4_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER1_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER3_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER2_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER0_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER6_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER5_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER4_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER1_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER3_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER2_CONTAINER,
+		HMI_RIGHT_MOTION_NUMBER_CONTAINER0_CONTAINER
+};
+#endif
+#if HMI_ANIM_STATIC_SET_SCALE_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_scale_anim_type[]=
+{
+		HMI_FAST_SLOW_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION,
+		HMI_SLOW_FAST_ANIMATION
+};
+#endif
+#if HMI_ANIM_DYN_SET_SCALE_NUMBER>0
+ static HMI_ANIM_SCALE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_scale_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_SCALE_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_scale_execute_id[]=
+{
+};
+#endif
+#if HMI_NO_ANIM_SET_P1_NUMBER>0
+ static HMI_ANIM_CUSTOM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_set_p1_prop_table[]=
+{
+};
+#endif
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM new_set_action3_point[]=
+{
+	{0,1},
+	{0,2}
+};
+#if HMI_ANIM_STATIC_SET_P1_NUMBER>0
+ static HMI_ANIM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p1_prop_table[]=
+{
+	{
+		0,
+		2,
+		(POINT32_TP *)new_set_action3_point
+	}
+};
+#endif
+#if HMI_ANIM_STATIC_SET_P1_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p1_execute_id[]=
+{
+		HMI_SIMPLE_NAVI_LIB116
+};
+#endif
+#if HMI_ANIM_STATIC_SET_P1_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p1_anim_type[]=
+{
+		HMI_FAST_SLOW_ANIMATION
+};
+#endif
+#if HMI_ANIM_DYN_SET_P1_NUMBER>0
+ static HMI_ANIM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p1_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_P1_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p1_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_P1_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p1_anim_type[]=
+{
+};
+#endif
+#if HMI_NO_ANIM_SET_P2_NUMBER>0
+ static HMI_ANIM_CUSTOM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_set_p2_prop_table[]=
+{
+};
+#endif
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM follow_motion_left_set_action_point[]=
+{
+	{0,212},
+	{0,10}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM follow_motion_right_set_action_point[]=
+{
+	{0,3},
+	{0,200}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM follow_motion_bck_left_set_action_point[]=
+{
+	{0,10},
+	{0,212}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM follow_motion_bck_right_set_action_point[]=
+{
+	{0,200},
+	{0,3}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM left_fuel_set_action11_point[]=
+{
+	{0,80},
+	{0,10}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM right_water_set_action12_point[]=
+{
+	{0,30},
+	{0,100}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM left_fuel_bck_set_action11_point[]=
+{
+	{0,10},
+	{0,80}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM right_water_bck_set_action12_point[]=
+{
+	{0,100},
+	{0,30}
+};
+#if HMI_ANIM_STATIC_SET_P2_NUMBER>0
+ static HMI_ANIM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p2_prop_table[]=
+{
+	{
+		0,
+		2,
+		(POINT32_TP *)follow_motion_left_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)follow_motion_right_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)follow_motion_bck_left_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)follow_motion_bck_right_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)left_fuel_set_action11_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)right_water_set_action12_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)left_fuel_bck_set_action11_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)right_water_bck_set_action12_point
+	}
+};
+#endif
+#if HMI_ANIM_STATIC_SET_P2_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p2_execute_id[]=
+{
+		HMI_LEFT_FOLLOW_MOTION_LIB,
+		HMI_RIGHT_FOLLOW_MOTION_LIB,
+		HMI_LEFT_FOLLOW_MOTION_LIB,
+		HMI_RIGHT_FOLLOW_MOTION_LIB,
+		HMI_FUEL_LEFT_FOLLOW_MOTION_LIB,
+		HMI_WATER_FOLLOW_MOTION_LIB,
+		HMI_FUEL_LEFT_FOLLOW_MOTION_LIB,
+		HMI_WATER_FOLLOW_MOTION_LIB
+};
+#endif
+#if HMI_ANIM_STATIC_SET_P2_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p2_anim_type[]=
+{
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION
+};
+#endif
+#if HMI_ANIM_DYN_SET_P2_NUMBER>0
+ static HMI_ANIM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p2_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_P2_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p2_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_P2_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p2_anim_type[]=
+{
+};
+#endif
+#if HMI_NO_ANIM_SET_P3_NUMBER>0
+ static HMI_ANIM_CUSTOM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_set_p3_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_P3_NUMBER>0
+ static HMI_ANIM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p3_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_P3_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p3_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_STATIC_SET_P3_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_p3_anim_type[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_P3_NUMBER>0
+ static HMI_ANIM_P_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p3_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_P3_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p3_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_P3_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_p3_anim_type[]=
+{
+};
+#endif
+#if HMI_SET_ANGEL_NO_ANIM_NUMBER>0
+ static HMI_SET_ANGEL_STR CONST DISPLAY_SEGMENT_ROM hmi_set_angel_prop_table[]=
+{
+};
+#endif
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM left_pointer_set_action_point[]=
+{
+	{0,10},
+	{0,269}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM left_pointer_bck_set_action_point[]=
+{
+	{0,269},
+	{0,10}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM right_pointer_set_action_point[]=
+{
+	{0,10},
+	{0,269}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM right_pointer_bck_set_action_point[]=
+{
+	{0,269},
+	{0,10}
+};
+ static POINT32_TP CONST DISPLAY_SEGMENT_ROM new_set_action8_point[]=
+{
+	{0,0},
+	{0,15}
+};
+#if HMI_ANIM_STATIC_SET_ANGEL_NUMBER>0
+ static HMI_ANIM_ANGEL_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_angel_prop_table[]=
+{
+	{
+		0,
+		2,
+		(POINT32_TP *)left_pointer_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)left_pointer_bck_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)right_pointer_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)right_pointer_bck_set_action_point
+	},
+	{
+		0,
+		2,
+		(POINT32_TP *)new_set_action8_point
+	}
+};
+#endif
+#if HMI_ANIM_STATIC_SET_ANGEL_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_angel_execute_id[]=
+{
+		HMI_POINTER_IMAGE,
+		HMI_POINTER_IMAGE,
+		HMI_RIGHT_POINTER_IMAGE,
+		HMI_RIGHT_POINTER_IMAGE,
+		HMI_NAVI_CAR_IMAGE
+};
+#endif
+#if HMI_ANIM_STATIC_SET_ANGEL_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_static_set_ange_anim_type[]=
+{
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_S_F_S_ANIMATION,
+		HMI_LINEAR_ANIMATION
+};
+#endif
+#if HMI_ANIM_DYN_SET_ANGEL_NUMBER>0
+ static HMI_ANIM_ANGEL_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_angel_prop_table[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_ANGEL_NUMBER>0
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_angel_execute_id[]=
+{
+};
+#endif
+#if HMI_ANIM_DYN_SET_ANGEL_NUMBER>0
+ static MOTION_TYPE_STR CONST DISPLAY_SEGMENT_ROM hmi_anim_dyn_set_ange_anim_type[]=
+{
+};
+#endif
+#if HMI_SET_ACTION_NUMBER>0
+static HMI_SET_ACTION_PROP_STR CONST hmi_set_action_prop_table[]=
+{
+	{
+		#if HMI_NO_ANIM_SET_POS_NUMBER>0
+			hmi_set_pos_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_DELTA_POS_NUMBER>0
+			hmi_set_delta_pos_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_W_H_NO_ANIM_NUMBER>0
+			hmi_set_w_h_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_DELTA_W_H_NUMBER>0
+			hmi_set_delta_w_h_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_DYN_CONTAINER_NUMBER>0
+			hmi_set_dyn_container_prop_table,
+		#else
+			NULL,
+		#endif	
+		#if HMI_SET_PAGE_ON_OFF_NUMBER>0
+			hmi_set_page_on_off_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_EDIT_TEXT_NUMBER>0
+			hmi_set_edit_text_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_TEXT_SCROLL_STEP_NUMBER>0
+			hmi_set_text_scroll_step_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_FOR_COLOR_NO_ANIM_NUMBER>0
+			hmi_set_for_color_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_BCK_COLOR_NUMBER>0
+			hmi_set_bck_color_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_SEND_EVENT_NUMBER>0
+			hmi_set_send_event_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_CALL_FUNC_NUMBER>0
+			hmi_set_call_func_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_IMAGELIST_INDEX_NO_ANIM_NUMBER>0
+			hmi_set_imagelist_index_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_SCROLLBAR_RANGE_NUMBER>0
+			hmi_set_scrollbar_range_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_BUTTON_STATUS_NUMBER>0
+			hmi_set_button_status_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_ANIM_STATIC_SET_P1_NUMBER>0
+			hmi_anim_static_set_p1_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_ANIM_STATIC_SET_P2_NUMBER>0
+			hmi_anim_static_set_p2_prop_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_ANIM_STATIC_SET_P3_NUMBER>0
+			hmi_anim_static_set_p3_prop_table
+		#else
+			NULL
+		#endif
+	}
+};
+
+#endif
+#if HMI_SET_ACTION_NUMBER>0
+static HMI_EVENT_ACTION_RES_STR CONST hmi_set_action_table[]=
+{
+	{
+		(void *)hmi_set_action_prop_table,
+		0
+	}
+};
+
+#endif
+/*Timer action container   */
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_pointer_timer_action_container[]=
+{
+	{
+		HMI_LEFT_ARRAY_2S_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_pointer_timer_action_container[]=
+{
+	{
+		HMI_LEFT_POINTER_SET_ACTION
+	},
+	{
+		HMI_RIGHT_POINTER_SET_ACTION
+	},
+	{
+		HMI_SPEED_SET_ACTION
+	},
+	{
+		HMI_SPEED_SET_ACTION_F
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_pointer_bck_timer_action_container[]=
+{
+	{
+		HMI_LEFT_POINTER_BCK_SET_ACTION
+	},
+	{
+		HMI_RIGHT_POINTER_BCK_SET_ACTION
+	},
+	{
+		HMI_SPEED_BCK_SET_ACTION
+	},
+	{
+		HMI_SPEED_SET_ACTION_F
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_array_2s_timer_action_container[]=
+{
+	{
+		HMI_LEFT_ARRAY_ALPHA_SET_ACTION
+	},
+	{
+		HMI_REAR_LIGHT_SET_ACTION
+	},
+	{
+		HMI_REAR_RIGHT_LIGHT_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_repeat_left_array_timer_action_container[]=
+{
+	{
+		HMI_LEFT_ARRAY_2S_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_fuel_timer_action_container[]=
+{
+	{
+		HMI_FUEL1_TIMER_ACTION
+	},
+	{
+		HMI_FUEL2_TIMER_ACTION
+	},
+	{
+		HMI_FUEL3_TIMER_ACTION
+	},
+	{
+		HMI_FUEL4_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_fuel1_timer_action_container[]=
+{
+	{
+		HMI_FUEL_1_SET_ACTION
+	},
+	{
+		HMI_FUEL1_TEXT_SET_ACTION
+	},
+	{
+		HMI_SET_FUEL1_TEXT_COLOR_SET_ACTION
+	},
+	{
+		HMI_FUEL_DIS_SET_ACTION1
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_fuel2_timer_action_container[]=
+{
+	{
+		HMI_FUEL_2_SET_ACTION
+	},
+	{
+		HMI_FUEL2_TEXT_SET_ACTION
+	},
+	{
+		HMI_SET_FUEL2_TEXT_COLOR_SET_ACTION
+	},
+	{
+		HMI_FUEL_DIS_SET_ACTION2
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_fuel3_timer_action_container[]=
+{
+	{
+		HMI_FUEL_3_SET_ACTION
+	},
+	{
+		HMI_FUEL3_TEXT_SET_ACTION
+	},
+	{
+		HMI_SET_FUEL3_TEXT_COLOR_SET_ACTION
+	},
+	{
+		HMI_FUEL_DIS_SET_ACTION3
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_fuel4_timer_action_container[]=
+{
+	{
+		HMI_FUEL_4_SET_ACTION
+	},
+	{
+		HMI_FUEL4_TEXT_SET_ACTION
+	},
+	{
+		HMI_SET_FUEL_4_TEXT_COLOR_SET_ACTION
+	},
+	{
+		HMI_FUEL_DIS_SET_ACTION4
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_water_timer_action_container[]=
+{
+	{
+		HMI_WATER1_TIMER_ACTION
+	},
+	{
+		HMI_WATER2_TIMER_ACTION
+	},
+	{
+		HMI_WATER3_TIMER_ACTION
+	},
+	{
+		HMI_WATER4_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_water1_timer_action_container[]=
+{
+	{
+		HMI_WATER_1_SET_ACTION
+	},
+	{
+		HMI_RIGHT_FUEL1_TEXT_SET_ACTION
+	},
+	{
+		HMI_SET_RIGHT_FUEL1_TEXT_COLOR_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_water2_timer_action_container[]=
+{
+	{
+		HMI_WATER_2_SET_ACTION
+	},
+	{
+		HMI_RIGHT_FUEL2_TEXT_SET_ACTION
+	},
+	{
+		HMI_SET_RIGHT_FUEL2_TEXT_COLOR_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_water3_timer_action_container[]=
+{
+	{
+		HMI_WATER_3_SET_ACTION
+	},
+	{
+		HMI_RIGHT_FUEL3_TEXT_SET_ACTION
+	},
+	{
+		HMI_SET_RIGHT_FUEL3_TEXT_COLOR_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_water4_timer_action_container[]=
+{
+	{
+		HMI_WATER_4_SET_ACTION
+	},
+	{
+		HMI_RIGHT_FUEL4_TEXT_SET_ACTION
+	},
+	{
+		HMI_SET_RIGHT_FUEL4_TEXT_COLOR_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_repeat_timer_timer_action_container[]=
+{
+	{
+		HMI_SECOND_1_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_second_2_timer_action_container[]=
+{
+	{
+		HMI_TIMER_9_30_2_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_repeat_total_timer_action_container[]=
+{
+	{
+		HMI_TOTAL_10S_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_5_timer_action_container[]=
+{
+	{
+		HMI_FOLLOW_MOTION_LEFT_SET_ACTION
+	},
+	{
+		HMI_FOLLOW_MOTION_RIGHT_SET_ACTION
+	},
+	{
+		HMI_SET_SPEED_FILL_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_set_left_dyn_timer_action_container[]=
+{
+	{
+		HMI_SET_DYN_LEFT_CUBE_ACTION
+	},
+	{
+		HMI_MOVE_LEFT_CAMERA_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_delay_10s_timer_action_container[]=
+{
+	{
+		HMI_NEW_TIMER_ACTION9
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_repeat_timer_action8_container[]=
+{
+	{
+		HMI_NEW_TIMER_ACTION9
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_new_timer_action9_container[]=
+{
+	{
+		HMI_SET_DYN_LEFT_CONTAINER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_cube_container_timer_action_container[]=
+{
+	{
+		HMI_SET_LEFT_DYN_TIMER_ACTION
+	},
+	{
+		HMI_DELAY_10S_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_move_left_camera_timer_action_container[]=
+{
+	{
+		HMI_MOVE_LEFT_CUBE_CAMERA_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_move_left_camera_bck_timer_action_container[]=
+{
+	{
+		HMI_MOVE_LEFT_CUBE_CAMERA_BCK_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_set_left_dyn_con_timer_action_container[]=
+{
+	{
+		HMI_SET_DYN_LEFT_CONTAINER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_move_right_camera_timer_action_container[]=
+{
+	{
+		HMI_MOVE_RIGHT_CUBE_CAMERA_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_move_right_camera_bck_timer_action_container[]=
+{
+	{
+		HMI_MOVE_RIGHT_CUBE_CAMERA_BCK_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_set_right_dyn_con_timer_action_container[]=
+{
+	{
+		HMI_SET_DYN_RIGHT_CONTAINER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_move_navi_camera_timer_action_container[]=
+{
+	{
+		HMI_MOVE_NAVI_CUBE_CAMERA_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_scroll_text_6_timer_action_container[]=
+{
+	{
+		HMI_SCROLL_TEXT_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_bck_5_timer_action_container[]=
+{
+	{
+		HMI_FOLLOW_MOTION_BCK_LEFT_SET_ACTION
+	},
+	{
+		HMI_FOLLOW_MOTION_BCK_RIGHT_SET_ACTION
+	},
+	{
+		HMI_SET_SPEED_FILL_BCK_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_fule_timer_3s_action_container[]=
+{
+	{
+		HMI_LEFT_FUEL_SET_ACTION11
+	},
+	{
+		HMI_RIGHT_WATER_SET_ACTION12
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_fule_bck_timer_3s_action_container[]=
+{
+	{
+		HMI_LEFT_FUEL_BCK_SET_ACTION11
+	},
+	{
+		HMI_RIGHT_WATER_BCK_SET_ACTION12
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action0_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION0
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action2_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION20
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action3_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION3
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action4_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION4
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action5_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION5
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action6_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION6
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action7_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION7
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1112_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1113
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1115_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1116
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1118_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1119
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1121_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1122
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1124_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1125
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1127_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1128
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1130_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1131
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_timer_action1133_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_SET_ACTION1134
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action139_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION140
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action142_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION143
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action145_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION146
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action148_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION149
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action151_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION152
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action154_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION155
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action157_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION158
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action139160_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION140161
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action142163_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION143164
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action145166_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION146167
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action148169_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION149170
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action151172_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION152173
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_num_timer_action154175_container[]=
+{
+	{
+		HMI_RIGHT_NUM_SET_ACTION155176
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_new_timer_action21_container[]=
+{
+	{
+		HMI_NEW_SET_ACTION3
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_new_timer_action22_container[]=
+{
+	{
+		HMI_NEW_SET_ACTION6
+	}
+};
+#if HMI_TIMER_ACTION_REPEAT_NUMBER>0
+ static HMI_TIME CONST DISPLAY_SEGMENT_ROM hmi_repeat_start_prop[]=
+{
+		(HMI_TIME)0,
+		(HMI_TIME)0,
+		(HMI_TIME)0,
+		(HMI_TIME)0,
+		(HMI_TIME)0,
+		(HMI_TIME)0
+};
+ static HMI_TIME DISPLAY_SEGMENT_RAM hmi_repeat_elapse_prop[]=
+{
+	0,
+	0,
+	0,
+	0,
+	0,
+	0
+};
+ static HMI_REPEAT_ONETIME_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_repeat_prop[]=
+{
+	{
+		hmi_repeat_start_prop,
+		hmi_repeat_elapse_prop
+	}
+};
+ static HMI_OBJECT_TABLE_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_repeat_relative[]=
+{
+	{
+		1,
+		hmi_pointer_timer_action_container
+	},
+	{
+		1,
+		hmi_repeat_left_array_timer_action_container
+	},
+	{
+		4,
+		hmi_fuel_timer_action_container
+	},
+	{
+		4,
+		hmi_water_timer_action_container
+	},
+	{
+		1,
+		hmi_repeat_timer_timer_action_container
+	},
+	{
+		1,
+		hmi_repeat_total_timer_action_container
+	}
+};
+ static HMI_EVENT_ACTION_RES_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_repeat_table[]=
+{
+	{
+		(void *)hmi_timer_action_repeat_prop,
+		hmi_timer_action_repeat_relative
+	}
+};
+#endif
+#if HMI_TIMER_ACTION_ONETIME_NUMBER>0
+ static HMI_TIME CONST DISPLAY_SEGMENT_ROM hmi_onetime_start_prop[]=
+{
+		(HMI_TIME)1,
+		(HMI_TIME)1.5,
+		(HMI_TIME)2.5,
+		(HMI_TIME)3.7,
+		(HMI_TIME)0.8,
+		(HMI_TIME)1.8,
+		(HMI_TIME)2.7,
+		(HMI_TIME)4.7,
+		(HMI_TIME)1,
+		(HMI_TIME)2,
+		(HMI_TIME)10,
+		(HMI_TIME)20,
+		(HMI_TIME)10,
+		(HMI_TIME)20,
+		(HMI_TIME)100,
+		(HMI_TIME)0.5,
+		(HMI_TIME)0.5,
+		(HMI_TIME)0
+};
+ static HMI_TIME DISPLAY_SEGMENT_RAM hmi_onetime_elapse_prop[]=
+{
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0
+};
+ static HMI_REPEAT_ONETIME_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_onetime_prop[]=
+{
+	{
+		hmi_onetime_start_prop,
+		hmi_onetime_elapse_prop
+	}
+};
+ static HMI_OBJECT_TABLE_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_onetime_relative[]=
+{
+	{
+		4,
+		hmi_fuel1_timer_action_container
+	},
+	{
+		4,
+		hmi_fuel2_timer_action_container
+	},
+	{
+		4,
+		hmi_fuel3_timer_action_container
+	},
+	{
+		4,
+		hmi_fuel4_timer_action_container
+	},
+	{
+		3,
+		hmi_water1_timer_action_container
+	},
+	{
+		3,
+		hmi_water2_timer_action_container
+	},
+	{
+		3,
+		hmi_water3_timer_action_container
+	},
+	{
+		3,
+		hmi_water4_timer_action_container
+	},
+	{
+		0,
+		NULL
+	},
+	{
+		1,
+		hmi_second_2_timer_action_container
+	},
+	{
+		0,
+		NULL
+	},
+	{
+		2,
+		hmi_set_left_dyn_timer_action_container
+	},
+	{
+		1,
+		hmi_delay_10s_timer_action_container
+	},
+	{
+		1,
+		hmi_new_timer_action9_container
+	},
+	{
+		2,
+		hmi_dyn_cube_container_timer_action_container
+	},
+	{
+		1,
+		hmi_set_left_dyn_con_timer_action_container
+	},
+	{
+		1,
+		hmi_set_right_dyn_con_timer_action_container
+	},
+	{
+		0,
+		NULL
+	}
+};
+ static HMI_EVENT_ACTION_RES_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_onetime_table[]=
+{
+	{
+		(void *)hmi_timer_action_onetime_prop,
+		hmi_timer_action_onetime_relative
+	}
+};
+#endif
+#if HMI_S_TIMER_ACTION_DURATION_NUMBER>0
+ static HMI_DURATION_STATIC_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_duration_static_prop[]=
+{
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)2,
+		(HMI_TIME)2
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)90
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.5
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.5
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.5
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.5
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)20
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.5
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)15
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)5
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)1
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)1
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)1
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)0.3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)3
+	},
+	{
+		(HMI_TIME)0,
+		(HMI_TIME)3
+	}
+};
+ static HMI_TIME DISPLAY_SEGMENT_RAM hmi_duration_elapse_prop[]=
+{
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0
+};
+ static HMI_DURATION_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_duration_prop[]=
+{
+	{
+		hmi_duration_static_prop,
+		hmi_duration_elapse_prop
+	}
+};
+ static HMI_OBJECT_TABLE_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_duration_relative[]=
+{
+	{
+		4,
+		hmi_left_pointer_timer_action_container
+	},
+	{
+		4,
+		hmi_left_pointer_bck_timer_action_container
+	},
+	{
+		0,
+		NULL
+	},
+	{
+		3,
+		hmi_left_array_2s_timer_action_container
+	},
+	{
+		3,
+		hmi_left_motion_5_timer_action_container
+	},
+	{
+		1,
+		hmi_repeat_timer_action8_container
+	},
+	{
+		1,
+		hmi_move_left_camera_timer_action_container
+	},
+	{
+		1,
+		hmi_move_left_camera_bck_timer_action_container
+	},
+	{
+		1,
+		hmi_move_right_camera_timer_action_container
+	},
+	{
+		1,
+		hmi_move_right_camera_bck_timer_action_container
+	},
+	{
+		0,
+		NULL
+	},
+	{
+		1,
+		hmi_move_navi_camera_timer_action_container
+	},
+	{
+		1,
+		hmi_scroll_text_6_timer_action_container
+	},
+	{
+		3,
+		hmi_left_motion_bck_5_timer_action_container
+	},
+	{
+		2,
+		hmi_left_fule_timer_3s_action_container
+	},
+	{
+		2,
+		hmi_left_fule_bck_timer_3s_action_container
+	},
+	{
+		0,
+		NULL
+	},
+	{
+		0,
+		NULL
+	},
+	{
+		0,
+		NULL
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action0_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action2_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action3_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action4_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action5_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action6_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action7_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1112_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1115_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1118_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1121_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1124_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1127_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1130_container
+	},
+	{
+		1,
+		hmi_left_num_scale_timer_action1133_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action139_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action142_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action145_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action148_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action151_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action154_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action157_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action139160_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action142163_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action145166_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action148169_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action151172_container
+	},
+	{
+		1,
+		hmi_right_num_timer_action154175_container
+	},
+	{
+		1,
+		hmi_new_timer_action21_container
+	},
+	{
+		1,
+		hmi_new_timer_action22_container
+	}
+};
+ static HMI_EVENT_ACTION_RES_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_duration_table[]=
+{
+	{
+		(void *)hmi_timer_action_duration_prop,
+		hmi_timer_action_duration_relative
+	}
+};
+#endif
+#if HMI_DYN_TIMER_ACTION_DURATION_NUMBER>0
+ static HMI_DURATION_STATIC_PROP_STR DISPLAY_SEGMENT_RAM hmi_dyn_duration_static_prop[]=
+{
+};
+ static HMI_DURATION_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_dyn_duration_prop[]=
+{
+	{
+		hmi_dyn_duration_static_prop,
+		hmi_dyn_duration_elapse_prop
+	}
+};
+ static HMI_EVENT_ACTION_RES_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_action_dyn_duration_table[]=
+{
+	{
+		(void *)hmi_timer_action_dyn_duration_prop,
+		hmi_timer_action_dyn_duration_relative
+	}
+};
+#endif
+#if HMI_TIMER_ACTION_NUMBER>0
+static HMI_TIMER_ACTION_STR CONST hmi_timer_action_table[]=
+{
+	{
+		#if HMI_TIMER_ACTION_REPEAT_NUMBER>0
+			hmi_timer_action_repeat_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_TIMER_ACTION_ONETIME_NUMBER>0
+			hmi_timer_action_onetime_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_S_TIMER_ACTION_DURATION_NUMBER>0
+			hmi_timer_action_duration_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_DYN_TIMER_ACTION_DURATION_NUMBER>0
+			hmi_timer_action_dyn_duration_table
+		#else
+			NULL
+		#endif
+	}
+};
+
+#endif
+#if HMI_ALL_ACTION_NUMBER>0
+static HMI_ACTION_STR CONST hmi_action_table[]=
+{
+	{
+		#if HMI_TIMER_ACTION_NUMBER>0
+			hmi_timer_action_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_SET_ACTION_NUMBER>0
+			hmi_set_action_table
+		#else
+			NULL
+		#endif
+	}
+};
+
+#endif
+#if HMI_ACTION_GROUP_NUMBER>0
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_classic_page_action_entry_container[]=
+{
+	{
+		HMI_POINTER_TIMER_ACTION
+	},
+	{
+		HMI_SCALE_MIDDLE_TIMER_ACTION
+	},
+	{
+		HMI_FUEL_TIMER_ACTION
+	},
+	{
+		HMI_WATER_TIMER_ACTION
+	},
+	{
+		HMI_REPEAT_TIMER_TIMER_ACTION
+	},
+	{
+		HMI_REPEAT_TOTAL_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_action_entry_container[]=
+{
+	{
+		HMI_LEFT_MOTION_5_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_left_cube_action_entry_container[]=
+{
+	{
+		HMI_SET_DYN_LEFT_CUBE_ACTION
+	},
+	{
+		HMI_MOVE_LEFT_CAMERA_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_left_cube_action_bck_entry_container[]=
+{
+	{
+		HMI_SET_DYN_LEFT_CUBE_ACTION
+	},
+	{
+		HMI_MOVE_LEFT_CAMERA_BCK_TIMER_ACTION
+	},
+	{
+		HMI_SET_LEFT_DYN_CON_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_right_cube_action_entry_container[]=
+{
+	{
+		HMI_SET_DYN_RIGHT_CUBE_ACTION
+	},
+	{
+		HMI_MOVE_RIGHT_CAMERA_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_right_cube_action_bck_entry_container[]=
+{
+	{
+		HMI_SET_DYN_RIGHT_CUBE_ACTION
+	},
+	{
+		HMI_MOVE_RIGHT_CAMERA_BCK_TIMER_ACTION
+	},
+	{
+		HMI_SET_RIGHT_DYN_CON_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_move_map_action_entry_container[]=
+{
+	{
+		HMI_MOVE_MAP_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_scroll_text_qd_action_entry_container[]=
+{
+	{
+		HMI_SCROLL_TEXT_6_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_navi_cube_action_entry_container[]=
+{
+	{
+		HMI_SET_DYN_NAVI_CUBE_ACTION
+	},
+	{
+		HMI_MOVE_NAVI_CAMERA_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_bck_action_entry_container[]=
+{
+	{
+		HMI_LEFT_MOTION_BCK_5_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_fuel_action_entry_container[]=
+{
+	{
+		HMI_LEFT_FULE_TIMER_3S_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_bck_fuel_action_entry_container[]=
+{
+	{
+		HMI_LEFT_FULE_BCK_TIMER_3S_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_menucircle_action_entry_container[]=
+{
+	{
+		HMI_NAVI_MENUCIRCLE1_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_menuprism_action_entry_container[]=
+{
+	{
+		HMI_PRISM1_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_layout_action_entry_container[]=
+{
+	{
+		HMI_LAYOUT_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry0_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry20_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION2
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry40_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION3
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry60_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION4
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry100_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION5
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry140_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION6
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry200_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION0
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry260_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION7
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry0s_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1112
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry20s_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1115
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry40s_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1118
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry60s_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1121
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry100s_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1124
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry140s_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1127
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry200s_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1130
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_num_scale_action_entry260s_container[]=
+{
+	{
+		HMI_LEFT_NUM_SCALE_TIMER_ACTION1133
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry6_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry5_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION139
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry4_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION142
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry1_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION145
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry3_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION148
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry2_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION151
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry0_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION154
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry6s_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION157
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry5s_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION139160
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry4s_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION142163
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry1s_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION145166
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry3s_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION148169
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry2s_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION151172
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_righ_num_action_entry0s_container[]=
+{
+	{
+		HMI_RIGHT_NUM_TIMER_ACTION154175
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_pointer_action_entry4_container[]=
+{
+	{
+		HMI_LEFT_POINTER_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_pointer_bck_action_entry_container[]=
+{
+	{
+		HMI_LEFT_POINTER_BCK_TIMER_ACTION
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_scale_action_entry_container[]=
+{
+	{
+		HMI_NEW_TIMER_ACTION21
+	}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_y_action_entry_container[]=
+{
+	{
+		HMI_NEW_TIMER_ACTION22
+	}
+};
+ static HMI_OBJECT_TABLE_STR CONST DISPLAY_SEGMENT_ROM hmi_action_group_relative_table[]=
+{
+	{
+		6,
+		hmi_classic_page_action_entry_container
+	},
+	{
+		1,
+		hmi_left_motion_action_entry_container
+	},
+	{
+		2,
+		hmi_dyn_left_cube_action_entry_container
+	},
+	{
+		3,
+		hmi_dyn_left_cube_action_bck_entry_container
+	},
+	{
+		2,
+		hmi_dyn_right_cube_action_entry_container
+	},
+	{
+		3,
+		hmi_dyn_right_cube_action_bck_entry_container
+	},
+	{
+		1,
+		hmi_move_map_action_entry_container
+	},
+	{
+		1,
+		hmi_scroll_text_qd_action_entry_container
+	},
+	{
+		2,
+		hmi_dyn_navi_cube_action_entry_container
+	},
+	{
+		1,
+		hmi_left_motion_bck_action_entry_container
+	},
+	{
+		1,
+		hmi_left_fuel_action_entry_container
+	},
+	{
+		1,
+		hmi_left_bck_fuel_action_entry_container
+	},
+	{
+		1,
+		hmi_navi_menucircle_action_entry_container
+	},
+	{
+		1,
+		hmi_navi_menuprism_action_entry_container
+	},
+	{
+		1,
+		hmi_layout_action_entry_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry0_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry20_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry40_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry60_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry100_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry140_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry200_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry260_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry0s_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry20s_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry40s_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry60s_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry100s_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry140s_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry200s_container
+	},
+	{
+		1,
+		hmi_left_num_scale_action_entry260s_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry6_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry5_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry4_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry1_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry3_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry2_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry0_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry6s_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry5s_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry4s_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry1s_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry3s_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry2s_container
+	},
+	{
+		1,
+		hmi_righ_num_action_entry0s_container
+	},
+	{
+		1,
+		hmi_pointer_action_entry4_container
+	},
+	{
+		1,
+		hmi_pointer_bck_action_entry_container
+	},
+	{
+		1,
+		hmi_navi_scale_action_entry_container
+	},
+	{
+		1,
+		hmi_navi_y_action_entry_container
+	}
+};
+static HMI_EVENT_ACTION_RES_STR CONST hmi_action_group_table[]=
+{
+	{
+		0,
+		hmi_action_group_relative_table
+	}
+};
+#endif
+#if HMI_EVENT_CUSTOM_NUMBER>0
+static HMI_EVENT_ACTION_RES_STR CONST hmi_custom_event_table[]=
+{
+	{
+		0,
+		hmi_custom_event_relative_table
+	}
+};
+#endif
+#if HMI_EVENT_STAND_NUMBER>0
+ static HMI_STAND_EVENT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_stand_event_prop_table[]=
+{
+};
+static HMI_EVENT_ACTION_RES_STR CONST hmi_stand_event_table[]=
+{
+	{
+		(void *)hmi_stand_event_prop_table,
+		hmi_stand_event_relative_table
+	}
+};
+#endif
+#if HMI_ALL_EVENT_NUMBER>0
+static HMI_EVENT_STR CONST hmi_event_table[]=
+{
+	{
+		#if HMI_EVENT_STAND_NUMBER>0
+			hmi_stand_event_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_EVENT_CUSTOM_NUMBER>0
+			hmi_custom_event_table
+		#else
+			NULL
+		#endif
+	}
+};
+
+#endif
+#if (HMI_ALL_EVENT_NUMBER+HMI_ALL_ACTION_NUMBER+HMI_ACTION_GROUP_NUMBER)>0
+static HMI_EVENT_ACTION_STR CONST hmi_event_action_table[]=
+{
+	{
+		#if HMI_ALL_EVENT_NUMBER>0
+			hmi_event_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_ACTION_GROUP_NUMBER>0
+			hmi_action_group_table,
+		#else
+			NULL,
+		#endif
+		#if HMI_ALL_ACTION_NUMBER>0
+			hmi_action_table
+		#else
+			NULL
+		#endif
+	}
+};
+
+#endif
+#endif

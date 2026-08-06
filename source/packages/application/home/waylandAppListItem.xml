@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<appitems>
+
+<appitem id="4">
+        <page>0</page >
+        <index>5</index >
+        <xpos>696</xpos >
+        <ypos>20</ypos >
+          <width>110</width>
+          <height>110</height >
+          <textEn>Picture</textEn>
+          <textZh>图片</textZh >
+          <textTw>圖片</textTw>
+          <normalpicpath>pic.png</normalpicpath>
+          <pushedpicpath>pic.png</pushedpicpath>
+</appitem>
+
+<appitem id="5">
+        <page>0</page >
+        <index>2</index >
+        <xpos>192</xpos >
+        <ypos>20</ypos >
+          <width>110</width>
+          <height>110</height >
+          <textEn>AVIN</textEn>
+          <textZh>AVIN</textZh >
+          <textTw>AVIN</textTw>
+          <normalpicpath>avin.png</normalpicpath>
+          <pushedpicpath>avin.png</pushedpicpath>
+</appitem>
+
+<appitem id="6">
+          <page>1</page >
+          <index>1</index >
+          <ypos>24</ypos >
+          <ypos>20</ypos >
+            <width>110</width>
+            <height>110</height >
+            <textEn>BlueTooth</textEn>
+            <textZh>蓝牙</textZh >
+            <textTw>藍牙</textTw>
+            <normalpicpath>btcall.png</normalpicpath>
+            <pushedpicpath>btcall.png</pushedpicpath>
+  </appitem>
+
+<appitem id="11">
+          <page>0</page>
+          <index>1</index >
+          <xpos>24</xpos >
+          <ypos>20</ypos >
+            <width>110</width>
+            <height>110</height >
+          <textEn>Setting</textEn>
+          <textZh>设置</textZh >
+          <textTw>設置</textTw>
+          <normalpicpath>setting.png</normalpicpath>
+          <pushedpicpath>setting.png</pushedpicpath>
+</appitem>
+
+<appitem id="12">
+          <page>1</page>
+          <index>4</index >
+          <xpos>528</xpos >
+          <ypos>20</ypos >
+          <width>110</width>
+          <height>110</height >
+          <textEn>File Browser</textEn>
+          <textZh>文件浏览</textZh >
+          <textTw>文件瀏覽</textTw>
+          <normalpicpath>fileBrowser.png</normalpicpath>
+          <pushedpicpath>fileBrowser.png</pushedpicpath>
+</appitem>
+<appitem id="22">
+          <page>2</page >
+          <index>8</index >
+          <xpos>192</xpos >
+          <ypos>20</ypos >
+            <width>110</width>
+            <height>110</height >
+            <textEn>SPP</textEn>
+            <textZh>蓝牙串口</textZh >
+            <textTw>藍牙串口</textTw>
+            <normalpicpath>btspp.png</normalpicpath>
+            <pushedpicpath>btspp.png</pushedpicpath>
+ </appitem>
+
+<appitem id="34">
+          <page>2</page >
+          <index>9</index >
+          <xpos>360</xpos >
+          <ypos>20</ypos >
+            <width>110</width>
+            <height>110</height >
+            <textEn>CarplaySettings</textEn>
+            <textZh>Carplay设置</textZh >
+            <textTw>Carplay設置</textTw>
+            <normalpicpath>carplaysettings.png</normalpicpath>
+            <pushedpicpath>carplaysettings.png</pushedpicpath>
+</appitem>
+
+<appitem id="35">
+          <page>2</page >
+          <index>10</index >
+          <xpos>528</xpos >
+          <ypos>20</ypos >
+            <width>110</width>
+            <height>110</height >
+            <textEn>Carplay</textEn>
+            <textZh>Carplay</textZh >
+            <textTw>Carplay</textTw>
+            <normalpicpath>carplayapp.png</normalpicpath>
+            <pushedpicpath>carplayapp.png</pushedpicpath>
+</appitem>
+
+<appitem id="36">
+          <page>2</page >
+          <index>11</index >
+          <xpos>696</xpos >
+          <ypos>20</ypos >
+            <width>110</width>
+            <height>110</height >
+            <textEn>AndroidAutoSettings</textEn>
+            <textZh>AndroidAuto设置</textZh >
+            <textTw>AndroidAuto設置</textTw>
+            <normalpicpath>androidautosettings.png</normalpicpath>
+            <pushedpicpath>androidautosettings.png</pushedpicpath>
+</appitem>
+
+<appitem id="37">
+          <page>2</page >
+          <index>12</index >
+          <xpos>864</xpos >
+          <ypos>20</ypos >
+            <width>110</width>
+            <height>110</height >
+            <textEn>AndroidAuto</textEn>
+            <textZh>AndroidAuto</textZh >
+            <textTw>AndroidAuto</textTw>
+            <normalpicpath>androidautoapp.png</normalpicpath>
+            <pushedpicpath>androidautoapp.png</pushedpicpath>
+</appitem>
+
+<appitem id="25">
+          <page>2</page>
+          <index>6</index >
+          <xpos>864</xpos >
+          <ypos>20</ypos >
+          <width>110</width>
+          <height>110</height >
+          <textEn>Music2</textEn>
+          <textZh>音乐</textZh >
+          <textTw>音樂</textTw>
+          <normalpicpath>music.png</normalpicpath>
+          <pushedpicpath>music.png</pushedpicpath>
+</appitem>
+
+<appitem id="26">
+          <page>2</page>
+          <index>7</index >
+          <xpos>24</xpos >
+          <ypos>20</ypos >
+          <width>110</width>
+          <height>110</height >
+          <textEn>Video2</textEn>
+          <textZh>视频</textZh >
+          <textTw>視頻</textTw>
+          <normalpicpath>video.png</normalpicpath>
+          <pushedpicpath>video.png</pushedpicpath>
+</appitem>
+
+<appitem id="20">
+        <page>2</page >
+        <index>5</index >
+        <xpos>696</xpos >
+        <ypos>20</ypos >
+        <width>110</width>
+        <height>110</height >
+        <textEn>GPS</textEn>
+        <textZh>GPS</textZh >
+        <textTw>GPS</textTw>
+        <normalpicpath>gps.png</normalpicpath>
+        <pushedpicpath>gps.png</pushedpicpath>
+</appitem>
+
+<appitem id="31">
+        <page>1</page >
+        <index>2</index >
+        <xpos>192</xpos >
+        <ypos>20</ypos >
+        <width>110</width>
+        <height>110</height >
+        <textEn>AVM</textEn>
+        <textZh>全景环视</textZh >
+        <textTw>全景環視</textTw>
+        <normalpicpath>avm.png</normalpicpath>
+        <pushedpicpath>avm.png</pushedpicpath>
+</appitem>
+<appitem id="33">
+          <page>2</page>
+          <index>1</index >
+          <xpos>24</xpos >
+          <ypos>20</ypos >
+          <width>110</width>
+          <height>110</height >
+          <textEn>Video3</textEn>
+          <textZh>视频3</textZh >
+          <textTw>視頻3</textTw>
+          <normalpicpath>video.png</normalpicpath>
+          <pushedpicpath>video.png</pushedpicpath>
+</appitem>
+</appitems>

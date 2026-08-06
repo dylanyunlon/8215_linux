@@ -1,0 +1,1 @@
+source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/carplay/Config.in"

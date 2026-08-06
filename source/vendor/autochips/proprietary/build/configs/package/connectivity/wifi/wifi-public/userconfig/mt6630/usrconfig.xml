@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wifi><AP TetherIface="tether" WifiApIface="ap0" WifiAPUseDfs="disabled" BandWidth="80M" ApAutoEnable="enabled" SupplicantLogLevel="INFO"/></wifi>

@@ -1,0 +1,127 @@
+#!/bin/sh
+#
+# rcS		Call all S??* scripts in /etc/rcS.d in
+#		numerical/alphabetical order.
+#
+# Version:	@(#)/etc/init.d/rcS  2.76  19-Apr-1999  miquels@cistron.nl
+#
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/libexec:/usr/lib
+#PATH=$QTDIR/bin:$PATH
+#LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+export UDEV_CONFIG_FILE=/etc/udev/udev.conf
+
+runlevel=S
+prevlevel=N
+umask 022
+export PATH runlevel prevlevel QTDIR UDEV_CONFIG_FILE
+
+#	Make sure proc is mounted
+#
+[ -d "/proc/1" ] || mount /proc
+
+echo "path:" $PATH
+
+#
+#	Source defaults.
+#
+. /etc/default/rcS
+#load fstab
+mount -a
+mkdir -p /run/udev
+#mkdir /mnt/mysd
+
+#create udisk & sdcard point
+#mkdir /media/ext_sdcard1
+#mkdir /media/ext_sdcard2
+#mkdir /media/udisk1
+#mkdir /media/udisk2
+#mkdir /media/udisk3
+#mkdir /media/udisk4
+#mkdir /media/udisk5
+
+#create symlink at root
+#ln -s /media/ext_sdcard1/
+#ln -s /media/ext_sdcard2/
+#ln -s /media/udisk1/
+#ln -s /media/udisk2/
+#ln -s /media/udisk3/
+#ln -s /media/udisk4/
+#ln -s /media/udisk5/
+
+ln -s /bin/busybox /bin/insmod
+#exec /etc/init.d/atc_init
+ atc_ubiattach system
+mkdir  /usr
+mount -t ubifs ubi0_0 /usr 
+#mount -t sysfs sysfs /sys
+
+#put system log under /data4write/
+
+
+ln -s /usr/lib/* /lib
+ln -s /proc/mounts /etc/mtab
+mount -a
+mount -t debugfs none /sys/kernel/debug
+
+#start udevd
+/usr/libexec/udev/udevd -d
+
+rm -rf /usr/var/run/dbus/
+mkdir -p /usr/var/run/dbus/
+sh /etc/dbus-lunch.sh
+dbus-daemon --system &
+dbus-daemon --fork --print-pid 5 --print-address 7 --session &
+. /etc/default/udev-sdcard
+#insmod /usr/drivers/gps.ko
+insmod /usr/drivers/gps_6630.ko
+insmod /usr/drivers/drvcli.ko
+#insmod /usr/drivers/oal.ko
+insmod /usr/drivers/libosal.ko
+insmod /usr/drivers/drvstc.ko
+insmod /usr/drivers/drvmmisc.ko
+insmod /usr/drivers/imgresz.ko
+insmod /usr/drivers/pwm.ko
+insmod /usr/drivers/atc_bl.ko
+insmod /usr/drivers/vcp.ko
+insmod /usr/drivers/ump.ko
+insmod /usr/drivers/mali.ko
+insmod /usr/drivers/atcfb.ko COLOR_DEPTH_32_BIT=1
+insmod /usr/drivers/wch.ko
+insmod /usr/drivers/pdec.ko
+insmod /usr/drivers/jdec.ko
+insmod /usr/drivers/gdec.ko
+insmod /usr/drivers/vdec.ko
+insmod /usr/drivers/adec.ko
+insmod /usr/drivers/drvdmx.ko
+insmod /usr/drivers/videobuf-core.ko
+insmod /usr/drivers/videobuf2-core.ko
+insmod /usr/drivers/videobuf2-memops.ko
+insmod /usr/drivers/videobuf2-vmalloc.ko
+insmod /usr/drivers/videobuf2-dma-contig.ko
+insmod /usr/drivers/videobuf-dma-contig.ko
+insmod /usr/drivers/atc-vout.ko
+insmod /usr/drivers/tvd.ko
+insmod /usr/drivers/ybr.ko
+insmod /usr/drivers/avin.ko
+insmod /usr/drivers/mhldrv.ko
+insmod /usr/drivers/hdmi_in.ko
+insmod /usr/drivers/mtz_drv.ko
+insmod /usr/drivers/backcar.ko
+
+/usr/bin/pulseaudio --start --exit-idle-time=-1
+
+#insmod /usr/drivers/usb_hcd_hub.ko usb_protocol=usb2.0
+#
+#	Trap CTRL-C &c only in this shell so we can interrupt subprocesses.
+#
+
+trap ":" INT QUIT TSTP
+
+#
+#	Call all parts in order.
+#
+#exec /etc/init.d/rc S
+
+# start the connmand daemon
+/usr/sbin/connmand -n -d &

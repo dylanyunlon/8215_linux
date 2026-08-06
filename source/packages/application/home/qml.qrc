@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>TopPage.qml</file>
+        <file>AppItem.qml</file>
+        <file>FirstPage.qml</file>
+        <file>FixedPage.qml</file>
+        <file>FollowingPage.qml</file>
+        <file>home.qml</file>
+        <file>ScrollPage.qml</file>
+        <file>VolumePanel.qml</file>
+        <file>volume_overlay.qml</file>
+    </qresource>
+</RCC>

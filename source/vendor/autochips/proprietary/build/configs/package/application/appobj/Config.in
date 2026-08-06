@@ -1,0 +1,8 @@
+config BR2_PACKAGE_APPOBJ
+  bool "appobj"
+  select BR2_PACKAGE_QT5BASE
+  select BR2_PACKAGE_QT5BASE_GUI
+  select BR2_PACKAGE_UNIVERSAL_UTILS
+  select BR2_PACKAGE_APPUTILS
+  help
+    this is a qt appobj lib

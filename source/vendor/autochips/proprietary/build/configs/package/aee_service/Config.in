@@ -1,0 +1,4 @@
+config BR2_PACKAGE_AEE_SERVICE
+	bool "aee_service"
+	help
+	  this is a aee-service for dump NE and KE Information.

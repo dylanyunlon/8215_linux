@@ -1,0 +1,3 @@
+source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/Config.in"
+source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carbit/Config.in"
+source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/androidauto/Config.in"

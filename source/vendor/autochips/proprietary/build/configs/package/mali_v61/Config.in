@@ -1,0 +1,13 @@
+config BR2_PACKAGE_MALI_V61
+	bool "mali_v61"
+	select BR2_PACKAGE_HAS_LIBOPENMAX
+	help
+	  Autochips mali v61 contains the omx library to use
+          the Video Codec driver.
+
+if BR2_PACKAGE_MALI_V61
+
+config BR2_PACKAGE_PROVIDES_LIBOPENMAX
+        default "mali_v61"
+
+endif

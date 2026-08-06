@@ -1,0 +1,4 @@
+config BR2_PACKAGE_DIRECTRENDER
+	bool "directrender"
+	help
+	  Autochips directrender.

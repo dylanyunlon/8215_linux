@@ -1,0 +1,4 @@
+config BR2_PACKAGE_ATCMULTIMEDIA
+	bool "atcmultimedia"
+	help
+	  Autochips atcmultimedia components.

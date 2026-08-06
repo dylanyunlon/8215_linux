@@ -1,0 +1,40 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <!-- QML files -->
+        <file>qml/main.qml</file>
+        <file>qml/MainWindow.qml</file>
+        
+        <!-- QML Components -->
+        <file>qml/components/ToolbarComponent.qml</file>
+        <file>qml/components/ButtonContainerComponent.qml</file>
+        <file>qml/components/SettingsPanelComponent.qml</file>
+        <file>qml/components/ToastComponent.qml</file>
+        <file>qml/components/VideoPlayerComponent.qml</file>
+        <file>qml/components/VideoFileItemComponent.qml</file>
+        <file>qml/components/VideoFileListComponent.qml</file>
+        
+        <!-- Icon Images -->
+        <file>images/home.png</file>
+        <file>images/back.png</file>
+        <file>images/record_start.png</file>
+        <file>images/record_stop.png</file>
+        <file>images/snapshot.png</file>
+        <file>images/camera_switch_front.png</file>
+        <file>images/camera_switch_rear.png</file>
+        <file>images/settings.png</file>
+        <file>images/directory.png</file>
+        
+        <!-- Player Icons -->
+        <file>images/player_play.png</file>
+        <file>images/player_pause.png</file>
+        <file>images/player_backward.png</file>
+        <file>images/player_forward.png</file>
+        <file>images/player_skip_to_start.png</file>
+        <file>images/player_skip_to_end.png</file>
+        
+        <!-- File List Icons -->
+        <file>images/file_delete.png</file>
+        <file>images/file_play_icon.png</file>
+    </qresource>
+</RCC>

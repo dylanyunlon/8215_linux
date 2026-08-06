@@ -1,0 +1,28 @@
+config BR2_PACKAGE_CARPLAY
+	bool "carplay package group"
+	select BR2_PACKAGE_CARLINKCONFIGS
+	select BR2_PACKAGE_CARLINKUTILS
+	select BR2_PACKAGE_MDNSRESPONDER
+	select BR2_PACKAGE_APPLEPLUGIN
+	select BR2_PACKAGE_CARPLAYTESTS
+	select BR2_PACKAGE_IAP
+	select BR2_PACKAGE_CARLINKMANAGER
+	select BR2_PACKAGE_CARPLAYPLUGIN
+	select BR2_PACKAGE_CARPLAYSERVICE
+	select BR2_PACKAGE_CARPLAYMANAGER
+	select BR2_PACKAGE_IPERF
+	help
+		carplay package group.
+
+if BR2_PACKAGE_CARPLAY
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/carlinkconfigs/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/carlinkutils/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/mdnsresponder/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/appleplugin/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/carplaytests/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/iap/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/carlinkmanager/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/carplayplugin/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/carplayservice/Config.in"
+	source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/carplay/carplaymanager/Config.in"
+endif

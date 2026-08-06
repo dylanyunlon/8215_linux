@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CarInfo>
+	<CarClass carName="Q7" fileName="Q7" carWheelBase="310" carAngleCoef="10">
+		<CarColor colorName="White" colorRGB="#C8C8C8"/>
+		<CarColor colorName="Red" colorRGB="#FF0000"/>
+		<CarColor colorName="Green" colorRGB="#00FF00"/>
+		<CarColor colorName="Blue" colorRGB="#0000FF"/>
+		<CarColor colorName="Black" colorRGB="#252525"/>
+	</CarClass>
+	<CarClass carName="jieda" fileName="jieda"  carWheelBase="270" carAngleCoef="20">
+		<CarColor colorName="White" colorRGB="#C8C8C8"/>
+		<CarColor colorName="Red" colorRGB="#FF0000"/>
+		<CarColor colorName="Green" colorRGB="#00FF00"/>
+		<CarColor colorName="Blue" colorRGB="#0000FF"/>
+		<CarColor colorName="Black" colorRGB="#252525"/>
+	</CarClass>
+</CarInfo>

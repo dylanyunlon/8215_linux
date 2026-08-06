@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBDINFOX
+	bool "libdinfo.so for en/decrypt"
+	help
+	  libdinfo.so for en/decrypt

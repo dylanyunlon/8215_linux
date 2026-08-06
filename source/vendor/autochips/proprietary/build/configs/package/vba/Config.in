@@ -1,0 +1,4 @@
+config BR2_PACKAGE_VBA
+	bool "vba"
+	help
+	  Autochips vba components.

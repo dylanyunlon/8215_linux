@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBUPDATE
+	bool "update library"
+	help
+	  Autochips update library

@@ -1,0 +1,31 @@
+#ifndef _DUALARMDRIVER_H_
+#define _DUALARMDRIVER_H_
+
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <stdio.h>
+#include <stdbool.h>
+
+#include "dualarm.h"
+
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+int OpenDualarmDriver();
+
+bool SendDualarmMessage(int fd);
+
+bool GetDualarmMessage(int fd,DUALARM_PARAM * message);
+
+
+void CloseDualarmDriver(int fd);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

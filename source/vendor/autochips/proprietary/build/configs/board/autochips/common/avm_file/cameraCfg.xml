@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CameraInfo>
+	<CameraCfg cameraName="0820" cfgFileName="0820.txt"/>
+	<CameraCfg cameraName="0520" cfgFileName="0520.txt"/>	
+	<CameraCfg cameraName="0926" cfgFileName="0926.txt"/>	
+</CameraInfo>

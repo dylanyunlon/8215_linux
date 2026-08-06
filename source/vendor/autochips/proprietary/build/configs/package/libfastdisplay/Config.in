@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBFASTDISPLAY
+	bool "libfastdisplay"
+	help
+	  this is a libfastdisplay

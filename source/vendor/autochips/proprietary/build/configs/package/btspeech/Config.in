@@ -1,0 +1,5 @@
+config BR2_PACKAGE_BTSPEECH
+	bool "btspeech"
+	select BR2_PACKAGE_ALSA_LIB
+	help
+	  Autochips audio btspeech.

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_WPA_SUPPLICANT
+	bool "wpa_supplicant"
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_OPENSSL
+	help
+	  wpa_supplicant

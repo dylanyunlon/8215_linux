@@ -1,0 +1,8 @@
+config BR2_PACKAGE_CONNMAN
+	bool "connman"
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_READLINE
+	select BR2_PACKAGE_IPTABLES
+	help
+	  connman

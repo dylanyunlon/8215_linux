@@ -1,0 +1,6 @@
+config BR2_PACKAGE_CARLINKMANAGER
+	bool "carlinkmanager component"
+	select BR2_PACKAGE_IAP
+	select BR2_PACKAGE_LIBCONFIG
+	help
+		libcarlinkclient, libusbg, libcarlinkimpl, carlinkmanager.

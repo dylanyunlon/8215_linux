@@ -1,0 +1,190 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("AutoChips Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to AutoChips Inc. and/or its licensors. Without
+ * the prior written permission of AutoChips inc. and/or its licensors, any
+ * reproduction, modification, use or disclosure of AutoChips Software, and
+ * information contained herein, in whole or in part, shall be strictly
+ * prohibited.
+ *
+ * AutoChips Inc. (C) 2016. All rights reserved.
+ *
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("AUTOCHIPS SOFTWARE")
+ * RECEIVED FROM AUTOCHIPS AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+ * ON AN "AS-IS" BASIS ONLY. AUTOCHIPS EXPRESSLY DISCLAIMS ANY AND ALL
+ * WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES AUTOCHIPS PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ * INCORPORATED IN, OR SUPPLIED WITH THE AUTOCHIPS SOFTWARE, AND RECEIVER AGREES
+ * TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+ * RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+ * OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN AUTOCHIPS
+ * SOFTWARE. AUTOCHIPS SHALL ALSO NOT BE RESPONSIBLE FOR ANY AUTOCHIPS SOFTWARE
+ * RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND AUTOCHIPS'S
+ * ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE AUTOCHIPS SOFTWARE
+ * RELEASED HEREUNDER WILL BE, AT AUTOCHIPS'S OPTION, TO REVISE OR REPLACE THE
+ * AUTOCHIPS SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+ * CHARGE PAID BY RECEIVER TO AUTOCHIPS FOR SUCH AUTOCHIPS SOFTWARE AT ISSUE.
+ */
+
+#ifndef WIN32PUB_H__
+#define WIN32PUB_H__
+
+#include <stdbool.h>
+#include <linux/types.h>
+//#include "types.h"
+#include "ioctl_mmisc.h"
+#include "mm_errcode.h"
+#include "syslog.h"
+//#include "libgen.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+bool InitMmisc(void);
+bool DeInitMmisc(const char* function, __u32 u4Line);
+__u8 * GetMmapBaseAddr(void);
+__u32 GetOSEMemorySize(E_OSE_MEM_GET_TYPE_T eType);
+__u64 GetOSEMemoryPhyAddr(E_OSE_MEM_GET_TYPE_T eType);
+void * GetOSEMemoryVirAddr(E_OSE_MEM_GET_TYPE_T eType);
+
+bool Mmisc_AllocHwMem(OSE_MEM_HWMEM_INFO_T *prInfo);
+bool Mmisc_ReleaseHwMem(__u32 u4VirAddr);
+
+#define MM_RETURN_LOG_OPEN  1U
+
+#define STATEC_ERR          FALSE
+
+#define REALC_ERR           TRUE
+
+#if MM_RETURN_LOG_OPEN
+#define MM_RETURN(err)      MM_RETURN_I(err, basename(__FILE__), __FUNCTION__, __LINE__)
+#define MM_RETURN_I(err, file,func,line)                                                       \
+    do                                                                                         \
+    {                                                                                          \
+        MRESULT mrPrivMMiscRet = (MRESULT)err;                                                 \
+        if (mrPrivMMiscRet != (MRESULT)RET_MSDKC_OK)                                           \
+        {                                                                                       \
+            if (MM_IS_STATE_ERROR(mrPrivMMiscRet))                                             \
+            {                                                                                   \
+                if (STATEC_ERR) syslog(LOG_ERR, "[E][MM][%s:%s:%d] [0x%x] is returned\n",       \
+                                (char *)file,(char *)func,(int)line,(unsigned int)mrPrivMMiscRet); \
+            }                                                                                   \
+            else                                                                                \
+            {                                                                                   \
+                if (REALC_ERR) syslog(LOG_ERR,"[E][MM][%s:%s:%d] [0x%x] is returned\n",         \
+                                (char *)file,(char *)func,(int)line,(unsigned int)mrPrivMMiscRet); \
+            }                                                                                   \
+        }                                                                                       \
+        return mrPrivMMiscRet;                                                                  \
+    } while(0)
+#else
+#define MM_RETURN(err)    return err
+#endif
+
+
+
+/***********************************SET_FILE_POINTER*************************************
+* 1st [IN]  a: (bool)         MTP file or USB/SD file
+* 2nd [IN]  b: (HANDLE)       Device HANDLE
+* 3rd [IN]  c: (char*)       File name
+* 4th [IN]  d: (__s32)         lDistanceToMove
+* 5th [IN]  e: (__s32*)        Pointer to high-order 32 bits of the signed distance to move
+* 6th [IN]  f: (dwMoveMethod) Starting point for the file pointer move--FILE_BEGIN,FILE_END
+* 7th [OUT] g: (LPDOWRD)      Pointer to the new file pointer position
+* 8th [IN]  h: (__u32)        The size of buffer that receive the new file pointer position
+*****************************************************************************************/
+#define SET_FILE_POINTER(a,b,c,d,e) SET_FILE_POINTER_I(a,b,c,d,e,(char *)__FILE__,__LINE__)
+
+/***********************************READ_FILE********************************************
+* 1st [IN]  a: (bool)         MTP file or USB/SD file
+* 2nd [IN]  b: (HANDLE)       Device HANDLE
+* 3rd [IN]  c: (char*)       File name
+* 4th [IN]  d: (__u32)        Number of bytes to be read from the file
+* 5th [OUT] e: (LPVOID)       Pointer to the buffer that receives the data read from file
+* 6th [IN]  f: (__u32)        the size of buffer that receives the data read from file
+* 7th [OUT] g: (LPDOWRD)      Pointer to the number of bytes read
+* 8th [IN]  h: (LPOVERLAPPED) Set to NULL
+*****************************************************************************************/
+#define READ_FILE_B(a,b,c,d,e,f)        READ_FILE_I(a,b,c,d,e,f,(char *)__FILE__,__LINE__)
+
+/***********************************CreateFile*************************************
+* 1st [IN]  a: (bool)         MTP file or USB/SD file
+* 2nd [OUT] b: (__u32*)       handle of mtp file
+* 3rd [IN]  c: (char*)       Pointer to a string that specifies the name of the object
+* 4th [IN]  d: (__u32)        Type of access to the object
+* 5th [IN]  e: (__u32)        Share mode for the object
+* 6th [IN]  f: (ATTRIBUTES)   Not used
+* 7th [IN]  g: (__u32)        Action to take on files that exist.....
+* 8th [IN]  h: (DOWRD)        File attributes and flags for the file
+* 9th [IN]  i: (HANDLE)       Ignored
+*****************************************************************************************/
+#define READ_FILE(a,b,c,d,e,f,g)        READ_FILE_WITH_OFFSET_I(a,b,c,d,e,f,g,(char *)__FILE__,__LINE__)
+
+/***********************************CreateFile*************************************
+* 1st [IN]  a: (bool)         MTP file or USB/SD file
+* 2nd [OUT] b: (__u32*)       handle of mtp file
+* 3rd [IN]  c: (char*)       Pointer to a string that specifies the name of the object
+* 4th [IN]  d: (__u32)        Type of access to the object
+* 5th [IN]  e: (__u32)        Share mode for the object
+* 6th [IN]  f: (ATTRIBUTES)   Not used
+* 7th [IN]  g: (__u32)        Action to take on files that exist.....
+* 8th [IN]  h: (DOWRD)        File attributes and flags for the file
+* 9th [IN]  i: (HANDLE)       Ignored
+*****************************************************************************************/
+
+#define CREATE_FILE(a,b,c)  CREATE_FILE_I(a,b,c,(char *)__FILE__,__LINE__)
+
+#define CLOSE_FILE(a)                   CLOSE_FILE_I(a,(char *)__FILE__,__LINE__)
+
+#define GET_FILE_SIZE(a, b)             GET_FILE_SIZE_I(a,b,(char *)__FILE__,__LINE__)
+
+bool  READ_FILE_I(bool fgMtpFile,
+                        int   fd,
+                  __u32 u4ReadDataSz,
+                  void *pvOutBuffer,
+                  __u32 u4OutBufferSz,
+                  __u32 *pu4BytesReturned,
+                  char *file,
+                  __u32 u4Line);
+
+bool  READ_FILE_WITH_OFFSET_I(bool fgMtpFile,
+                              int   fd,
+                              __u64 u8FileOffset,
+                        __u32 u4ReadDataSz,
+                        void * pvOutBuffer,
+                        __u32 u4OutBufferSz,
+                        __u32 * pu4BytesReturned,
+                        char * file,
+                        __u32 u4Line);
+
+int CREATE_FILE_I(bool fgMtpFile,
+                            char * pszFileName,
+                            __u32 dwDesiredAcess,
+                            char * file,
+                            __u32 u4Line);
+
+bool SET_FILE_POINTER_I(bool fgMtpFile,
+                                int     fd,
+                                __s32   lLow32Bits,
+                                __u32*  pu4High32Bits,
+                                __s64*  pi8NewPointer,
+                                char*   file,
+                                __u32   u4Line);
+
+bool CLOSE_FILE_I(int fd, char* file, __u32 u4Line);
+
+bool GET_FILE_SIZE_I(char * pszFileName, __u64 * pu8size, char* file, __u32 u4Line);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+

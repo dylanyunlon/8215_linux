@@ -1,0 +1,25 @@
+import os
+import copy
+import awtk_config as config
+
+BIN_DIR = os.environ['BIN_DIR'];
+LIB_DIR = os.environ['LIB_DIR'];
+LCD_DEVICES = os.environ['LCD_DEVICES']
+
+env = DefaultEnvironment().Clone()
+
+if LCD_DEVICES =='egl_for_fsl' :
+  SOURCES = Glob('fsl/*.c') ;
+elif LCD_DEVICES =='egl_for_x11' :
+  SOURCES = Glob('x11/*.c');
+elif LCD_DEVICES =='egl_for_gbm' :
+  SOURCES = Glob('gbm/*.c') ;
+elif LCD_DEVICES =='egl_for_ac8xxx' :
+  SOURCES = Glob('ac8xxx/*.c');
+
+EGL_DEVICE_DEPS_LIBS =  config.OS_LIBS
+EGL_DEVICE_STATIC_LIBS = []
+EGL_DEVICE_LINKFLAGS= env['LINKFLAGS'] + config.genDllLinkFlags(EGL_DEVICE_STATIC_LIBS, 'egl_devices')
+
+env.SharedLibrary(os.path.join(BIN_DIR, 'egl_devices'), SOURCES,
+                  LIBS=EGL_DEVICE_DEPS_LIBS, LINKFLAGS=EGL_DEVICE_LINKFLAGS)

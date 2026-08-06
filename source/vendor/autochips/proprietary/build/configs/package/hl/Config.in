@@ -1,0 +1,4 @@
+config BR2_PACKAGE_HL
+	bool "hl"
+	help
+	  Autochips hsm_loader.

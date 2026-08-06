@@ -1,0 +1,1046 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("AutoChips Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to AutoChips Inc. and/or its licensors. Without
+ * the prior written permission of AutoChips inc. and/or its licensors, any
+ * reproduction, modification, use or disclosure of AutoChips Software, and
+ * information contained herein, in whole or in part, shall be strictly
+ * prohibited.
+ *
+ * AutoChips Inc. (C) 2016. All rights reserved.
+ *
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("AUTOCHIPS SOFTWARE")
+ * RECEIVED FROM AUTOCHIPS AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+ * ON AN "AS-IS" BASIS ONLY. AUTOCHIPS EXPRESSLY DISCLAIMS ANY AND ALL
+ * WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES AUTOCHIPS PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ * INCORPORATED IN, OR SUPPLIED WITH THE AUTOCHIPS SOFTWARE, AND RECEIVER
+AGREES
+ * TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+ * RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+ * OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN AUTOCHIPS
+ * SOFTWARE. AUTOCHIPS SHALL ALSO NOT BE RESPONSIBLE FOR ANY AUTOCHIPS SOFTWARE
+ * RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND AUTOCHIPS'S
+ * ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE AUTOCHIPS SOFTWARE
+ * RELEASED HEREUNDER WILL BE, AT AUTOCHIPS'S OPTION, TO REVISE OR REPLACE THE
+ * AUTOCHIPS SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+ * CHARGE PAID BY RECEIVER TO AUTOCHIPS FOR SUCH AUTOCHIPS SOFTWARE AT ISSUE.
+ */
+
+
+/*******************************************************************************
+*
+* Filename:
+* ---------
+* file msdkcore_defs.h
+*
+* Project:
+* --------
+*   CNB
+*
+* Description:
+* ------------
+*
+*
+* Author:
+* -------
+*
+*
+*------------------------------------------------------------------------------
+* $Revision: #16 $
+* $Modtime:$
+* $Log:$
+*
+*******************************************************************************/
+
+#ifndef MSDKCORE_DEFS_H_
+#define MSDKCORE_DEFS_H_
+
+#include "linux/types.h"
+#include "stdbool.h"
+#include "mm_ucommon.h"
+
+typedef void          *HAVDECINST;
+typedef void          *HAVINST;
+typedef void          *HDRMINST;
+typedef void          *HSTINST;
+
+#define MAX_STM_NUM             (8)
+#define MAX_ALL_STREAM_CNT      (24)
+#define DEBUG_INFO_MAXLEN       40
+#define MAX_ID3INFO_LEN         (256)
+
+#define USEDFORUNITTEST 0
+#define UNUSEDCODE 0
+
+typedef enum
+{
+    MSDKC_FLAGS_NONE = 0,
+    MSDKC_FLAG_USE_ONE_DMX_INS  = 1 << 0,
+    MSDKC_FLAG_NETWORK_RESOURCE = 1 << 1,
+    MSDKC_FLAG_BOOTANIM = 1 << 2,
+    MSDKC_FLAG_NOT_PARSE_AUD = 1 << 3
+} MSDKC_FLAGS;
+
+typedef enum
+{
+    AV_FILE_DIVX,
+    AV_FILE_MKV,
+    AV_FILE_MPEG,
+    AV_FILE_ASF,
+    AV_FILE_WMA,
+    AV_FILE_AVI,
+    AV_FILE_MP4,
+    AV_FILE_TSF,
+    AV_FILE_OGM,
+    AV_FILE_OGG,
+    AV_FILE_FLV,
+    AV_FILE_WAV,
+    AV_FILE_MP3,
+    AV_FILE_AAC,
+    AV_FILE_AC3,
+    AV_FILE_RM,
+    AV_FILE_APE,
+    AV_FILE_FLAC,
+    AV_FILE_TS,
+    AV_FILE_SWF,
+    AV_FILE_NONE,
+} AV_FILE_TYPE_T;
+
+typedef enum
+{
+    MSDKC_LANG_NONE,
+    MSDKC_LANG_ENGLISH,             /**<  "eng" */
+    MSDKC_LANG_FRENCH,              /**<  "fre" or "fra" */
+    MSDKC_LANG_SIMPLE_CHINESE,      /**<  "chi" or "zho" */
+    MSDKC_LANG_TRADITIONAL_CHINESE,
+    MSDKC_LANG_JAPANESE,            /**< "jpn" */
+    MSDKC_LANG_KOREAN,              /**< "kor" */
+    MSDKC_LANG_GERMAN,              /**<  "ger" or "deu" */
+    MSDKC_LANG_ITALIAN,             /**<  "ita" */
+    MSDKC_LANG_DUTCH,               /**<  "dut" or "nld" */
+    MSDKC_LANG_RUSSIAN,             /**< "rus" */
+    MSDKC_LANG_SWEDISH,             /**<  "swe" */
+    MSDKC_LANG_SPANISH,             /**<  "spa" */
+    MSDKC_LANG_HEBREW,              /**<  "heb" */
+    MSDKC_LANG_ARABIC,              /**<  "ara" */
+    MSDKC_LANG_NEDERLANDS,
+    MSDKC_LANG_ROMANIAN,            /**< "rum" or "ron" */
+    MSDKC_LANG_BULGARIAN,           /**< "bul" */
+    MSDKC_LANG_CROATIAN,            /**<  "src" or "hrv" */
+    MSDKC_LANG_CZECH,               /**< "cze" or "ces" */
+    MSDKC_LANG_DANISH,              /**< "dan" */
+    MSDKC_LANG_FINNISH,             /**< "fin" */
+    MSDKC_LANG_ICELANDIC,           /**< "ice" or "isl" */
+    MSDKC_LANG_HUNGARIAN,           /**< "hun" */
+    MSDKC_LANG_NORWEGIAN,           /**< "nor" */
+    MSDKC_LANG_POLISH,              /**< "pol" */
+    MSDKC_LANG_PORTUGUESE,          /**< "por" */
+    MSDKC_LANG_TURKISH,             /**< "tur" */
+    MSDKC_LANG_UNKNOWN              /**< "und" */
+} E_MSDKC_LANGUAGE_INFO;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __s32 i4EncoderDelay;
+    __s32 i4EncoderPadding;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_AUD_DEC_INFO_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u32 u4Primaries;
+    __u32 u4Transfer;
+    __u32 u4Coeffs;
+    bool  fgFullRange;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} VID_COLOR_INFO_T;
+
+typedef enum
+{
+    AV_PSR_NONE    = 0,
+    AV_PSR_A       = 1,
+    AV_PSR_V       = 1 << 1,
+    AV_PSR_SP      = 1 << 2,
+    AV_PSR_AV      = 1 << 3
+} AV_PSR_TYPE_T;
+
+typedef enum
+{
+    FILE_UNKNOWN = 0,
+    FILE_AUDIO   = 1 << 0,
+    FILE_VIDEO   = 1 << 1
+} E_FILE_TYPE;
+
+typedef enum
+{
+    AV_STREAM_TYPE_NONE,
+    AV_STREAM_TYPE_A,
+    AV_STREAM_TYPE_V,
+    AV_STREAM_TYPE_SP,
+    AV_STREAM_TYPE_ALL
+} AV_STREAM_TYPE_T;
+
+typedef enum _AVMEDIATYPE
+{
+    AVMEDIA_TYPE_EXTSUBPIC,
+    AVMEDIA_TYPE_INTSUBPIC,
+    AVMEDIA_TYPE_INTSUBTITLE,
+    AVMEDIA_TYPE_EXTSUBTITLE,
+    AVMEDIA_TYPE_LINEIN_AUD,
+    AVMEDIA_TYPE_CC,
+} AVMEDIATYPE_T;
+
+typedef struct _MSDKCORE_DRM_DECRYPT_INFO
+{
+    __s32 i4DrmDecryptId;
+} MSDKCORE_DRM_DECRYPT_INFO_T;
+
+
+typedef enum _AVFORMATTYPE
+{
+    AVFMT_TYPE_VIDEOFMT,
+    AVFMT_TYPE_AUDIOFMT,
+    AVFMT_TYPE_WAVEFMT
+} AVFORMATTYPE_T;
+
+typedef enum
+{
+    LP_FP_PIC_PARSER,
+    LP_FP_PIC_QUERY,
+    LP_FP_AUDIO_PARSER,
+    LP_FP_AUDIO_QUERY,
+    LP_FP_MOVIE_PARSER
+} LP_FP_TYPE_E;
+
+typedef enum
+{
+    AAC_PROFILE_MAIN = 0,
+    AAC_PROFILE_LC,
+    AAC_PROFILE_SBR,             /**< HE-AAC   */
+    AAC_PROFILE_SSR,
+    AAC_PROFILE_LTP,
+    AAC_PROFILE_NULL,
+    AAC_PROFILE_RESERVED,
+    //AOT for MP4
+    AOT_ER_AAC_LC        = 17,   /**< Error Resilient(ER) AAC Low Complexity    */
+    AOT_ER_AAC_SCAL      = 20,   /**< Error Resilient(ER) AAC Scalable object   */
+    AOT_ER_BSAC          = 22,   /**< Error Resilient(ER) BSAC object           */
+    AOT_ER_AAC_LD        = 23,   /**< Error Resilient(ER) AAC LowDelay object   */
+    AOT_PS               = 29,   /**< PS, Parametric Stereo (includes SBR)      */
+    AOT_ESCAPE           = 31,
+    AOT_USAC             = 42,   /**< USAC                                      */
+    AAC_PROFILE_NOT_DEFINED = 0XFF,
+} AUD_AAC_PROFILE;
+typedef enum VIDEO_VC1_PROFILE
+{
+    VIDEO_VC1_PROFILE_UNUSED = 0,
+    VIDEO_VC1_PROFILE_SIMPLE,
+    VIDEO_VC1_PROFILE_MAIN,
+    VIDEO_VC1_PROFILE_ADVANCED,
+    VIDEO_VC1_PROFILE_UNKNOWN           = 0x6EFFFFFF,
+    VIDEO_VC1_PROFILE_KHRONOSEXTENSIONS = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */
+    VIDEO_VC1_PROFILE_VENDORSTARTUNUSED = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
+    VIDEO_VC1_PROFILE_MAX
+} VIDEO_VC1_PROFILE;
+
+// MPC audio channels
+typedef enum MPCAudChannels
+{
+    MPC_AUD_CHANNELS_MONO,                   /**< 1/0   (DVD-Video/VR 0000b) */
+    MPC_AUD_CHANNELS_MONO_SUB,               /**< 1+sub-language */
+    MPC_AUD_CHANNELS_DUAL_MONO,              /**< 1+1 (DVD-VR 1001b) */
+    MPC_AUD_CHANNELS_STEREO,                 /**< 2/0  (DVD-Video/VR 0001b) */
+    MPC_AUD_CHANNELS_STEREO_SUB,             /**< 2+sub-language */
+    MPC_AUD_CHANNELS_STEREO_DOLBY_SURROUND,  /**< 2/0, dolby surround */
+    MPC_AUD_CHANNELS_SURROUND_2CH,           /**< 2/1 */
+    MPC_AUD_CHANNELS_SURROUND,               /**< 3/1 */
+    MPC_AUD_CHANNELS_3_0,                    /**< 3/0 (DVD-Video/VR 0010b) */
+    MPC_AUD_CHANNELS_4_0,                    /**< 2/2 (DVD-Video/VR 0011b) */
+    MPC_AUD_CHANNELS_4_1,
+    MPC_AUD_CHANNELS_5_0,                    /**<  (DVD-Video/VR 0100b) */
+    MPC_AUD_CHANNELS_5_1,                    /**< 3/2  (DVD-Video/VR 0101b) */
+    MPC_AUD_CHANNELS_6_0,
+    MPC_AUD_CHANNELS_6_1,
+    MPC_AUD_CHANNELS_7_0,                    /**<  (DVD-Video/VR 0110b)  */
+    MPC_AUD_CHANNELS_7_1,                    /**< 5/2    (DVD-Video/VR 0111b) */
+    MPC_AUD_CHANNELS_FM_MONO_NICAM_MONO,
+    MPC_AUD_CHANNELS_FM_MONO_NICAM_STEREO,
+    MPC_AUD_CHANNELS_FM_MONO_NICAM_DUAL,
+    MPC_AUD_CHANNELS_MULTI_CH,
+    MPC_AUD_CHANNELS_1_0_1,                /**<  1/0/1 */
+    MPC_AUD_CHANNELS_2_1_0,                /**<  2/1/0 */
+    MPC_AUD_CHANNELS_2_1_1,                /**<  2/1/1 */
+    MPC_AUD_CHANNELS_2_2_0,                /**<  2/2/0 */
+    MPC_AUD_CHANNELS_2_2_1,                /**<  2/2/1 */
+    MPC_AUD_CHANNELS_4_0_0,                /**<  4/0/0 */
+    MPC_AUD_CHANNELS_4_0_1,                /**<  4/0/1 */
+    MPC_AUD_CHANNELS_4_1_0,                /**<  4/1/0 */
+    MPC_AUD_CHANNELS_4_1_1,                /**<  4/1/1 */
+    MPC_AUD_CHANNELS_4_2_0,                /**<  4/2/0 */
+    MPC_AUD_CHANNELS_4_2_1,                /**<  4/2/1 */
+    MPC_AUD_CHANNELS_4_3_0,                /**<  4/3/0 */
+    MPC_AUD_CHANNELS_4_3_1,                /**<  4/3/1 */
+    MPC_AUD_CHANNELS_4_4_0,                /**<  4/4/0 */
+    MPC_AUD_CHANNELS_5_0_0,                /**<  5/0/0 */
+    MPC_AUD_CHANNELS_5_0_1,                /**<  5/0/1 */
+    MPC_AUD_CHANNELS_5_1_0,                /**<  5/1/0 */
+    MPC_AUD_CHANNELS_5_1_1,                /**<  5/1/1 */
+    MPC_AUD_CHANNELS_5_2_0,                /**< 5/2/0 */
+    MPC_AUD_CHANNELS_5_2_1,                /**<  5/2/1 */
+    MPC_AUD_CHANNELS_5_3_0,                /**<  5/3/0 */
+    MPC_AUD_CHANNELS_UNKNOWN
+} MPCAudChannels;
+
+/// MPC video element stream information mode value for MPC_VID_CODE_MODE item
+typedef enum MPCVidElmStrmInfModeValue {
+    MPC_VID_CODE_MODE_UNKNOWN,
+    MPC_VID_CODE_MODE_MPEG1,
+    MPC_VID_CODE_MODE_MPEG2,
+    MPC_VID_CODE_MODE_DIVX3,
+    MPC_VID_CODE_MODE_MPEG4,
+    MPC_VID_CODE_MODE_AVC,
+    MPC_VID_CODE_MODE_VC1,
+    MPC_VID_CODE_MODE_MPEG4_DIVX4,
+    MPC_VID_CODE_MODE_MPEG4_DIVX5,
+    MPC_VID_CODE_MODE_MPEG4_DIVX6,
+    MPC_VID_CODE_MODE_WMV1,
+    MPC_VID_CODE_MODE_WMV2,
+    MPC_VID_CODE_MODE_WMV3,
+    MPC_VID_CODE_MODE_RV30,
+    MPC_VID_CODE_MODE_RV40
+} MPCVidElmStrmInfModeValue;
+
+/// MPC video element stream information frame rate value for MPC_VID_FRAME_RATE item
+typedef enum MPCVidElmStrmInfFrameRateValue {
+    MPC_VID_FRAME_RATE_UNKNOWN  = 0,
+    MPC_VID_FRAME_RATE_23_976   = 1,
+    MPC_VID_FRAME_RATE_24       = 2,
+    MPC_VID_FRAME_RATE_25       = 3,
+    MPC_VID_FRAME_RATE_29_97    = 4,
+    MPC_VID_FRAME_RATE_30       = 5,
+    MPC_VID_FRAME_RATE_50       = 6,
+    MPC_VID_FRAME_RATE_59_94    = 7,
+    MPC_VID_FRAME_RATE_60       = 8,
+    MPC_VID_FRAME_RATE_120      = 9,
+    MPC_VID_FRAME_RATE_1        = 10,
+    MPC_VID_FRAME_RATE_5        = 11,
+    MPC_VID_FRAME_RATE_8        = 12,
+    MPC_VID_FRAME_RATE_10       = 13,
+    MPC_VID_FRAME_RATE_12       = 14,
+    MPC_VID_FRAME_RATE_15       = 15,
+    MPC_VID_FRAME_RATE_16       = 16,
+    MPC_VID_FRAME_RATE_17       = 17,
+    MPC_VID_FRAME_RATE_18       = 18,
+    MPC_VID_FRAME_RATE_20       = 19,
+    MPC_VID_FRAME_RATE_2        = 20,
+    MPC_VID_FRAME_RATE_6        = 21,
+    MPC_VID_FRAME_RATE_48       = 22,
+    MPC_VID_FRAME_RATE_70       = 23,
+    MPC_VID_FRAME_RATE_VARIABLE = 24
+} MPCVidElmStrmInfFrameRateValue;
+
+typedef enum
+{
+    MPC_AUD_DEC_TYPE_UNKNOWN,
+    MPC_AUD_DEC_TYPE_NONE,
+    MPC_AUD_DEC_TYPE_AC3,                     //< 2
+    MPC_AUD_DEC_TYPE_MPEG,                    //< 3
+    MPC_AUD_DEC_TYPE_MP3,                     //< 4
+    MPC_AUD_DEC_TYPE_DTS,                     //< 5
+    MPC_AUD_DEC_TYPE_MLP,                     //< 6
+    MPC_AUD_DEC_TYPE_CDDA,                    //< 7
+    MPC_AUD_DEC_TYPE_LPCM,                    //< 8
+    MPC_AUD_DEC_TYPE_WMA,                     //< 9
+    MPC_AUD_DEC_TYPE_AAC,                     //< 10
+    MPC_AUD_DEC_TYPE_DTS_CD,                  //< 11
+    MPC_AUD_DEC_TYPE_VORBIS,                  //< 12
+    MPC_AUD_DEC_TYPE_HDCD,                    //< 13
+    MPC_AUD_DEC_TYPE_SACD,                    //< 14
+    MPC_AUD_DEC_TYPE_DTSHD_PRI_XLL,           //< 15
+    MPC_AUD_DEC_TYPE_AAC_PURE,                //< 16
+
+    MPC_AUD_DEC_TYPE_RA,                                  //<17
+    MPC_AUD_DEC_TYPE_MTS,                                 //<18
+    MPC_AUD_DEC_TYPE_EU_CANAL_PLUS,                       //<19
+    MPC_AUD_DEC_TYPE_TV_SYS,                              //<20
+    MPC_AUD_DEC_TYPE_EAC3,                                //<21
+    MPC_AUD_DEC_TYPE_EAC3_SEC,                            //<22
+    MPC_AUD_DEC_TYPE_DTSHD_PRI_NOXLL,                     //<23
+    MPC_AUD_DEC_TYPE_DTSHD_SEC,                           //<24
+    MPC_AUD_DEC_TYPE_TRUE_HD,                             //<25
+    MPC_AUD_DEC_TYPE_TRUE_HD_COMPATIBLE_MODE,             //<26
+    MPC_AUD_DEC_TYPE_DST,                                 //<27
+    MPC_AUD_DEC_TYPE_DTS_ES_6_1_MATRIX,                   //<28
+    MPC_AUD_DEC_TYPE_DTS_ES_6_1_DISCRETE,                 //<29
+    MPC_AUD_DEC_TYPE_DTS_ES_8_DISCRETE,                   //<30
+    MPC_AUD_DEC_TYPE_DTS_96_24,                           //<31
+    MPC_AUD_DEC_TYPE_DTS_96_24_ES_MATRIX,                 //<32
+#if MPC_SUPPORT_DVD_AUDIO
+    MPC_AUD_DEC_TYPE_DVD_AUDIO,                           //<33
+#endif
+    MPC_AUD_DEC_TYPE_RA_COOK,
+#if MPC_SUPPORT_HDMI_RX
+    MPC_AUD_DEC_TYPE_HDMI_IN_PCM,
+#endif
+    MPC_AUD_DEC_TYPE_DTSHD_ES_6_1_MATRIX,
+    MPC_AUD_DEC_TYPE_DTSHD_ES_6_1_DISCRETE,
+    MPC_AUD_DEC_TYPE_DTSHD_ES_8_DISCRETE,
+    MPC_AUD_DEC_TYPE_DTSHD_96_24,
+    MPC_AUD_DEC_TYPE_AACPLUS,
+    MPC_AUD_DEC_TYPE_PURE_AACPLUS,
+    MPC_AUD_DEC_TYPE_DTSHD_96_24_ES_MATRIX,
+    MPC_AUD_DEC_TYPE_ADPCM,
+    MPC_AUD_DEC_TYPE_ADPCM_MS,
+    MPC_AUD_DEC_TYPE_APE,
+    MPC_AUD_DEC_TYPE_FLAC,
+    MPC_AUD_DEC_TYPE_OPUS,
+    MPC_AUD_DEC_TYPE_MAX
+} MPCAudDecType;
+
+
+// MPC PCM format
+typedef enum MPCPcmFormat {
+    MPC_PCM_DVDV,                             /**<  for DVD-Video */
+    MPC_PCM_WAVE,                             /**<  for AVI etc.*/
+    MPC_ADPCM,                                /**< for ADPCM in AVI */
+    MPC_ADPCM_MS,                             /**< fMS, Codec ID=2 in mediaInfo */
+    MPC_PCM_NORMAL,                           /**< for ASF, AVI, MPS...etc */
+    MPC_PCM_BD,                               /**<  for Blu-ray */
+    MPC_PCM_DVDV_2CH,
+    MPC_ADPCM_SWF,                            /**<  shockwave, Codec ID=1 in mediaInfo */
+    MPC_PCM_RESERVED
+} MPCPcmFormat;
+
+typedef enum {
+    AVCODEC_AUD_DIV_TYPE_LOGO_DOLBY,
+    AVCODEC_AUD_DIV_TYPE_LOGO_DTS,
+    AVCODEC_AUD_DIV_TYPE_ANALOG_OUTPUT_CHANNEL,
+    AVCODEC_AUD_DIV_TYPE_HDMI_OUTPUT_CHANNEL,
+    AVCODEC_AUD_DIV_TYPE_POST_PROCESS,
+    AVCODEC_AUD_DIV_TYPE_CODEC_SUPPORT
+} AVCODEC_AUD_DIV_TYPE_T;
+
+typedef enum {
+    FILE_CONTAINER_APE,
+    FILE_CONTAINER_FLAC,
+    FILE_CONTAINER_MP3,
+    FILE_CONTAINER_ASF,
+    FILE_CONTAINER_MKV,
+    FILE_CONTAINER_AVI,
+    FILE_CONTAINER_MPG,
+    FILE_CONTAINER_MP4,
+    FILE_CONTAINER_OTHER
+} FILE_CONTAINER_TYPE_T;
+
+
+typedef struct _AVCODEC_AUD_DIV_INFO_T
+{
+    AVCODEC_AUD_DIV_TYPE_T     e_type;
+    __u8                  u1_setting;
+} AVCODEC_AUD_DIV_INFO_T;
+
+typedef enum
+{
+    AVDMX_ACTION_NONE       = 0x00,
+    AVDMX_ACTION_ENTER      = 0x01,
+    AVDMX_ACTION_LEFT       = 0x02,
+    AVDMX_ACTION_RIGHT      = 0X03,
+    AVDMX_ACTION_UP         = 0X04,
+    AVDMX_ACTION_DOWN       = 0X05,
+    AVDMX_ACTION_CLICK      = 0x06,
+    AVDMX_ACTION_EXIT       = 0x07
+} AVDMX_ACTION_TYPE_T;
+
+typedef struct
+{
+    AVDMX_ACTION_TYPE_T eActionType;
+    __s32           i4ClickX;
+    __s32           i4ClickY;
+} AVDMX_ACTION_PARAM_T;
+
+
+typedef enum
+{
+    DMX_SUBTITLE_INTERNAL_SUBPIC,
+    DMX_SUBTITLE_INTERNAL_TEXT,
+    DMX_SUBTITLE_EXTERNAL_SUBPIC,
+    DMX_SUBTITLE_EXTERNAL_TEXT
+} E_DMX_SUBTITLE_TYPE;
+
+
+typedef enum
+{
+    DMX_CPAGE_INVAL = 0x00,         /**< invalid code page index */
+    DMX_CPAGE_1250  = 0x01,         /**< cp1250 Central Europe */
+    DMX_CPAGE_1251  = 0x02,         /**< cp1251 Cyrillic */
+    DMX_CPAGE_1252  = 0x03,         /**< cp1252 Latin I */
+    DMX_CPAGE_1253  = 0x04,         /**< cp1253 Greek */
+    DMX_CPAGE_1254  = 0x05,         /**< cp1254 Turkish */
+    DMX_CPAGE_1255  = 0x06,         /**< cp1255 Hebrew (from right to left)*/
+    DMX_CPAGE_1255_2 = 0x07,        /**< cp1255_2 Hebrew (from left to right)*/
+    DMX_CPAGE_1256  = 0x08,         /**< cp1256 Arabic */
+    DMX_CPAGE_1257  = 0x09,         /**< cp1257 Baltic */
+    DMX_CPAGE_1258  = 0x0A,         /**< cp1258 Vietnam */
+    DMX_CPAGE_874   = 0x0B,         /**< cp874 Thai */
+    DMX_CPAGE_932   = 0x0C,         /**< cp932 Shift JIS */
+    DMX_CPAGE_936   = 0x0D,         /**< cp936 Simplified Chinese GBK */
+    DMX_CPAGE_949   = 0x0E,         /**< cp949 Korean */
+    DMX_CPAGE_950       = 0x0F,     /**< cp950 Traditional Chinese BIG5 */
+    DMX_CPAGE_8859_1    = 0x10,     /**< ISO 8859-1 Western European */
+    DMX_CPAGE_8859_2    = 0x11,     /**< ISO 8859-2 Eastern and Central European languages */
+    DMX_CPAGE_8859_3    = 0x12,     /**< ISO 8859-3 Southern European languages */
+    DMX_CPAGE_8859_4    = 0x13,     /**< ISO 8859-4 Northern European languages */
+    DMX_CPAGE_8859_5    = 0x14,     /**< ISO 8859-5 Latin/Cyrillic language */
+    DMX_CPAGE_8859_6    = 0x15,     /**< ISO 8859-6 Latin/Arabic language */
+    DMX_CPAGE_8859_7    = 0x16,     /**< ISO 8859-7 Latin/Greek language */
+    DMX_CPAGE_8859_8    = 0x17,     /**< ISO 8859-8 Latin/Hebrew language */
+    DMX_CPAGE_8859_9    = 0x18,     /**< ISO 8859-9 Turkish language */
+    DMX_CPAGE_KANJI     = 0x19,     /**< ARIB TR-B15 Japanese kanji character set */
+    DMX_CPAGE_FULL      = 0x7F      /**< ISO 10636-1 unicode (UCS) */
+} E_DMX_CODEPAGE_SET;
+
+typedef enum
+{
+    MSDKC_CPAGE_INVALID = 0,
+    MSDKC_CPAGE_1250    = 1250,      /**< cp1250 Central Europe */
+    MSDKC_CPAGE_1251    = 1251,      /**< cp1251 Cyrillic */
+    MSDKC_CPAGE_1252    = 1252,      /**< cp1252 Latin I */
+    MSDKC_CPAGE_1253    = 1253,      /**< cp1253 Greek */
+    MSDKC_CPAGE_1254    = 1254,      /**< cp1254 Turkish */
+    MSDKC_CPAGE_1255    = 1255,      /**< cp1255 Hebrew (from right to left)*/
+    MSDKC_CPAGE_1256    = 1256,      /**< cp1256 Arabic */
+    MSDKC_CPAGE_1257    = 1257,      /**< cp1257 Baltic */
+    MSDKC_CPAGE_1258    = 1258,      /**< cp1258 Vietnam */
+    MSDKC_CPAGE_874     = 874,       /**< cp874 Thai */
+    MSDKC_CPAGE_932     = 932,       /**< cp932 Shift JIS */
+    MSDKC_CPAGE_936     = 936,       /**< cp936 Simplified Chinese GBK */
+    MSDKC_CPAGE_949     = 949,       /**< cp949 Korean */
+    MSDKC_CPAGE_950     = 950,       /**< cp950 Traditional Chinese BIG5 */
+    MSDKC_CPAGE_8859_1  = 28591,     /**< ISO 8859-1 Western European */
+    MSDKC_CPAGE_8859_2  = 28592,     /**< ISO 8859-2 Eastern and Central European languages */
+    MSDKC_CPAGE_8859_3  = 28593,     /**< ISO 8859-3 Southern European languages */
+    MSDKC_CPAGE_8859_4  = 28594,     /**< ISO 8859-4 Northern European languages */
+    MSDKC_CPAGE_8859_5  = 28595,     /**< ISO 8859-5 Latin/Cyrillic language */
+    MSDKC_CPAGE_8859_6  = 28596,     /**< ISO 8859-6 Latin/Arabic language */
+    MSDKC_CPAGE_8859_7  = 28597,     /**< ISO 8859-7 Latin/Greek language */
+    MSDKC_CPAGE_8859_8  = 28598,     /**< ISO 8859-8 Latin/Hebrew language */
+    MSDKC_CPAGE_8859_9  = 28599,     /**< ISO 8859-9 Turkish language */
+    MSDKC_CPAGE_FULL    = 1200       /**< ISO 10636-1 unicode (UCS) */
+} E_MSDKC_CODEPAGE_SET;
+
+
+typedef enum
+{
+    AVIN_FLIP_NONE,
+    AVIN_FLIP_H,
+    AVIN_FLIP_V,
+    AVIN_FLIP_HnV
+} AVIN_MIRROR_CFG_E;
+
+typedef enum
+{
+    AUDIO_NO_LIMITATION,
+    AUDIO_PREPARSER_NOT_SUPPORT
+} AUDIO_INFO_LIMITATION_T;
+
+typedef enum
+{
+    VIDEO_NO_LIMITATION,
+    VIDEO_PREPARSER_NOT_SUPPORT
+} VIDEO_INFO_LIMITATION_T;
+
+typedef enum
+{
+    CAP_MSDKC_FILE_SEEK_UNSUPPORT            = 0x00000001,
+    CAP_MSDKC_FILE_FF_UNSUPPORT              = CAP_MSDKC_FILE_SEEK_UNSUPPORT            << 1,
+    CAP_MSDKC_FILE_RW_UNSUPPORT              = CAP_MSDKC_FILE_FF_UNSUPPORT              << 1,
+    CAP_MSDKC_VIDEO_RESOLUTION_UNSUPPORT     = CAP_MSDKC_FILE_RW_UNSUPPORT              << 1,
+    CAP_MSDKC_VIDEO_BITRATE_UNSUPPORT        = CAP_MSDKC_VIDEO_RESOLUTION_UNSUPPORT     << 1,
+    CAP_MSDKC_VIDEO_FRAMERATE_UNSUPPORT      = CAP_MSDKC_VIDEO_BITRATE_UNSUPPORT        << 1,
+    CAP_MSDKC_VIDEO_CODEC_UNSUPPORT          = CAP_MSDKC_VIDEO_FRAMERATE_UNSUPPORT      << 1,
+    CAP_MSDKC_VIDEO_PROFILE_LEVEL_UNSUPPORT  = CAP_MSDKC_VIDEO_CODEC_UNSUPPORT          << 1,
+    CAP_MSDKC_VIDEO_PREPARSER_UNSUPPORT      = CAP_MSDKC_VIDEO_PROFILE_LEVEL_UNSUPPORT  << 1,
+    CAP_MSDKC_AUDIO_BITRATE_UNSUPPORT        = CAP_MSDKC_VIDEO_PREPARSER_UNSUPPORT      << 1,
+    CAP_MSDKC_AUDIO_SAMPLERATE_UNSUPPORT     = CAP_MSDKC_AUDIO_BITRATE_UNSUPPORT        << 1,
+    CAP_MSDKC_AUDIO_CODEC_UNSUPPORT          = CAP_MSDKC_AUDIO_SAMPLERATE_UNSUPPORT     << 1,
+    CAP_MSDKC_AUDIO_PROFILE_LEVEL_UNSUPPORT  = CAP_MSDKC_AUDIO_CODEC_UNSUPPORT          << 1,
+    CAP_MSDKC_AUDIO_CHANNELCNT_UNSUPPORT     = CAP_MSDKC_AUDIO_PROFILE_LEVEL_UNSUPPORT  << 1,
+    CAP_MSDKC_AUDIO_PREPARSER_UNSUPPORT      = CAP_MSDKC_AUDIO_CHANNELCNT_UNSUPPORT     << 1,
+} E_MSDKCORE_CAPABILITY_T;
+
+typedef enum
+{
+    FEATURE_MSDKC_SUPPORTED_NONE     = 0X00000000,
+    FEATURE_MSDKC_SUPPORTED_DIVXHT31 = 0X00000001,
+} E_FEATURE_MSDKC_SUPPORTED;
+
+typedef enum
+{
+    MSDKCORE_SEEK_NONE,
+    MSDKCORE_SEEK_SEARCH_PACKET_FORWORD,
+    MSDKCORE_SEEK_SEARCH_PACKET_BACKWORD,
+    MSDKCORE_SEEK_SEARCH_PACKET_CLOSEST,
+    MSDKCORE_SEEK_SEARCH_PACKET_CLOSEST_FRAME,
+    MSDKCORE_SEEK_SEARCH_PACKET_FRAME_INDEX
+} MSDKCORE_SEEK_TYPE_T;
+
+typedef struct
+{
+    //Color Enhancement parameter
+
+    __u8              u1HueLvl;            /**< hue gain level */
+    __u8              u1SaturationLvl;     /**< saturation level */
+    __u8              u1BrightnessLvl;     /**< brightness gain level */
+    AVIN_MIRROR_CFG_E eMirrorCfg;          /**< Set Mirror direction */
+
+    __u8            u1Mask; // YGAIN_VALID_MASK/YOFFSET_VALID_MASK/UCOSGAIN_VALID_MASK/VCOSGAIN_VALID_MASK......
+
+    __u8            u1YGain;
+    __u8            u1YOffset;
+    __u8            u1UCosGain;
+    __u8            u1VCosGain;
+
+    __u8            u1USinGain;
+    __u8            u1VSinGain;
+    __u8            u1UOffset;
+    __u8            u1VOffset;
+} AVIN_SETTING_CFG_T;
+
+typedef struct
+{
+    char *pszCodeStr;     /**<  the string's buffer should be allocated by caller*/
+    __u32 u4CodeStrSz;    /**<  the string's buffer Size*/
+} AV_DRMCODESTRING_T;
+
+typedef struct
+{
+    __u8 u1RentalMsgFlag; /**<  rentalMessageFlag - Returned true or false if the rental number of views left screen needs to be displayed.*/
+    __u8 u1UseLimitCnt;   /**<  useLimit - Returned the number of playbacks allowed for the file.*/
+    __u8 u1UseCnt;        /**<  useCount - Returned the number of time the file has been played back.*/
+} AV_DRMRENTALSTATUS_T;
+
+typedef struct
+{
+    __u8 u1cqmsaSignal;
+    __u8 u1acptsaSignal;
+    __u8 u1digitalProtctionSignal;
+    __u8 u1ict;
+} AV_DRMOUTPUTSIGNALINFO_T;
+
+typedef struct
+{
+    __u32 u4RotationDegrees;
+    __u32 u4DispWidth;
+    __u32 u4DispHeight;
+} VIDEO_ROTATION_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u32      u4VStmCnt;                            /**<   video stream count*/
+    __u32      au4VStmId[MAX_STM_NUM];               /**<  video stream id*/
+    AVCODECID_T aeVStmType[MAX_STM_NUM];             /**<  video codec id*/
+    __u32      u4BitRate[MAX_STM_NUM];               /**<  video bit rate*/
+    __u64      u8FileSize;                           /**<  file size*/
+    VID_PROFILE_E eProfile[MAX_STM_NUM];             /**<  video profile*/
+    VID_LEVEL_E   eLevel[MAX_STM_NUM];               /**<  video level*/
+    __u32      u4Height[MAX_STM_NUM];
+    __u32      u4Width[MAX_STM_NUM];
+    __u32      u4FrameRate[MAX_STM_NUM];
+    __u32      u4FrameCount[MAX_STM_NUM];
+    __u32      u4CaptureFps[MAX_STM_NUM];
+    VCODECVERSION_T eCodecVer[MAX_STM_NUM];
+    VIDEO_ROTATION_T rVidRotation[MAX_STM_NUM];
+    VID_COLOR_INFO_T rVidColor[MAX_STM_NUM];
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} AV_VSTM_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+
+    __u32      u4AStmCnt;                            /**<   audio stream count*/
+    __u32      au4AStmId[MAX_STM_NUM];               /**<   audio stream id*/
+    AVCODECID_T aeAStmType[MAX_STM_NUM];             /**<   audio codec id*/
+    __u32      au4SampleRate[MAX_STM_NUM];
+    __u32      au4BitRate[MAX_STM_NUM];
+    __u32      au4Version[MAX_STM_NUM];
+    __u16      au2Channels[MAX_STM_NUM];
+    AUD_AAC_PROFILE aeAACprofile[MAX_STM_NUM];       /**<   mpeg2 aac codec profile*/
+    __u32      au4level[MAX_STM_NUM];                /**<   ape file level*/
+    __u16      au2BitPerSample[MAX_STM_NUM];
+    MPCPcmFormat aePcmFormat[MAX_STM_NUM];           /**<   Pcm Adpcm format*/
+    __u8       au1AACAOTValue[MAX_STM_NUM];          /**<   mpeg4 aac codec profile*/
+    LP_AUD_DEC_INFO_T m_rDecoderInfo[MAX_STM_NUM];   /**<   audio param for crop*/
+
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} AV_ASTM_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u32      u4SPStmCnt;                  /**<   subtitle stream count */
+    __u8       au4SPStmId[MAX_STM_NUM];     /**<   subtitle stream id */
+    AVCODECID_T aeSPStmType[MAX_STM_NUM];   /**<   subtitle codec id */
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} AV_SPSTM_T;
+
+typedef struct
+{
+    bool        fgCanSeek;   /**<   file support seek */
+    bool        fgCanFF;     /**<   file support fast forward */
+    bool        fgCanRW;     /**<   file support fast backward */
+} AV_FILECTL_T;
+
+typedef struct
+{
+    __u32 min_blocksize;
+    __u32 max_blocksize;
+    __u32 min_framesize;
+    __u32 max_framesize;
+    __u32 sample_rate;
+    __u32 channels;
+    __u32 bits_per_sample;
+    __u64 total_samples;
+    __u8  md5sum[16];
+    __u32 mMaxBufferSize;
+    bool     has_stream_info;
+} FLAC__StreamMetadata_Info_T;
+
+typedef struct
+{
+    /* Derived fields */
+    __u32      u4JunkLength;
+    __u32      u4FirstFrame;
+    __u32      u4TotalSamples;
+
+    /* Info from Descriptor Block */
+    char       acMagic[4];
+    __u16      u2FileVersion;
+    __u16      u2Padding1;
+    __u32      u4DescriptorLength;
+    __u32      u4HeaderLength;
+    __u32      u4SeekTableLength;
+    __u32      u4WavHeaderLength;
+    __u32      u4AudioDataLength;
+    __u32      u4AudioDataLengthHigh;
+    __u32      u4WavTailLength;
+    __u8       au1Md5[16];
+
+    /* Info from Header Block */
+    __u16      u2CompressionType;
+    __u16      u2FormatFlags;
+    __s32      i4BlocksPerFrame;
+    __u32      u4FinalFrameBlocks;
+    __u32      u4TotalFrames;
+    __u16      u2Bps;
+    __u16      u2Channels;
+    __u32      u4Samplerate;
+
+    __s32      i4SeekTableFilePos; /**<  Location in .ape file of seektable */
+    __u32      *seektable;         /**<  Seektable buffer */
+} LP_APE_DEC_INFO_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u8 *pu1Csd;
+    bool fgIsADTS;
+    __u32 u4CsdLen;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_AAC_DEC_INFO_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u8 *pu1Csd;
+    __u32 u4CsdLen;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_ALAC_DEC_INFO_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u8 *codecPrivate;
+    __u32 codecPrivateSize;
+    __u8 *codecBooks;
+    __u32 codecBooksSize;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_VORBIS_DEC_INFO_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u8 *codecPrivate;
+    __u32 codecPrivateSize;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_FLAC_DEC_INFO_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u8 *pucCodecPrivate;
+    __u32 u4CodecPrivateSize;
+    __u64 u8CodecDely;
+    __u64 u8SeekPreRoll;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_OPUS_DEC_INFO_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    float fX;
+    float fY;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_COLOUR_PRIMARY_CHROMA_INF_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    LP_COLOUR_PRIMARY_CHROMA_INF_T rPrimaryChromaR;
+    LP_COLOUR_PRIMARY_CHROMA_INF_T rPrimaryChromaG;
+    LP_COLOUR_PRIMARY_CHROMA_INF_T rPrimaryChromaB;
+    LP_COLOUR_PRIMARY_CHROMA_INF_T rPrimaryChromaWhite;
+    float fLuminanceMax;
+    float fLuminanceMin;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_MKV_COLOUR_METADATA_INF_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    bool fgHasColourInfo;
+    __u64 u8MatrixCoefficients;
+    __u64 u8BitsPerChannel;
+    __u64 u8ChromaSubsamplingHorz;
+    __u64 u8ChromaSubsamplingVert;
+    __u64 u8CbSubsamplingHorz;
+    __u64 u8CbSubsamplingVert;
+    __u64 u8ChromaSitingHorz;
+    __u64 u8ChromaSitingVert;
+    __u64 u8Range;
+    __u64 u8TransferCharacteristics;
+    __u64 u8Primaries;
+    __u64 u8MaxCll;
+    __u64 u8MaxFall;
+    LP_MKV_COLOUR_METADATA_INF_T rMasterMetaData;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_MKV_COLOUR_INF_T;
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u8  u1EncKeyIdLen;
+    __u8 *pu1EncKeyId;
+    __u32 u4PrivateSize;
+    __u8 *pu1PrivateData;
+    LP_MKV_COLOUR_INF_T rColourInfo;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} LP_VPX_DEC_INFO_T;
+
+
+typedef struct
+{
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKStart;
+#endif
+    __u32             u4FmtSize;
+    AVCODECID_T       eDecType;
+    __u32             u4ChannelNum;
+    __u32             u4SampleRate;
+    __u32             u4BytePerSec;
+    __u16             u2Align;
+    __u16             u2BitPerSample;
+    __u32             u4StartOffset;
+    __u32             u4EndianValue;
+    MPCPcmFormat       ePcmFormat;
+    __u32             u4TotalTime;
+    __u32             u4SamplesPerBlock;
+    __u8             *pu1ExtraData;
+    __u16             u2ExtraDataLen;
+#ifdef MM_ATE_CHECK
+    __u32 u4MMATECHKEnd;
+#endif
+} WAV_INFO_T;
+
+/********************************************About CTA***********************************************/
+
+
+/* ////////////////////////////////////////////////////////////////////////////// */
+/* CTA For Ape audio Info                                                // */
+/* ////////////////////////////////////////////////////////////////////////////// */
+
+#define MAX_CC_SUBTITLE_NUM         (32)
+
+typedef struct
+{
+    bool  fgSetSeekInfo;
+    __u32 au4SeekInfo[2];
+} APE_INFO_EXT_T;
+
+
+typedef union
+{
+    APE_INFO_EXT_T rApe;
+} AUDIO_EXT_INFO_T;
+
+typedef struct
+{
+    __u16 u2OffTop;
+    __u16 u2OffBottom;
+    __u8  achPAL[32];
+    __u32 sx;
+    __u32 sy;
+    __u32 ex;
+    __u32 ey;
+    __u32 u4Size;
+    __u32 ptrRLESWDecVirSA;
+    __u64 u8Delay;
+    __u64 u8StartTime;
+    __u64 u8EndTime;
+    __u64 u8StartFrm;
+    __u64 u8EndFrm;
+} SP_INFO;
+
+typedef struct
+{
+    __u32 u4NalOffset;
+    __u32 u4NalSize;
+} NAL_POSITION_T;
+
+typedef struct
+{
+    __u8 u1SeiCount;
+    NAL_POSITION_T arNALPos[MAX_CC_SUBTITLE_NUM];
+} TS_CC_INFO_T;
+
+/* ////////////////////////////////////////////////////////////////////////////// */
+/* CTA Read Data Status/Error Code                                                // */
+/* ////////////////////////////////////////////////////////////////////////////// */
+
+typedef enum
+{
+    READ_S_OK,
+    READ_E_ERR_CHUNK,
+    READ_S_EOS,
+    READ_E_FAIL,
+    READ_E_ERR_DATA,
+    READ_E_EJECTCARD,
+    READ_S_DISCONTINUOUS,
+    READ_E_TIMEOUT
+} E_READ_STATUS_T;
+
+/* ////////////////////////////////////////////////////////////////////////////// */
+/* CTA Data Info                                               // */
+/* ////////////////////////////////////////////////////////////////////////////// */
+typedef struct
+{
+    __u32 u4StreamID;
+    __u8 u1SubIdx;
+    E_READ_STATUS_T eStatus;
+    bool fgIsDummyAu;
+    bool fgIsKeyFrame;
+    __u32 u4Size;
+    __u32 u4PsrType;
+    __u32 u4RVSliceNum;
+    __u32 auRV4SliceSize[128];
+    __u32 u4AudDecSize;
+    __u8 aucAudDecBuf[128];
+    void *pvData;
+    __u64 u8PTS;
+    __u64 u8FrmDuration;
+    __u64 u8FileOffset;
+    __u64 u8TargetPts;
+    bool fgOggFirstPacktInPage;
+    __s32 i4OggVaildPageSamples;
+    union
+    {
+        AUDIO_EXT_INFO_T rAudEx;
+    } rAUEx;
+    union
+    {
+        SP_INFO rSPStruct;
+    } rAU;
+    union
+    {
+        TS_CC_INFO_T rInfo;
+    } rCCInfo;
+} MEDIA_DATA_INFO;
+
+/* ////////////////////////////////////////////////////////////////////////////// */
+/* CTA Seek Info                                               // */
+/* ////////////////////////////////////////////////////////////////////////////// */
+
+typedef struct
+{
+    bool fgIsSeek;
+    MSDKCORE_SEEK_TYPE_T eSeekType;
+    __u64 u8SeekTime;
+} SEEK_INFO;
+
+
+#endif //_MSDKCORE_DEFS_H_

@@ -1,0 +1,12 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=/usr/lib
+includedir=/usr/include
+
+Name: egl
+Description: Mesa EGL library
+Requires.private:  
+Version: 10.1.3
+Libs: -L${libdir} -lEGL
+Libs.private: -lm -lpthread -ldl
+Cflags: -I${includedir} 

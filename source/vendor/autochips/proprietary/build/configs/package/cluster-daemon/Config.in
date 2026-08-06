@@ -1,0 +1,4 @@
+config BR2_PACKAGE_CLUSTER_DAEMON
+	bool "cluster-daemon"
+	help
+	  this is a cluster-daemon

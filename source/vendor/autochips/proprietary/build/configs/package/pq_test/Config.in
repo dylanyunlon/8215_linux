@@ -1,0 +1,4 @@
+config BR2_PACKAGE_PQ_TEST
+	bool "pq_test"
+	help
+	  this is a pq_test

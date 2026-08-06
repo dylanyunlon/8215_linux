@@ -1,0 +1,9 @@
+config BR2_PACKAGE_CARLINKUTILS
+	bool "carlinkutils component"
+	select BR2_PACKAGE_PROTOBUF
+	select BR2_PACKAGE_TINYXML2
+	select BR2_PACKAGE_FDK_AAC
+	select BR2_PACKAGE_OPUS
+	select BR2_PACKAGE_UNIVERSAL_UTILS
+	help
+		libcarlinkutils, libaacdec, libopus.

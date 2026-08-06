@@ -1,0 +1,3068 @@
+#ifndef HMI_APPLICATION_DATA_C
+#define HMI_APPLICATION_DATA_C	
+
+
+#if HMI_STATIC_FILL_PAGES_NUMBER>0
+
+/*Static Fill coordinate  */
+ static HMI_FILL_RECT_STR CONST DISPLAY_SEGMENT_ROM hmi_fills_static_xy_rect [ ]=
+{
+	/* hmi_new_fill38 */
+	 {0,0,93,110,0}
+	/* hmi_car_ambient_fill */
+	,{0,0,46,46,0}
+	/* hmi_car_diffuse_fill */
+	,{0,0,46,46,0}
+	/* hmi_car_specular_fill */
+	,{0,0,46,46,0}
+	/* hmi_ef_color_fill */
+	,{0,0,46,46,0}
+	/* hmi_new_fill6 */
+	,{95,63,264,37,0}
+	/* hmi_new_fill7 */
+	,{279,399,4,4,0}
+	/* hmi_new_fill8 */
+	,{149,406,4,4,0}
+	/* hmi_new_fill9 */
+	,{134,150,4,4,0}
+	/* hmi_new_fill10 */
+	,{394,135,4,4,0}
+	/* hmi_new_fill11 */
+	,{401,263,4,4,0}
+	/* hmi_new_fill118 */
+	,{0,0,383,34,0}
+	/* hmi_point_trail_fill */
+	,{0,0,596,400,0}
+	/* hmi_motion_trail_fill */
+	,{0,0,1280,480,0}
+	/* hmi_new_fill15 */
+	,{65,53,462,419,0}
+	/* hmi_new_fill115 */
+	,{781,446,13,15,0}
+	/* hmi_new_fill1116 */
+	,{0,0,633,597,0}
+	/* hmi_new_fill5 */
+	,{1265,319,20,20,0}
+};
+/*StaticFILL width,heigh,colour  */
+ static HMI_FILL_PAGE_STR CONST DISPLAY_SEGMENT_ROM hmi_fills_static_prop_table[ ]=
+{
+	/* hmi_new_fill38 */
+	 {4278255360}
+	/* hmi_car_ambient_fill */
+	,{4289835441}
+	/* hmi_car_diffuse_fill */
+	,{4291348680}
+	/* hmi_car_specular_fill */
+	,{4294967295}
+	/* hmi_ef_color_fill */
+	,{4282955443}
+	/* hmi_new_fill6 */
+	,{4278255360}
+	/* hmi_new_fill7 */
+	,{4278255360}
+	/* hmi_new_fill8 */
+	,{4278255360}
+	/* hmi_new_fill9 */
+	,{4278255360}
+	/* hmi_new_fill10 */
+	,{4278255360}
+	/* hmi_new_fill11 */
+	,{4278255360}
+	/* hmi_new_fill118 */
+	,{4278255360}
+	/* hmi_point_trail_fill */
+	,{4286411659}
+	/* hmi_motion_trail_fill */
+	,{4293154586}
+	/* hmi_new_fill15 */
+	,{4278255360}
+	/* hmi_new_fill115 */
+	,{4278255360}
+	/* hmi_new_fill1116 */
+	,{4278255360}
+	/* hmi_new_fill5 */
+	,{4278255360}
+};
+#if HMI_SXY_FILL_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_static_fill_container_table[]=
+{
+	/* new_fill38 */
+	 {{0,NULL}}
+	/* car_ambient_fill */
+	,{{0,NULL}}
+	/* car_diffuse_fill */
+	,{{0,NULL}}
+	/* car_specular_fill */
+	,{{0,NULL}}
+	/* ef_color_fill */
+	,{{0,NULL}}
+	/* new_fill6 */
+	,{{0,NULL}}
+	/* new_fill7 */
+	,{{0,NULL}}
+	/* new_fill8 */
+	,{{0,NULL}}
+	/* new_fill9 */
+	,{{0,NULL}}
+	/* new_fill10 */
+	,{{0,NULL}}
+	/* new_fill11 */
+	,{{0,NULL}}
+	/* new_fill118 */
+	,{{0,NULL}}
+	/* point_trail_fill */
+	,{{0,NULL}}
+	/* motion_trail_fill */
+	,{{0,NULL}}
+	/* new_fill15 */
+	,{{0,NULL}}
+	/* new_fill115 */
+	,{{0,NULL}}
+	/* new_fill1116 */
+	,{{0,NULL}}
+	/* new_fill5 */
+	,{{0,NULL}}
+};
+#endif
+#endif
+#if HMI_DYN_FILL_PAGES_NUMBER>0
+/*Dynamic Fill coordinate  */
+ static HMI_FILL_RECT_STR DISPLAY_SEGMENT_RAM hmi_fills_dyn_xy_rect[ ]=
+{
+	/* hmi_navi_camera_fill */
+	 {0,0,70,70,150}
+	/* hmi_dxy_fill */
+	,{0,154,1,1,0}
+	/* hmi_camera_left_cluster_fill */
+	,{231,231,119,1271,330}
+	/* hmi_camera_right_cluster_fill */
+	,{231,231,119,1271,330}
+	/* hmi_camera_car_3d_fill */
+	,{641,240,46,513,66}
+	/* hmi_navi_prism_camera_fill */
+	,{198,56,135,1464,256}
+	/* hmi_camera_navi_fill */
+	,{380,155,132,660,198}
+	/* hmi_speed_fill */
+	,{0,0,46,46,0}
+	/* hmi_rpm_fill */
+	,{0,0,46,46,0}
+};
+#if HMI_DXY_FILL_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_fill_container_table[]=
+{
+	/* navi_camera_fill */
+	 {{0,NULL}}
+	/* dxy_fill */
+	,{{0,NULL}}
+	/* camera_left_cluster_fill */
+	,{{0,NULL}}
+	/* camera_right_cluster_fill */
+	,{{0,NULL}}
+	/* camera_car_3d_fill */
+	,{{0,NULL}}
+	/* navi_prism_camera_fill */
+	,{{0,NULL}}
+	/* camera_navi_fill */
+	,{{0,NULL}}
+	/* speed_fill */
+	,{{0,NULL}}
+	/* rpm_fill */
+	,{{0,NULL}}
+};
+#endif
+/*Dynamic FILL width,heigh,colour  */
+ static HMI_FILL_PAGE_STR DISPLAY_SEGMENT_RAM hmi_fills_dyn_prop_table[ ]=
+{
+	/* hmi_navi_camera_fill */
+	 {4278255360}
+	/* hmi_dxy_fill */
+	,{4278255360}
+	/* hmi_camera_left_cluster_fill */
+	,{4278255360}
+	/* hmi_camera_right_cluster_fill */
+	,{4278255360}
+	/* hmi_camera_car_3d_fill */
+	,{4278255360}
+	/* hmi_navi_prism_camera_fill */
+	,{4278255360}
+	/* hmi_camera_navi_fill */
+	,{4278255360}
+	/* hmi_speed_fill */
+	,{4278255360}
+	/* hmi_rpm_fill */
+	,{4278255360}
+};
+#endif
+#if HMI_STATIC_GFILL_NUMBER>0
+
+/*Static Fill coordinate  */
+ static HMI_FILL_RECT_STR CONST DISPLAY_SEGMENT_ROM hmi_gradient_sxy_fill_rect [ ]=
+{
+};
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_static_gfill_container_table[]=
+{
+};
+/*Static GFILL width,heigh,colour  */
+ static HMI_GRADIENT_FILL_STR CONST DISPLAY_SEGMENT_ROM hmi_gradient_sxy_fill_table[]=
+{
+};
+#endif
+#if HMI_DYN_GFILL_NUMBER>0
+/*Dynamic Fill coordinate  */
+ static HMI_FILL_RECT_STR DISPLAY_SEGMENT_RAM hmi_gradient_dxy_fill_rect[ ]=
+{
+};
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_gfill_container_table[]=
+{
+};
+/*Dynamic GFILL width,heigh,colour  */
+ static HMI_GRADIENT_FILL_STR DISPLAY_SEGMENT_RAM hmi_gradient_dxy_fill_table[]=
+{
+};
+#endif
+#define HMI_DXY_SXY_3D_VERTEX_LEN                                0
+#if HMI_3D_MODEL_CUSTOM_NUMBER>0
+ static HMI_GL_FLOAT CONST DISPLAY_FLASH_ROM hmi_dxy_sxy_3d_vertex[ ]=
+{
+	0
+};
+#define HMI_DXY_SXY_3D_INDEX_LEN                                 0
+ static HMI_GL_SHORT CONST DISPLAY_FLASH_ROM hmi_dxy_sxy_3d_index[ ]=
+{
+	{0}};
+#define HMI_DXY_SXY_3D_NORMAL_LEN                                0
+ static HMI_GL_FLOAT CONST DISPLAY_FLASH_ROM hmi_dxy_sxy_3d_normal[ ]=
+{
+	0
+};
+#define HMI_DXY_SXY_3D_UV_LEN                                    0
+ static HMI_GL_FLOAT CONST DISPLAY_FLASH_ROM hmi_dxy_sxy_3d_uv[ ]=
+{
+	0
+};
+#define HMI_DXY_SXY_3D_COLOR_LEN                                 0
+ static HMI_GL_FLOAT CONST DISPLAY_FLASH_ROM hmi_dxy_sxy_3d_color[ ]=
+{
+	0
+};
+#define HMI_DXY_SXY_3D_MATERIAL_LEN                              0
+ static MATERIAL_PROPERTIES_STR CONST DISPLAY_FLASH_ROM hmi_dxy_sxy_3d_material[ ]=
+{
+	0
+};
+ static HMI_BITMAP_STR	 CONST DISPLAY_FLASH_ROM hmi_dxy_sxy_3d_texture[ ]=
+{
+	 {0}
+};
+#define HMI_DXY_SXY_3D_VER_BUF_LEN                               0
+ static HMI_VERTEX_BUF_STR DISPLAY_SEGMENT_RAM hmi_dxy_sxy_3d_ver_buf[ ]=
+{
+ 	{0}
+};
+ static HMI_3D_NODE_STR CONST DISPLAY_FLASH_ROM hmi_3d_node_list[ ]=
+{
+	0
+};
+#endif
+#if HMI_SXY_CUBE_NUMBER>0
+/*Static Cube coordinate ,width,angel,bump,face  */
+ static HMI_3DCUBE_STR CONST DISPLAY_SEGMENT_ROM hmi_cubes_static_xy_rect[ ]=
+{
+};
+/*Static Cube coordinate ,width,angel,bump,face  */
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_cubes_static_xy_face[ ]=
+{
+};
+/*Static Cube 3d model,axis  */
+ static HMI_CUBE_AXIS_ELEM_PROP CONST DISPLAY_SEGMENT_ROM hmi_cubes_static_xy_axis[ ]=
+{
+};
+#endif
+#if HMI_SXY_3DCUBE_NUMBER>0
+/* 3D texture static xy Prop    */
+ static HMI_BITMAP_STR CONST DISPLAY_SEGMENT_ROM hmi_3D_texture_static_xy_prop_table[]=
+{
+};
+/*Static 3D Cube coordinate ,width,angel,bump,face  */
+ static HMI_3DCUBE_STR CONST DISPLAY_SEGMENT_ROM hmi_3dcubes_static_xy_rect[ ]=
+{
+};
+/*Static Cube 3d model,axis  */
+ static HMI_CUBE_AXIS_ELEM_PROP CONST DISPLAY_SEGMENT_ROM hmi_3d_cubes_static_xy_axis[ ]=
+{
+};
+#endif
+#if HMI_DXY_CUBE_NUMBER>0
+/*Dynamic Cube coordinate,width,angel,bump,face  */
+ static HMI_3DCUBE_STR DISPLAY_SEGMENT_RAM hmi_cubes_dyn_xy_rect[ ]=
+{
+};
+/*Dynamic Cube coordinate,width,angel,bump,face  */
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_cubes_dyn_xy_face[ ]=
+{
+};
+/*Dynamic Cube 3d model,axis  */
+ static HMI_CUBE_AXIS_ELEM_PROP CONST DISPLAY_SEGMENT_ROM hmi_cubes_dyn_xy_axis[ ]=
+{
+};
+#endif
+#if HMI_DXY_3DCUBE_NUMBER>0
+/* 3D texture dyn xy Prop    */
+ static HMI_BITMAP_STR CONST DISPLAY_SEGMENT_ROM hmi_3D_texture_dyn_xy_prop_table[]=
+{
+};
+/*Dynamic 3D Cube coordinate,width,angel,bump,face  */
+ static HMI_3DCUBE_STR DISPLAY_SEGMENT_RAM hmi_3dcubes_dyn_xy_rect[ ]=
+{
+};
+/*Dynamic Cube 3d model,axis  */
+ static HMI_CUBE_AXIS_ELEM_PROP CONST DISPLAY_SEGMENT_ROM hmi_3d_cubes_dyn_xy_axis[ ]=
+{
+};
+#endif
+#if HMI_DXY_CUSTOM_CNT>0
+ static HMI_CUSTOM_USR_DATA_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_custom_lib_data[]=
+{
+	 {-1,NULL}
+	,{-1,NULL}
+	,{-1,NULL}
+	,{-1,NULL}
+	,{-1,NULL}
+};
+ static HMI_CUSTOM_XYZWH_STR DISPLAY_SEGMENT_RAM hmi_dxy_follow_motion_lib_xyzwh[]=
+{
+	/* left_follow_motion_lib */
+	 {0,0,0,360,400}
+	/* right_follow_motion_lib */
+	,{0,0,0,400,365}
+	/* fuel_left_follow_motion_lib */
+	,{0,0,0,200,200}
+	/* water_follow_motion_lib */
+	,{0,0,0,596,400}
+};
+ static HMI_CUSTOM_P_INT DISPLAY_SEGMENT_RAM hmi_dxy_follow_motion_lib_p1[]=
+{
+	/* left_follow_motion_lib */
+	 3
+	/* right_follow_motion_lib */
+	,5
+	/* fuel_left_follow_motion_lib */
+	,3
+	/* water_follow_motion_lib */
+	,5
+};
+ static HMI_CUSTOM_P_FLOAT DISPLAY_SEGMENT_RAM hmi_dxy_follow_motion_lib_p2[]=
+{
+	/* left_follow_motion_lib */
+	 212.000000f
+	/* right_follow_motion_lib */
+	,3.000000f
+	/* fuel_left_follow_motion_lib */
+	,80.000000f
+	/* water_follow_motion_lib */
+	,30.000000f
+};
+ static HMI_CUSTOM_P_INT CONST DISPLAY_SEGMENT_ROM hmi_dxy_follow_motion_lib_constp1[]=
+{
+	/* left_follow_motion_lib */
+	 0
+	/* right_follow_motion_lib */
+	,0
+	/* fuel_left_follow_motion_lib */
+	,0
+	/* water_follow_motion_lib */
+	,0
+};
+ static HMI_CUSTOM_P_INT CONST DISPLAY_SEGMENT_ROM hmi_dxy_follow_motion_lib_constp2[]=
+{
+	/* left_follow_motion_lib */
+	 10
+	/* right_follow_motion_lib */
+	,32
+	/* fuel_left_follow_motion_lib */
+	,20
+	/* water_follow_motion_lib */
+	,20
+};
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_follow_motion_lib_id1[]=
+{
+	/* left_follow_motion_lib */
+	 HMI_FUEL_SET_ACTION
+	/* right_follow_motion_lib */
+	,HMI_WATER_SET_ACTION
+	/* fuel_left_follow_motion_lib */
+	,HMI_FUEL_SMALL_LEFT_SET_ACTION
+	/* water_follow_motion_lib */
+	,HMI_WATER_TEMP_SET_ACTION
+};
+ static HMI_CUSTOM_P_FLOAT DISPLAY_SEGMENT_RAM hmi_dxy_follow_motion_lib_FIFO[]=
+{
+	/* left_follow_motion_lib */
+	 0
+	/* right_follow_motion_lib */
+	,0
+	/* fuel_left_follow_motion_lib */
+	,0
+	/* water_follow_motion_lib */
+	,0
+};
+ static HMI_FIFO_HEAD_TAIL_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_follow_motion_lib_FIFO_beg_end[]=
+{
+	/* left_follow_motion_lib */
+	 {0,1}
+	/* right_follow_motion_lib */
+	,{1,2}
+	/* fuel_left_follow_motion_lib */
+	,{2,3}
+	/* water_follow_motion_lib */
+	,{3,4}
+};
+ static HMI_FIFO_HEAD_TAIL_STR DISPLAY_SEGMENT_RAM hmi_dxy_follow_motion_lib_FIFO_head_tail[]=
+{
+	/* left_follow_motion_lib */
+	 {4,3}
+	/* right_follow_motion_lib */
+	,{5,3}
+	/* fuel_left_follow_motion_lib */
+	,{6,3}
+	/* water_follow_motion_lib */
+	,{7,3}
+};
+ static HMI_CUSTOM_XYZWH_STR DISPLAY_SEGMENT_RAM hmi_dxy_simple_navi_lib_xyzwh[]=
+{
+	/* simple_navi_lib116 */
+	 {0,0,0,400,400}
+};
+ static HMI_CUSTOM_P_FLOAT DISPLAY_SEGMENT_RAM hmi_dxy_simple_navi_lib_p1[]=
+{
+	/* simple_navi_lib116 */
+	 1.200000f
+};
+ static HMI_CUSTOM_P_INT CONST DISPLAY_SEGMENT_ROM hmi_dxy_simple_navi_lib_constp1[]=
+{
+	/* simple_navi_lib116 */
+	 0
+};
+ static HMI_CUSTOM_P_FLOAT CONST DISPLAY_SEGMENT_ROM hmi_dxy_simple_navi_lib_constp2[]=
+{
+	/* simple_navi_lib116 */
+	 1.000000f
+};
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_simple_navi_lib_id1[]=
+{
+	/* simple_navi_lib116 */
+	 HMI_NAVI_CAMERA_FILL
+};
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_simple_navi_lib_id2[]=
+{
+	/* simple_navi_lib116 */
+	 HMI_NAVI_CAR_IMAGE
+};
+ static HMI_CUSTOM_P_INT DISPLAY_SEGMENT_RAM hmi_dxy_simple_navi_lib_FIFO[]=
+{
+	/* simple_navi_lib116 */
+	 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+};
+ static HMI_FIFO_HEAD_TAIL_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_simple_navi_lib_FIFO_beg_end[]=
+{
+	/* simple_navi_lib116 */
+	 {0,300}
+};
+ static HMI_FIFO_HEAD_TAIL_STR DISPLAY_SEGMENT_RAM hmi_dxy_simple_navi_lib_FIFO_head_tail[]=
+{
+	/* simple_navi_lib116 */
+	 {300,0}
+};
+void hmi_engine_follow_motion(HMI_RECT_STR CONST 	*pcustom_farther_rect,HMI_RECT_STR *pcustom_dirty_rect,U08	custom_depth,	HMI_RECT_STR *pcustom_cliped_farther_rect,HMI_OBJECT_ID_STR custom_id,HMI_ALPHA_SCALE_PT_STR *pfather_alpha_scale,void *puser_data);
+void hmi_simple_navi(HMI_RECT_STR CONST 	*pcustom_farther_rect,HMI_RECT_STR *pcustom_dirty_rect,U08	custom_depth,	HMI_RECT_STR *pcustom_cliped_farther_rect,HMI_OBJECT_ID_STR custom_id,HMI_ALPHA_SCALE_PT_STR *pfather_alpha_scale,void *puser_data);
+ static HMI_CUSTOM_INFO_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_custom_widget_info[]=
+{
+	 {0,4,(void *)hmi_dxy_follow_motion_lib_xyzwh,hmi_dxy_follow_motion_lib_p1,hmi_dxy_follow_motion_lib_p2,NULL,hmi_dxy_follow_motion_lib_constp1,hmi_dxy_follow_motion_lib_constp2,NULL,NULL,NULL,NULL,hmi_dxy_follow_motion_lib_id1,NULL,NULL,{HMI_P1|HMI_P2|HMI_P2_F|HMI_CON_P1|HMI_CON_P2|HMI_ID1|HMI_FIFO_EN|HMI_FIFO_F,hmi_engine_follow_motion,NULL},(void *)hmi_dxy_follow_motion_lib_FIFO,hmi_dxy_follow_motion_lib_FIFO_beg_end,hmi_dxy_follow_motion_lib_FIFO_head_tail}
+	,{4,5,(void *)hmi_dxy_simple_navi_lib_xyzwh,hmi_dxy_simple_navi_lib_p1,NULL,NULL,hmi_dxy_simple_navi_lib_constp1,hmi_dxy_simple_navi_lib_constp2,NULL,NULL,NULL,NULL,hmi_dxy_simple_navi_lib_id1,hmi_dxy_simple_navi_lib_id2,NULL,{HMI_P1|HMI_P1_F|HMI_CON_P1|HMI_CON_P2|HMI_CON_F2|HMI_ID1|HMI_ID2|HMI_FIFO_EN,hmi_simple_navi,NULL},(void *)hmi_dxy_simple_navi_lib_FIFO,hmi_dxy_simple_navi_lib_FIFO_beg_end,hmi_dxy_simple_navi_lib_FIFO_head_tail}
+};
+#endif
+#if HMI_SXY_CUSTOM_CNT>0
+ static HMI_CUSTOM_USR_DATA_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_custom_lib_data[]=
+{
+	 {-1,NULL}
+	,{-1,NULL}
+	,{-1,NULL}
+};
+ static HMI_CUSTOM_XYZWH_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_prefix_color_alpha_lib_xyzwh[]=
+{
+	/* prefix_color_alpha_lib4 */
+	 {0,0,0,393,264}
+	/* prefix_color_alpha_lib5 */
+	,{0,0,0,393,264}
+	/* prefix_color_alpha_lib3 */
+	,{0,0,0,393,264}
+};
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_prefix_color_alpha_lib_id1[]=
+{
+	/* prefix_color_alpha_lib4 */
+	 HMI_POINT_TRAIL_FILL
+	/* prefix_color_alpha_lib5 */
+	,HMI_MOTION_TRAIL_FILL
+	/* prefix_color_alpha_lib3 */
+	,HMI_EF_COLOR_FILL
+};
+void hmi_engine_draw_color_alpha_lib_container(HMI_RECT_STR CONST 	*pcustom_farther_rect,HMI_RECT_STR *pcustom_dirty_rect,U08	custom_depth,	HMI_RECT_STR *pcustom_cliped_farther_rect,HMI_OBJECT_ID_STR custom_id,HMI_ALPHA_SCALE_PT_STR *pfather_alpha_scale,void *puser_data);
+ static HMI_CUSTOM_INFO_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_custom_widget_info[]=
+{
+	 {0,3,(void *)hmi_sxy_prefix_color_alpha_lib_xyzwh,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,hmi_sxy_prefix_color_alpha_lib_id1,NULL,NULL,{HMI_ID1,hmi_engine_draw_color_alpha_lib_container,NULL},NULL,NULL,NULL}
+};
+#endif
+#if HMI_SXY_BITMAPS_NUMBER>0
+/*Static bmp static coordinate   */
+ static HMI_RECT_ALPHA_ANGEL_STR CONST DISPLAY_SEGMENT_ROM hmi_bmp_static_xy_rect[ ]=
+{
+	/* hmi_number_image0 */
+	 {151,263,11,16,254,0,0}
+	/* hmi_number_image30 */
+	,{90,244,21,16,254,0,0}
+	/* hmi_number_image60 */
+	,{55,208,20,16,254,0,0}
+	/* hmi_number_image90 */
+	,{35,145,20,16,254,0,0}
+	/* hmi_number_image120 */
+	,{53,85,28,16,254,0,0}
+	/* hmi_number_image150 */
+	,{89,50,28,16,254,0,0}
+	/* hmi_number_image180 */
+	,{144,35,28,16,254,0,0}
+	/* hmi_number_image210 */
+	,{195,53,31,16,254,0,0}
+	/* hmi_number_image240 */
+	,{228,89,31,16,254,0,0}
+	/* hmi_number_image270 */
+	,{244,146,31,16,254,0,0}
+	/* hmi_fuel_bck_image */
+	,{17,19,117,117,254,0,0}
+	/* hmi_fuel_logo_image */
+	,{36,135,15,20,254,0,0}
+	/* hmi_right_cluster_image0 */
+	,{150,266,10,16,254,0,0}
+	/* hmi_right_cluster_image1 */
+	,{98,249,7,16,254,0,0}
+	/* hmi_right_cluster_image2 */
+	,{53,207,12,16,254,0,0}
+	/* hmi_right_cluster_image3 */
+	,{34,146,11,16,254,0,0}
+	/* hmi_right_cluster_image4 */
+	,{50,88,11,16,254,0,0}
+	/* hmi_right_cluster_image5 */
+	,{96,49,9,16,254,0,0}
+	/* hmi_right_cluster_image6 */
+	,{151,33,10,16,254,0,0}
+	/* hmi_right_cluster_image7 */
+	,{207,48,9,16,254,0,0}
+	/* hmi_right_cluster_image8 */
+	,{244,85,11,16,254,0,0}
+	/* hmi_right_cluster_image9 */
+	,{262,145,10,16,254,0,0}
+	/* hmi_empty_image1 */
+	,{15,110,8,11,254,0,0}
+	/* hmi_full_image1 */
+	,{112,18,8,11,254,0,0}
+	/* hmi_middle_bck_image34 */
+	,{45,3,191,253,254,0,0}
+	/* hmi_car_image */
+	,{110,45,56,140,254,0,0}
+	/* hmi_car_light_image */
+	,{-4,-17,119,63,254,0,0}
+	/* hmi_hev_image */
+	,{444,61,28,12,254,0,0}
+	/* hmi_charge_image */
+	,{0,0,15,19,254,0,0}
+	/* hmi_right_array_grey_image */
+	,{570,53,36,27,254,0,0}
+	/* hmi_near_image */
+	,{0,0,27,27,254,0,0}
+	/* hmi_near_image_image19 */
+	,{0,0,27,27,254,0,0}
+	/* hmi_shader_map_image */
+	,{-14,-14,500,340,254,0,0}
+	/* hmi_navi_arrow_image */
+	,{0,0,78,34,254,0,0}
+	/* hmi_arrow_go_ahead_image */
+	,{8,4,8,22,254,0,0}
+	/* hmi_navi_distance_bck_image */
+	,{0,0,210,80,254,0,0}
+	/* hmi_navi_arrow_left_image */
+	,{60,0,29,50,254,0,0}
+	/* hmi_navi_arrow_right_image */
+	,{70,0,29,50,254,0,0}
+	/* hmi_navi_arrow_direct_image */
+	,{70,0,14,42,254,0,0}
+	/* hmi_bck_left_motion_image */
+	,{-5,-10,327,401,255,0,0}
+	/* hmi_left_motion_number_image260 */
+	,{0,0,52,27,254,0,0}
+	/* hmi_left_motion_number_image200 */
+	,{0,0,52,27,254,0,0}
+	/* hmi_left_motion_number_image140 */
+	,{4,2,44,27,254,0,0}
+	/* hmi_left_motion_number_image100 */
+	,{4,0,44,27,254,0,0}
+	/* hmi_left_motion_number_image60 */
+	,{9,0,33,27,254,0,0}
+	/* hmi_left_motion_number_image40 */
+	,{9,0,33,27,254,0,0}
+	/* hmi_left_motion_number_image20 */
+	,{18,0,33,27,254,0,0}
+	/* hmi_left_motion_number_image0 */
+	,{18,0,15,27,254,0,0}
+	/* hmi_right_motion_number_image7_image */
+	,{2,0,17,32,254,0,0}
+	/* hmi_right_motion_number_image6_image */
+	,{2,0,17,32,254,0,0}
+	/* hmi_right_motion_number_image5_image */
+	,{2,0,17,32,254,0,0}
+	/* hmi_right_motion_number_image4_image */
+	,{2,0,17,32,254,0,0}
+	/* hmi_right_motion_number_image3_image */
+	,{1,0,17,32,254,0,0}
+	/* hmi_right_motion_number_image2_image */
+	,{2,0,17,32,254,0,0}
+	/* hmi_right_motion_number_image1_image */
+	,{2,0,17,32,254,0,0}
+	/* hmi_right_motion_number_image0_image */
+	,{2,0,17,32,254,0,0}
+	/* hmi_fuel_motion_bck_image_image */
+	,{0,30,100,110,254,0,0}
+	/* hmi_fuel_motion_flag_image_image */
+	,{-1,121,33,33,254,0,0}
+	/* hmi_water_bck_image */
+	,{0,30,100,110,254,0,0}
+	/* hmi_water_tem_flag_image */
+	,{80,117,21,26,254,0,0}
+	/* hmi_bck_right_motion_image */
+	,{40,-5,328,401,255,0,0}
+	/* hmi_right_motion_trail_image_image */
+	,{0,0,382,366,255,0,0}
+	/* hmi_left_motion_trail_image */
+	,{0,0,382,366,255,0,0}
+	/* hmi_trail_image */
+	,{0,0,264,264,255,0,0}
+	/* hmi_bck_right_image */
+	,{0,0,311,311,255,0,0}
+	/* hmi_bck_left_image */
+	,{0,70,311,311,255,0,0}
+	/* hmi_upper_zone_image */
+	,{100,0,433,87,255,0,0}
+	/* hmi_upper_bottom_image */
+	,{0,10,192,37,255,0,0}
+	/* hmi_fuel_trail_image */
+	,{10,58,82,97,255,0,0}
+	/* hmi_trail_water_image */
+	,{110,75,82,97,255,0,0}
+};
+/*Static image static xy Prop    */
+ static HMI_BITMAP_STR CONST DISPLAY_SEGMENT_ROM hmi_bmp_static_xy_prop_table[]=
+{
+	/* hmi_number_image0 */
+	 hmi_number_image0_lossyARGB8888_alpha
+	/* hmi_number_image30 */
+	,hmi_number_image30_lossyARGB8888_alpha
+	/* hmi_number_image60 */
+	,hmi_number_image60_lossyARGB8888_alpha
+	/* hmi_number_image90 */
+	,hmi_number_image90_lossyARGB8888_alpha
+	/* hmi_number_image120 */
+	,hmi_number_image120_lossyARGB8888_alpha
+	/* hmi_number_image150 */
+	,hmi_number_image150_lossyARGB8888_alpha
+	/* hmi_number_image180 */
+	,hmi_number_image180_lossyARGB8888_alpha
+	/* hmi_number_image210 */
+	,hmi_number_image210_lossyARGB8888_alpha
+	/* hmi_number_image240 */
+	,hmi_number_image240_lossyARGB8888_alpha
+	/* hmi_number_image270 */
+	,hmi_number_image270_lossyARGB8888_alpha
+	/* hmi_fuel_bck_image */
+	,hmi_fuel_bck_image_lossyARGB8888_alpha
+	/* hmi_fuel_logo_image */
+	,hmi_fuel_logo_image_lossyARGB8888_alpha
+	/* hmi_right_cluster_image0 */
+	,hmi_right_cluster_image0_lossyARGB8888_alpha
+	/* hmi_right_cluster_image1 */
+	,hmi_right_cluster_image1_lossyARGB8888_alpha
+	/* hmi_right_cluster_image2 */
+	,hmi_right_cluster_image2_lossyARGB8888_alpha
+	/* hmi_right_cluster_image3 */
+	,hmi_right_cluster_image3_lossyARGB8888_alpha
+	/* hmi_right_cluster_image4 */
+	,hmi_right_cluster_image4_lossyARGB8888_alpha
+	/* hmi_right_cluster_image5 */
+	,hmi_right_cluster_image5_lossyARGB8888_alpha
+	/* hmi_right_cluster_image6 */
+	,hmi_right_cluster_image6_lossyARGB8888_alpha
+	/* hmi_right_cluster_image7 */
+	,hmi_right_cluster_image7_lossyARGB8888_alpha
+	/* hmi_right_cluster_image8 */
+	,hmi_right_cluster_image8_lossyARGB8888_alpha
+	/* hmi_right_cluster_image9 */
+	,hmi_right_cluster_image9_lossyARGB8888_alpha
+	/* hmi_empty_image1 */
+	,hmi_empty_image1_lossyARGB8888_alpha
+	/* hmi_full_image1 */
+	,hmi_full_image1_lossyARGB8888_alpha
+	/* hmi_middle_bck_image34 */
+	,hmi_middle_bck_image34_lossyARGB8888_alpha
+	/* hmi_car_image */
+	,hmi_car_image_lossyARGB8888_alpha
+	/* hmi_car_light_image */
+	,hmi_car_light_image_lossyARGB8888_alpha
+	/* hmi_hev_image */
+	,hmi_hev_image_lossyARGB8888_alpha
+	/* hmi_charge_image */
+	,hmi_charge_image_lossyARGB8888_alpha
+	/* hmi_right_array_grey_image */
+	,hmi_right_array_grey_image_lossyARGB8888_alpha
+	/* hmi_near_image */
+	,hmi_near_image_lossyARGB8888_alpha
+	/* hmi_near_image_image19 */
+	,hmi_near_image_image19_lossyARGB8888_alpha
+	/* hmi_shader_map_image */
+	,hmi_shader_map_image_lossyARGB8888_alpha
+	/* hmi_navi_arrow_image */
+	,hmi_navi_arrow_image_lossyRGB888
+	/* hmi_arrow_go_ahead_image */
+	,hmi_arrow_go_ahead_image_lossyARGB8888_alpha
+	/* hmi_navi_distance_bck_image */
+	,hmi_navi_distance_bck_image_lossyARGB8888_alpha
+	/* hmi_navi_arrow_left_image */
+	,hmi_navi_arrow_left_image_lossyARGB8888_alpha
+	/* hmi_navi_arrow_right_image */
+	,hmi_navi_arrow_right_image_lossyARGB8888_alpha
+	/* hmi_navi_arrow_direct_image */
+	,hmi_navi_arrow_direct_image_lossyARGB8888_alpha
+	/* hmi_bck_left_motion_image */
+	,hmi_bck_left_motion_image_lossyRGB888
+	/* hmi_left_motion_number_image260 */
+	,hmi_left_motion_number_image260_lossyARGB8888_alpha
+	/* hmi_left_motion_number_image200 */
+	,hmi_left_motion_number_image200_lossyARGB8888_alpha
+	/* hmi_left_motion_number_image140 */
+	,hmi_left_motion_number_image140_lossyARGB8888_alpha
+	/* hmi_left_motion_number_image100 */
+	,hmi_left_motion_number_image100_lossyARGB8888_alpha
+	/* hmi_left_motion_number_image60 */
+	,hmi_left_motion_number_image60_lossyARGB8888_alpha
+	/* hmi_left_motion_number_image40 */
+	,hmi_left_motion_number_image40_lossyARGB8888_alpha
+	/* hmi_left_motion_number_image20 */
+	,hmi_left_motion_number_image20_lossyARGB8888_alpha
+	/* hmi_left_motion_number_image0 */
+	,hmi_left_motion_number_image0_lossyARGB8888_alpha
+	/* hmi_right_motion_number_image7_image */
+	,hmi_right_motion_number_image7_image_lossyARGB8888_alpha
+	/* hmi_right_motion_number_image6_image */
+	,hmi_right_motion_number_image6_image_lossyARGB8888_alpha
+	/* hmi_right_motion_number_image5_image */
+	,hmi_right_motion_number_image5_image_lossyARGB8888_alpha
+	/* hmi_right_motion_number_image4_image */
+	,hmi_right_motion_number_image4_image_lossyARGB8888_alpha
+	/* hmi_right_motion_number_image3_image */
+	,hmi_right_motion_number_image3_image_lossyARGB8888_alpha
+	/* hmi_right_motion_number_image2_image */
+	,hmi_right_motion_number_image2_image_lossyARGB8888_alpha
+	/* hmi_right_motion_number_image1_image */
+	,hmi_right_motion_number_image1_image_lossyARGB8888_alpha
+	/* hmi_right_motion_number_image0_image */
+	,hmi_right_motion_number_image0_image_lossyARGB8888_alpha
+	/* hmi_fuel_motion_bck_image_image */
+	,hmi_fuel_motion_bck_image_image_lossyARGB8888_alpha
+	/* hmi_fuel_motion_flag_image_image */
+	,hmi_fuel_motion_flag_image_image_lossyARGB8888_alpha
+	/* hmi_water_bck_image */
+	,hmi_water_bck_image_lossyARGB8888_alpha
+	/* hmi_water_tem_flag_image */
+	,hmi_water_tem_flag_image_lossyARGB8888_alpha
+	/* hmi_bck_right_motion_image */
+	,hmi_bck_right_motion_image_lossyRGB888
+	/* hmi_right_motion_trail_image_image */
+	,hmi_right_motion_trail_image_image_lossyARGB8888_alpha
+	/* hmi_left_motion_trail_image */
+	,hmi_left_motion_trail_image_lossyARGB8888_alpha
+	/* hmi_trail_image */
+	,hmi_trail_image_lossyARGB8888_alpha
+	/* hmi_bck_right_image */
+	,hmi_bck_right_image_lossyRGB888
+	/* hmi_bck_left_image */
+	,hmi_bck_left_image_lossyRGB888
+	/* hmi_upper_zone_image */
+	,hmi_upper_zone_image_lossyARGB8888_alpha
+	/* hmi_upper_bottom_image */
+	,hmi_upper_bottom_image_lossyARGB8888_alpha
+	/* hmi_fuel_trail_image */
+	,hmi_fuel_trail_image_lossyARGB8888_alpha
+	/* hmi_trail_water_image */
+	,hmi_trail_water_image_lossyARGB8888_alpha
+};
+#if HMI_SXY_IMAGE_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_bitmap_container_table[]=
+{
+	/* number_image0 */
+	 {{0,NULL}}
+	/* number_image30 */
+	,{{0,NULL}}
+	/* number_image60 */
+	,{{0,NULL}}
+	/* number_image90 */
+	,{{0,NULL}}
+	/* number_image120 */
+	,{{0,NULL}}
+	/* number_image150 */
+	,{{0,NULL}}
+	/* number_image180 */
+	,{{0,NULL}}
+	/* number_image210 */
+	,{{0,NULL}}
+	/* number_image240 */
+	,{{0,NULL}}
+	/* number_image270 */
+	,{{0,NULL}}
+	/* fuel_bck_image */
+	,{{0,NULL}}
+	/* fuel_logo_image */
+	,{{0,NULL}}
+	/* right_cluster_image0 */
+	,{{0,NULL}}
+	/* right_cluster_image1 */
+	,{{0,NULL}}
+	/* right_cluster_image2 */
+	,{{0,NULL}}
+	/* right_cluster_image3 */
+	,{{0,NULL}}
+	/* right_cluster_image4 */
+	,{{0,NULL}}
+	/* right_cluster_image5 */
+	,{{0,NULL}}
+	/* right_cluster_image6 */
+	,{{0,NULL}}
+	/* right_cluster_image7 */
+	,{{0,NULL}}
+	/* right_cluster_image8 */
+	,{{0,NULL}}
+	/* right_cluster_image9 */
+	,{{0,NULL}}
+	/* empty_image1 */
+	,{{0,NULL}}
+	/* full_image1 */
+	,{{0,NULL}}
+	/* middle_bck_image34 */
+	,{{0,NULL}}
+	/* car_image */
+	,{{0,NULL}}
+	/* car_light_image */
+	,{{0,NULL}}
+	/* hev_image */
+	,{{0,NULL}}
+	/* charge_image */
+	,{{0,NULL}}
+	/* right_array_grey_image */
+	,{{0,NULL}}
+	/* near_image */
+	,{{0,NULL}}
+	/* near_image_image19 */
+	,{{0,NULL}}
+	/* shader_map_image */
+	,{{0,NULL}}
+	/* navi_arrow_image */
+	,{{0,NULL}}
+	/* arrow_go_ahead_image */
+	,{{0,NULL}}
+	/* navi_distance_bck_image */
+	,{{0,NULL}}
+	/* navi_arrow_left_image */
+	,{{0,NULL}}
+	/* navi_arrow_right_image */
+	,{{0,NULL}}
+	/* navi_arrow_direct_image */
+	,{{0,NULL}}
+	/* bck_left_motion_image */
+	,{{0,NULL}}
+	/* left_motion_number_image260 */
+	,{{0,NULL}}
+	/* left_motion_number_image200 */
+	,{{0,NULL}}
+	/* left_motion_number_image140 */
+	,{{0,NULL}}
+	/* left_motion_number_image100 */
+	,{{0,NULL}}
+	/* left_motion_number_image60 */
+	,{{0,NULL}}
+	/* left_motion_number_image40 */
+	,{{0,NULL}}
+	/* left_motion_number_image20 */
+	,{{0,NULL}}
+	/* left_motion_number_image0 */
+	,{{0,NULL}}
+	/* right_motion_number_image7_image */
+	,{{0,NULL}}
+	/* right_motion_number_image6_image */
+	,{{0,NULL}}
+	/* right_motion_number_image5_image */
+	,{{0,NULL}}
+	/* right_motion_number_image4_image */
+	,{{0,NULL}}
+	/* right_motion_number_image3_image */
+	,{{0,NULL}}
+	/* right_motion_number_image2_image */
+	,{{0,NULL}}
+	/* right_motion_number_image1_image */
+	,{{0,NULL}}
+	/* right_motion_number_image0_image */
+	,{{0,NULL}}
+	/* fuel_motion_bck_image_image */
+	,{{0,NULL}}
+	/* fuel_motion_flag_image_image */
+	,{{0,NULL}}
+	/* water_bck_image */
+	,{{0,NULL}}
+	/* water_tem_flag_image */
+	,{{0,NULL}}
+	/* bck_right_motion_image */
+	,{{0,NULL}}
+	/* right_motion_trail_image_image */
+	,{{0,NULL}}
+	/* left_motion_trail_image */
+	,{{0,NULL}}
+	/* trail_image */
+	,{{0,NULL}}
+	/* bck_right_image */
+	,{{0,NULL}}
+	/* bck_left_image */
+	,{{0,NULL}}
+	/* upper_zone_image */
+	,{{0,NULL}}
+	/* upper_bottom_image */
+	,{{0,NULL}}
+	/* fuel_trail_image */
+	,{{0,NULL}}
+	/* trail_water_image */
+	,{{0,NULL}}
+};
+#endif
+ static HMI_IMAGE_ATTR_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_bitmap_attr_table[ ]=
+{
+	/* HMI_NUMBER_IMAGE0 */
+	 {HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE30 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE60 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE90 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE120 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE150 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE180 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE210 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE240 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NUMBER_IMAGE270 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_FUEL_BCK_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_FUEL_LOGO_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE0 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE1 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE2 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE3 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE4 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE5 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE6 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE7 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE8 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_CLUSTER_IMAGE9 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_EMPTY_IMAGE1 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_FULL_IMAGE1 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_MIDDLE_BCK_IMAGE34 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_CAR_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_CAR_LIGHT_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_HEV_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_CHARGE_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_ARRAY_GREY_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NEAR_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NEAR_IMAGE_IMAGE19 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_SHADER_MAP_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NAVI_ARROW_IMAGE */
+	,{HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_ARROW_GO_AHEAD_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NAVI_DISTANCE_BCK_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NAVI_ARROW_LEFT_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NAVI_ARROW_RIGHT_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NAVI_ARROW_DIRECT_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_BCK_LEFT_MOTION_IMAGE */
+	,{HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_NUMBER_IMAGE260 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_NUMBER_IMAGE200 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_NUMBER_IMAGE140 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_NUMBER_IMAGE100 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_NUMBER_IMAGE60 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_NUMBER_IMAGE40 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_NUMBER_IMAGE20 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_NUMBER_IMAGE0 */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_NUMBER_IMAGE7_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_NUMBER_IMAGE6_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_NUMBER_IMAGE5_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_NUMBER_IMAGE4_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_NUMBER_IMAGE3_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_NUMBER_IMAGE2_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_NUMBER_IMAGE1_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_NUMBER_IMAGE0_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_FUEL_MOTION_BCK_IMAGE_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_FUEL_MOTION_FLAG_IMAGE_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_WATER_BCK_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_WATER_TEM_FLAG_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_BCK_RIGHT_MOTION_IMAGE */
+	,{HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_MOTION_TRAIL_IMAGE_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_TRAIL_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_TRAIL_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_BCK_RIGHT_IMAGE */
+	,{HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_BCK_LEFT_IMAGE */
+	,{HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_UPPER_ZONE_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_UPPER_BOTTOM_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_FUEL_TRAIL_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_TRAIL_WATER_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+};
+#endif
+#if HMI_DXY_BITMAPS_NUMBER>0
+/*Static bmp dyamic coordinate   */
+ static HMI_RECT_ALPHA_ANGEL_STR DISPLAY_SEGMENT_RAM hmi_bmp_dyn_xy_rect[ ]=
+{
+	/* hmi_rear_light_left_image_dxy */
+	 {26,158,16,19,254,0,0}
+	/* hmi_rear_light_right_image_dxy */
+	,{63,158,16,19,254,0,0}
+	/* hmi_left_array_image_dxy */
+	,{30,53,36,27,254,0,0}
+	/* hmi_navi_car_image */
+	,{0,0,20,12,255,0,0}
+	/* hmi_pointer_image */
+	,{137,221,48,76,254,269,0}
+	/* hmi_right_pointer_image */
+	,{140,221,48,76,254,269,0}
+	/* hmi_left_motion_pointer_image */
+	,{130,4,130,8,255,0,0}
+	/* hmi_right_water_pointer_image */
+	,{0,4,130,9,255,0,0}
+	/* hmi_fuel_pointer_image */
+	,{65,11,65,22,255,0,0}
+	/* hmi_pointer_water_image */
+	,{0,11,65,22,255,0,0}
+};
+/*Static image dyn xy Prop    */
+ static HMI_BITMAP_STR CONST DISPLAY_SEGMENT_ROM hmi_bmp_dyn_xy_prop_table[]=
+{
+	/* hmi_rear_light_left_image_dxy */
+	 hmi_rear_light_left_image_dxy_lossyARGB8888_alpha
+	/* hmi_rear_light_right_image_dxy */
+	,hmi_rear_light_right_image_dxy_lossyARGB8888_alpha
+	/* hmi_left_array_image_dxy */
+	,hmi_left_array_image_dxy_lossyARGB8888_alpha
+	/* hmi_navi_car_image */
+	,hmi_navi_car_image_lossyARGB8888_alpha
+	/* hmi_pointer_image */
+	,hmi_pointer_image_lossyARGB8888_alpha
+	/* hmi_right_pointer_image */
+	,hmi_right_pointer_image_lossyARGB8888_alpha
+	/* hmi_left_motion_pointer_image */
+	,hmi_left_motion_pointer_image_lossyARGB8888_alpha
+	/* hmi_right_water_pointer_image */
+	,hmi_right_water_pointer_image_lossyARGB8888_alpha
+	/* hmi_fuel_pointer_image */
+	,hmi_fuel_pointer_image_lossyARGB8888_alpha
+	/* hmi_pointer_water_image */
+	,hmi_pointer_water_image_lossyARGB8888_alpha
+};
+#if HMI_DXY_IMAGE_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_bitmap_container_table[]=
+{
+	/* rear_light_left_image_dxy */
+	 {{0,NULL}}
+	/* rear_light_right_image_dxy */
+	,{{0,NULL}}
+	/* left_array_image_dxy */
+	,{{0,NULL}}
+	/* navi_car_image */
+	,{{0,NULL}}
+	/* pointer_image */
+	,{{0,NULL}}
+	/* right_pointer_image */
+	,{{0,NULL}}
+	/* left_motion_pointer_image */
+	,{{0,NULL}}
+	/* right_water_pointer_image */
+	,{{0,NULL}}
+	/* fuel_pointer_image */
+	,{{0,NULL}}
+	/* pointer_water_image */
+	,{{0,NULL}}
+};
+#endif
+#if HMI_DXY_ROTATION_BITMAPS_NUMBER>0
+ static HMI_ROTATION_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_bitmap_rotation[]=
+{
+	 {155,154}
+	,{155,154}
+	,{190,180}
+	,{198,190}
+	,{100,77}
+	,{0,60}
+};
+#endif
+
+#if HMI_DXY_ROTATION_BITMAPS_NUMBER>0
+ static HMI_ROTATION_TRAIL_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_bitmap_rotation_trail[]=
+{
+	 {TRUE,HMI_TRAIL_IMAGE,0,270}
+	,{TRUE,HMI_TRAIL_IMAGE,0,270}
+	,{TRUE,HMI_LEFT_MOTION_TRAIL_CONTAINER,0,240}
+	,{TRUE,HMI_RIGHT_MOTION_TRAIL_CONTAINER,0,240}
+	,{TRUE,HMI_TRAIL_FULE_SMALL_CONTAINER,0,240}
+	,{TRUE,HMI_TRAIL_WATER_CONTAINER,0,240}
+};
+#endif
+
+#if HMI_DXY_ROTATION_BITMAPS_NUMBER>0
+ static BYTE DISPLAY_SEGMENT_RAM hmi_dxy_bitmap_rotation_trail_attr[]=
+{
+	 HMI_ROT_IMAGE_TAIL_CW
+	,HMI_ROT_IMAGE_TAIL_CW
+	,HMI_ROT_IMAGE_TAIL_CW
+	,HMI_ROT_IMAGE_TAIL_CCW
+	,HMI_ROT_IMAGE_TAIL_CW
+	,HMI_ROT_IMAGE_TAIL_CCW
+};
+#endif
+
+ static HMI_IMAGE_ATTR_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_bitmap_attr_table[ ]=
+{
+	/* HMI_REAR_LIGHT_LEFT_IMAGE_DXY */
+	 {HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_REAR_LIGHT_RIGHT_IMAGE_DXY */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_ARRAY_IMAGE_DXY */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_NAVI_CAR_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_POINTER_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_POINTER_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_LEFT_MOTION_POINTER_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_RIGHT_WATER_POINTER_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_FUEL_POINTER_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_POINTER_WATER_IMAGE */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+};
+#endif
+#if HMI_SXY_IMAGELIST_NUMBER>0
+/*Static bmp list static coordinate   */
+ static HMI_RECT_ALPHA_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_imagelist_rect[]=
+{
+	/* hmi_rpm_image_list */
+	 {145,138,27,32,255}
+	/* hmi_speed_ten_image_list */
+	,{59,56,27,32,255}
+	/* hmi_speed_zero_image_list */
+	,{83,55,27,32,255}
+	/* hmi_speed_hundred_image_list */
+	,{34,55,27,32,255}
+	/* hmi_speed_motion_right_100_image_list_image_list */
+	,{11,5,22,55,254}
+};
+/*Static bmp list index    */
+ static HMI_RANGE_STR DISPLAY_SEGMENT_RAM hmi_sxy_imagelist_index[]=
+{
+	/* hmi_rpm_image_list */
+	/* hmi_speed_ten_image_list */
+	 128
+	/* hmi_speed_zero_image_list */
+	/* hmi_speed_hundred_image_list */
+	,16
+	/* hmi_speed_motion_right_100_image_list_image_list */
+	,0
+};
+/*Static image list static xy Prop    */
+ static HMI_IMAGE_LIST_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_imagelist_table[]=
+{
+	/* hmi_rpm_image_list */
+	 {10,{270,32,hmi_rpm_image_list_lossyARGB8888_alpha10}}
+	/* hmi_speed_ten_image_list */
+	,{10,{270,32,hmi_speed_ten_image_list_lossyARGB8888_alpha10}}
+	/* hmi_speed_zero_image_list */
+	,{10,{270,32,hmi_speed_zero_image_list_lossyARGB8888_alpha10}}
+	/* hmi_speed_hundred_image_list */
+	,{10,{270,32,hmi_speed_hundred_image_list_lossyARGB8888_alpha10}}
+	/* hmi_speed_motion_right_100_image_list_image_list */
+	,{10,{220,55,hmi_speed_motion_right_100_image_list_image_list_lossyARGB8888_alpha10}}
+};
+#if HMI_SXY_IMAGE_LIST_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_imagelist_container_table[]=
+{
+	/* rpm_image_list */
+	 {{0,NULL}}
+	/* speed_ten_image_list */
+	,{{0,NULL}}
+	/* speed_zero_image_list */
+	,{{0,NULL}}
+	/* speed_hundred_image_list */
+	,{{0,NULL}}
+	/* speed_motion_right_100_image_list_image_list */
+	,{{0,NULL}}
+};
+#endif
+ static HMI_IMAGE_ATTR_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_imglist_attr_table[ ]=
+{
+	/* HMI_RPM_IMAGE_LIST */
+	 {HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_SPEED_TEN_IMAGE_LIST */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_SPEED_ZERO_IMAGE_LIST */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_SPEED_HUNDRED_IMAGE_LIST */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_SPEED_MOTION_RIGHT_100_IMAGE_LIST_IMAGE_LIST */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+};
+#endif
+#if HMI_DXY_IMAGELIST_NUMBER>0
+/*Static bmp list dyamic coordinate   */
+ static HMI_RECT_ALPHA_STR DISPLAY_SEGMENT_RAM hmi_dxy_imagelist_rect[]=
+{
+	/* hmi_speed_motion_100_image_list */
+	 {0,17,22,55,254}
+	/* hmi_speed_motion_10_image_list */
+	,{22,17,22,55,254}
+	/* hmi_speed_motion_1_image_list */
+	,{44,17,22,55,254}
+};
+/*Dyn bmp list index    */
+ static HMI_RANGE_STR DISPLAY_SEGMENT_RAM hmi_dxy_imagelist_index[]=
+{
+	/* hmi_speed_motion_100_image_list */
+	/* hmi_speed_motion_10_image_list */
+	 113
+	/* hmi_speed_motion_1_image_list */
+	,0
+};
+/*Static image list dyn xy Prop    */
+ static HMI_IMAGE_LIST_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_imagelist_table[]=
+{
+	/* hmi_speed_motion_100_image_list */
+	 {10,{220,55,hmi_speed_motion_100_image_list_lossyARGB8888_alpha10}}
+	/* hmi_speed_motion_10_image_list */
+	,{10,{220,55,hmi_speed_motion_10_image_list_lossyARGB8888_alpha10}}
+	/* hmi_speed_motion_1_image_list */
+	,{10,{220,55,hmi_speed_motion_1_image_list_lossyARGB8888_alpha10}}
+};
+#if HMI_DXY_IMAGE_LIST_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_imagelist_container_table[]=
+{
+	/* speed_motion_100_image_list */
+	 {{0,NULL}}
+	/* speed_motion_10_image_list */
+	,{{0,NULL}}
+	/* speed_motion_1_image_list */
+	,{{0,NULL}}
+};
+#endif
+ static HMI_IMAGE_ATTR_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_imglist_attr_table[ ]=
+{
+	/* HMI_SPEED_MOTION_100_IMAGE_LIST */
+	 {HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_SPEED_MOTION_10_IMAGE_LIST */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+	/* HMI_SPEED_MOTION_1_IMAGE_LIST */
+	,{HMI_ALPHA_IMAGE_FLAG|HMI_IMAGE_COMPRESS_LOSSY}
+};
+#endif
+#if HMI_SXY_SCROLLBAR_NUMBER>0
+/*Static scrollbar static coordinate   */
+ static HMI_RECT_ALPHA_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_scrollbar_rect[]=
+{
+};
+/*Static scrollbar Prop    */
+ static HMI_SCROLL_BAR_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_scrollbar_table[ ]=
+{
+};
+/*Static scrollbar index    */
+ static HMI_RANGE_STR DISPLAY_SEGMENT_RAM hmi_sxy_scrollbar_cur_range[]=
+{
+	 0
+};
+#if HMI_SXY_SCROLLBAR_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_scrollbar_container_table[]=
+{
+};
+#endif
+ static HMI_IMAGE_ATTR_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_scrollbar_attr_table[ ]=
+{
+};
+#endif
+#if HMI_DXY_SCROLLBAR_NUMBER>0
+/*Static scrollbar dyamic coordinate   */
+ static HMI_RECT_ALPHA_STR DISPLAY_SEGMENT_RAM hmi_dxy_scrollbar_rect[]=
+{
+};
+/*Static scrollbar Prop    */
+ static HMI_SCROLL_BAR_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_scrollbar_table[ ]=
+{
+};
+/*Dyn scrollbar index    */
+ static HMI_RANGE_STR DISPLAY_SEGMENT_RAM hmi_dxy_scrollbar_cur_range[]=
+{
+	 0
+};
+#if HMI_DXY_SCROLLBAR_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_scrollbar_container_table[]=
+{
+};
+#endif
+ static HMI_IMAGE_ATTR_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_scrollbar_attr_table[ ]=
+{
+};
+#endif
+#if HMI_SXY_SPLINE_NUMBER>0
+/*Spline sxy coordinate   */
+ static HMI_RECT_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_spline_rect[]=
+{
+};
+/*Spline sxy attribute   */
+ static U08 CONST DISPLAY_SEGMENT_ROM hmi_sxy_spline_attr_dir[]=
+{
+};
+/*Spline sxy attribute   */
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_spline_color[]=
+{
+};
+/*Spline sxy attribute   */
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_spline_zone_color[]=
+{
+};
+/*Spline sxy attribute   */
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_spline_ctrl_point[]=
+{
+};
+#if HMI_SXY_SPLINE_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_spline_table[]=
+{
+};
+#endif
+#endif
+#if HMI_SXY_ONE_POINT_SPLINE_NUMBER>0
+ static SPOINT_TP DISPLAY_SEGMENT_RAM sxy_one_point_array[]=
+{
+};
+ static POINT_RANGE_TP CONST DISPLAY_SEGMENT_ROM sxy_one_point_range_array[]=
+{
+};
+ static POINT_FIFO_TP DISPLAY_SEGMENT_RAM sxy_spline_head_tail_offset_array[]=
+{
+};
+#endif
+#if HMI_DXY_SPLINE_NUMBER>0
+/*Spline dxy coordinate   */
+ static HMI_RECT_STR DISPLAY_SEGMENT_RAM hmi_dxy_spline_rect[]=
+{
+};
+/*Spline dxy scale   */
+ static HMI_SCALE_STR DISPLAY_SEGMENT_RAM hmi_dxy_spline_scale[]=
+{
+};
+/*Splitn dxy attribute   */
+ static U08 CONST DISPLAY_SEGMENT_ROM hmi_dxy_spline_attr_dir[]=
+{
+};
+/*Splitn dxy attribute   */
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_spline_color[]=
+{
+};
+/*Splitn dxy attribute   */
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_spline_zone_color[]=
+{
+};
+/*Splitn dxy attribute   */
+ static HMI_OBJECT_ID_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_spline_ctrl_point[]=
+{
+};
+#if HMI_DXY_SPLINE_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_xy_spline_table[]=
+{
+};
+#endif
+#endif
+#if HMI_DXY_ONE_POINT_SPLINE_NUMBER>0
+ static SPOINT_TP DISPLAY_SEGMENT_RAM dxy_one_point_array[]=
+{
+};
+ static POINT_RANGE_TP CONST DISPLAY_SEGMENT_ROM dxy_one_point_range_array[]=
+{
+};
+ static POINT_FIFO_TP DISPLAY_SEGMENT_RAM dxy_spline_head_tail_offset_array[]=
+{
+};
+#endif
+#if HMI_SXY_BUTTON_NUMBER>0
+/*Static Button static coordinate   */
+ static HMI_RECT_ALPHA_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_button_rect[]=
+{
+};
+/*Static button static xy Prop    */
+ static HMI_BUTTON_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_button_table[]=
+{
+};
+/*Static button static xy index    */
+ static HMI_RANGE_STR DISPLAY_SEGMENT_RAM hmi_sxy_button_press_status[]=
+{
+};
+#if HMI_SXY_BUTTON_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_button_container_table[]=
+{
+};
+#endif
+ static HMI_IMAGE_ATTR_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_button_attr_table[ ]=
+{
+};
+#endif
+#if HMI_DXY_BUTTON_NUMBER>0
+/*Static Button dyamic coordinate   */
+ static HMI_RECT_ALPHA_STR DISPLAY_SEGMENT_RAM hmi_dxy_button_rect[]=
+{
+};
+/*Static button dyn xy Prop    */
+ static HMI_BUTTON_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_button_table[]=
+{
+};
+/*Static button dyn xy index    */
+ static HMI_RANGE_STR DISPLAY_SEGMENT_RAM hmi_dxy_button_press_status[]=
+{
+};
+#if HMI_DXY_BUTTON_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_button_container_table[]=
+{
+};
+#endif
+ static HMI_IMAGE_ATTR_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_button_attr_table[ ]=
+{
+};
+#endif
+#if HMI_DYN_EDIT_TEXTS_NUMBER>0
+/*Dynamic text string   */
+ static HMI_CHAR_STR DISPLAY_SEGMENT_RAM hmi_edit_text_data[]=
+{
+	/* fuel_text */
+	  0x35,0x30,0x25,0x00,0x00,0x00,'\0'
+	/* rpm_text20 */
+	, 0x37,0x30,0x25,0x00,0x00,0x00,'\0'
+	/* qd_text */
+	, 0x51,0x44,0x20,0x50,0x6c,0x75,0x73,0x20,0x48,0x4d,0x49,0x20,0x74,0x6f,0x6f,0x6c,0x28,0x77,0x77,0x77,0x2e,0x73,0x68,0x7a,0x6c,0x64,0x7a,0x2e,0x63,0x6f,0x6d,0x29,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,'\0',0x00,0x00
+	/* speed_text */
+	, 0x33,0x37,0x30,0x20,0x4b,0x4d,'\0'
+	/* km_text */
+	, 0x4b,0x6d,0x2f,0x68,0x00,0x00,'\0'
+	/* new_text22 */
+	, 0x37,0x38,0x30,0x4b,0x77,0x00,'\0'
+	/* bottom_text */
+	, 0x36,0x30,0x30,0x00,0x00,0x00,'\0'
+	/* bottom_total_text32 */
+	, 0x54,0x6f,0x74,0x61,0x6c,0x3a,'\0'
+	/* date_text */
+	, 0x32,0x30,0x32,0x34,0x2f,0x30,0x34,0x2f,0x30,0x39,0x00,0x00,'\0'
+	/* time_text */
+	, 0x32,0x31,0x3a,0x33,0x30,0x00,'\0'
+	/* speed_dang_text */
+	, 0x44,0x00,0x00,0x00,0x00,0x00,'\0'
+	/* normal_text */
+	, 0x4e,0x6f,0x72,0x6d,0x61,0x6c,'\0'
+	/* km_text45 */
+	, 0x4b,0x4d,0x00,0x00,0x00,0x00,'\0'
+	/* new_text15 */
+	, 0x45,0x64,0x69,0x74,0x00,0x00,'\0'
+	/* time_text_text51 */
+	, 0x32,0x31,0x3a,0x33,0x30,0x00,'\0'
+	/* temp_text */
+	, 0x2b,0x32,0x37,0x2e,0x35,0x20,0x43,0x00,0x00,0x00,0x00,0x00,'\0'
+	/* left_arrow_tip_text */
+	, 0x33,0x30,0x30,0x6d,0x00,0x00,'\0'
+	/* right_arrow_tip_text */
+	, 0x35,0x30,0x30,0x6d,0x00,0x00,'\0'
+	/* direct_arrow_tip_text */
+	, 0x38,0x30,0x30,0x6d,0x00,0x00,'\0'
+	/* new_text5 */
+	, 0x45,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,'\0'
+};
+#if HMI_EDIT_TEXT_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_edit_text_container_table[]=
+{
+	/* fuel_text */
+	 {{0,NULL}}
+	/* rpm_text20 */
+	,{{0,NULL}}
+	/* qd_text */
+	,{{0,NULL}}
+	/* speed_text */
+	,{{0,NULL}}
+	/* km_text */
+	,{{0,NULL}}
+	/* new_text22 */
+	,{{0,NULL}}
+	/* bottom_text */
+	,{{0,NULL}}
+	/* bottom_total_text32 */
+	,{{0,NULL}}
+	/* date_text */
+	,{{0,NULL}}
+	/* time_text */
+	,{{0,NULL}}
+	/* speed_dang_text */
+	,{{0,NULL}}
+	/* normal_text */
+	,{{0,NULL}}
+	/* km_text45 */
+	,{{0,NULL}}
+	/* new_text15 */
+	,{{0,NULL}}
+	/* time_text_text51 */
+	,{{0,NULL}}
+	/* temp_text */
+	,{{0,NULL}}
+	/* left_arrow_tip_text */
+	,{{0,NULL}}
+	/* right_arrow_tip_text */
+	,{{0,NULL}}
+	/* direct_arrow_tip_text */
+	,{{0,NULL}}
+	/* new_text5 */
+	,{{0,NULL}}
+};
+#endif
+/*Editable text info list   */
+ static HMI_TEXT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_edit_text_table[ ]=
+{
+	/* HMI_FUEL_TEXT */
+	 {(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[0]}
+	/* HMI_RPM_TEXT20 */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[7]}
+	/* HMI_QD_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_LEFT|HMI_TEXT_PROP_SCROLABLE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,40,&hmi_edit_text_data[14]}
+	/* HMI_SPEED_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_LEFT|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[57]}
+	/* HMI_KM_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[64]}
+	/* HMI_NEW_TEXT22 */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[71]}
+	/* HMI_BOTTOM_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_RIGHT|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[78]}
+	/* HMI_BOTTOM_TOTAL_TEXT32 */
+	,{(HMI_TEXT_PROP_ALIGN_LEFT|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[85]}
+	/* HMI_DATE_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,12,&hmi_edit_text_data[92]}
+	/* HMI_TIME_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[105]}
+	/* HMI_SPEED_DANG_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_MIDDLE_FONT,6,&hmi_edit_text_data[112]}
+	/* HMI_NORMAL_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[119]}
+	/* HMI_KM_TEXT45 */
+	,{(HMI_TEXT_PROP_ALIGN_LEFT|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[126]}
+	/* HMI_NEW_TEXT15 */
+	,{(HMI_TEXT_PROP_ALIGN_LEFT|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[133]}
+	/* HMI_TIME_TEXT_TEXT51 */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_MIDDLE_FONT,6,&hmi_edit_text_data[140]}
+	/* HMI_TEMP_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,12,&hmi_edit_text_data[147]}
+	/* HMI_LEFT_ARROW_TIP_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_LEFT|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[160]}
+	/* HMI_RIGHT_ARROW_TIP_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_LEFT|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[167]}
+	/* HMI_DIRECT_ARROW_TIP_TEXT */
+	,{(HMI_TEXT_PROP_ALIGN_LEFT|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,6,&hmi_edit_text_data[174]}
+	/* HMI_NEW_TEXT5 */
+	,{(HMI_TEXT_PROP_ALIGN_CENTRE|HMI_TEXT_PROP_DRAW_TRANSP),HMI_DEFAULT_FONT,40,&hmi_edit_text_data[181]}
+};
+#if HMI_EDIT_TEXT_DXY_DYN_FONT_NUM>0
+ static U08 DISPLAY_SEGMENT_RAM hmi_edit_text_dxy_dyn_font_table[ ]=
+{
+};
+#endif
+#if HMI_EDIT_TEXT_SXY_DYN_FONT_NUM>0
+ static U08 DISPLAY_SEGMENT_RAM hmi_edit_text_sxy_dyn_font_table[ ]=
+{
+};
+#endif
+#endif
+#if HMI_DYN_EDIT_TEXTS_NUMBER-HMI_DYN_XY_EDIT_TEXTS_NUMBER>0
+/*Editable text static property   */
+ static HMI_TEXT_RECT_STR CONST DISPLAY_SEGMENT_ROM hmi_static_xy_edit_text_prop_table[ ]=
+{
+	/* hmi_speed_text */
+	 {{54,130,90,30},4294967295}
+	/* hmi_km_text */
+	,{{34,98,80,30},4294967295}
+	/* hmi_new_text22 */
+	,{{116,189,90,30},4294967295}
+	/* hmi_bottom_text */
+	,{{77,30,45,30},4294967295}
+	/* hmi_bottom_total_text32 */
+	,{{12,30,70,30},4278360316}
+	/* hmi_date_text */
+	,{{214,19,215,30},4287739133}
+	/* hmi_time_text */
+	,{{0,0,80,31},4294967295}
+	/* hmi_speed_dang_text */
+	,{{100,213,84,32},4294967295}
+	/* hmi_normal_text */
+	,{{141,57,84,30},4294967295}
+	/* hmi_km_text45 */
+	,{{125,30,39,30},4278352380}
+	/* hmi_new_text15 */
+	,{{0,0,84,21},4294967295}
+	/* hmi_time_text_text51 */
+	,{{1,-11,84,30},4294967295}
+	/* hmi_temp_text */
+	,{{142,395,63,31},4294967295}
+	/* hmi_left_arrow_tip_text */
+	,{{90,18,100,21},4294967295}
+	/* hmi_right_arrow_tip_text */
+	,{{90,18,60,21},4294967295}
+	/* hmi_direct_arrow_tip_text */
+	,{{90,18,60,21},4294967295}
+	/* hmi_new_text5 */
+	,{{-11,33,128,500},4293326854}
+};
+#endif
+#if HMI_DYN_XY_EDIT_TEXTS_NUMBER>0
+/*Editable text dynamic property   */
+ static HMI_TEXT_RECT_STR DISPLAY_SEGMENT_RAM hmi_dyn_xy_edit_text_prop_table[ ]=
+{
+	/* hmi_fuel_text */
+	 {{52,69,49,30},4294967295}
+	/* hmi_rpm_text20 */
+	,{{52,60,70,30},4285790469}
+	/* hmi_qd_text */
+	,{{0,0,242,34},4294721538}
+};
+#endif
+#if HMI_STATIC_TEXTS_NUMBER>0
+#if HMI_UNEDIT_TEXTS_STATIC_XY_NUMBER>0
+/*Uneditable text static property   */
+ static HMI_TEXT_RECT_STR CONST DISPLAY_SEGMENT_ROM hmi_static_xy_unedit_text_prop_table[ ]=
+{
+};
+#endif
+#if HMI_UNEDIT_TEXTS_DYN_XY_NUMBER>0
+/*text property   */
+ static HMI_TEXT_RECT_STR DISPLAY_SEGMENT_RAM hmi_dyn_xy_unedit_text_prop_table[ ]=
+{
+};
+#endif
+/*uneditable text info list   */
+ static HMI_TEXT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_unedit_text_table[ ]=
+{
+};
+#if HMI_UNEDIT_TEXT_MAX_SON_CNT>0
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_static_text_container_table[]=
+{
+};
+#endif
+#if HMI_UNEDIT_TEXT_DXY_DYN_FONT_NUM>0
+ static U08 DISPLAY_SEGMENT_RAM hmi_unedit_text_dxy_dyn_font_table[ ]=
+{
+};
+#endif
+#if HMI_UNEDIT_TEXT_SXY_DYN_FONT_NUM>0
+ static U08 DISPLAY_SEGMENT_RAM hmi_unedit_text_sxy_dyn_font_table[ ]=
+{
+};
+#endif
+#endif
+#if HMI_DYN_CONTAINERS_NUMBER>0
+/*Dynamic widget initial   */
+ static HMI_DYN_CONTAINER_DATA_STR DISPLAY_SEGMENT_RAM hmi_dyn_container_table[ ]=
+{
+	/* hmi_dyn_fuel_container */
+	 HMI_FUEL_CONTAINER4
+	/* hmi_dyn_right_fuel_container */
+	,HMI_FUEL_RIGHT_CONTAINER3
+	/* hmi_dyn_middle_container */
+	,HMI_MIDDLE_CONTAINER0
+	/* hmi_dyn_middle_option_container */
+	,HMI_NB_ELEMENTS
+	/* hmi_dyn_light_container */
+	,HMI_PRE_LIGHT_CONTAINER
+	/* hmi_dyn_upper_container */
+	,HMI_CAR_INFI_CONTAINER
+	/* hmi_dyn_right_fuel_container_container25 */
+	,HMI_FUEL_CONTAINER4_CONTAINER26
+	/* hmi_dyn_left_container */
+	,HMI_LEFT_CLUSTER_CONTAINER_XY_ZERO
+	/* hmi_dyn_right_container */
+	,HMI_RIGHT_CLUSTER_CONTAINER_XY
+	/* hmi_dyn_motion_menu_container */
+	,HMI_MOTION_PRISM_MENU_CONTAINER_NULL
+	/* hmi_dyn_navi_motion_container */
+	,HMI_NAVI_CONTAINER
+	/* hmi_dyn_road_arrow_container */
+	,HMI_NAVI_ARROW_CONTAINER
+	/* hmi_dyn_far_near_light_container */
+	,HMI_NEAR_LIGHT_CONTAINER
+	/* hmi_dyn_far_near_light_container_container16 */
+	,HMI_NEAR_LIGHT_CONTAINER_CONTAINER17
+	/* hmi_dyn_navi_distance_container */
+	,HMI_DISTANCE_NAVI_CONTAINER_NULL
+	/* hmi_dyn_navi_arrow_container */
+	,HMI_NAVI_ARROW_DIRECT_CONTAINER
+	/* hmi_dyn_hev_container */
+	,HMI_HEV_CONTAINER7
+};
+#endif
+#if HMI_DXY_CONTAINERS_NUMBER>0
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_middle_zone_container_container[ ]=
+{
+	 {HMI_DYN_MIDDLE_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container260_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_IMAGE260}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container200_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_IMAGE200}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container140_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_IMAGE140}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container100_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_IMAGE100}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container60_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_IMAGE60}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container40_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_IMAGE40}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container20_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_IMAGE20}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container0_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_IMAGE0}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container7_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_IMAGE7_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container6_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_IMAGE6_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container5_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_IMAGE5_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container4_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_IMAGE4_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container3_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_IMAGE3_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container2_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_IMAGE2_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container0_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_IMAGE0_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container1_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_IMAGE1_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_pointer_fuel_motion_container_container[ ]=
+{
+	 {HMI_LEFT_MOTION_POINTER_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_pointer_water_motion_container_container[ ]=
+{
+	 {HMI_RIGHT_WATER_POINTER_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_pointer_water_container_container[ ]=
+{
+	 {HMI_POINTER_WATER_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_pointer_fule_left_container_container[ ]=
+{
+	 {HMI_FUEL_POINTER_IMAGE}
+};
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_dyn_xy_container_table[]=
+{
+	/* dxy_middle_zone_container */
+	 {{1,hmi_dxy_middle_zone_container_container}}
+	/* left_motion_number_container260 */
+	,{{1,hmi_left_motion_number_container260_container}}
+	/* left_motion_number_container200 */
+	,{{1,hmi_left_motion_number_container200_container}}
+	/* left_motion_number_container140 */
+	,{{1,hmi_left_motion_number_container140_container}}
+	/* left_motion_number_container100 */
+	,{{1,hmi_left_motion_number_container100_container}}
+	/* left_motion_number_container60 */
+	,{{1,hmi_left_motion_number_container60_container}}
+	/* left_motion_number_container40 */
+	,{{1,hmi_left_motion_number_container40_container}}
+	/* left_motion_number_container20 */
+	,{{1,hmi_left_motion_number_container20_container}}
+	/* left_motion_number_container0 */
+	,{{1,hmi_left_motion_number_container0_container}}
+	/* right_motion_number_container7_container */
+	,{{1,hmi_right_motion_number_container7_container_container}}
+	/* right_motion_number_container6_container */
+	,{{1,hmi_right_motion_number_container6_container_container}}
+	/* right_motion_number_container5_container */
+	,{{1,hmi_right_motion_number_container5_container_container}}
+	/* right_motion_number_container4_container */
+	,{{1,hmi_right_motion_number_container4_container_container}}
+	/* right_motion_number_container3_container */
+	,{{1,hmi_right_motion_number_container3_container_container}}
+	/* right_motion_number_container2_container */
+	,{{1,hmi_right_motion_number_container2_container_container}}
+	/* right_motion_number_container0_container */
+	,{{1,hmi_right_motion_number_container0_container_container}}
+	/* right_motion_number_container1_container */
+	,{{1,hmi_right_motion_number_container1_container_container}}
+	/* pointer_fuel_motion_container */
+	,{{1,hmi_pointer_fuel_motion_container_container}}
+	/* pointer_water_motion_container */
+	,{{1,hmi_pointer_water_motion_container_container}}
+	/* pointer_water_container */
+	,{{1,hmi_pointer_water_container_container}}
+	/* pointer_fule_left_container */
+	,{{1,hmi_pointer_fule_left_container_container}}
+};
+/*Dynamic xy container coordinate  */
+ static HMI_RECT_STR DISPLAY_SEGMENT_RAM hmi_dyn_xy_container_rect[]=
+{
+	/* hmi_dxy_middle_zone_container */
+	 {200,93,326,352}
+	/* hmi_left_motion_number_container260 */
+	,{220,20,52,27}
+	/* hmi_left_motion_number_container200 */
+	,{153,35,52,27}
+	/* hmi_left_motion_number_container140 */
+	,{100,60,52,27}
+	/* hmi_left_motion_number_container100 */
+	,{46,105,52,27}
+	/* hmi_left_motion_number_container60 */
+	,{10,170,52,27}
+	/* hmi_left_motion_number_container40 */
+	,{40,258,52,27}
+	/* hmi_left_motion_number_container20 */
+	,{90,330,52,27}
+	/* hmi_left_motion_number_container0 */
+	,{160,340,52,27}
+	/* hmi_right_motion_number_container7_container */
+	,{0,1,20,32}
+	/* hmi_right_motion_number_container6_container */
+	,{80,20,20,32}
+	/* hmi_right_motion_number_container5_container */
+	,{130,54,20,32}
+	/* hmi_right_motion_number_container4_container */
+	,{180,88,20,32}
+	/* hmi_right_motion_number_container3_container */
+	,{208,159,20,32}
+	/* hmi_right_motion_number_container2_container */
+	,{193,235,20,32}
+	/* hmi_right_motion_number_container0_container */
+	,{60,320,20,32}
+	/* hmi_right_motion_number_container1_container */
+	,{140,297,20,32}
+	/* hmi_pointer_fuel_motion_container */
+	,{0,0,260,16}
+	/* hmi_pointer_water_motion_container */
+	,{0,0,260,18}
+	/* hmi_pointer_water_container */
+	,{0,0,130,44}
+	/* hmi_pointer_fule_left_container */
+	,{0,0,130,44}
+};
+ static HMI_VIDEO_INFO_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_container_video_fmt[]=
+{
+	/* hmi_dxy_middle_zone_container */
+	 {HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_left_motion_number_container260 */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_left_motion_number_container200 */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_left_motion_number_container140 */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_left_motion_number_container100 */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_left_motion_number_container60 */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_left_motion_number_container40 */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_left_motion_number_container20 */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_left_motion_number_container0 */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_right_motion_number_container7_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_right_motion_number_container6_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_right_motion_number_container5_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_right_motion_number_container4_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_right_motion_number_container3_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_right_motion_number_container2_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_right_motion_number_container0_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_right_motion_number_container1_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_pointer_fuel_motion_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_pointer_water_motion_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_pointer_water_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+	/* hmi_pointer_fule_left_container */
+	,{HMI_VIDEO_CHANNEL1|HMI_VIDEO_CVBS}
+};
+ static BYTE DISPLAY_SEGMENT_RAM hmi_dxy_container_video_status[]=
+{
+	/* hmi_dxy_middle_zone_container */
+	 HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_left_motion_number_container260 */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_left_motion_number_container200 */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_left_motion_number_container140 */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_left_motion_number_container100 */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_left_motion_number_container60 */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_left_motion_number_container40 */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_left_motion_number_container20 */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_left_motion_number_container0 */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_right_motion_number_container7_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_right_motion_number_container6_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_right_motion_number_container5_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_right_motion_number_container4_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_right_motion_number_container3_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_right_motion_number_container2_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_right_motion_number_container0_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_right_motion_number_container1_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_pointer_fuel_motion_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_pointer_water_motion_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_pointer_water_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+	/* hmi_pointer_fule_left_container */
+	,HMI_VIDEO_ENABLE_FLAG|HMI_VIDEO_DISABLE_STATUS
+};
+/*Dynamic xy container alpha and scale  */
+#if HMI_DXY_CONTAINERS_SCALE_ALPHA_NUMBER>0
+ static HMI_ALPHA_SCALE_STR DISPLAY_SEGMENT_RAM hmi_dyn_xy_container_alpha_scale[ ]=
+{
+	/* HMI_DXY_MIDDLE_ZONE_CONTAINER */
+	 {255,1.000000f}
+	/* HMI_LEFT_MOTION_NUMBER_CONTAINER260 */
+	,{255,0.600000f}
+	/* HMI_LEFT_MOTION_NUMBER_CONTAINER200 */
+	,{255,0.600000f}
+	/* HMI_LEFT_MOTION_NUMBER_CONTAINER140 */
+	,{255,0.600000f}
+	/* HMI_LEFT_MOTION_NUMBER_CONTAINER100 */
+	,{255,0.600000f}
+	/* HMI_LEFT_MOTION_NUMBER_CONTAINER60 */
+	,{255,0.600000f}
+	/* HMI_LEFT_MOTION_NUMBER_CONTAINER40 */
+	,{255,0.600000f}
+	/* HMI_LEFT_MOTION_NUMBER_CONTAINER20 */
+	,{255,0.600000f}
+	/* HMI_LEFT_MOTION_NUMBER_CONTAINER0 */
+	,{255,0.600000f}
+	/* HMI_RIGHT_MOTION_NUMBER_CONTAINER7_CONTAINER */
+	,{255,0.600000f}
+	/* HMI_RIGHT_MOTION_NUMBER_CONTAINER6_CONTAINER */
+	,{255,0.600000f}
+	/* HMI_RIGHT_MOTION_NUMBER_CONTAINER5_CONTAINER */
+	,{255,0.600000f}
+	/* HMI_RIGHT_MOTION_NUMBER_CONTAINER4_CONTAINER */
+	,{255,0.600000f}
+	/* HMI_RIGHT_MOTION_NUMBER_CONTAINER3_CONTAINER */
+	,{255,0.600000f}
+	/* HMI_RIGHT_MOTION_NUMBER_CONTAINER2_CONTAINER */
+	,{255,0.600000f}
+	/* HMI_RIGHT_MOTION_NUMBER_CONTAINER0_CONTAINER */
+	,{255,0.600000f}
+	/* HMI_RIGHT_MOTION_NUMBER_CONTAINER1_CONTAINER */
+	,{255,0.600000f}
+};
+#endif
+#endif
+#if HMI_SXY_CONTAINERS_NUMBER>0
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_cluster_container_container[ ]=
+{
+	 {HMI_FUEL_CONTAINER}
+	,{HMI_LEFT_CLUSTER_SPEED_NUM_CONTAINER}
+	,{HMI_PREFIX_COLOR_ALPHA_LIB4}
+	,{HMI_POINTER_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_cluster_no_container_container[ ]=
+{
+	 {HMI_NUMBER_IMAGE0}
+	,{HMI_NUMBER_IMAGE30}
+	,{HMI_NUMBER_IMAGE60}
+	,{HMI_NUMBER_IMAGE90}
+	,{HMI_NUMBER_IMAGE120}
+	,{HMI_NUMBER_IMAGE150}
+	,{HMI_NUMBER_IMAGE180}
+	,{HMI_NUMBER_IMAGE210}
+	,{HMI_NUMBER_IMAGE240}
+	,{HMI_NUMBER_IMAGE270}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_fuel_container_container[ ]=
+{
+	 {HMI_PREFIX_COLOR_ALPHA_LIB3}
+	,{HMI_DYN_FUEL_CONTAINER}
+	,{HMI_FUEL_LOGO_IMAGE}
+	,{HMI_SPEED_TEXT}
+	,{HMI_EMPTY_IMAGE1}
+	,{HMI_FULL_IMAGE1}
+	,{HMI_FUEL_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_cluster_speed_num_container_container[ ]=
+{
+	 {HMI_SPEED_TEN_IMAGE_LIST}
+	,{HMI_SPEED_ZERO_IMAGE_LIST}
+	,{HMI_KM_TEXT}
+	,{HMI_SPEED_HUNDRED_IMAGE_LIST}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_cluster_container_container[ ]=
+{
+	 {HMI_BCK_RIGHT_IMAGE}
+	,{HMI_RIGHT_FUEL_CONTAINER}
+	,{HMI_PREFIX_COLOR_ALPHA_LIB4}
+	,{HMI_RIGHT_POINTER_IMAGE}
+	,{HMI_NEW_TEXT22}
+	,{HMI_RPM_IMAGE_LIST}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_cluster_no_container_container[ ]=
+{
+	 {HMI_RIGHT_CLUSTER_IMAGE0}
+	,{HMI_RIGHT_CLUSTER_IMAGE1}
+	,{HMI_RIGHT_CLUSTER_IMAGE2}
+	,{HMI_RIGHT_CLUSTER_IMAGE3}
+	,{HMI_RIGHT_CLUSTER_IMAGE4}
+	,{HMI_RIGHT_CLUSTER_IMAGE5}
+	,{HMI_RIGHT_CLUSTER_IMAGE6}
+	,{HMI_RIGHT_CLUSTER_IMAGE7}
+	,{HMI_RIGHT_CLUSTER_IMAGE8}
+	,{HMI_RIGHT_CLUSTER_IMAGE9}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_fuel_container_container[ ]=
+{
+	 {HMI_PREFIX_COLOR_ALPHA_LIB3}
+	,{HMI_DYN_RIGHT_FUEL_CONTAINER}
+	,{HMI_RPM_TEXT20}
+	,{HMI_EMPTY_IMAGE1}
+	,{HMI_FULL_IMAGE1}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_middle_container0_container[ ]=
+{
+	 {HMI_BOTTOM_CONTAINER30}
+	,{HMI_UPPER_CONTAINER33}
+	,{HMI_DYN_MIDDLE_OPTION_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_bottom_container30_container[ ]=
+{
+	 {HMI_UPPER_BOTTOM_IMAGE}
+	,{HMI_BOTTOM_TEXT}
+	,{HMI_BOTTOM_TOTAL_TEXT32}
+	,{HMI_KM_TEXT45}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_car_container_container[ ]=
+{
+	 {HMI_MIDDLE_BCK_IMAGE34}
+	,{HMI_CAR_IMAGE}
+	,{HMI_DYN_LIGHT_CONTAINER}
+	,{HMI_SPEED_DANG_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_pre_light_container_container[ ]=
+{
+	 {HMI_CAR_LIGHT_IMAGE}
+	,{HMI_REAR_LIGHT_LEFT_IMAGE_DXY}
+	,{HMI_REAR_LIGHT_RIGHT_IMAGE_DXY}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_upper_zone_container_container[ ]=
+{
+	 {HMI_DYN_UPPER_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_car_infi_container_container[ ]=
+{
+	 {HMI_UPPER_ZONE_IMAGE}
+	,{HMI_HEV_IMAGE}
+	,{HMI_DATE_TEXT}
+	,{HMI_LEFT_ARRAY_IMAGE_DXY}
+	,{HMI_RIGHT_ARRAY_GREY_IMAGE}
+	,{HMI_NORMAL_TEXT}
+	,{HMI_TIMER_CONTAINER}
+	,{HMI_DYN_HEV_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_fuel_container0_container[ ]=
+{
+	 {HMI_NEW_CONTAINER4}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_container_container[ ]=
+{
+	 {HMI_BCK_LEFT_MOTION_IMAGE}
+	,{HMI_LEFT_MOTION_NUMBER_CONTAINER}
+	,{HMI_SPEED_MOTION_CONTAINER}
+	,{HMI_MOTION_TIMER_CONTAINER}
+	,{HMI_NEW_CONTAINER7}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_number_container_container[ ]=
+{
+	 {HMI_LEFT_MOTION_NUMBER_CONTAINER260}
+	,{HMI_LEFT_MOTION_NUMBER_CONTAINER200}
+	,{HMI_LEFT_MOTION_NUMBER_CONTAINER140}
+	,{HMI_LEFT_MOTION_NUMBER_CONTAINER100}
+	,{HMI_LEFT_MOTION_NUMBER_CONTAINER60}
+	,{HMI_LEFT_MOTION_NUMBER_CONTAINER40}
+	,{HMI_LEFT_MOTION_NUMBER_CONTAINER20}
+	,{HMI_LEFT_MOTION_NUMBER_CONTAINER0}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_speed_motion_container_container[ ]=
+{
+	 {HMI_SPEED_MOTION_100_IMAGE_LIST}
+	,{HMI_SPEED_MOTION_10_IMAGE_LIST}
+	,{HMI_SPEED_MOTION_1_IMAGE_LIST}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_motion_middle_container_container[ ]=
+{
+	 {HMI_DYN_NAVI_MOTION_CONTAINER}
+	,{HMI_DYN_ROAD_ARROW_CONTAINER}
+	,{HMI_DYN_NAVI_DISTANCE_CONTAINER}
+	,{HMI_DYN_MOTION_MENU_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_container_container[ ]=
+{
+	 {HMI_NAVI_MAP_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_container_container[ ]=
+{
+	 {HMI_BCK_RIGHT_MOTION_IMAGE}
+	,{HMI_RIGHT_MOTION_CONTAINER_CONTAINER}
+	,{HMI_TEMP_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_water_container_container[ ]=
+{
+	 {HMI_WATER_TEM_FLAG_IMAGE}
+	,{HMI_WATER_FOLLOW_MOTION_LIB}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_timer_container_container[ ]=
+{
+	 {HMI_TIME_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_motion_timer_container_container[ ]=
+{
+	 {HMI_TIME_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_arrow_container_container[ ]=
+{
+	 {HMI_NAVI_ARROW_IMAGE}
+	,{HMI_ARROW_GO_AHEAD_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_trail_water_container_container[ ]=
+{
+	 {HMI_TRAIL_WATER_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_light_left_container1_container[ ]=
+{
+	 {HMI_DYN_FAR_NEAR_LIGHT_CONTAINER}
+	,{HMI_DYN_FAR_NEAR_LIGHT_CONTAINER_CONTAINER16}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_near_light_container_container[ ]=
+{
+	 {HMI_NEAR_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_new_container15_container[ ]=
+{
+	 {HMI_DYN_FAR_NEAR_LIGHT_CONTAINER_CONTAINER16}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_near_light_container_container17_container[ ]=
+{
+	 {HMI_NEAR_IMAGE_IMAGE19}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_container_container_container[ ]=
+{
+	 {HMI_RIGHT_FOLLOW_CONTAINER}
+	,{HMI_SPEED_MOTION_RIGHT_CONTAINER_CONTAINER}
+	,{HMI_MOTION_TIMER_CONTAINER_CONTAINER}
+	,{HMI_RIGHT_MOTION_NUMBER_CONTAINER_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_number_container_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_NUMBER_CONTAINER7_CONTAINER}
+	,{HMI_RIGHT_MOTION_NUMBER_CONTAINER6_CONTAINER}
+	,{HMI_RIGHT_MOTION_NUMBER_CONTAINER5_CONTAINER}
+	,{HMI_RIGHT_MOTION_NUMBER_CONTAINER4_CONTAINER}
+	,{HMI_RIGHT_MOTION_NUMBER_CONTAINER3_CONTAINER}
+	,{HMI_RIGHT_MOTION_NUMBER_CONTAINER2_CONTAINER}
+	,{HMI_RIGHT_MOTION_NUMBER_CONTAINER1_CONTAINER}
+	,{HMI_RIGHT_MOTION_NUMBER_CONTAINER0_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_speed_motion_right_container_container_container[ ]=
+{
+	 {HMI_SPEED_MOTION_RIGHT_100_IMAGE_LIST_IMAGE_LIST}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_motion_trail_container_container[ ]=
+{
+	 {HMI_LEFT_MOTION_TRAIL_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_motion_trail_container_container[ ]=
+{
+	 {HMI_RIGHT_MOTION_TRAIL_IMAGE_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_car_3d_container_container[ ]=
+{
+	 {HMI_CAMERA_CAR_3D_FILL}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_fuel_motion_container_container[ ]=
+{
+	 {HMI_FUEL_MOTION_FLAG_IMAGE_IMAGE}
+	,{HMI_FUEL_LEFT_FOLLOW_MOTION_LIB}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_trail_fule_small_container_container[ ]=
+{
+	 {HMI_FUEL_TRAIL_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_distance_navi_container_container[ ]=
+{
+	 {HMI_NAVI_DISTANCE_BCK_IMAGE}
+	,{HMI_DYN_NAVI_ARROW_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_arrow_left_container_container[ ]=
+{
+	 {HMI_NAVI_ARROW_LEFT_IMAGE}
+	,{HMI_LEFT_ARROW_TIP_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_arrow_right_container_container[ ]=
+{
+	 {HMI_NAVI_ARROW_RIGHT_IMAGE}
+	,{HMI_RIGHT_ARROW_TIP_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_arrow_direct_container_container[ ]=
+{
+	 {HMI_NAVI_ARROW_DIRECT_IMAGE}
+	,{HMI_DIRECT_ARROW_TIP_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_circle_list_container_container[ ]=
+{
+	 {HMI_NAVI_MENU__CONTAINER0}
+	,{HMI_NAVI_MENU__CONTAINER1}
+	,{HMI_NAVI_MENU__CONTAINER2}
+	,{HMI_NAVI_MENU__CONTAINER3}
+	,{HMI_NAVI_MENU__CONTAINER4}
+	,{HMI_NAVI_MENU__CONTAINER5}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_cluster_container_xy_zero_container[ ]=
+{
+	 {HMI_BCK_LEFT_IMAGE}
+	,{HMI_LEFT_CLUSTER_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_left_cube_container_container[ ]=
+{
+	 {HMI_LEFT_CLUSTER_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_cluster_container_xy_container[ ]=
+{
+	 {HMI_RIGHT_CLUSTER_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_cluster_cube_container_container[ ]=
+{
+	 {HMI_RIGHT_CLUSTER_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_navi_map_container_xy_container[ ]=
+{
+	 {HMI_NAVI_MAP_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_qd_motion_container_container[ ]=
+{
+	 {HMI_QD_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_qd_classic_container_container[ ]=
+{
+	 {HMI_QD_TEXT}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_hev_container7_container[ ]=
+{
+	 {HMI_CHARGE_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_main_container_container[ ]=
+{
+	 {HMI_DYN_LEFT_CONTAINER}
+	,{HMI_DXY_MIDDLE_ZONE_CONTAINER}
+	,{HMI_UPPER_ZONE_CONTAINER}
+	,{HMI_DYN_RIGHT_CONTAINER}
+	,{HMI_LIGHT_LEFT_CONTAINER1}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_motion_main_container_container[ ]=
+{
+	 {HMI_MOTION_MIDDLE_CONTAINER}
+	,{HMI_LEFT_MOTION_CONTAINER}
+	,{HMI_LIGHT_LEFT_CONTAINER1}
+	,{HMI_RIGHT_MOTION_CONTAINER}
+	,{HMI_FUEL_MOTION_CONTAINER}
+	,{HMI_WATER_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_new_container7_container[ ]=
+{
+	 {HMI_LEFT_FOLLOW_MOTION_LIB}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_simple_navi_container_container[ ]=
+{
+	 {HMI_SIMPLE_NAVI_LIB116}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_right_follow_container_container[ ]=
+{
+	 {HMI_RIGHT_FOLLOW_MOTION_LIB}
+};
+ static HMI_CONTAINER_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_container_table[]=
+{
+	/* left_cluster_container */
+	 {{4,hmi_left_cluster_container_container}}
+	/* new_container22 */
+	,{{0,NULL}}
+	/* left_cluster_no_container */
+	,{{10,hmi_left_cluster_no_container_container}}
+	/* fuel_container */
+	,{{7,hmi_fuel_container_container}}
+	/* fuel_container4 */
+	,{{0,NULL}}
+	/* fuel_container3 */
+	,{{0,NULL}}
+	/* fuel_container2 */
+	,{{0,NULL}}
+	/* fuel_container1 */
+	,{{0,NULL}}
+	/* left_cluster_speed_num_container */
+	,{{4,hmi_left_cluster_speed_num_container_container}}
+	/* new_container43 */
+	,{{0,NULL}}
+	/* right_cluster_container */
+	,{{6,hmi_right_cluster_container_container}}
+	/* right_cluster_no_container */
+	,{{10,hmi_right_cluster_no_container_container}}
+	/* right_fuel_container */
+	,{{5,hmi_right_fuel_container_container}}
+	/* middle_container0 */
+	,{{3,hmi_middle_container0_container}}
+	/* middle_container1 */
+	,{{0,NULL}}
+	/* bottom_container30 */
+	,{{4,hmi_bottom_container30_container}}
+	/* upper_container33 */
+	,{{0,NULL}}
+	/* car_container */
+	,{{4,hmi_car_container_container}}
+	/* pre_light_container */
+	,{{3,hmi_pre_light_container_container}}
+	/* rear_light_container */
+	,{{0,NULL}}
+	/* upper_zone_container */
+	,{{1,hmi_upper_zone_container_container}}
+	/* car_infi_container */
+	,{{8,hmi_car_infi_container_container}}
+	/* fuel_container4_container26 */
+	,{{0,NULL}}
+	/* fuel_container3_container27 */
+	,{{0,NULL}}
+	/* fuel_container2_container28 */
+	,{{0,NULL}}
+	/* fuel_container1_container29 */
+	,{{0,NULL}}
+	/* fuel_right_container5 */
+	,{{0,NULL}}
+	/* fuel_right_container4 */
+	,{{0,NULL}}
+	/* fuel_right_container3 */
+	,{{0,NULL}}
+	/* fuel_right_container2 */
+	,{{0,NULL}}
+	/* fuel_right_container1 */
+	,{{0,NULL}}
+	/* fuel_right_container0 */
+	,{{0,NULL}}
+	/* fuel_container0 */
+	,{{1,hmi_fuel_container0_container}}
+	/* left_cluster_container_cube */
+	,{{0,NULL}}
+	/* right_cluster_container_cube */
+	,{{0,NULL}}
+	/* bck_motion_container */
+	,{{0,NULL}}
+	/* left_motion_container */
+	,{{5,hmi_left_motion_container_container}}
+	/* left_motion_number_container */
+	,{{8,hmi_left_motion_number_container_container}}
+	/* speed_motion_container */
+	,{{3,hmi_speed_motion_container_container}}
+	/* left_motion_small_container */
+	,{{0,NULL}}
+	/* motion_middle_container */
+	,{{4,hmi_motion_middle_container_container}}
+	/* motion_circle_menu_container */
+	,{{0,NULL}}
+	/* motion_prism_menu_container_null */
+	,{{0,NULL}}
+	/* navi_container */
+	,{{1,hmi_navi_container_container}}
+	/* media_container */
+	,{{0,NULL}}
+	/* right_motion_container */
+	,{{3,hmi_right_motion_container_container}}
+	/* water_container */
+	,{{2,hmi_water_container_container}}
+	/* timer_container */
+	,{{1,hmi_timer_container_container}}
+	/* motion_timer_container */
+	,{{1,hmi_motion_timer_container_container}}
+	/* navi_arrow_container */
+	,{{2,hmi_navi_arrow_container_container}}
+	/* trail_water_container */
+	,{{1,hmi_trail_water_container_container}}
+	/* light_left_container1 */
+	,{{2,hmi_light_left_container1_container}}
+	/* near_light_container */
+	,{{1,hmi_near_light_container_container}}
+	/* far_light_container */
+	,{{0,NULL}}
+	/* new_container15 */
+	,{{1,hmi_new_container15_container}}
+	/* near_light_container_container17 */
+	,{{1,hmi_near_light_container_container17_container}}
+	/* far_light_container_container18 */
+	,{{0,NULL}}
+	/* new_container25 */
+	,{{0,NULL}}
+	/* right_motion_container_container */
+	,{{4,hmi_right_motion_container_container_container}}
+	/* right_motion_number_container_container */
+	,{{8,hmi_right_motion_number_container_container_container}}
+	/* speed_motion_right_container_container */
+	,{{1,hmi_speed_motion_right_container_container_container}}
+	/* motion_timer_container_container */
+	,{{0,NULL}}
+	/* right_motion_number_container8_container */
+	,{{0,NULL}}
+	/* left_motion_trail_container */
+	,{{1,hmi_left_motion_trail_container_container}}
+	/* right_motion_trail_container */
+	,{{1,hmi_right_motion_trail_container_container}}
+	/* car_3d_container */
+	,{{1,hmi_car_3d_container_container}}
+	/* fuel_motion_container */
+	,{{2,hmi_fuel_motion_container_container}}
+	/* water_container_container5 */
+	,{{0,NULL}}
+	/* trail_fule_small_container */
+	,{{1,hmi_trail_fule_small_container_container}}
+	/* distance_navi_container */
+	,{{2,hmi_distance_navi_container_container}}
+	/* navi_arrow_left_container */
+	,{{2,hmi_navi_arrow_left_container_container}}
+	/* navi_arrow_right_container */
+	,{{2,hmi_navi_arrow_right_container_container}}
+	/* distance_navi_container_null */
+	,{{0,NULL}}
+	/* new_container3 */
+	,{{0,NULL}}
+	/* navi_arrow_direct_container */
+	,{{2,hmi_navi_arrow_direct_container_container}}
+	/* circle_list_container */
+	,{{6,hmi_circle_list_container_container}}
+	/* navi_menu__container5 */
+	,{{0,NULL}}
+	/* navi_menu__container0 */
+	,{{0,NULL}}
+	/* navi_menu__container1 */
+	,{{0,NULL}}
+	/* navi_menu__container2 */
+	,{{0,NULL}}
+	/* navi_menu__container3 */
+	,{{0,NULL}}
+	/* navi_menu__container4 */
+	,{{0,NULL}}
+	/* motion_prism_menu_container */
+	,{{0,NULL}}
+	/* motion_layout_menu_container */
+	,{{0,NULL}}
+	/* classic_page_bck_container */
+	,{{0,NULL}}
+	/* new_container4 */
+	,{{0,NULL}}
+	/* left_cluster_container_xy_zero */
+	,{{2,hmi_left_cluster_container_xy_zero_container}}
+	/* left_cube_container */
+	,{{1,hmi_left_cube_container_container}}
+	/* right_cluster_container_xy */
+	,{{1,hmi_right_cluster_container_xy_container}}
+	/* right_cluster_cube_container */
+	,{{1,hmi_right_cluster_cube_container_container}}
+	/* navi_map_container */
+	,{{0,NULL}}
+	/* navi_cube_container */
+	,{{0,NULL}}
+	/* navi_map_cube_container */
+	,{{0,NULL}}
+	/* navi_map_container_xy */
+	,{{1,hmi_navi_map_container_xy_container}}
+	/* qd_motion_container */
+	,{{1,hmi_qd_motion_container_container}}
+	/* qd_classic_container */
+	,{{1,hmi_qd_classic_container_container}}
+	/* hev_container7 */
+	,{{1,hmi_hev_container7_container}}
+	/* hev_container_null */
+	,{{0,NULL}}
+	/* main_container */
+	,{{5,hmi_main_container_container}}
+	/* motion_main_container */
+	,{{6,hmi_motion_main_container_container}}
+	/* new_container5 */
+	,{{0,NULL}}
+	/* new_container7 */
+	,{{1,hmi_new_container7_container}}
+	/* simple_navi_container */
+	,{{1,hmi_simple_navi_container_container}}
+	/* right_follow_container */
+	,{{1,hmi_right_follow_container_container}}
+};
+/*Static xy container coordinate  */
+ static HMI_RECT_STR CONST DISPLAY_SEGMENT_ROM hmi_static_container_rect[]=
+{
+	/* hmi_left_cluster_container */
+	 {0,73,317,317}
+	/* hmi_new_container22 */
+	,{0,1,63,63}
+	/* hmi_left_cluster_no_container */
+	,{0,0,330,330}
+	/* hmi_fuel_container */
+	,{159,158,162,180}
+	/* hmi_fuel_container4 */
+	,{0,0,149,152}
+	/* hmi_fuel_container3 */
+	,{0,0,149,152}
+	/* hmi_fuel_container2 */
+	,{0,0,149,152}
+	/* hmi_fuel_container1 */
+	,{0,0,149,152}
+	/* hmi_left_cluster_speed_num_container */
+	,{88,84,141,135}
+	/* hmi_new_container43 */
+	,{0,0,63,63}
+	/* hmi_right_cluster_container */
+	,{0,73,317,317}
+	/* hmi_right_cluster_no_container */
+	,{0,0,330,330}
+	/* hmi_right_fuel_container */
+	,{159,158,162,157}
+	/* hmi_middle_container0 */
+	,{0,0,326,352}
+	/* hmi_middle_container1 */
+	,{0,0,326,352}
+	/* hmi_bottom_container30 */
+	,{90,259,195,63}
+	/* hmi_upper_container33 */
+	,{0,0,323,257}
+	/* hmi_car_container */
+	,{260,94,269,250}
+	/* hmi_pre_light_container */
+	,{87,15,109,176}
+	/* hmi_rear_light_container */
+	,{87,15,109,176}
+	/* hmi_upper_zone_container */
+	,{90,0,620,102}
+	/* hmi_car_infi_container */
+	,{0,0,620,106}
+	/* hmi_fuel_container4_container26 */
+	,{0,0,149,152}
+	/* hmi_fuel_container3_container27 */
+	,{0,0,149,152}
+	/* hmi_fuel_container2_container28 */
+	,{0,0,149,152}
+	/* hmi_fuel_container1_container29 */
+	,{0,0,149,152}
+	/* hmi_fuel_right_container5 */
+	,{0,0,149,152}
+	/* hmi_fuel_right_container4 */
+	,{0,0,149,152}
+	/* hmi_fuel_right_container3 */
+	,{0,0,149,152}
+	/* hmi_fuel_right_container2 */
+	,{0,0,149,152}
+	/* hmi_fuel_right_container1 */
+	,{0,0,149,152}
+	/* hmi_fuel_right_container0 */
+	,{0,0,149,152}
+	/* hmi_fuel_container0 */
+	,{0,0,149,152}
+	/* hmi_left_cluster_container_cube */
+	,{44,44,396,396}
+	/* hmi_right_cluster_container_cube */
+	,{400,44,462,396}
+	/* hmi_bck_motion_container */
+	,{0,0,1024,480}
+	/* hmi_left_motion_container */
+	,{40,54,400,425}
+	/* hmi_left_motion_number_container */
+	,{0,0,292,391}
+	/* hmi_speed_motion_container */
+	,{95,157,66,95}
+	/* hmi_left_motion_small_container */
+	,{17,290,103,166}
+	/* hmi_motion_middle_container */
+	,{200,101,481,326}
+	/* hmi_motion_circle_menu_container */
+	,{104,11,250,275}
+	/* hmi_motion_prism_menu_container_null */
+	,{104,11,250,275}
+	/* hmi_navi_container */
+	,{0,0,481,315}
+	/* hmi_media_container */
+	,{0,0,481,315}
+	/* hmi_right_motion_container */
+	,{400,54,400,469}
+	/* hmi_water_container */
+	,{680,320,100,149}
+	/* hmi_timer_container */
+	,{283,44,84,35}
+	/* hmi_motion_timer_container */
+	,{91,398,100,31}
+	/* hmi_navi_arrow_container */
+	,{200,302,78,34}
+	/* hmi_trail_water_container */
+	,{0,0,200,200}
+	/* hmi_light_left_container1 */
+	,{9,52,27,208}
+	/* hmi_near_light_container */
+	,{0,0,27,27}
+	/* hmi_far_light_container */
+	,{0,0,17,27}
+	/* hmi_new_container15 */
+	,{0,0,63,63}
+	/* hmi_near_light_container_container17 */
+	,{0,40,27,27}
+	/* hmi_far_light_container_container18 */
+	,{0,40,17,27}
+	/* hmi_new_container25 */
+	,{65,53,462,419}
+	/* hmi_right_motion_container_container */
+	,{0,0,400,425}
+	/* hmi_right_motion_number_container_container */
+	,{90,20,292,391}
+	/* hmi_speed_motion_right_container_container */
+	,{192,172,43,66}
+	/* hmi_motion_timer_container_container */
+	,{131,412,53,31}
+	/* hmi_right_motion_number_container8_container */
+	,{348,15,32,32}
+	/* hmi_left_motion_trail_container */
+	,{0,0,373,373}
+	/* hmi_right_motion_trail_container */
+	,{0,0,382,382}
+	/* hmi_car_3d_container */
+	,{0,0,1267,475}
+	/* hmi_fuel_motion_container */
+	,{13,320,200,200}
+	/* hmi_water_container_container5 */
+	,{1096,286,158,147}
+	/* hmi_trail_fule_small_container */
+	,{0,0,200,200}
+	/* hmi_distance_navi_container */
+	,{133,29,210,80}
+	/* hmi_navi_arrow_left_container */
+	,{3,15,167,50}
+	/* hmi_navi_arrow_right_container */
+	,{3,15,167,50}
+	/* hmi_distance_navi_container_null */
+	,{133,29,210,80}
+	/* hmi_new_container3 */
+	,{-67,-109,264,264}
+	/* hmi_navi_arrow_direct_container */
+	,{3,15,167,50}
+	/* hmi_circle_list_container */
+	,{0,0,127,127}
+	/* hmi_navi_menu__container5 */
+	,{0,0,198,198}
+	/* hmi_navi_menu__container0 */
+	,{0,0,127,127}
+	/* hmi_navi_menu__container1 */
+	,{0,0,198,198}
+	/* hmi_navi_menu__container2 */
+	,{0,0,198,127}
+	/* hmi_navi_menu__container3 */
+	,{0,0,198,198}
+	/* hmi_navi_menu__container4 */
+	,{0,0,198,198}
+	/* hmi_motion_prism_menu_container */
+	,{104,11,250,275}
+	/* hmi_motion_layout_menu_container */
+	,{104,11,369,275}
+	/* hmi_classic_page_bck_container */
+	,{0,0,1280,480}
+	/* hmi_new_container4 */
+	,{0,0,63,63}
+	/* hmi_left_cluster_container_xy_zero */
+	,{0,44,462,396}
+	/* hmi_left_cube_container */
+	,{66,66,396,396}
+	/* hmi_right_cluster_container_xy */
+	,{480,44,396,396}
+	/* hmi_right_cluster_cube_container */
+	,{66,66,462,462}
+	/* hmi_navi_map_container */
+	,{0,0,481,315}
+	/* hmi_navi_cube_container */
+	,{0,0,481,315}
+	/* hmi_navi_map_cube_container */
+	,{0,0,761,310}
+	/* hmi_navi_map_container_xy */
+	,{0,0,761,310}
+	/* hmi_qd_motion_container */
+	,{270,9,251,42}
+	/* hmi_qd_classic_container */
+	,{446,434,397,37}
+	/* hmi_hev_container7 */
+	,{451,24,15,18}
+	/* hmi_hev_container_null */
+	,{451,24,15,18}
+	/* hmi_main_container */
+	,{0,0,800,480}
+	/* hmi_motion_main_container */
+	,{0,0,1024,600}
+	/* hmi_new_container5 */
+	,{0,0,800,480}
+	/* hmi_new_container7 */
+	,{19,9,400,400}
+	/* hmi_simple_navi_container */
+	,{160,100,380,400}
+	/* hmi_right_follow_container */
+	,{-40,10,400,365}
+};
+#endif
+#if HMI_DXY_PAGES_NUMBER>0
+/*Dynamic xy page coordinate  */
+ static HMI_RECT_PAGE_STR DISPLAY_SEGMENT_RAM hmi_dxy_page_rect[]=
+{
+};
+#if HMI_VDXY_PAGES_NUMBER>0
+/*Dynamic xy page video info  */
+ static HMI_VIDEO_INFO_STR DISPLAY_SEGMENT_RAM hmi_dxy_page_video_fmt[]=
+{
+};
+#endif
+/*All page table info */
+ static HMI_PAGE_TABLE_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_page_table[ ]=
+{
+};
+#endif
+#if HMI_SXY_PAGES_NUMBER>0
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_classic_page_container[ ]=
+{
+	 {HMI_MAIN_CONTAINER}
+	,{HMI_SIMPLE_NAVI_CONTAINER}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_motion_page_container[ ]=
+{
+	 {HMI_CAR_CONTAINER}
+	,{HMI_MOTION_MIDDLE_CONTAINER}
+	,{HMI_BCK_MOTION_CONTAINER}
+	,{HMI_LEFT_MOTION_SMALL_CONTAINER}
+	,{HMI_LEFT_MOTION_CONTAINER}
+	,{HMI_LIGHT_LEFT_CONTAINER1}
+	,{HMI_RIGHT_MOTION_CONTAINER}
+	,{HMI_FUEL_MOTION_CONTAINER}
+	,{HMI_WATER_CONTAINER}
+	,{HMI_QD_MOTION_CONTAINER}
+};
+/*Static xy page coordinate  */
+ static HMI_RECT_PAGE_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_page_rect[]=
+{
+	/* hmi_classic_page */
+	 {0,0,800,480,255}
+	/* hmi_motion_page */
+	,{0,0,800,480,255}
+};
+#if HMI_VSXY_PAGES_NUMBER>0
+/*Static xy page video info  */
+ static HMI_VIDEO_INFO_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_page_video_fmt[]=
+{
+};
+#endif
+/*All page table info */
+ static HMI_PAGE_TABLE_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_page_table[ ]=
+{
+	 {0,HMI_LAYER_SCREEN0,{{2,hmi_classic_page_container}}}
+	,{0,HMI_LAYER_SCREEN0,{{10,hmi_motion_page_container}}}
+};
+#endif
+/*Layer info   */
+
+#if HMI_ALL_LAYERS_NUMBER>0
+ static HMI_LAYER_TABLE_STR CONST DISPLAY_SEGMENT_ROM hmi_layer_table[ ]=
+{
+#if HMI_LAYER_0_HIGHEST_PRIORITY>0
+	 {HMI_LAYER_0_MAX_W_LENGTH,HMI_LAYER_0_MAX_H_LENGTH,HMI_LAYER_0_HIGHEST_PRIORITY}
+#endif
+#if HMI_LAYER_1_HIGHEST_PRIORITY>0
+	,{HMI_LAYER_1_MAX_W_LENGTH,HMI_LAYER_1_MAX_H_LENGTH,HMI_LAYER_1_HIGHEST_PRIORITY}
+#endif
+};
+#endif
+
+#if HMI_ENABLE_BIN>0
+#if HMI_SEGMENT_MAX>0
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_segment1_array[]=
+{
+	 {HMI_RPM_IMAGE_LIST}
+	,{HMI_SPEED_TEN_IMAGE_LIST}
+	,{HMI_SPEED_ZERO_IMAGE_LIST}
+	,{HMI_SPEED_HUNDRED_IMAGE_LIST}
+	,{HMI_SPEED_MOTION_100_IMAGE_LIST}
+	,{HMI_SPEED_MOTION_10_IMAGE_LIST}
+	,{HMI_SPEED_MOTION_1_IMAGE_LIST}
+	,{HMI_SPEED_MOTION_RIGHT_100_IMAGE_LIST_IMAGE_LIST}
+	,{HMI_NUMBER_IMAGE0}
+	,{HMI_NUMBER_IMAGE30}
+	,{HMI_NUMBER_IMAGE60}
+	,{HMI_NUMBER_IMAGE90}
+	,{HMI_NUMBER_IMAGE120}
+	,{HMI_NUMBER_IMAGE150}
+	,{HMI_NUMBER_IMAGE180}
+	,{HMI_NUMBER_IMAGE210}
+	,{HMI_NUMBER_IMAGE240}
+	,{HMI_NUMBER_IMAGE270}
+	,{HMI_POINTER_IMAGE}
+	,{HMI_FUEL_BCK_IMAGE}
+	,{HMI_FUEL_LOGO_IMAGE}
+	,{HMI_RIGHT_CLUSTER_IMAGE0}
+	,{HMI_RIGHT_CLUSTER_IMAGE1}
+	,{HMI_RIGHT_CLUSTER_IMAGE2}
+	,{HMI_RIGHT_CLUSTER_IMAGE3}
+	,{HMI_RIGHT_CLUSTER_IMAGE4}
+	,{HMI_RIGHT_CLUSTER_IMAGE5}
+	,{HMI_RIGHT_CLUSTER_IMAGE6}
+	,{HMI_RIGHT_CLUSTER_IMAGE7}
+	,{HMI_RIGHT_CLUSTER_IMAGE8}
+	,{HMI_RIGHT_CLUSTER_IMAGE9}
+	,{HMI_EMPTY_IMAGE1}
+	,{HMI_FULL_IMAGE1}
+	,{HMI_RIGHT_POINTER_IMAGE}
+	,{HMI_MIDDLE_BCK_IMAGE34}
+	,{HMI_CAR_IMAGE}
+	,{HMI_CAR_LIGHT_IMAGE}
+	,{HMI_REAR_LIGHT_LEFT_IMAGE_DXY}
+	,{HMI_REAR_LIGHT_RIGHT_IMAGE_DXY}
+	,{HMI_HEV_IMAGE}
+	,{HMI_CHARGE_IMAGE}
+	,{HMI_LEFT_ARRAY_IMAGE_DXY}
+	,{HMI_RIGHT_ARRAY_GREY_IMAGE}
+	,{HMI_NEAR_IMAGE}
+	,{HMI_NEAR_IMAGE_IMAGE19}
+	,{HMI_SHADER_MAP_IMAGE}
+	,{HMI_NAVI_ARROW_IMAGE}
+	,{HMI_ARROW_GO_AHEAD_IMAGE}
+	,{HMI_NAVI_DISTANCE_BCK_IMAGE}
+	,{HMI_NAVI_ARROW_LEFT_IMAGE}
+	,{HMI_NAVI_ARROW_RIGHT_IMAGE}
+	,{HMI_NAVI_ARROW_DIRECT_IMAGE}
+	,{HMI_BCK_LEFT_MOTION_IMAGE}
+	,{HMI_LEFT_MOTION_NUMBER_IMAGE260}
+	,{HMI_LEFT_MOTION_NUMBER_IMAGE200}
+	,{HMI_LEFT_MOTION_NUMBER_IMAGE140}
+	,{HMI_LEFT_MOTION_NUMBER_IMAGE100}
+	,{HMI_LEFT_MOTION_NUMBER_IMAGE60}
+	,{HMI_LEFT_MOTION_NUMBER_IMAGE40}
+	,{HMI_LEFT_MOTION_NUMBER_IMAGE20}
+	,{HMI_LEFT_MOTION_NUMBER_IMAGE0}
+	,{HMI_RIGHT_MOTION_NUMBER_IMAGE7_IMAGE}
+	,{HMI_RIGHT_MOTION_NUMBER_IMAGE6_IMAGE}
+	,{HMI_RIGHT_MOTION_NUMBER_IMAGE5_IMAGE}
+	,{HMI_RIGHT_MOTION_NUMBER_IMAGE4_IMAGE}
+	,{HMI_RIGHT_MOTION_NUMBER_IMAGE3_IMAGE}
+	,{HMI_RIGHT_MOTION_NUMBER_IMAGE2_IMAGE}
+	,{HMI_RIGHT_MOTION_NUMBER_IMAGE1_IMAGE}
+	,{HMI_RIGHT_MOTION_NUMBER_IMAGE0_IMAGE}
+	,{HMI_FUEL_MOTION_BCK_IMAGE_IMAGE}
+	,{HMI_FUEL_MOTION_FLAG_IMAGE_IMAGE}
+	,{HMI_WATER_BCK_IMAGE}
+	,{HMI_WATER_TEM_FLAG_IMAGE}
+	,{HMI_BCK_RIGHT_MOTION_IMAGE}
+	,{HMI_RIGHT_MOTION_TRAIL_IMAGE_IMAGE}
+	,{HMI_LEFT_MOTION_TRAIL_IMAGE}
+	,{HMI_LEFT_MOTION_POINTER_IMAGE}
+	,{HMI_RIGHT_WATER_POINTER_IMAGE}
+	,{HMI_TRAIL_IMAGE}
+	,{HMI_NAVI_CAR_IMAGE}
+	,{HMI_BCK_RIGHT_IMAGE}
+	,{HMI_BCK_LEFT_IMAGE}
+	,{HMI_UPPER_ZONE_IMAGE}
+	,{HMI_UPPER_BOTTOM_IMAGE}
+	,{HMI_FUEL_TRAIL_IMAGE}
+	,{HMI_TRAIL_WATER_IMAGE}
+	,{HMI_FUEL_POINTER_IMAGE}
+	,{HMI_POINTER_WATER_IMAGE}
+};
+ static HMI_OBJECT_PROP_STR CONST DISPLAY_SEGMENT_ROM hmi_segment2_array[]=
+{
+	 {HMI_DEFAULT_FONT}
+	,{HMI_MIDDLE_FONT}
+};
+ static HMI_CONTAINER_U16_STR CONST DISPLAY_SEGMENT_ROM hmi_seg_info_list[]=
+{
+	 {88,hmi_segment1_array}
+	,{2,hmi_segment2_array}
+};
+#endif
+#endif
+#if HMI_MAX_SUB_TABLE_CNT>0
+ static HMI_STATUS_ACTION_INDEX_STR CONST DISPLAY_SEGMENT_ROM hmi_status_index[ ]=
+{
+};
+ static HMI_TRIPLE_STR CONST DISPLAY_SEGMENT_ROM hmi_status_table[ ]=
+{
+};
+#endif
+#if HMI_MAX_SINGLE_ACT_STAUS_CNT>0
+ static HMI_STATUS_ACTION_INDEX_STR CONST DISPLAY_SEGMENT_ROM hmi_status_action_index[ ]=
+{
+};
+ static HMI_STATUS_ACTION_STR CONST DISPLAY_SEGMENT_ROM hmi_status_action_table[ ]=
+{
+};
+#endif
+#if HMI_MAX_SUB_TABLE_CNT>0
+ static HMI_OBJECT_ID_STR DISPLAY_SEGMENT_RAM hmi_cur_table_status[ ]=
+{
+};
+#endif
+#if HMI_SXY_MUL_TEXTURE_BITMAPS_NUMBER+HMI_DXY_ROTATION_MUL_TEXTURE_BITMAPS_NUMBER+HMI_DXY_CENTER_MUL_TEXTURE_BITMAPS_NUMBER>0
+ static HMI_TEXTURE_RECT_STR DISPLAY_SEGMENT_RAM hmi_texture_rect_list[ ]=
+{
+};
+#endif
+#if HMI_SXY_MUL_TEXTURE_BITMAPS_NUMBER>0
+ static HMI_MUL_TEXTURE_LEN_INDEX_STR CONST DISPLAY_SEGMENT_ROM hmi_sxy_texture_rect_list[ ]=
+{
+
+};
+#endif
+#if HMI_DXY_CENTER_MUL_TEXTURE_BITMAPS_NUMBER>0
+ static HMI_MUL_TEXTURE_LEN_INDEX_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_center_texture_rect_list[ ]=
+{
+
+};
+#endif
+#if HMI_DXY_ROTATION_MUL_TEXTURE_BITMAPS_NUMBER>0
+ static HMI_MUL_TEXTURE_LEN_INDEX_STR CONST DISPLAY_SEGMENT_ROM hmi_dxy_roation_texture_rect_list[ ]=
+{
+
+};
+#endif
+#endif

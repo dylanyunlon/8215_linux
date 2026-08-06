@@ -1,0 +1,4 @@
+config BR2_PACKAGE_CLUSTER_QD
+	bool "cluster-qd"
+	help
+		this is a qd cluster-demo

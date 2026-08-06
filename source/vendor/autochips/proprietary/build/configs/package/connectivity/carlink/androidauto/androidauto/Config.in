@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ANDROIDAUTO_MODULE
+    bool "androidauto module"
+    select BR2_PACKAGE_PROTOBUF
+    select BR2_PACKAGE_OPENSSL_PREBUILT
+    select BR2_PACKAGE_BOOST
+    help
+        AndroidAuto module.

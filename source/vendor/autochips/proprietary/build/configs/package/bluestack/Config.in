@@ -1,0 +1,6 @@
+config BR2_PACKAGE_BLUESTACK
+	select BR2_PACKAGE_LIBMETAZONE
+	select BR2_PACKAGE_ZLIB
+	bool "bluestack"
+	help
+	  this is a bluestack

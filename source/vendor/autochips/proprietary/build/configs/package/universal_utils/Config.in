@@ -1,0 +1,4 @@
+config BR2_PACKAGE_UNIVERSAL_UTILS
+	bool "universal_utils"
+	help
+	  this is a universal_utils

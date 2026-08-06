@@ -1,0 +1,6 @@
+config BR2_PACKAGE_APPLEPLUGIN
+	bool "appleplugin component"
+	select BR2_PACKAGE_CARLINKCONFIGS
+	select BR2_PACKAGE_MDNSRESPONDER
+	help
+		libcoreutils, libcarplayplugin.

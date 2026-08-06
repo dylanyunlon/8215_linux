@@ -1,0 +1,5 @@
+config BR2_PACKAGE_CARBIT
+  bool "carbit"
+  select BR2_PACKAGE_CARBITAPP
+  help
+    this is carbit dependency

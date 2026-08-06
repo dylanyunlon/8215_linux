@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBDVR
+	depends on BR2_PACKAGE_ATCMULTIMEDIA
+	depends on BR2_PACKAGE_ATCMEDIASCANNER
+	depends on BR2_PACKAGE_ATCCODEC
+	depends on BR2_PACKAGE_MMISC
+	depends on BR2_PACKAGE_LIBATCSURFACE
+	depends on BR2_PACKAGE_ATCMEDIAPLAYER
+
+	bool "libdvr so"
+	help
+	this is a dvr so

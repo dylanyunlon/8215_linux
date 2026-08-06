@@ -1,0 +1,10 @@
+config BR2_PACKAGE_CARLINKCONFIGS
+	bool "carlinkconfigs compoent"
+	select BR2_PACKAGE_UNIVERSAL_UTILS
+	select BR2_PACKAGE_LIBMETAZONE
+	select BR2_PACKAGE_CARPLAYTESTS
+	select BR2_PACKAGE_WIFI
+	select BR2_PACKAGE_BLUECOMMON
+	select BR2_PACKAGE_BLUECLIENT
+	help
+		libaccessoryinfo, libMFICoprocessor and CarPlay/AndroidAuto's xml.

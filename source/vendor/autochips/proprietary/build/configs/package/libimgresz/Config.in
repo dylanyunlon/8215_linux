@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBIMGRESZ
+	bool "libimgresz"
+	help
+	  this is a libimgresz

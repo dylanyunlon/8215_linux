@@ -1,0 +1,4 @@
+config BR2_PACKAGE_PARTITION
+	bool "partition"
+	help
+	  Autochips partition.

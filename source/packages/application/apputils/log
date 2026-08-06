@@ -1,0 +1,7 @@
+armv7a-mediatek482_001_vfp-linux-gnueabi-ar crv  libapputils.a cautoudpsocket.o cconditionlock.o clog.o crawstring.o cudpsocket.o 
+a - cautoudpsocket.o
+a - cconditionlock.o
+a - clog.o
+a - crawstring.o
+a - cudpsocket.o
+rm -f  cautoudpsocket.d cconditionlock.d clog.d crawstring.d cudpsocket.d

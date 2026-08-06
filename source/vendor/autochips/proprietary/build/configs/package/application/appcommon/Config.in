@@ -1,0 +1,8 @@
+config BR2_PACKAGE_APPCOMMON
+  bool "appcommon"
+  select BR2_PACKAGE_QT5BASE
+  select BR2_PACKAGE_QT5BASE_GUI
+  select BR2_PACKAGE_QT5DECLARATIVE
+	select BR2_PACKAGE_QT5DECLARATIVE_QUICK
+  help
+    this is a qt appcommon lib

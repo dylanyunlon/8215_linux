@@ -1,0 +1,4 @@
+config BR2_PACKAGE_ARM2
+	bool "arm2"
+	help
+	  Autochips arm2.

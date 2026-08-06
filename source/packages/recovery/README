@@ -1,0 +1,18 @@
+#
+#
+#
+#
+Build Recovery Step:
+1, setup recovery env
+	. ./recovery_env
+
+2, setup recovery os
+	make os
+
+3, compile lib & app
+	make
+
+4, make image & ramdisk
+	make rootfs
+
+Over!

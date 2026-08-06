@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<NFLASH desc="----------  AC8317 EVB Bootup Scatter File  ----------">
+ <partition name="preloader"   type="raw" mount="0" startaddress="0x0" size="0x10000" imagename="83XX_Preloader_realchip_sd.bin" >
+ </partition>
+ <partition name="datazone"   type="raw" mount="0" startaddress="0x10000" size="0x1000" imagename="rd_datazone.bin" >
+ </partition>
+ <partition name="uboot"   type="raw" mount="0" startaddress="0x11000" size="0x3EF000" imagename="u-boot.bin" >
+ </partition>
+ <partition name="env"   type="raw" mount="0" startaddress="0x400000" size="0x200000" imagename="" >
+ </partition>
+ <partition name="trustzone"   type="raw" mount="0" startaddress="0x600000" size="0x200000" imagename="tz.bin" >
+ </partition>
+ <partition name="arm2"   type="raw" mount="0" startaddress="0x800000" size="0x200000" imagename="arm2.bin" >
+ </partition>
+ <partition name="logo"   type="raw" mount="0" startaddress="0xA00000" size="0x400000" imagename="logo.mrf" >
+ </partition>
+ <partition name="kernel"   type="raw" mount="0" startaddress="0xE00000" size="0x600000" imagename="uImage" >
+ </partition>
+ <partition name="rootfs"   type="raw" mount="0" startaddress="0x1400000" size="0x200000" imagename="ramdisk.gz" >
+ </partition>
+ <partition name="system"   type="ext4" mount="1" startaddress="0x1600000" size="0x25800000" imagename="system.img.ext4" >
+ </partition>
+ <partition name="data"   type="ext4" mount="1" startaddress="0x26E00000" size="0x12C00000" imagename="data.img.ext4" >
+ </partition>
+ <partition name="cache"   type="ext4" mount="1" startaddress="0x39A00000" size="0x6400000" imagename="cache.img.ext4" >
+ </partition>
+ <partition name="recovery"   type="raw" mount="0" startaddress="0x3FE00000" size="0x400000" imagename="recovery.gz" >
+ </partition>
+ <partition name="misc"   type="raw" mount="0" startaddress="0x40200000" size="0x200000" imagename="" >
+ </partition>
+ <partition name="backup"   type="ext4" mount="1" startaddress="0x40400000" size="0x3200000" imagename="databk.img.ext4" >
+ </partition>
+ <partition name="metazone"   type="raw" mount="0" startaddress="0x43600000" size="0x400000" imagename="metazone.bin" >
+ </partition>
+ <partition name="dvp"   type="raw" mount="0" startaddress="0x43A00000" size="0x400000" imagename="target.bin" >
+ </partition>
+ <partition name="data4write"   type="ext4" mount="1" startaddress="0x43E00000" size="0x12C00000" imagename="data4write.img.ext4" >
+ </partition>
+</NFLASH>

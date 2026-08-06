@@ -1,0 +1,57 @@
+/*
+* Copyright (c) 2016 AutoChips Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+#ifndef __LOG_H__
+#define __LOG_H__
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+//#undef ALOGV
+//#undef ALOGI
+//#undef ALOGE
+//#undef ALOGD
+//#undef ALOGW
+//#undef LOGV
+//#undef LOGI
+//#undef LOGE
+//#undef LOGD
+//#undef LOGW
+
+#define ALOGV 
+#define ALOGI PrintLog
+#define ALOGE PrintLog
+#define ALOGD PrintLog
+#define ALOGW PrintLog
+#define LOGV  
+#define LOGI  PrintLog
+#define LOGE  PrintLog
+#define LOGD  PrintLog
+#define LOGW  PrintLog
+
+unsigned int PrintLog(const char *log, ...);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif
+
+
+
+

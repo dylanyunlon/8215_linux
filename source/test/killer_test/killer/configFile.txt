@@ -1,0 +1,13 @@
+<runner1>
+<40>
+<0,"/ext_sdcard1/runner1 Zhangsan Lisi Wangwu",5,Y,2,"ext_sdcard1/runner1 haha huhu",8>
+
+<runner2>
+<30>
+<0,"/ext_sdcard1/runner2",3,N,1,10>
+<1,"/ext_sdcard1/runner2",2,Y,3,"/ext_sdcard1/runner2","/ext_sdcard1/runner2",4>
+
+<videopalyer2>
+<20>
+<0,"/app/videoplayer2",3,N,1,20>
+

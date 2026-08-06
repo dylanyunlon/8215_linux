@@ -1,0 +1,15 @@
+config BR2_PACKAGE_ANDROIDAUTO
+    bool "androidauto package group"
+    select BR2_PACKAGE_OPENSSLPREBUILT
+    select BR2_PACKAGE_CARLINKCONFIGS
+    select BR2_PACKAGE_CARLINKUTILS
+    select BR2_PACKAGE_BOOST
+    select BR2_PACKAGE_TINYXML2
+    select BR2_PACKAGE_LIBUSB
+    select BR2_PACKAGE_ANDROIDAUTO_MODULE
+    help
+        androidauto package group.
+
+if BR2_PACKAGE_ANDROIDAUTO
+    source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/androidauto/opensslprebuilt/Config.in"
+endif

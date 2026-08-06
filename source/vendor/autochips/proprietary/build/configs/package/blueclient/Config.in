@@ -1,0 +1,4 @@
+config BR2_PACKAGE_BLUECLIENT
+	bool "blueclient"
+	help
+	  this is a blueclient

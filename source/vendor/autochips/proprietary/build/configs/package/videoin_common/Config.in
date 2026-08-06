@@ -1,0 +1,4 @@
+config BR2_PACKAGE_VIDEOIN_COMMON
+	bool "libvideoin_common"
+	help
+	  this is a videoin common so

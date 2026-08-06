@@ -1,0 +1,4 @@
+config BR2_PACKAGE_VISS
+	bool "viss"
+	help
+	  Autochips viss..

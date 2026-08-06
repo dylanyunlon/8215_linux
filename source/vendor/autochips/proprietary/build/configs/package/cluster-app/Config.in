@@ -1,0 +1,8 @@
+config BR2_PACKAGE_CLUSTER_APP
+	bool "cluster-app"
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_APPUTILS
+	select BR2_PACKAGE_GLOBALBUS
+	help
+	  this is a qt cluster-app

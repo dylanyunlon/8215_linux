@@ -1,0 +1,4 @@
+config BR2_PACKAGE_ATCCODEC
+	bool "atccodec"
+	help
+	  Autochips atccodec components.

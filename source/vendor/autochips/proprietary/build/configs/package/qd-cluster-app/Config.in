@@ -1,0 +1,4 @@
+config BR2_PACKAGE_QD_CLUSTER_APP
+	bool "qd-cluster-app"
+	help
+	  this is a qd cluster-app

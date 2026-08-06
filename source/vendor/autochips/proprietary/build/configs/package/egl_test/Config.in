@@ -1,0 +1,4 @@
+config BR2_PACKAGE_EGL_TEST
+	bool "egl_test"
+	help
+	  this is a egl_test

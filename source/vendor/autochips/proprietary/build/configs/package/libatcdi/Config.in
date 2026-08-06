@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBATCDI
+	bool "libatcdi so"
+	help
+	  this is a atc di so

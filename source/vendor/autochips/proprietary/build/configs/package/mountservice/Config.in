@@ -1,0 +1,4 @@
+config BR2_PACKAGE_MOUNTSERVICE
+	bool "mountservice binary"
+	help
+	  Autochips mountservice binary

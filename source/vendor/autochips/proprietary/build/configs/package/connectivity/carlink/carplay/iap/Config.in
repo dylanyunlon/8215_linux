@@ -1,0 +1,6 @@
+config BR2_PACKAGE_IAP
+	bool "iap component"
+	select BR2_PACKAGE_CARLINKCONFIGS
+	select BR2_PACKAGE_CARLINKUTILS
+	help
+		libiapclient, libiapimpl, iap.

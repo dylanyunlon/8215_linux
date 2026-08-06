@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<APP>
+    <APPCONFIG
+        MinMemPCT="8%"
+        MaxAPPCount="15"
+    />
+
+    <APPObj
+        APPID="1"
+        name="HomeUI"
+        filePath="/app/home"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="4"
+        name="picturePlayer"
+        filePath="/app/pictureplayer"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="5"
+        name="AVIN"
+        filePath="/app/avin"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="6"
+        name="BT"
+        filePath="/app/bluetooth"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+        ShareProcess="BT"
+    />
+
+    <APPObj
+        APPID="11"
+        name="Setting"
+        filePath="/app/settings"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="12"
+        name="FileBrowser"
+        filePath="/app/filebrowser"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="20"
+        name="GPS"
+        filePath="/app/gps"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="22"
+        name="BTSPP"
+        filePath="/app/btspp"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="25"
+        name="AudioPlayer"
+        filePath="/app/audioplayer2"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="26"
+        name="VideoPlayer"
+        filePath="/app/videoplayer2"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="30"
+        name="recoveryScanner"
+        filePath="/app/recoveryScanner"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="31"
+        name="avm"
+        filePath="/usr/bin/avm_app"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="32"
+        name="rvc"
+        filePath="/app/rvc_app"
+        APPObjlib="libwaylandappobj.so"
+        Priority="1"
+    />
+
+    <APPObj
+        APPID="33"
+        name="VideoPlayer3"
+        filePath="/app/videoplayer3"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="34"
+        name="CarplaySettings"
+        filePath="/app/carplaysettings"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="35"
+        name="Carplay"
+        filePath="/app/carplay"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="36"
+        name="AndroidAutoSettings"
+        filePath="/app/androidautosettings"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="37"
+        name="AndroidAuto"
+        filePath="/app/androidauto"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="38"
+        name="CarplayHelper"
+        filePath="/app/carplayhelper"
+        APPObjlib="libwaylandappobj.so"
+        Priority="10"
+    />
+
+    <APPObj
+        APPID="106"
+        name="BT Phone"
+        filePath=""
+        APPObjlib="libdupappobj.so"
+        Priority="9"
+        ShareProcess="BT"
+    />
+</APP>
+

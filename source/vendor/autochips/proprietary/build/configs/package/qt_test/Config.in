@@ -1,0 +1,4 @@
+config BR2_PACKAGE_QT_TEST
+	bool "qt_test"
+	help
+	  this is a qt_test

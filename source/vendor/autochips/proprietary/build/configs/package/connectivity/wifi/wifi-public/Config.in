@@ -1,0 +1,5 @@
+config BR2_PACKAGE_WIFI_PUBLIC
+	bool "wifi-public"
+	select BR2_PACKAGE_WIFI_PRIVATE
+	help
+	  wifi-public: wifiserver config & wificlient api

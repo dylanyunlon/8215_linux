@@ -1,0 +1,4 @@
+config BR2_PACKAGE_FSCK_MSDOS
+	bool "fsck msdos binary"
+	help
+	  Autochips fsck msdos binary

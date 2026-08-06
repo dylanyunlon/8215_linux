@@ -1,0 +1,2 @@
+source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/wifi/Config.in"
+source "$BR2_EXTERNAL_AC8X_PATH/package/connectivity/carlink/Config.in"

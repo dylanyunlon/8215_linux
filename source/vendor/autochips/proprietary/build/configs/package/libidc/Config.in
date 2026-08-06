@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBIDC
+	bool "libidc"
+	help
+		this is a libidc

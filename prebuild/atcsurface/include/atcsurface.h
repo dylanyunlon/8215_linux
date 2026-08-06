@@ -1,0 +1,232 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("AutoChips Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to AutoChips Inc. and/or its licensors. Without
+ * the prior written permission of AutoChips inc. and/or its licensors, any
+ * reproduction, modification, use or disclosure of AutoChips Software, and
+ * information contained herein, in whole or in part, shall be strictly
+ * prohibited.
+ * 
+ * AutoChips Inc. (C) 2016. All rights reserved.
+ * 
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("AUTOCHIPS SOFTWARE")
+ * RECEIVED FROM AUTOCHIPS AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+ * ON AN "AS-IS" BASIS ONLY. AUTOCHIPS EXPRESSLY DISCLAIMS ANY AND ALL
+ * WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES AUTOCHIPS PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ * INCORPORATED IN, OR SUPPLIED WITH THE AUTOCHIPS SOFTWARE, AND RECEIVER AGREES
+ * TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+ * RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+ * OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN AUTOCHIPS
+ * SOFTWARE. AUTOCHIPS SHALL ALSO NOT BE RESPONSIBLE FOR ANY AUTOCHIPS SOFTWARE
+ * RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND AUTOCHIPS'S
+ * ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE AUTOCHIPS SOFTWARE
+ * RELEASED HEREUNDER WILL BE, AT AUTOCHIPS'S OPTION, TO REVISE OR REPLACE THE
+ * AUTOCHIPS SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+ * CHARGE PAID BY RECEIVER TO AUTOCHIPS FOR SUCH AUTOCHIPS SOFTWARE AT ISSUE.
+ */
+#ifndef _ATCSURFACE_H_
+#define _ATCSURFACE_H_
+
+#include <sys/types.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef enum _ATC_SURFACE_TYPE {
+    ATCSURF_TYPE_DEFAULT,
+    ATCSURF_TYPE_V4L2,
+    ATCSURF_TYPE_TEXTURE
+} ATC_SURFACE_TYPE_T;
+
+
+enum {
+    ATC_PIX_FMT_UNKNOWN,
+    ATC_PIX_FMT_RGB555,
+    ATC_PIX_FMT_RGB565,
+    ATC_PIX_FMT_RGB888,
+    ATC_PIX_FMT_RGB8888,
+    ATC_PIX_FMT_YUV420,
+    ATC_PIX_FMT_YUV420M,
+    ATC_PIX_FMT_YUV410,
+    ATC_PIX_FMT_NV12,
+    ATC_PIX_FMT_NV12_PRIVATE1,
+    ATC_PIX_FMT_NV12M,
+    ATC_PIX_FMT_NV12M_PRIVATE1,
+    ATC_PIX_FMT_FOURCC,
+    ATC_PIX_FMT_ARGB8888
+};
+
+
+enum {
+    ATCSURF_CAPS_SOURCE_COLORKEY = 1 << 0,
+    ATCSURF_CAPS_DESTINATION_COLORKEY = 1 << 1,
+    ATCSURF_CAPS_LOCAL_ALPHA = 1 << 2,
+    ATCSURF_CAPS_GLOBAL_ALPHA = 1 << 3
+};
+
+
+enum {
+    ATCSURF_OUTPUT_FRONT = 1 << 0,
+    ATCSURF_OUTPUT_REAR = 1 << 1
+};
+
+
+typedef enum _ATC_SURFACE_OUTPUTCONTEXT {
+    ATCSURF_OUTPUTCTX_FRONT,
+    ATCSURF_OUTPUTCTX_REAR
+} ATC_SURFACE_OUTPUTCONTEXT_T;
+
+
+typedef enum _ATC_SURFACE_COLOR_ENCODING {
+    ATCSURF_COLOR_YCBCR_BT601,
+    ATCSURF_COLOR_YCBCR_BT709,
+} ATC_SURFACE_COLOR_ENCODING_T;
+
+typedef enum _ATC_SURFACE_COLOR_RANGE {
+    ATCSURF_COLOR_YCBCR_LIMITED_RANGE,
+    ATCSURF_COLOR_YCBCR_FULL_RANGE,
+} ATC_SURFACE_COLOR_RANGE_T;
+
+typedef struct _IAtcSurface  IAtcSurface;
+
+
+typedef struct _atc_buffer {
+    int32_t  width;
+    int32_t  height;
+    int32_t  stride;
+    u_int32_t format;
+    u_int32_t fmt_fourcc;
+    void    *bits;
+    int32_t  reserved[6];
+} atc_buffer_t;
+
+
+typedef struct _atc_rect {
+    int32_t left;
+    int32_t top;
+    int32_t width;
+    int32_t height;
+} atc_rect_t;
+
+
+typedef struct _IAtcSurfaceVtbl
+{
+    int32_t (*addRef)(IAtcSurface *surf);
+    void    (*release)(IAtcSurface *surf);
+    int32_t (*requestBuffers)(IAtcSurface *surface);
+    int32_t (*dequeueBuffer)(IAtcSurface *surface, atc_buffer_t *buf);
+    int32_t (*queueBuffer)(IAtcSurface *surf, atc_buffer_t *buf);
+    int32_t (*resetBuffers)(IAtcSurface *surf);
+    int32_t (*setBuffersFormat)(IAtcSurface *surf, int32_t format, u_int32_t fourcc);
+    int32_t (*setBuffersSize)(IAtcSurface *surf, int32_t w, int32_t h);
+    int32_t (*setBufferCount)(IAtcSurface *surf, u_int32_t count);
+    int32_t (*show)(IAtcSurface *surf);
+    int32_t (*hide)(IAtcSurface *surf);
+    int32_t (*setCrop)(IAtcSurface *surf, int32_t x, int32_t y, int32_t width, int32_t height);
+    int32_t (*setPosition)(IAtcSurface *surf, int32_t x, int32_t y);
+    int32_t (*setWindow)(IAtcSurface *surf, int32_t x, int32_t y, int32_t w, int32_t h);
+    int32_t (*setCapability)(IAtcSurface *surf, u_int32_t capability);
+    int32_t (*setColorkey)(IAtcSurface *surf, u_int32_t color);
+    int32_t (*setLayerZOrder)(IAtcSurface *surf, u_int32_t order);
+    int32_t (*blank)(IAtcSurface *surf);
+    u_int8_t* (*getNativeData)(IAtcSurface *surf, int *fds, int *n_fds, u_int32_t *data_size);
+    uint32_t (*getID)(IAtcSurface *surf);
+    int32_t (*setPriority)(IAtcSurface *surf, int priority);
+    int32_t (*setBrightness)(IAtcSurface *surf, int32_t brightness);
+    int32_t (*setContrast)(IAtcSurface *surf, int32_t contrast);
+    int32_t (*setSaturation)(IAtcSurface *surf, int32_t saturation);
+    int32_t (*setHue)(IAtcSurface *surf, int32_t hue);
+    int32_t (*setGain)(IAtcSurface *surf, int32_t gain);
+    int32_t (*switchOutput)(IAtcSurface *surf, u_int32_t output);
+    int32_t (*makeCurrentOutputContext)(IAtcSurface *surf, ATC_SURFACE_OUTPUTCONTEXT_T output_ctx);
+    int32_t (*getValidDataRect)(IAtcSurface *surf, atc_rect_t *data_rect);
+    int32_t (*setColorRange)(IAtcSurface *surf, u_int32_t range);
+    int32_t (*setColorEncoding)(IAtcSurface *surf, u_int32_t encoding);
+} IAtcSurfaceVtbl;
+
+
+typedef struct _IAtcSurface
+{
+    const IAtcSurfaceVtbl  *vtbl;
+} IAtcSurface;
+
+
+IAtcSurface *atc_createsurface(ATC_SURFACE_TYPE_T type, int32_t w, int32_t h, int32_t format);
+
+IAtcSurface *atc_createsurface_from_id(uint32_t surfID);
+#define IAtcSurface_getID(This) \
+                (This)->vtbl->getID(This)
+IAtcSurface *atc_createsurface_from_nativedata(int *fds, int n_fds, u_int8_t *native_data, u_int32_t data_size);
+#define IAtcSurface_getNativeData(This, fds, n_fds, data_size) \
+                (This)->vtbl->getNativeData(This, fds, n_fds, data_size)
+
+int32_t atc_getScreenSize(int32_t *mm_width, int32_t *mm_height);
+
+#define IAtcSurface_addRef(This)   (This)->vtbl->addRef(This)
+#define IAtcSurface_release(This)  (This)->vtbl->release(This)
+#define IAtcSurface_requestBuffers(This)  (This)->vtbl->requestBuffers(This)
+#define IAtcSurface_dequeueBuffer(This, buf)  (This)->vtbl->dequeueBuffer(This, buf)
+#define IAtcSurface_queueBuffer(This, buf) (This)->vtbl->queueBuffer(This, buf)
+#define IAtcSurface_resetBuffers(This)  (This)->vtbl->resetBuffers(This)
+#define IAtcSurface_setBuffersFormat(This, format, fourcc)  \
+                (This)->vtbl->setBuffersFormat(This, format, fourcc)
+#define IAtcSurface_setBuffersSize(This, w, h)  \
+                (This)->vtbl->setBuffersSize(This, w, h)
+#define IAtcSurface_setBufferCount(This, count)  \
+                (This)->vtbl->setBufferCount(This, count)
+#define IAtcSurface_show(This)  (This)->vtbl->show(This)
+#define IAtcSurface_hide(This)  (This)->vtbl->hide(This)
+#define IAtcSurface_setCrop(This, x, y, width, height)  \
+                (This)->vtbl->setCrop(This, x, y, width, height)
+#define IAtcSurface_setPosition(This, x, y)  \
+                (This)->vtbl->setPosition(This, x, y)
+#define IAtcSurface_setWindow(This, x, y, w, h)  \
+                (This)->vtbl->setWindow(This, x, y, w, h)
+
+#define IAtcSurface_setCapability(This, capability)  \
+                (This)->vtbl->setCapability(This, capability)
+#define IAtcSurface_setColorkey(This, color)  \
+                (This)->vtbl->setColorkey(This, color)
+#define IAtcSurface_setLayerZOrder(This, order)  \
+                (This)->vtbl->setLayerZOrder(This, order)
+#define IAtcSurface_blank(This) \
+                (This)->vtbl->blank(This)
+
+#define IAtcSurface_setPriority(This, priority) \
+                (This)->vtbl->setPriority(This, priority)
+#define IAtcSurface_setBrightness(This, brightness) \
+                (This)->vtbl->setBrightness(This, brightness)
+#define IAtcSurface_setContrast(This, constrast) \
+                (This)->vtbl->setContrast(This, constrast)
+#define IAtcSurface_setSaturation(This, saturation) \
+                (This)->vtbl->setSaturation(This, saturation)
+#define IAtcSurface_setHue(This, hue) \
+                (This)->vtbl->setHue(This, hue)
+#define IAtcSurface_setGain(This, gain) \
+                (This)->vtbl->setGain(This, gain)
+#define IAtcSurface_switchOutput(This, output) \
+                (This)->vtbl->switchOutput(This, output)
+#define IAtcSurface_makeCurrentOutputContext(This, output_ctx) \
+                (This)->vtbl->makeCurrentOutputContext(This, output_ctx)
+
+#define IAtcSurface_getValidDataRect(This, data_rect) \
+                (This)->vtbl->getValidDataRect(This, data_rect)
+
+#define IAtcSurface_setColorRange(This, range) \
+                (This)->vtbl->setColorRange(This, range)
+#define IAtcSurface_setColorEncoding(This, encoding) \
+                (This)->vtbl->setColorEncoding(This, encoding)
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //_ATCSURFACE_H_

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_POLICYAUX
+	bool "policyaux"
+	select BR2_PACKAGE_DBUS
+	help
+	  Autochips audio policyaux.

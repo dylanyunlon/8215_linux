@@ -1,0 +1,4 @@
+module,command,duration,category
+fastboot_upgrade,python3 test_suite/upgrade/test_scripts/8317_AutoUpgrade.py --img image_path --device nand,300000,boot_device=nand-128-ddr-128
+fastboot_upgrade,python3 test_suite/upgrade/test_scripts/8317_AutoUpgrade.py --img image_path --device nand,300000,boot_device=nand-128-ddr-256
+fastboot_upgrade,python3 test_suite/upgrade/test_scripts/8317_AutoUpgrade.py --img image_path --device emmc,300000,boot_device=emmc-8192-ddr-256

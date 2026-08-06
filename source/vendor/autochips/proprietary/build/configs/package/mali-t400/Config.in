@@ -1,0 +1,16 @@
+config BR2_PACKAGE_MALI_T400
+	bool "mali-t400"
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	help
+	  this is a mali-t400
+
+if BR2_PACKAGE_MALI_T400
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "mali-t400"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "mali-t400"
+
+endif

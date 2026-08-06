@@ -1,0 +1,4 @@
+config BR2_PACKAGE_RECOVERY
+	bool "recovery"
+	help
+	  Autochips recovery.

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_BUF_ALLOCATOR
+	bool "libbuf_allocator"
+	help
+	  this is a buf allocator so

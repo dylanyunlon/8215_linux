@@ -1,0 +1,4 @@
+config BR2_PACKAGE_CARPLAYTESTS
+	bool "accessory interfaces"
+	help
+		accessory interfaces.

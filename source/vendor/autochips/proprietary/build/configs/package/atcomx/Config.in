@@ -1,0 +1,4 @@
+config BR2_PACKAGE_ATCOMX
+	bool "atcomx"
+	help
+	  Autochips omx components.

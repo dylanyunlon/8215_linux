@@ -1,0 +1,3 @@
+VBATool_Windows.exe 3.h264 800 480 30
+./VBATool_Linux 3.h264 800 480 30
+生成bootanimation.raw push到board /etc/xdg/

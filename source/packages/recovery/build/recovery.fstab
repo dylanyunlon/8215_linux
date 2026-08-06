@@ -1,0 +1,20 @@
+# mount point fstype    device length offset
+
+/system   ext4  /dev/system system.img.ext4
+/data   ext4  /dev/data
+/app   ext4  /dev/app   app.img.ext4
+/appbk   ext4  /dev/appbk appbk.img.ext4
+/ext_sdcard1   vfat  /dev/mmcblk1p1
+/media/udisk1 vfat /dev/sda
+/udisk1   vfat  /dev/sda
+/udisk1   vfat  /dev/sda1
+/misc   emmc  /dev/misc
+/arm2   emmc  /dev/arm2 arm2.bin 0x200000 
+/logo  emmc  /dev/logo logo.mrf 0x400000
+/kernel  emmc  /dev/kernel Image.bin 0x800000
+/rootfs  emmc  /dev/rootfs ramdisk.gz 0x200000
+/recovery  emmc  /dev/recovery recovery.gz 0x400000
+/metazone  emmc  /dev/metazone metazone.bin 0x400000
+/uboot  emmc  /dev/uboot u-boot.bin 0x100000
+/dvp  emmc  /dev/dvp target.bin 0x400000
+/media/sdcard ext4 /dev/usrdata usrdata.img.ext4 0xA0000000

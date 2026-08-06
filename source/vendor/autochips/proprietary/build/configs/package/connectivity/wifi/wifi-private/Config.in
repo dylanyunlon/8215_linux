@@ -1,0 +1,10 @@
+config BR2_PACKAGE_WIFI_PRIVATE
+	bool "wifi-private"
+	select BR2_PACKAGE_UNIVERSAL_UTILS
+	select BR2_PACKAGE_DBUS_CPP
+	select BR2_PACKAGE_METAZONE
+	select BR2_PACKAGE_TINYXML2
+	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_LIBCURL
+	help
+	  wifi-private: wifiserver & wificlient

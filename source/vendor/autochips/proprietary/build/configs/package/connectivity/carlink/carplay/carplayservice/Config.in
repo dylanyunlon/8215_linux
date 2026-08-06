@@ -1,0 +1,7 @@
+config BR2_PACKAGE_CARPLAYSERVICE
+	bool "carplayservice component"
+	select BR2_PACKAGE_IAP
+	select BR2_PACKAGE_CARLINKMANAGER
+	select BR2_PACKAGE_CARPLAYPLUGIN
+	help
+		libcarplaycommon, libcarplayclient, carplayservice.

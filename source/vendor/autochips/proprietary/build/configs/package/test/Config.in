@@ -1,0 +1,4 @@
+config BR2_PACKAGE_TEST
+	bool "TEST"
+	help
+	  this is a TEST.
