@@ -1,0 +1,12 @@
+LOCAL_PATH:= $(call my-dir)
+include $(CLEAR_VARS)
+LOCAL_MODULE := AutoSource
+LOCAL_SRC_FILES := AutoSource.apk
+LOCAL_MODULE_CLASS := APPS
+LOCAL_CERTIFICATE := platform
+LOCAL_MODULE_TAGS := optional
+#LOCAL_DEX_PREOPT := false
+LOCAL_PRIVATE_PLATFORM_APIS := true
+
+include $(BUILD_PREBUILT)
+
