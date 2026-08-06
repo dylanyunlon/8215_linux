@@ -1,0 +1,331 @@
+Index: git/debug/segfault.c
+===================================================================
+--- git.orig/debug/segfault.c	2020-12-24 17:17:29.454667000 +0800
++++ git/debug/segfault.c	2020-12-24 17:19:07.507209981 +0800
+@@ -44,7 +44,23 @@
+ /* Name of the output file.  */
+ static const char *fname;
+ 
+-
++#define ATC_AEE_ENHANCEMENT
++#ifdef ATC_AEE_ENHANCEMENT
++#define AEE_TMP_FILE           "/data/aee_tmp_file"
++#define WRITE_STRING_FD(fd, s) write (fd, s, strlen (s))
++#define __ITOA__(num, buf) { \
++  int n = num, i = 1;        \
++  while (n /= 10) {          \
++    i++;                     \
++  }                          \
++  n = num;                   \
++  buf[i] = 0;                \
++  while (i--) {              \
++     buf[i] = n % 10 + '0';  \
++     n /= 10;                \
++  }                          \
++}
++#endif
+ /* We better should not use `strerror' since it can call far too many
+    other functions which might fail.  Do it here ourselves.  */
+ static void
+@@ -82,6 +98,14 @@
+       if (fd == -1)
+ 	fd = 2;
+     }
++#ifdef ATC_AEE_ENHANCEMENT
++  int tmp_fd = -1;
++  FILE *tmpfd = fopen(AEE_TMP_FILE, "w");
++  if (!tmpfd)
++    WRITE_STRING ("Failed to open aee_tmp_file.\n");
++  else
++    tmp_fd = fileno(tmpfd);
++#endif
+ 
+   WRITE_STRING ("*** ");
+   write_strsignal (fd, signal);
+@@ -92,7 +116,10 @@
+ #endif
+ 
+   WRITE_STRING ("\nBacktrace:\n");
+-
++#ifdef ATC_AEE_ENHANCEMENT
++  if (tmp_fd > 0)
++    WRITE_STRING_FD(tmp_fd, "\nBacktrace:\n");
++#endif
+   /* Get the backtrace.  */
+   arr = alloca (256 * sizeof (void *));
+   cnt = backtrace (arr, 256);
+@@ -113,6 +140,10 @@
+ 
+   /* Now generate nicely formatted output.  */
+   __backtrace_symbols_fd (arr + i, cnt - i, fd);
++#ifdef ATC_AEE_ENHANCEMENT
++  if (tmp_fd > 0)
++    __backtrace_symbols_fd (arr + i, cnt - i, tmp_fd);
++#endif
+ 
+ #ifdef HAVE_PROC_SELF
+   /* Now the link map.  */
+@@ -120,15 +151,68 @@
+   if (mapfd != -1)
+     {
+       write (fd, "\nMemory map:\n\n", 14);
++#ifdef ATC_AEE_ENHANCEMENT
++      if (tmp_fd > 0)
++        WRITE_STRING_FD (tmp_fd, "\nMemory map:\n\n");
++#endif
+ 
+       char buf[256];
+       ssize_t n;
+ 
+-      while ((n = TEMP_FAILURE_RETRY (read (mapfd, buf, sizeof (buf)))) > 0)
+-	TEMP_FAILURE_RETRY (write (fd, buf, n));
+-
++      while ((n = TEMP_FAILURE_RETRY (read (mapfd, buf, sizeof (buf)))) > 0) {
++        TEMP_FAILURE_RETRY (write (fd, buf, n));
++#ifdef ATC_AEE_ENHANCEMENT
++        if (tmp_fd > 0)
++          TEMP_FAILURE_RETRY (write (tmp_fd, buf, n));
++#endif
++      }
+       close (mapfd);
++
++    }
++#endif
++
++#ifdef ATC_AEE_ENHANCEMENT
++  if (tmp_fd > 0) {
++    fflush(tmpfd);
++    fsync(tmp_fd);
++    close (tmp_fd);
++
++    // Start AEE Dump Info
++    int pid = getpid();
++    int fpid = fork();
++    if (fpid < 0)         // Error process.
++      WRITE_STRING ("Failed to fork process.\n");
++    else if (fpid == 0) { // Child process.
++      char c_signo[8], c_pid[8];
++      __ITOA__(pid, c_pid);
++      __ITOA__(signal, c_signo);
++      WRITE_STRING ("Trigger AEE service.\n");
++      if (-1 == execl("/usr/bin/aee", "aee", "NE", c_signo, c_pid, NULL))
++        WRITE_STRING("Failed to execl aee.\n");
++      else
++        WRITE_STRING ("This will not be showed.\n");
++    } else {              // Father process.
++      //Open for wait AEE Dump Info End.
++      FILE *tmpfd = fopen(AEE_TMP_FILE, "r");
++      if (tmpfd) {
++        int n = 30; // Wait 30s for AEE Dump info.
++        char buf[3];
++        while (n-- > 0) {
++          if (read(fileno(tmpfd), buf, 3) > 0) {
++            if (!strncmp(buf, "END", 3))
++              break;
++          }
++          fseek(tmpfd, 0, SEEK_SET);
++          sleep(1); // Sleep 1s
++        }
++        fclose(tmpfd);
++        if (n > 0)
++          WRITE_STRING ("Wait AEE Dump info Successful.\n");
++        else
++          WRITE_STRING ("Wait AEE Dump info Timeout.\n");
++      }
+     }
++  }
+ #endif
+ 
+   /* Pass on the signal (so that a core file is produced).  */
+Index: git/sysdeps/unix/sysv/linux/aarch64/register-dump.h
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ git/sysdeps/unix/sysv/linux/aarch64/register-dump.h	2020-12-24 17:20:14.104312000 +0800
+@@ -0,0 +1,187 @@
++/* Dump registers.
++   Copyright (C) 1998-2018 Free Software Foundation, Inc.
++   This file is part of the GNU C Library.
++   Contributed by Philip Blundell <pb@nexus.co.uk>, 1998.
++
++   The GNU C Library is free software; you can redistribute it and/or
++   modify it under the terms of the GNU Lesser General Public
++   License as published by the Free Software Foundation; either
++   version 2.1 of the License, or (at your option) any later version.
++
++   The GNU C Library is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   Lesser General Public License for more details.
++
++   You should have received a copy of the GNU Lesser General Public
++   License along with the GNU C Library.  If not, see
++   <http://www.gnu.org/licenses/>.  */
++
++#include <sys/uio.h>
++#include <_itoa.h>
++#include <sys/ucontext.h>
++
++/* We will print the register dump in this format:
++
++ R0: XXXXXXXX    R1: XXXXXXXX    R2: XXXXXXXX     R3: XXXXXXXX
++ R4: XXXXXXXX    R5: XXXXXXXX    R6: XXXXXXXX     R7: XXXXXXXX
++ R8: XXXXXXXX    R9: XXXXXXXX    R10: XXXXXXXX    R11: XXXXXXXX
++ R12: XXXXXXXX   R13: XXXXXXXX   R14: XXXXXXXX   R15: XXXXXXXX
++ R16: XXXXXXXX   R17: XXXXXXXX   R18: XXXXXXXX   R19: XXXXXXXX
++ R20: XXXXXXXX   R21: XXXXXXXX   R22: XXXXXXXX   R23: XXXXXXXX
++ R24: XXXXXXXX   R25: XXXXXXXX   R26: XXXXXXXX   R27: XXXXXXXX
++ R28: XXXXXXXX   R29: XXXXXXXX   R30: XXXXXXXX   SP: XXXXXXXX
++ CP: XXXXXXXX
++
++ pstate: XXXXXXXX
++
++ Trap: XXXXXXXX   Error: XXXXXXXX   OldMask: XXXXXXXX
++ Addr: XXXXXXXX
++
++ */
++
++static void
++hexvalue (unsigned long int value, char *buf, size_t len)
++{
++  char *cp = _itoa_word (value, buf + len, 16, 0);
++  while (cp > buf)
++    *--cp = '0';
++}
++
++static void
++register_dump (int fd, int tmp_fd, const ucontext_t *ctx)
++{
++  char regs[35][16];
++  struct iovec iov[97];
++  size_t nr = 0;
++
++#define ADD_STRING(str)                 \
++  iov[nr].iov_base = (char *) str;		\
++  iov[nr].iov_len = strlen (str);		\
++  ++nr
++#define ADD_MEM(str, len)               \
++  iov[nr].iov_base = str;				\
++  iov[nr].iov_len = len;				\
++  ++nr
++
++  /* Generate strings of register contents.  */
++  hexvalue (ctx->uc_mcontext.regs[0],  regs[0], 16);
++  hexvalue (ctx->uc_mcontext.regs[1],  regs[1], 16);
++  hexvalue (ctx->uc_mcontext.regs[2],  regs[2], 16);
++  hexvalue (ctx->uc_mcontext.regs[3],  regs[3], 16);
++  hexvalue (ctx->uc_mcontext.regs[4],  regs[4], 16);
++  hexvalue (ctx->uc_mcontext.regs[5],  regs[5], 16);
++  hexvalue (ctx->uc_mcontext.regs[6],  regs[6], 16);
++  hexvalue (ctx->uc_mcontext.regs[7],  regs[7], 16);
++  hexvalue (ctx->uc_mcontext.regs[8],  regs[8], 16);
++  hexvalue (ctx->uc_mcontext.regs[9],  regs[9], 16);
++  hexvalue (ctx->uc_mcontext.regs[10], regs[10], 16);
++  hexvalue (ctx->uc_mcontext.regs[11], regs[11], 16);
++  hexvalue (ctx->uc_mcontext.regs[12], regs[12], 16);
++  hexvalue (ctx->uc_mcontext.regs[13], regs[13], 16);
++  hexvalue (ctx->uc_mcontext.regs[14], regs[14], 16);
++  hexvalue (ctx->uc_mcontext.regs[15], regs[15], 16);
++  hexvalue (ctx->uc_mcontext.regs[16], regs[16], 16);
++  hexvalue (ctx->uc_mcontext.regs[17], regs[17], 16);
++  hexvalue (ctx->uc_mcontext.regs[18], regs[18], 16);
++  hexvalue (ctx->uc_mcontext.regs[19], regs[19], 16);
++  hexvalue (ctx->uc_mcontext.regs[20], regs[20], 16);
++  hexvalue (ctx->uc_mcontext.regs[21], regs[21], 16);
++  hexvalue (ctx->uc_mcontext.regs[22], regs[22], 16);
++  hexvalue (ctx->uc_mcontext.regs[23], regs[23], 16);
++  hexvalue (ctx->uc_mcontext.regs[24], regs[24], 16);
++  hexvalue (ctx->uc_mcontext.regs[25], regs[25], 16);
++  hexvalue (ctx->uc_mcontext.regs[26], regs[26], 16);
++  hexvalue (ctx->uc_mcontext.regs[27], regs[27], 16);
++  hexvalue (ctx->uc_mcontext.regs[28], regs[28], 16);
++  hexvalue (ctx->uc_mcontext.regs[29], regs[29], 16);
++  hexvalue (ctx->uc_mcontext.regs[30], regs[30], 16);
++  hexvalue (ctx->uc_mcontext.sp,       regs[31], 16);
++  hexvalue (ctx->uc_mcontext.pc,       regs[32], 16);
++  hexvalue (ctx->uc_mcontext.pstate,   regs[33], 16);
++  hexvalue (ctx->uc_mcontext.fault_address, regs[34], 16);
++
++  /* Generate the output.  */
++  ADD_STRING ("\nRegister dump:");
++  ADD_STRING ("\n PC(Program-Counter): ");
++  ADD_MEM (regs[32], 16);
++  ADD_STRING ("\n LR(Link-Register):   ");
++  ADD_MEM (regs[30], 16);
++  ADD_STRING ("\n FP(Frame-Pointer):   ");
++  ADD_MEM (regs[29], 16);
++  ADD_STRING ("\n SP(Stack-Pointer):   ");
++  ADD_MEM (regs[31], 16);
++  ADD_STRING ("\n CPSR(Process-State): ");
++  ADD_MEM (regs[33], 16);
++  ADD_STRING ("\n Fault Addr:          ");
++  ADD_MEM (regs[34], 16);
++
++  ADD_STRING ("\n X0:  ");
++  ADD_MEM (regs[0], 16);
++  ADD_STRING ("   X1:  ");
++  ADD_MEM (regs[1], 16);
++  ADD_STRING ("   X2:  ");
++  ADD_MEM (regs[2], 16);
++  ADD_STRING ("   X3:  ");
++  ADD_MEM (regs[3], 16);
++  ADD_STRING ("\n X4:  ");
++  ADD_MEM (regs[4], 16);
++  ADD_STRING ("   X5:  ");
++  ADD_MEM (regs[5], 16);
++  ADD_STRING ("   X6:  ");
++  ADD_MEM (regs[6], 16);
++  ADD_STRING ("   X7:  ");
++  ADD_MEM (regs[7], 16);
++  ADD_STRING ("\n X8:  ");
++  ADD_MEM (regs[8], 16);
++  ADD_STRING ("   X9:  ");
++  ADD_MEM (regs[9], 16);
++  ADD_STRING ("   X10: ");
++  ADD_MEM (regs[10], 16);
++  ADD_STRING ("   X11: ");
++  ADD_MEM (regs[11], 16);
++  ADD_STRING ("\n X12: ");
++  ADD_MEM (regs[12], 16);
++  ADD_STRING ("   X13: ");
++  ADD_MEM (regs[13], 16);
++  ADD_STRING ("   X14: ");
++  ADD_MEM (regs[14], 16);
++  ADD_STRING ("   X15: ");
++  ADD_MEM (regs[15], 16);
++  ADD_STRING ("\n X16: ");
++  ADD_MEM (regs[16], 16);
++  ADD_STRING ("   X17: ");
++  ADD_MEM (regs[17], 16);
++  ADD_STRING ("   X18: ");
++  ADD_MEM (regs[18], 16);
++  ADD_STRING ("   X19: ");
++  ADD_MEM (regs[19], 16);
++  ADD_STRING ("\n X20: ");
++  ADD_MEM (regs[20], 16);
++  ADD_STRING ("   X21: ");
++  ADD_MEM (regs[21], 16);
++  ADD_STRING ("   X22: ");
++  ADD_MEM (regs[22], 16);
++  ADD_STRING ("   X23: ");
++  ADD_MEM (regs[23], 16);
++  ADD_STRING ("\n X24: ");
++  ADD_MEM (regs[24], 16);
++  ADD_STRING ("   X25: ");
++  ADD_MEM (regs[25], 16);
++  ADD_STRING ("   X26: ");
++  ADD_MEM (regs[26], 16);
++  ADD_STRING ("   X27: ");
++  ADD_MEM (regs[27], 16);
++  ADD_STRING ("\n X28: ");
++  ADD_MEM (regs[28], 16);
++
++  /* Write the stuff out.  */
++  if (fd >= 0)
++    writev (fd, iov, nr);
++  if (tmp_fd >= 0)
++    writev (tmp_fd, iov, nr);
++}
++
++
++#define REGISTER_DUMP register_dump(fd, tmp_fd, ctx)
++

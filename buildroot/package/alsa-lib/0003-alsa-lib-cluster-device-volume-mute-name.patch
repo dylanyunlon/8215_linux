@@ -1,0 +1,107 @@
+--- a/src/conf/alsa.conf	2018-10-16 16:08:35.000000000 +0800
++++ b/src/conf/alsa.conf	2021-10-21 13:59:07.128760757 +0800
+@@ -626,3 +626,104 @@
+ 		device $DEV
+ 	}
+ }
++
++
++##########################################################
++#          Add Specific Names For ATC Sound Card         #
++##########################################################
++
++pcm.i2s0_dai    = "hw:0,0"
++pcm.i2s1_dai    = "hw:0,1"
++pcm.i2s2_dai    = "hw:0,2"
++
++###############################################
++# Soft Volume: Support Volume Adjust And Mute #
++###############################################
++# volume mute only
++pcm.volume_mute {
++	@args [ MUTE_NAME SLAVE_DEVICE ]
++	@args.MUTE_NAME {
++		type string
++		default "mute"
++	}
++
++	@args.SLAVE_DEVICE {
++		type string
++		default "null"
++	}
++
++	type softvol
++	slave.pcm $SLAVE_DEVICE
++
++	control {
++		name $MUTE_NAME
++		card 0
++	}
++
++	resolution 2
++}
++
++# include volume adjust and mute
++pcm.volume {
++	@args [ VOL_NAME MUTE_NAME CH_NUMS MIN MAX RESOLUTION SLAVE_DEVICE ]
++	@args.VOL_NAME {
++		type string
++		default "volume"
++	}
++
++	@args.MUTE_NAME {
++		type string
++		default "mute"
++	}
++
++	@args.CH_NUMS {
++		type integer
++		default 2
++	}
++
++	@args.MIN {
++		type real
++		default -50.0
++	}
++
++	@args.MAX {
++		type real
++		default 0.0
++	}
++
++	@args.RESOLUTION {
++		type integer
++		default 100
++	}
++
++	@args.SLAVE_DEVICE {
++		type string
++		default "null"
++	}
++
++	type softvol
++	slave.pcm {
++		@func concat
++		strings [ "volume_mute:" $MUTE_NAME "," $SLAVE_DEVICE]
++	}
++
++	control {
++		name  $VOL_NAME
++		card  0
++		count $CH_NUMS
++	}
++
++	min_dB     $MIN
++	max_dB     $MAX
++	resolution $RESOLUTION
++}
++
++##########################################################
++#    Provides ALSA Device Names for Sound Card Users     #
++##########################################################
++
++# Cluster Device, we name it default
++pcm.!default {
++	@func concat
++	strings [ "volume:" "cluster_volume, cluster_mute, 2, -40.0, 0.0, 21, i2s1_dai" ]
++}

@@ -1,0 +1,39 @@
+#
+# Autochips framebuffer configuration
+#
+
+#
+# Autochips framebuffer configuration
+#
+
+menu "ATC FB Select"
+
+menuconfig ATC_FB_SUPPORT
+	bool "Autochips fb support"
+	help
+	  Check this to enable Autochips properity configuration.
+
+if ATC_FB_SUPPORT
+config FB0_ATC
+       tristate "Autochips Framebuffer Front Support"
+       depends on FB
+       default m
+
+config FB1_ATC
+       tristate "Autochips Framebuffer Rear Support"
+       depends on FB
+       default n
+
+config PP_ATC
+       tristate "Autochips Post Process Support"
+       depends on FB
+       default n
+
+config DAL_ATC
+       tristate "Enable Dal Support"
+       depends on FB
+       default n
+endif 
+
+endmenu
+

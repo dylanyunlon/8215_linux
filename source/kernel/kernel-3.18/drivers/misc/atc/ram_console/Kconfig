@@ -1,0 +1,10 @@
+config MTK_RAM_CONSOLE
+	bool "mt ram console"
+
+config MTK_RAM_CONSOLE_USING_SRAM
+	bool "Using SRAM as ram console storage"
+	depends on MTK_RAM_CONSOLE
+
+config MTK_RAM_CONSOLE_USING_DRAM
+	bool "Using DRAM as ram console storage"
+	depends on MTK_RAM_CONSOLE

@@ -1,0 +1,98 @@
+/*************************************************************************************
+ *LEGAL DISCLAIMER
+ *
+ * (Header of AutoChips Software/Firmware Release or Documentation)
+ *
+ * BY OPENING OR USING THIS FILE, USER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND
+ * AGREES THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("AUTOCHIPS SOFTWARE")
+ * ARE PROVIDED TO USER ON AN "AS-IS" BASIS ONLY. AUTOCHIPS EXPRESSLY DISCLAIMS
+ * ANY AND ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES AUTOCHIPS PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, INCORPORATED
+ * IN, OR SUPPLIED WITH THE AUTOCHIPS SOFTWARE, AND USER AGREES TO LOOK ONLY TO
+ * SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. AUTOCHIPS SHALL
+ * ALSO NOT BE RESPONSIBLE FOR ANY AUTOCHIPS SOFTWARE RELEASES MADE TO USER'S
+ * SPECIFICATION OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+ *
+ * USER HEREBY ACKNOWLEDGES THE CONFIDENTIALITY OF AUTOCHIPS SOFTWARE AND AGREES
+ * NOT TO DISCLOSE OR PERMIT DISCLOSURE OF ANY AUTOCHIPS SOFTWARE TO ANY THIRD
+ * PARTY OR TO ANY OTHER PERSON, EXCEPT TO DIRECTORS, OFFICERS, EMPLOYEES OF
+ * USER WHO ARE REQUIRED TO HAVE THE INFORMATION TO CARRY OUT THE PURPOSE OF
+ * OPENING OR USING THIS FILE.
+*************************************************************************************/
+
+
+#ifndef TVD_WCH_MGR_H
+#define TVD_WCH_MGR_H
+
+#include <linux/types.h>
+
+
+#define  HW_TVD_NONE		(0U)
+#define  HW_TVD0			(1U << 0)
+#define  HW_TVD1			(1U << 1)
+#define  HW_TVD2			(1U << 2)
+#define  HW_TVD3			(1U << 3)
+#define  HW_TVD_ALL			(HW_TVD0 | HW_TVD1 | HW_TVD2 | HW_TVD3)
+
+#define  HW_WCH1		(1U << 8)
+#define  HW_WCH2		(1U << 9)
+#define  HW_WCH3		(1U << 10)
+#define  HW_WCH4		(1U << 11)
+#define  HW_WCH5		(1U << 12)
+#define  HW_WCH6		(1U << 13)
+#define  HW_WCH7		(1U << 14)
+#define  HW_WCH8		(1U << 15)
+#define  HW_WCH9		(1U << 16)
+#define  HW_NR			(1U << 20)
+
+#define HW_PRI_HIGH 	5U
+#define HW_PRI_MEDIUM	3U
+#define HW_PRI_LOW		1U
+
+typedef enum {
+	HW_STATUS_IDLE,
+	HW_STATUS_REQUEST,
+	HW_STATUS_RELEASE,
+	HW_STATUS_ROBBED
+} SRC_HW_STATUS_E;
+
+
+typedef enum {
+	SRC_NONE = -1,
+	SRC_BACKCAR,
+	SRC_CVBS,
+	SRC_AVM,
+	SRC_DIGIN1,
+	SRC_DIGIN2,
+	SRC_BT1120,
+	SRC_YPBPR,
+	SRC_HDMI,
+	SRC_VOUT,
+	SRC_MAX
+} DATA_SRC_TYPE_E;
+
+typedef  s32 (* TWManager_Callback)(void);
+
+typedef struct {
+	bool fgRobbed[SRC_MAX];
+	u32 robbedBySrcIdx;
+	u32 priority;
+	u32 hwType;
+	u32 status;
+	TWManager_Callback	start;
+	TWManager_Callback	stop;
+} TWManager_Node_T;
+
+
+s32 TWMgr_init(void);
+s32 TWMgr_requestHw(u32 srcType, u32 tvdType,
+	TWManager_Callback start, TWManager_Callback stop);
+s32 TWMgr_releaseHw(u32 srcType);
+
+
+
+#endif
+
+

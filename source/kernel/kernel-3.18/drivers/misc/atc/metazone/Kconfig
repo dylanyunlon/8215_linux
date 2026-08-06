@@ -1,0 +1,17 @@
+# Copyright Statement:
+#
+# This software/firmware and related documentation ("Autochips Software") are
+# protected under relevant copyright laws. The information contained herein
+# is confidential and proprietary to Autochips Inc. and/or its licensors.
+# Without the prior written permission of Autochips inc. and/or its licensors,
+# any reproduction, modification, use or disclosure of Autochips Software,
+# and information contained herein, in whole or in part, shall be strictly prohibited.
+
+
+config ATC_METAZONE
+	tristate "Autochips Metazone Driver"
+	depends on ATC_MISC != n
+	default m
+	help
+	  Say Y here for supporting metazone driver.
+

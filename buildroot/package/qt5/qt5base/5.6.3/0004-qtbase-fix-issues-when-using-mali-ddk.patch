@@ -1,0 +1,39 @@
+Index: qt5base-5.6.3/mkspecs/common/linux.conf
+===================================================================
+--- qt5base-5.6.3.orig/mkspecs/common/linux.conf	2017-09-06 20:13:54.000000000 +0800
++++ qt5base-5.6.3/mkspecs/common/linux.conf	2020-06-16 15:33:37.228178000 +0800
+@@ -32,7 +32,7 @@
+ QMAKE_LIBS_NIS          = -lnsl
+ QMAKE_LIBS_EGL          = -lEGL
+ QMAKE_LIBS_OPENGL       = -lGL
+-QMAKE_LIBS_OPENGL_ES2   = -lGLESv2
++QMAKE_LIBS_OPENGL_ES2   = -lGLESv2 -lMali
+ QMAKE_LIBS_OPENVG       = -lOpenVG
+ QMAKE_LIBS_THREAD       = -lpthread
+ QMAKE_LIBS_LIBUDEV      = -ludev
+Index: qt5base-5.6.3/qmake/option.cpp
+===================================================================
+--- qt5base-5.6.3.orig/qmake/option.cpp	2017-09-06 20:13:54.000000000 +0800
++++ qt5base-5.6.3/qmake/option.cpp	2020-06-16 15:32:22.773146000 +0800
+@@ -255,6 +255,7 @@
+                             Option::mkfile::do_dep_heuristics = false;
+                         } else if (arg == "-E") {
+                             Option::mkfile::do_preprocess = true;
++                        } else if (arg == "-Wl,--copy-dt-needed-entries") {
+                         } else {
+                             fprintf(stderr, "***Unknown option %s\n", arg.toLatin1().constData());
+                             return Option::QMAKE_CMDLINE_SHOW_USAGE | Option::QMAKE_CMDLINE_ERROR;
+Index: qt5base-5.6.3/src/gui/opengl/qopenglfunctions.cpp
+===================================================================
+--- qt5base-5.6.3.orig/src/gui/opengl/qopenglfunctions.cpp	2017-09-06 20:13:54.000000000 +0800
++++ qt5base-5.6.3/src/gui/opengl/qopenglfunctions.cpp	2020-06-16 15:35:10.078995000 +0800
+@@ -5770,7 +5770,8 @@
+ #  ifdef Q_OS_ANDROID
+     m_gl.setFileName(QStringLiteral("GLESv2"));
+ #  else
+-    m_gl.setFileNameAndVersion(QStringLiteral("GLESv2"), 2);
++    //m_gl.setFileNameAndVersion(QStringLiteral("GLESv2"), 2);
++    m_gl.setFileName(QStringLiteral("GLESv2"));
+ #  endif
+ # endif // Q_OS_WIN
+     return m_gl.load();

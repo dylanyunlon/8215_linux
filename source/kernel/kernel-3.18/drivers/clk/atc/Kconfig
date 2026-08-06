@@ -1,0 +1,18 @@
+#
+# ATC SoC drivers
+#
+
+config COMMON_CLK_ATC_AC83XX
+	bool "Clock driver for ATC AC83XX"
+	depends on COMMON_CLK
+	select COMMON_CLK_ATC
+	default y if ARCH_AC83XX
+	---help---
+	  This driver supports ATC AC83XX clocks.
+
+config COMMON_CLK_ATC_AC823X
+	bool "Clock driver for ATC AC823X"
+	depends on COMMON_CLK
+	select COMMON_CLK_ATC
+	---help---
+	  This driver supports ATC AC823X clocks.

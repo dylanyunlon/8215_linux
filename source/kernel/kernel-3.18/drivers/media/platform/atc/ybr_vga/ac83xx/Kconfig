@@ -1,0 +1,7 @@
+config VIDEO_YBRVGA
+	tristate "autochips ybr support"
+	depends on ATC_MEDIA_SUPPORT_YBRVGA
+	---help---
+	  This is a video4linux2 driver for the autochips 8317 integrated
+	  ybrvga in.  
+	  

@@ -1,0 +1,19 @@
+Index: qt5base-5.11.3/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmscreen.cpp
+===================================================================
+--- qt5base-5.11.3.orig/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmscreen.cpp	2018-11-25 20:51:11.000000000 +0800
++++ qt5base-5.11.3/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsgbmscreen.cpp	2019-05-31 15:39:45.168311000 +0800
+@@ -159,6 +159,14 @@
+         qCDebug(qLcEglfsKmsDebug) << "Got native format" << hex << native_format << dec << "from eglGetConfigAttrib() with return code" << bool(success);
+ 
+         if (success)
++            if (native_format == GBM_FORMAT_XRGB8888) {
++                qDebug() << "QEglFSKmsGbmScreen::createSurface -> native_format = XRGB8888\n";
++                native_format = GBM_FORMAT_ARGB8888;
++            } else if (native_format == GBM_FORMAT_ARGB8888) {
++                qDebug() << "QEglFSKmsGbmScreen::createSurface -> native_format = ARGB8888\n";
++            } else {
++                qDebug() << "QEglFSKmsGbmScreen::createSurface -> native_format = unknown\n";
++            }
+             m_gbm_surface = gbm_surface_create(gbmDevice,
+                                            rawGeometry().width(),
+                                            rawGeometry().height(),

@@ -1,0 +1,82 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("AutoChips Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to AutoChips Inc. and/or its licensors. Without
+ * the prior written permission of AutoChips inc. and/or its licensors, any
+ * reproduction, modification, use or disclosure of AutoChips Software, and
+ * information contained herein, in whole or in part, shall be strictly
+ * prohibited.
+ * 
+ * AutoChips Inc. (C) 2016. All rights reserved.
+ * 
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("AUTOCHIPS SOFTWARE")
+ * RECEIVED FROM AUTOCHIPS AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+ * ON AN "AS-IS" BASIS ONLY. AUTOCHIPS EXPRESSLY DISCLAIMS ANY AND ALL
+ * WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES AUTOCHIPS PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ * INCORPORATED IN, OR SUPPLIED WITH THE AUTOCHIPS SOFTWARE, AND RECEIVER AGREES
+ * TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+ * RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+ * OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN AUTOCHIPS
+ * SOFTWARE. AUTOCHIPS SHALL ALSO NOT BE RESPONSIBLE FOR ANY AUTOCHIPS SOFTWARE
+ * RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND AUTOCHIPS'S
+ * ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE AUTOCHIPS SOFTWARE
+ * RELEASED HEREUNDER WILL BE, AT AUTOCHIPS'S OPTION, TO REVISE OR REPLACE THE
+ * AUTOCHIPS SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+ * CHARGE PAID BY RECEIVER TO AUTOCHIPS FOR SUCH AUTOCHIPS SOFTWARE AT ISSUE.
+ */
+#ifndef __BACK_CAR_CFG_H_
+#define __BACK_CAR_CFG_H_
+
+
+//#include "x_types.h"
+#ifdef __ARM2__
+#include <generated/atc_project.h>
+#endif
+
+// need to use MACRO from reserve_memory later
+#ifdef CONFIG_ATC_PLATFORM_ac823x
+extern unsigned long fbm_base;
+extern unsigned long fbm_size;
+#else
+extern unsigned int fbm_base;
+extern unsigned int fbm_size;
+#endif
+
+#define MRF_BUFFER_PA_ADDR	(fbm_base + fbm_size - MRF_LOAD_OFFSET)
+#define MRF_BUFFER_SIZE		(0x500000)
+
+#ifndef WCH_SD_YBUF_SIZE
+#define WCH_SD_YBUF_SIZE (720*576)
+#define WCH_SD_CBUF_SIZE (720*576/2)
+#endif
+
+// use reserved UI memory. not use frame buffer any more. zhiwei. 2017.03.01
+//#define BACKCAR_UI_VA_ADDR      0xF4A00000
+//#define BACKCAR_UI_PA_ADDR      (MRF_BUFFER_PA_ADDR + MRF_BUFFER_SIZE)
+//#define BACKCAR_UI_PA_ADDR_OSD  (MRF_BUFFER_PA_ADDR + MRF_BUFFER_SIZE + 0xfc00000)
+//#define BACKCAR_UI_SIZE         (0x260000)
+
+#define VDP_WIDTH      720
+#define VDP_HEIGHT     480
+
+
+
+#define BACK_CAR_SRC_YPBPR  0
+#define BACK_CAR_SRC_VGA 0
+
+#define RGB(r,g,b)  ((DWORD)(((BYTE)(r)|((WORD)((BYTE)(g))<<8))|(((DWORD)(BYTE)(b))<<16)))
+
+typedef struct _POINT
+{
+    UINT32    x;
+    UINT32    y;
+} POINT, *LPPOINT;
+
+
+#endif

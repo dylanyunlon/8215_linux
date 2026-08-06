@@ -1,0 +1,1 @@
+obj-$(CONFIG_MALI400) += r6p1/

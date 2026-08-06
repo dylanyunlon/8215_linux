@@ -1,0 +1,118 @@
+
+/{
+	memory {
+		device_type = "memory";
+		reg = <0x1 0x00000000 0x0 0x80000000>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		vfy_reserved {
+			compatible = "verify-reserve-memory";
+			reg = <0x1 0x08000000 0 0x02000000>;
+		};
+		
+		trustzone_reserved: trustzone@10f300000 {
+                        no-map;
+                        reg = <0x1 0xf300000 0x0 0x800000>;
+    		};
+
+		trustzone_share_reserved: trustzoneshare@10fb00000{
+            		no-map;
+            		reg = <0x1 0xfb00000 0x0 0x100000>;
+    		};
+
+
+		arm2_reserved: arm2@10fc00000 {
+			no-map;
+			reg = <0x1 0xfc00000 0x0 0x400000>;
+		};
+
+		framebuffer_reserved: framebuffer@110000000 {
+			compatible = "atc-framebuffer";
+			no-map;
+			reg = <0x1 0x10000000 0x0 0x1200000>;
+		};
+
+		logo_reserved: logo@117800000 {
+			no-map;
+			reg = <0x1 0x17800000 0x0 0x800000>;
+		};
+
+		/*static reserved memory, from 256M*/
+		dvp_reserved: dvp@118000000{
+			compatible = "atc-dvp";
+			no-map;
+			reg = <0x1 0x18000000 0x0 0xb00000>;
+		};
+
+		audio_r1: dsp@118b00000{
+		      compatible = "atc-audio-dsp";
+		      reg = <0x1 0x18b00000 0x0 0x600000>;
+		};
+
+		imageresize_reserved: imageresize@119100000 {
+			compatible = "atc-imageresize";
+			no-map;
+			reg = <0x1 0x19100000 0x0 0x1400000>;
+		};
+
+    	metazone_reserved: metazone {
+            compatible = "atc-metazone-mem";
+            no-map;
+          /*  size = <0x000100000>;
+            alignment = <0x1000>;*/
+            reg = <0x1 0x1A500000 0x0 0x100000>;
+    	};
+      mm_reserved: multimedia@11A600000 {
+             compatible = "atc,mmreservedmem";
+             reg = <0x1 0x1A600000 0x0 0x3d00000>;
+       };    
+      audio_r2: afifo{
+          compatible = "atc-audio-fifo";
+          no-map;
+          reg = <0x1 0x1e300000 0x0 0x400000>;
+         alignment = <0x100000>;
+     };
+		  imglinebuf_reserved: imgresz@0x11e710000{
+			compatible = "atc-image-linebuf";
+			no-map;
+			reg  = <0x1 0x1e710000 0x0 0x40000>;
+		}; 
+		arm2_backcar_ui_reserved: arm2_backcar_ui@11e750000 {
+			compatible = "atc-arm2-backcar-ui";
+			reg = <0x1 0x1e750000 0x0 0x280000>;
+		};
+		
+		atc_last_kmsg: ram_console-reserved-memory@11E9D0000{
+			compatible = "atc,ram_console";
+			no-map;
+			reg = <0x1 0x1E9D0000 0 0x10000>;
+		};
+
+		nr_reserved:noisereduce@11e9E0000 {
+			compatible = "atc-noisereduce";
+			no-map;
+			reg = <0x1 0x1e9E0000 0x0 0x1800000>;
+		};
+		wch_reserved: wch_rsv@1201e0000 {
+			compatible = "atc-wch";
+			reg = <0x1 0x201e0000 0x0 0x03F00000>;
+		};
+
+		tvd_reserved:tvd@124400000 {
+			compatible = "atc-tvd";
+			reg = <0x1 0x24400000 0x0 0x400000>;
+		};
+
+		/*Dram chA/B Datlat Cal, MUST consistent with preloader*/
+		dram_reserved:dram@0x1e700000 {
+			compatible = "atc-dram";
+			no-map;
+			reg = <0x1 0x1e700000 0x0 0x4000>,
+			<0x1 0x5e700000 0x0 0x4000>;
+		};
+	};
+};

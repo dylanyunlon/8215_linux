@@ -1,0 +1,64 @@
+/*
+* Copyright (c) 2016 AutoChips Inc.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License version 2 as
+* published by the Free Software Foundation.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+*/
+
+/*
+
+*
+
+* $Author: wangjing.wang $
+
+* $Modtime: $
+
+* $Revision: #2 $
+
+*
+
+*/
+
+
+
+/* *********************************************************************
+
+// Memo
+
+// *********************************************************************
+
+*/
+
+
+
+#ifndef _CLI_DRV_H_
+
+#define _CLI_DRV_H_
+
+
+
+#define CLI_CMD_PASSSTR           1
+
+#define CLI_CMD_PASSCMD           2
+
+#define CLI_CMD_QUERY_CMDTREEROOT    3
+
+
+
+#define CLI_MAX_CMD_LEN   1028
+
+
+
+
+
+
+
+#endif /* #ifndef _CLI_DRV_H_ */
+

@@ -1,0 +1,358 @@
+/*
+* Copyright (c) 2016 AutoChips Inc.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License version 2 as
+* published by the Free Software Foundation.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+*/
+
+#include "x_common.h"
+#include "x_typedef.h"
+#include "x_timer.h"
+#include "x_assert.h"
+#include "x_os.h"
+#include "x_bim.h"
+#include "x_debug.h"
+#include "x_ckgen.h"
+#include <linux/interrupt.h>
+
+#include <mach/cache_operation.h>
+
+#include "irtdma_drv.h"
+#include "irt_dma_hw.h"
+#include "irtdma_log.h"
+#include "irqs_vector.h"
+#include <linux/semaphore.h>
+extern void HalFlushInvalidateDCache(void);
+extern volatile HAL_TIME_T pStartTime,pEndTime,pDeltaTime,pSumTime;
+
+
+//HANDLE_T g_hWaitIrtDmaDone = (HANDLE_T)NULL;
+
+struct semaphore g_hWaitIrtDmaDone;
+void __iomem *irt_dma_base = NULL;
+unsigned int irtdmairq = 0;
+struct clk* irtdmaclk = NULL;
+extern unsigned int Begin_call_arm1;
+
+
+typedef struct _RLE_HAL_INST_T
+{
+    UINT32      u4HwInstId;
+    HANDLE_T    hEvent;
+}RLE_HAL_INST_T;
+extern void ac83xx_mask_ack_bim_irq(uint32_t irq);
+
+
+#if ((CONFIG_DRV_VERIFY_SUPPORT == 1) || (CONFIG_DRV_FPGA_BOARD == 1))
+void IRT_WriteREG(UINT32 arg, UINT32 val, const CHAR *szFunction, INT32 i4Line)
+{
+    *(volatile UINT32 *)arg = val;
+
+    if (0 && szFunction)
+    {
+        UTIL_Printf("[irt] 0x%08X=0x%08X @%s, %d\n", arg, val, szFunction, i4Line);
+    }
+    else
+    {
+        UTIL_Printf("[irt] 0x%08X=0x%08X\n", arg, val);
+    }
+}
+
+UINT32 IRT_ReadREG(UINT32 arg, const CHAR *szFunction, INT32 i4Line)
+{
+    volatile UINT32 u4Value;
+
+    u4Value = *(volatile UINT32 *)arg;
+
+    if (0 && szFunction)
+    {
+        UTIL_Printf("[irt] 0x%08X=0x%08X [R] @%s, %d\n", arg, u4Value, szFunction, i4Line);
+    }
+    else
+    {
+
+        UTIL_Printf("[irt] 0x%08X=0x%08X [R]\n", arg, u4Value);
+    }
+
+    return u4Value;
+}
+
+void IRT_WriteREGMsk(UINT32 arg, UINT32 val, UINT32 msk, const CHAR *szFunction, INT32 i4Line)
+{
+    IRT_WriteREG((arg), (IRT_ReadREG(arg, szFunction, i4Line) & (~(msk))) | ((val) & (msk)), szFunction, i4Line);
+}
+#endif
+
+//-------------------------------------------------------------------------
+/*IRT_DMA_HwISR
+*interrupt program,BIM clear vector
+*/
+//-------------------------------------------------------------------------
+irqreturn_t IRT_DMA_HwISR(int u2Vector, void *dev_id)
+{
+    #if 0    
+    UNUSED(u2Vector);
+	HAL_GetTime(&pEndTime);
+	HAL_GetDeltaTime(&pDeltaTime,&pStartTime,&pEndTime);
+    pSumTime.u4Seconds += pDeltaTime.u4Seconds;
+    pSumTime.u4Micros += pDeltaTime.u4Micros;
+    if(pSumTime.u4Micros >= 1000000)
+    {
+        pSumTime.u4Micros -= 1000000;
+        pSumTime.u4Seconds ++;
+    }
+    #endif
+    
+   
+
+   //BIM_ClearIrq(irtdmairq);
+  if(Begin_call_arm1 != 0) {
+  	//IRD_LOG(IRD_LOG_LVL_ERR, "IRT_DMA_HwISR enter if\r\n" );
+   ac83xx_mask_ack_bim_irq(irtdmairq);
+    //VERIFY(x_sema_unlock(g_hWaitIrtDmaDone) == OSR_OK);
+    
+    up(&g_hWaitIrtDmaDone);
+	}
+  return IRQ_HANDLED;
+}
+
+//-------------------------------------------------------------------------
+/*IRT_DMA_HwReset
+*trig hw function
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwReset(void)
+{
+    IRT_APIEntry();
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_CTRL,IRT_DMA_FLD_RG_DRAM_CLK_EN(1),IRT_DMA_MSK_RG_DRAM_CLK_EN);
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_CTRL,IRT_DMA_FLD_RG_RESET_B(0),IRT_DMA_MSK_RG_RESET_B);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_CTRL,IRT_DMA_FLD_RG_RESET_B(1),IRT_DMA_MSK_RG_RESET_B);
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_CTRL,IRT_DMA_FLD_RG_DRAM_CLK_EN(0),IRT_DMA_MSK_RG_DRAM_CLK_EN);
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwInit
+*  init IRT_DMA hardware
+*  set control register address to default
+*  set default isr
+*  do hw reset
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwInit(void)
+{
+    x_os_isr_fct pfnOldIsr;
+
+    IRT_APIEntry();
+    IRD_LOG(IRD_LOG_LVL_ERR, "IRT_DMA_HwInit, VECTOR_IRT_DMA:%d \r\n", VECTOR_IRT_DMA);
+    //CKGEN_AgtOnClk(e_CLK_IRT_DMA_WRAPPER);    
+    
+	
+    
+    IRT_DMA_HwReset();
+
+    VERIFY(request_irq(irtdmairq, IRT_DMA_HwISR, 0, "ISR_IRTDMA", NULL) == 0);
+   // VERIFY (x_sema_create(&g_hWaitIrtDmaDone, X_SEMA_TYPE_BINARY, X_SEMA_STATE_LOCK) == OSR_OK);
+	sema_init(&g_hWaitIrtDmaDone,0);
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwUnInit
+*  uninit IRT_DMA hardware
+*  set control register address to default
+*  set default isr to NULL
+*  do hw reset
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwUnInit(void)
+{
+    x_os_isr_fct pfnOldIsr;
+
+    IRT_APIEntry();
+
+    VERIFY(request_irq(irtdmaclk, NULL, 0, "ISR_IRTDMA", NULL) == 0);
+   // VERIFY (x_sema_delete(g_hWaitIrtDmaDone) == OSR_OK);
+    //g_hWaitIrtDmaDone = (HANDLE_T)NULL;
+    
+    //CKGEN_AgtOffClk(e_CLK_IRT_DMA_WRAPPER);    
+    
+	
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwModeSet
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwSrcModeSet(UINT32 u4Rg5351ModeEn, UINT32 u4Rg5351ModeSel, UINT32 u4RgScanLine,UINT32 u4BlockBurstRead)
+{
+    IRT_APIEntryEx("%u, %u, %u", u4Rg5351ModeEn, u4Rg5351ModeSel, u4RgScanLine);
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_TIRG, IRT_DMA_FLD_RG_5351_MODE_EN(u4Rg5351ModeEn), IRT_DMA_MSK_RG_5351_MODE_EN);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_TIRG, IRT_DMA_FLD_RG_5351_MODE_SEL(u4Rg5351ModeSel), IRT_DMA_MSK_RG_5351_MODE_SEL);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_TIRG, IRT_DMA_FLD_RG_SCAN_LINE(u4RgScanLine), IRT_DMA_MSK_RG_SCAN_LINE);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_TIRG, IRT_DMA_FLD_RG_BURST_READ(u4BlockBurstRead),IRT_DMA_MSK_RG_BURST_BLOCK_EN);
+    
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwTrig
+*/
+//-------------------------------------------------------------------------
+
+INT32 IRT_DMA_HwTrig(void)
+{
+    IRT_APIEntry();
+
+    //HAL_GetTime(&pStartTime);
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_TIRG,IRT_DMA_FLD_RG_START(1),IRT_DMA_MSK_RG_START);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_TIRG,IRT_DMA_FLD_RG_START(0),IRT_DMA_MSK_RG_START);
+    //VERIFY(x_sema_lock(g_hWaitIrtDmaDone, X_SEMA_OPTION_WAIT) == OSR_OK);
+    down(&g_hWaitIrtDmaDone);
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwHVSize
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwHVSize(UINT32 u4Width, UINT32 u4Height)
+{
+    IRT_APIEntryEx("%u, %u", u4Width, u4Height);
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_HVSIZE,IRT_DMA_FLD_RG_VSIZE(u4Height),IRT_DMA_MSK_RG_VSIZE);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_HVSIZE,IRT_DMA_FLD_RG_HSIZE(u4Width),IRT_DMA_MSK_RG_HSIZE);
+
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwYCAndRotMode
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwYCAndRotMode(UINT32 u4Mode)
+{
+    IRT_APIEntryEx("%u", u4Mode);
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_TIRG,IRT_DMA_FLD_RG_DMA_MODE(u4Mode),IRT_DMA_MSK_RG_DMA_MODE);
+
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwSrcSa
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwSrcSa(UINT32 *pu4SrcYAdd,UINT32 *pu4SrcCAdd)
+{
+    IRT_APIEntryEx("%u, %u", pu4SrcYAdd, pu4SrcCAdd);
+    IRD_LOG(IRD_LOG_LVL_DBG, "IRT_DMA_HwSrcSa, SrcY:%x, SrcC:%x \r\n", pu4SrcYAdd, pu4SrcCAdd);    
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_DRAM_Y_RD_STA,IRT_DMA_FLD_DRAM_Y_RD_STA(((UINT32)pu4SrcYAdd)>>4),IRT_DMA_MSK_DRAM_Y_RD_STA);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_DRAM_C_RD_STA,IRT_DMA_FLD_DRAM_C_RD_STA(((UINT32)pu4SrcCAdd)>>4),IRT_DMA_MSK_DRAM_C_RD_STA);
+
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwDstSa
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwDstSa(UINT32 *pu4DstYAdd,UINT32 *pu4DstCAdd)
+{
+    IRT_APIEntryEx("%u, %u", pu4DstYAdd, pu4DstCAdd);
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_DRAM_Y_WR_STA,IRT_DMA_FLD_DRAM_Y_WR_STA(((UINT32)pu4DstYAdd)>>4),IRT_DMA_MSK_DRAM_Y_WR_STA);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_DRAM_C_WR_STA,IRT_DMA_FLD_DRAM_C_WR_STA(((UINT32)pu4DstCAdd)>>4),IRT_DMA_MSK_DRAM_C_WR_STA);
+
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+//-------------------------------------------------------------------------
+/** IRT_DMA_HwWROffset
+*/
+//-------------------------------------------------------------------------
+INT32 IRT_DMA_HwWROffset(UINT32 u4Width, UINT32 u4Height, IRT_DMA_MODE_T eMode)
+{
+    IRT_APIEntryEx("%u, %u, %u", u4Width, u4Height, eMode);
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_HVSIZE,IRT_DMA_FLD_RG_VSIZE(u4Height),IRT_DMA_MSK_RG_VSIZE);
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_HVSIZE,IRT_DMA_FLD_RG_HSIZE(u4Width),IRT_DMA_MSK_RG_HSIZE);
+
+    switch(eMode)
+    {
+    case IRT_DMA_MODE_ROTATE_0:
+    case IRT_DMA_MODE_ROTATE_0_MIRROR:
+    case IRT_DMA_MODE_ROTATE_180:
+    case IRT_DMA_MODE_ROTATE_180_MIRROR:
+        IRT_DMA_MSK_WRITE32(IRT_DMA_REG_WR_OFFSET,IRT_DMA_FLD_RG_WR_OFFSET(u4Width/16)|IRT_DMA_FLD_RG_RD_OFFSET(u4Width/16),
+            IRT_DMA_MSK_RG_WR_OFFSET|IRT_DMA_MSK_RG_RD_OFFSET);
+        break;
+
+    case IRT_DMA_MODE_ROTATE_90:
+    case IRT_DMA_MODE_ROTATE_90_MIRROR:
+    case IRT_DMA_MODE_ROTATE_270:
+    case IRT_DMA_MODE_ROTATE_270_MIRROR:
+        IRT_DMA_MSK_WRITE32(IRT_DMA_REG_WR_OFFSET,IRT_DMA_FLD_RG_WR_OFFSET(u4Height/16)|IRT_DMA_FLD_RG_RD_OFFSET(u4Width/16),
+            IRT_DMA_MSK_RG_WR_OFFSET|IRT_DMA_MSK_RG_RD_OFFSET);
+        break;
+        //add align mode for cb cr 8byte
+    case IRT_DMA_MODE_CBCR_ALIGN:
+
+        IRT_DMA_MSK_WRITE32(IRT_DMA_REG_WR_OFFSET,IRT_DMA_FLD_RG_WR_OFFSET(u4Width/16),IRT_DMA_MSK_RG_WR_OFFSET);
+
+    default:
+        break;
+    }
+
+    IRT_DMA_MSK_WRITE32(IRT_DMA_REG_TIRG,IRT_DMA_FLD_RG_DMA_MODE(eMode),IRT_DMA_MSK_RG_DMA_MODE);
+
+    IRT_APILeave();
+
+    return (INT32)IRT_DMA_OK;
+}
+
+void IRT_FlushDCacheRange(UINT32 u4Start, UINT32 u4Len)
+{
+}
+
+void IRT_CleanDCacheRange(UINT32 u4Start, UINT32 u4Len)
+{
+}
+
+void IRT_InvDCacheRange(UINT32 u4Start, UINT32 u4Len)
+{
+}
+
+

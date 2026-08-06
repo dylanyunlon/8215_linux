@@ -1,0 +1,1 @@
+obj-$(CONFIG_PP_ATC) += $(subst ",,$(CONFIG_ATC_PLATFORM))/

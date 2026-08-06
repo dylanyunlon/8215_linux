@@ -1,0 +1,71 @@
+if ARCH_AC83XX
+
+menu "Autochips AC83XX System-on-Chip"
+
+comment "AC83XX Board Type"
+
+config MACH_AC83XXFPGA
+    bool "AC83XX FPGA"
+	depends on ARCH_AC83XX
+	help
+	  select this if you are using V6x2 FPGA board
+
+config MACH_AC83XX
+    bool "AC83XX RealChip"
+	depends on ARCH_AC83XX
+	help
+	  select this if you are using AC83XX EVB board
+
+endmenu
+
+config MTK_WIN32_SUPPORT
+	int 	
+	depends on ARCH_AC83XX
+	default 1
+
+config HZ
+	int
+	depends on ARCH_AC83XX
+	default 1000
+	
+config DVP_RESERVED_MEM
+	bool
+	default y
+
+config ATC_PLATFORM
+	string "ATC platform name"
+        default "ac83xx"
+        help
+          config current platform name
+
+config ATC_OS
+	string "ATC OS name"
+        default "linux"
+        help
+          config current project name
+
+config ATC_OS_VER
+  string "ATC OS version information"
+      default "m"
+      help
+          config current os version
+
+config ATC_BOARD
+	string "ATC board name"
+        default "evb"
+        help
+          config current platform name
+
+config ATC_CUSTOM
+  string "ATC Custom"
+        default "atc"
+        help
+            config atc custom information
+
+config ATC_ARCH_CHIP
+	string "ATC Chip ID"
+        default "ac8317"
+        help
+          config current project name
+
+endif

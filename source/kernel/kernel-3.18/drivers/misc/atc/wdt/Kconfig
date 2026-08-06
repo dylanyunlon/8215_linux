@@ -1,0 +1,4 @@
+config ATC_WDT
+	tristate "ATC OS WDT"
+	default y
+	help

@@ -1,0 +1,6 @@
+
+config ATC_BLUETOOTH
+	tristate "support atc btdrv "
+	default y
+	help
+	  This is for btdrv and so on.

@@ -1,0 +1,158 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("AutoChips Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to AutoChips Inc. and/or its licensors. Without
+ * the prior written permission of AutoChips inc. and/or its licensors, any
+ * reproduction, modification, use or disclosure of AutoChips Software, and
+ * information contained herein, in whole or in part, shall be strictly
+ * prohibited.
+ * 
+ * AutoChips Inc. (C) 2016. All rights reserved.
+ * 
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("AUTOCHIPS SOFTWARE")
+ * RECEIVED FROM AUTOCHIPS AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+ * ON AN "AS-IS" BASIS ONLY. AUTOCHIPS EXPRESSLY DISCLAIMS ANY AND ALL
+ * WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES AUTOCHIPS PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ * INCORPORATED IN, OR SUPPLIED WITH THE AUTOCHIPS SOFTWARE, AND RECEIVER AGREES
+ * TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+ * RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+ * OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN AUTOCHIPS
+ * SOFTWARE. AUTOCHIPS SHALL ALSO NOT BE RESPONSIBLE FOR ANY AUTOCHIPS SOFTWARE
+ * RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND AUTOCHIPS'S
+ * ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE AUTOCHIPS SOFTWARE
+ * RELEASED HEREUNDER WILL BE, AT AUTOCHIPS'S OPTION, TO REVISE OR REPLACE THE
+ * AUTOCHIPS SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+ * CHARGE PAID BY RECEIVER TO AUTOCHIPS FOR SUCH AUTOCHIPS SOFTWARE AT ISSUE.
+ */
+ 
+
+#ifndef  __EMUL_COMM_H__
+#define __EMUL_COMM_H__
+
+#define CONNECT_SIGNATURE  (0x7ADEFE8D)
+
+//data flash logo type
+#define PICTURE_HEIGHT     75
+#define PICTURE_WIDTH      624
+#define PICTURE_START_NUM  20
+#define PICTURE_END_NUM    27
+#define LOGO_FLASH_TIME    200
+#define LOGO_HEIGHT        202
+#define LOGO_WIDTH         88
+//data transfer type
+#define DT_UNKNOWN     0
+#define DT_POINT       1
+#define DT_ANGLE       2
+#define DT_DISTANCE    3
+#define DT_BINARY      4
+#define DT_BITMAP      5
+
+//data transfer status report
+#define TSF_SUCCESS    0
+#define TSF_FAIL       1
+
+#define BC_STATE_IDLE      0
+#define BC_STATE_RX_DATA   1
+#define BC_STATE_DRAW      2
+#define BC_STATE_FIN       3
+#define BC_STATE_END       4
+
+
+typedef struct _tagTransferBlockData
+{
+    UINT32  u4DataType;
+    UINT32  u4DataLength;
+    VOID    *pData;
+}TransferBlockData;
+
+typedef struct _tagTransferStatus
+{
+    UINT32  u4Status;
+}TransferStatus;
+
+
+
+
+#pragma pack(1)
+typedef struct _tagTESTCMDPacket
+{
+    DWORD u4CmdSync;
+    BYTE uMainFunc;
+    BYTE uSubFunc;
+    WORD u2Data;
+    BYTE uRetType;
+}CMDPacket, *PCMDPacket;
+#pragma pack()
+
+
+typedef struct _tagCmdHeader
+{
+    UINT8 au1Head[2];
+    UINT8 u1DataLen;
+}CmdHeader;
+
+typedef enum
+{
+    RET_IGNORE = 0,
+    RET_ACK,
+    RET_SUCCESS,
+    RET_DATA_DEC,
+    RET_DATA_HEC,
+    RET_DATA_CHAR,
+    RET_DATA_WCHAR,
+    RET_TEST_ERROR,
+    RET_OTHER_ERROR,
+}RET_DATA_TYPE;
+
+enum
+{
+    MAIN_FUNC_ACK = 0,
+    MAIN_FUNC_CDDVD = 1,
+    MAIN_FUNC_USB,
+    MAIN_FUNC_SD,
+    MAIN_FUNC_FM,
+    MAIN_FUNC_AM,
+    MAIN_FUNC_CMMB,
+    MAIN_FUNC_AVIN,
+    MAIN_FUNC_CDC,
+    MAIN_FUNC_IPOD,
+    MAIN_FUNC_BT,
+    MAIN_FUNC_NAVI_FUNC,    //¦Ì?¨ª?1|?¨¹¡ê?D¨¨¦Ì?¨ª??¡ì3?
+    MAIN_FUNC_STEERING_WHEEL,
+    MAIN_FUNC_BACKCAR,
+    MAIN_FUNC_TIRE_PRESSURE,
+    MAIN_FUNC_MAIN_VOLUME,
+    MAIN_FUNC_SOUND_EFFECT,
+    MAIN_FUNC_DISPLAY,
+    MAIN_FUNC_FACTORY,
+    MAIN_FUNC_PUSH_TO_TALK, //¨°??¨¹¨ª¡§
+    MAIN_FUNC_SPEECH_RECOGNITION,
+    MAIN_FUNC_RESET,
+    MAIN_FUNC_CALIBRATE,
+    MAIN_FUNC_GPS,          //??¨¨?¦Ì?o?
+    MAIN_FUNC_STEERING_WHEEL_STUDY,  //??¨¨?¡¤??¨°?¨¬?¡ì?¡ã
+    MAIN_FUNC_BACKCAR_LOCUS,
+    MAIN_FUNC_KEY,
+    MAIN_FUNC_HOME,
+};
+
+enum
+{
+    SUBFUNC_BACKCAR_START = 1,
+    SUBFUNC_BACKCAR_STOP,
+    SUBFUNC_BACKCAR_DISTANCE,
+#if ARM2_TRACK_ENABLE
+    SUBFUNC_BAKCCAR_TURNLEFT,
+    SUBFUNC_BAKCCAR_TURNRIGHT,
+#endif
+};
+
+
+
+#endif

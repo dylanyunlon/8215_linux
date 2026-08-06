@@ -1,0 +1,207 @@
+
+/ {
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu-map {
+			cluster0 {
+				core0 {
+					cpu = <&cpu0>;
+				};
+			
+				core1 {
+					cpu = <&cpu1>;
+				};
+				core2 {
+					cpu = <&cpu2>;
+				};
+				core3 {
+					cpu = <&cpu3>;
+				};
+			
+			};
+			/*
+			cluster1 {
+				core0 {
+					cpu = <&cpu4>;
+				};
+				core1 {
+					cpu = <&cpu5>;
+				};
+				core2 {
+					cpu = <&cpu6>;
+				};
+				core3 {
+					cpu = <&cpu7>;
+				};
+			};
+			*/
+		};
+		cpu0: cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000000>;
+			enable-method = "atc-boot";
+			cpu-release-addr = <0x0 0x10008110>;
+
+			clocks = <&apmixedsys APMIXED_ARMPLL>;
+			clock-names = "cpu0";
+			operating-points = <
+				/* kHz    uV */
+				170000  1025000
+				204000  1200000
+				256000  1313000
+				341000  1375000
+				409000  1375000
+				512000  1375000
+				768000  1375000
+				614000  1375000
+				853000  1375000
+				1024000  1375000
+			>;
+			clock-latency = <300000>;
+
+			/* cooling options */
+			cooling-min-level = <0>;
+			cooling-max-level = <5>;
+			#cooling-cells = <2>; /* min followed by max */
+		};
+		
+		cpu1: cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000001>;
+			enable-method = "atc-boot";
+			cpu-release-addr = <0x0 0x10008110>;
+
+			clocks = <&apmixedsys APMIXED_ARMPLL>;
+			clock-names = "cpu1";
+
+			/* cooling options */
+			cooling-min-level = <0>;
+			cooling-max-level = <5>;
+			#cooling-cells = <2>; /* min followed by max */
+		};
+		cpu2: cpu@2 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000002>;
+			enable-method = "atc-boot";
+			cpu-release-addr = <0x0 0x10008110>;
+
+			clocks = <&apmixedsys APMIXED_ARMPLL>;
+			clock-names = "cpu2";
+
+			/* cooling options */
+			cooling-min-level = <0>;
+			cooling-max-level = <5>;
+			#cooling-cells = <2>; /* min followed by max */
+		};
+		cpu3: cpu@3 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000003>;
+			enable-method = "atc-boot";
+			cpu-release-addr = <0x0 0x10008110>;
+
+			clocks = <&apmixedsys APMIXED_ARMPLL>;
+			clock-names = "cpu3";
+
+			/* cooling options */
+			cooling-min-level = <0>;
+			cooling-max-level = <5>;
+			#cooling-cells = <2>; /* min followed by max */
+		};
+                /*
+		cpu4: cpu@4 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000100>;
+			enable-method = "spin-boot";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+		cpu5: cpu@5 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x101>;
+			enable-method = "atc-psci";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+		cpu6: cpu@6 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000102>;
+			enable-method = "atc-boot";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+		cpu7: cpu@7 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000103>;
+			enable-method = "atc-boot";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+		*/
+	};
+
+	soc {
+		tsensor:tsensor@0,0x100A0000 {
+			compatible = "atc,tsensor";
+			reg = <0x100A0000 0x1000>,<0x10024000 0x1000>,<0x10000000 0x200>,<0x10054000 0x1000>;
+			interrupts = <0 84 4>;
+			clocks = <&topselect TOP_MUX_CLK_THERM_SLOW>,
+				<&topselect TOP_MUX_CLK_THERM>,
+				<&imgdramcsys IMG_DRAMC_CLK_THERM_SLOW>,
+				<&imgdramcsys IMG_DRAMC_CLK_THERM>;
+			clock-names = "thermal-select-slow","thermal-select","thermal-gate-slow","thermal-gate";
+			#thermal-sensor-cells = <0>;
+		};
+
+		thermal-zones{
+			cls0:cls0{
+				polling-delay=<2000>;
+				polling-delay-passive=<200>;
+				sustainable-power=<3326>;
+					
+				/* sensor ID */
+				thermal-sensors=<&tsensor 0>;
+
+				trips{
+				     threshold0:trip-point@0{
+						temperature=<101000>;
+						hysteresis=<1000>;
+						type="passive";
+				     };
+				     threshold1:trip-point@1{
+						temperature=<102000>;
+						hysteresis=<1000>;
+						type="passive";
+				     };
+				     threshold2:trip-point@2{
+						temperature=<103000>;
+						hysteresis=<1000>;
+						type="passive";
+				     };
+				     threshold3:trip-point@3{
+						temperature=<104000>;
+						hysteresis=<1000>;
+						type="passive";
+				     };
+				     threshold4:trip-point@4{
+						temperature=<105000>;
+						hysteresis=<1000>;
+						type="passive";
+				     };
+				};
+
+				cooling-maps{
+				     map0{
+					trip=<&threshold0>;
+					contribution=<1024>;
+					cooling-device=<&cpu0 0 0>;
+				     };
+				};
+			};
+		};
+	};
+};

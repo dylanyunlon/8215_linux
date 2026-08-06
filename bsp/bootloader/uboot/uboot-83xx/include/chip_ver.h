@@ -1,0 +1,10 @@
+#if ! defined(CHIP_VER_H)
+#define CHIP_VER_H
+
+#define CONFIG_CHIP_VER_AC83XX 9000
+
+#define CONFIG_CHIP_VER_CURR CONFIG_CHIP_VER_AC83XX
+
+
+#endif //CHIP_VER_H
+

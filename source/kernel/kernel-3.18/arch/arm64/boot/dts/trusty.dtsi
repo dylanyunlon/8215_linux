@@ -1,0 +1,27 @@
+/ {
+	trusty {
+		compatible = "android,trusty-smc-v1";
+		ranges;
+		#address-cells = <1>;
+		#size-cells = <1>;
+                /*
+		irq {
+			compatible = "android,trusty-irq-v1";
+			ppi-interrupt-parent = <&gic>;
+		};
+                */
+		log {
+			compatible = "android,trusty-log-v1";
+		};
+
+		virtio {
+			compatible = "android,trusty-virtio-v1";
+		};
+                
+
+		atc {
+			compatible = "atc,trusty-atc-tee";
+		};
+
+	};
+};

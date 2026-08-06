@@ -1,0 +1,87 @@
+#!/bin/sh
+
+#
+#  For arm64 kernel build
+#  
+export KERNELDIR=$PWD
+
+PRJ_VAR=$1
+CLR_FLAG=$2
+
+if [ x"$PRJ_VAR" = x ]; then
+    PRJ_VAR=8317
+fi
+
+case "$PRJ_VAR" in
+    8317)
+#        export CROSS_COMPILE=$KERNELDIR/../../prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
+        export CROSS_COMPILE=armv7a-mediatek451_001_vfp-linux-gnueabi-
+        CONFIGFILE=ac83xx_systemd_defconfig
+        KARCH=arm
+        DTSNAME=ac83xx
+        ;;
+    8237)
+#        export CROSS_COMPILE=$KERNELDIR/../../prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+        CONFIGFILE=ac823x_a64_defconfig
+        KARCH=arm64
+        DTSNAME=ac823x_a64.dts
+        ;;
+    *)
+        echo "Please check PRJ_VAR"; exit 1;;
+esac
+
+
+
+KERNEL_SRCDIR="$KERNELDIR"
+KERNEL_SRCDIR=$PWD
+#KERNEL_BUILDDIR=$ANDROID_PRODUCT_OUT/obj/KERNEL_"$KARCH"_OBJ
+export KERNEL_BUILDDIR=$KERNEL_SRCDIR/../out/KERNEL_"$KARCH"_OBJ
+KBUILD_DEBUG=1
+
+echo "***************************************"
+echo "Project: $PRJ_VAR"
+echo "ARCH   : $KARCH"
+echo "DTS    : $DTSNAME"
+echo "CONF   : $CONFIGFILE"
+echo "ACTION : For build $CLR_FLAG"
+echo "***************************************"
+
+if [ x"$CLR_FLAG" = xclear ]; then
+    echo "Force clean all"
+    make -C $KERNEL_SRCDIR ARCH=$KARCH mrproper
+    rm -rf $KERNEL_BUILDDIR
+    exit 0
+fi
+
+mkdir -p $KERNEL_BUILDDIR
+
+cd $KERNELDIR
+
+JOB_NUM=`grep processor /proc/cpuinfo |wc -l`
+make -C $KERNEL_SRCDIR ARCH=$KARCH O=$KERNEL_BUILDDIR $CONFIGFILE V=$KBUILD_DEBUG
+if [ $? != 0 ]; then
+    echo "Kernel config fail !!!!!!!!!!!!!!"
+    exit 1
+fi
+
+echo "Kernel config done :)"
+
+make -C $KERNEL_SRCDIR ARCH=$KARCH -j$JOB_NUM O=$KERNEL_BUILDDIR V=$KBUILD_DEBUG
+if [ $? != 0 ]; then
+    echo "Kernel build fail !!!!!!!!!!!!!!!"
+    exit 1
+fi
+
+echo "Kernel build done :)"
+
+make -C $KERNEL_SRCDIR ARCH=$KARCH O=$KERNEL_BUILDDIR V=$KBUILD_DEBUG $DTSNAME.dtb
+if [ $? != 0 ]; then
+    echo "Kernel dts build fail !!!!!!!!!!!!!!!"
+    exit 1
+else
+    echo "Kernel dts build done :)"
+    exit 0
+fi
+
+
+

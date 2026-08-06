@@ -1,0 +1,1 @@
+obj-y += atc_cpu_loading.o

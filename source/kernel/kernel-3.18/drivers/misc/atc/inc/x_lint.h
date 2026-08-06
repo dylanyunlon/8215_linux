@@ -1,0 +1,18 @@
+#ifndef _X_LINT_H
+
+#define _X_LINT_H
+
+
+#define LINT_SAVE_AND_DISABLE
+
+#define LINT_RESTORE
+
+#define LINT_EXT_HEADER_END
+
+#define LINT_SUPPRESS_NEXT_EXPRESSION(Value)
+
+#define LINT_EXT_HEADER_BEGIN
+
+#define LINT_EXT_HEADER_END
+
+#endif

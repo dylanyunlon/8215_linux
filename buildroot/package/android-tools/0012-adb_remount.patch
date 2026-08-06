@@ -1,0 +1,89 @@
+--- a/core/adbd/remount_service.c	2013-02-18 22:49:03.000000000 +0800
++++ b/core/adbd/remount_service.c	2021-11-03 12:21:10.356941300 +0800
+@@ -68,35 +68,66 @@
+     return NULL;
+ }
+ 
+-/* Init mounts /system as read only, remount to enable writes. */
++ /* Init mounts /system as read only, remount to enable writes. */
+ static int remount_system()
+-{
+-    char *dev;
+-
+-    if (system_ro == 0) {
+-        return 0;
+-    }
+-
+-    dev = find_mount("/system");
+-
+-    if (!dev)
+-        return -1;
+-
+-    system_ro = mount(dev, "/system", "none", MS_REMOUNT, NULL);
+-
+-    free(dev);
+-
+-    return system_ro;
+-}
++ {
++     char *dev;
++ 
++     if (system_ro == 0) {
++          return 0;
++      }
++  
++      dev = find_mount("/");
++ 
++     if (!dev)
++         return -1;
++  
++      system_ro = mount(dev, "/", "none", MS_REMOUNT, NULL);
++  
++      free(dev);
++  
++      return system_ro;
++  } 
+ 
+ static void write_string(int fd, const char* str)
+ {
+     writex(fd, str, strlen(str));
+ }
+ 
++/* Init  remount to enable writes. */
++static int set_emmc_wp(int logfd, int value)
++{
++	int fd = logfd;
++	int ret = 0;
++	char buffer[200];
++	
++    fd = unix_open("/dev/misc-sd", O_RDWR);
++	if(fd < 0){
++		snprintf(buffer,sizeof(buffer),"open /dev/misc-sd fail!\n");
++		write_string(fd, buffer);
++		return fd;
++	}
++	ret = ioctl(fd, _IOW('r',13,int),value);
++	unix_close(fd);
++	if(ret != 0){
++		snprintf(buffer,sizeof(buffer),"write fail, wp write protect error!\n");
++		write_string(fd, buffer);
++		return -1;
++	}
++
++    return 0;
++}
++
+ void remount_service(int fd, void *cookie)
+ {
+-    int ret = remount_system();
++	
++	int ret;
++	if(set_emmc_wp(fd,0)<0){
++		char buffer[200];
++		snprintf(buffer,sizeof(buffer)," Disable eMMC write protect fail\n");
++		write_string(fd, buffer);
++	}
++    ret = remount_system();
+ 
+     if (!ret)
+        write_string(fd, "remount succeeded\n");

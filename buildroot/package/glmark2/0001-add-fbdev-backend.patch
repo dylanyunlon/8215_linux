@@ -1,0 +1,310 @@
+Index: glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/src/main.cpp
+===================================================================
+--- glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8.orig/src/main.cpp
++++ glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/src/main.cpp
+@@ -42,6 +42,8 @@
+ #include "native-state-mir.h"
+ #elif GLMARK2_USE_WAYLAND
+ #include "native-state-wayland.h"
++#elif GLMARK2_USE_FB
++#include "native-state-fb.h"
+ #endif
+ 
+ #if GLMARK2_USE_EGL
+@@ -168,6 +170,8 @@ main(int argc, char *argv[])
+     NativeStateMir native_state;
+ #elif GLMARK2_USE_WAYLAND
+     NativeStateWayland native_state;
++#elif GLMARK2_USE_FB
++    NativeStateFB native_state;
+ #endif
+ 
+ #if GLMARK2_USE_EGL
+Index: glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/src/native-state-fb.cpp
+===================================================================
+--- /dev/null
++++ glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/src/native-state-fb.cpp
+@@ -0,0 +1,170 @@
++/*
++ * Copyright © 2012 Linaro Limited
++ * Copyright © 2013 Canonical Ltd
++ *
++ * This file is part of the glmark2 OpenGL (ES) 2.0 benchmark.
++ *
++ * glmark2 is free software: you can redistribute it and/or modify it under the
++ * terms of the GNU General Public License as published by the Free Software
++ * Foundation, either version 3 of the License, or (at your option) any later
++ * version.
++ *
++ * glmark2 is distributed in the hope that it will be useful, but WITHOUT ANY
++ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * glmark2.  If not, see <http://www.gnu.org/licenses/>.
++ *
++ * Authors:
++ *  Qingfa Liu
++ */
++#include "native-state-fb.h"
++#include "log.h"
++#include <string.h>
++#include <csignal>
++#include <unistd.h>
++#include <fcntl.h>
++#include <sys/ioctl.h>
++
++
++volatile bool NativeStateFB::should_quit_(false);
++
++/******************
++ * Public methods *
++ ******************/
++
++bool
++NativeStateFB::init_display()
++{
++    struct sigaction sa;
++    sa.sa_handler = &NativeStateFB::quit_handler;
++    sa.sa_flags = 0;
++    sigemptyset(&sa.sa_mask);
++
++    sigaction(SIGINT, &sa, NULL);
++    sigaction(SIGTERM, &sa, NULL);
++
++    fb_display_ = reinterpret_cast<fb_display *>(malloc(sizeof(fb_display)));
++    if (fb_display_ == nullptr) {
++        Log::error("%s: Failed to alloc memory for fb_display!", __FUNCTION__);
++        return false;
++    }
++
++    int fd = open("/dev/fb0", O_RDWR, 0);
++    if (fd == -1) {
++        Log::error("%s: Failed to open fb to detect screen resolution!", __FUNCTION__);
++        return false;
++    }
++    fb_display_->fd_dev = fd;
++
++    memset(&(fb_display_->vinfo), 0, sizeof(struct fb_var_screeninfo));
++    if (ioctl(fd, FBIOGET_VSCREENINFO, &(fb_display_->vinfo)) == -1) {
++        Log::error("%s: Could not get variable screen info", __FUNCTION__);
++        goto failed;
++    }
++
++    fb_display_->window.width = fb_display_->vinfo.xres;
++    fb_display_->window.height = fb_display_->vinfo.yres;
++
++    fb_display_->vinfo.bits_per_pixel   = 32;
++    fb_display_->vinfo.red.length       = 8;
++    fb_display_->vinfo.green.length     = 8;
++    fb_display_->vinfo.blue.length      = 8;
++    fb_display_->vinfo.transp.length    = 8;
++    fb_display_->vinfo.blue.offset      = 0;
++    fb_display_->vinfo.green.offset     = 8;
++    fb_display_->vinfo.red.offset       = 16;
++    fb_display_->vinfo.transp.offset    = 24;
++#if 0
++    fb_display_->vinfo.yres_virtual     = 2 * fb_display_->vinfo.yres;
++#endif
++
++    if (ioctl(fd, FBIOPUT_VSCREENINFO, &(fb_display_->vinfo)) == -1) {
++        Log::error("%s: Unable to set double buffer mode!", __FUNCTION__);
++        goto failed;
++    }
++
++    Log::info("%s: display init finished!\n", __FUNCTION__);
++
++    return true;
++
++failed:
++	close(fd);
++	return false;
++}
++
++void*
++NativeStateFB::display()
++{
++    //return static_cast<void*>(fb_display_);
++    return 0;
++}
++
++bool
++NativeStateFB::create_window(WindowProperties const& /*properties*/)
++{
++    if (!fb_display_) {
++        Log::error("%s: FB device has not been initialized!\n", __FUNCTION__);
++        return false;
++    }
++
++    return true;
++}
++
++void*
++NativeStateFB::window(WindowProperties& properties)
++{
++    if (!fb_display_) {
++        Log::error("%s: FB device has not been initialized!\n", __FUNCTION__);
++        return nullptr;
++    }
++
++    properties = WindowProperties(fb_display_->window.width,
++                                  fb_display_->window.height,
++                                  true, 0);
++    return static_cast<void*>(&(fb_display_->window));
++}
++
++
++void
++NativeStateFB::visible(bool v)
++{
++    (void)v;
++}
++
++bool
++NativeStateFB::should_quit()
++{
++    return should_quit_;
++}
++
++void
++NativeStateFB::flip()
++{
++    if (ioctl(fb_display_->fd_dev, FBIOPAN_DISPLAY, &(fb_display_->vinfo)) == -1)
++    {
++        Log::error("%s: Could not Trigger Display flip", __FUNCTION__);
++        if (ioctl(fb_display_->fd_dev, FBIOPUT_VSCREENINFO, &(fb_display_->vinfo)) == -1)
++        {
++            Log::error("%s: Could not get variable screen info", __FUNCTION__);
++            return;
++        }
++    }
++
++#if 0
++    int crtc = 0;
++    if (ioctl(fb_display_->fb_dev, FBIO_WAITFORVSYNC, &crtc) < 0)
++    {
++        return 0;
++    }
++#endif
++}
++
++void
++NativeStateFB::quit_handler(int signum)
++{
++    should_quit_ = true;
++}
++
+Index: glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/src/native-state-fb.h
+===================================================================
+--- /dev/null
++++ glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/src/native-state-fb.h
+@@ -0,0 +1,60 @@
++/*
++ * Copyright © 2013 Canonical Ltd
++ *
++ * This file is part of the glmark2 OpenGL (ES) 2.0 benchmark.
++ *
++ * glmark2 is free software: you can redistribute it and/or modify it under the
++ * terms of the GNU General Public License as published by the Free Software
++ * Foundation, either version 3 of the License, or (at your option) any later
++ * version.
++ *
++ * glmark2 is distributed in the hope that it will be useful, but WITHOUT ANY
++ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * glmark2.  If not, see <http://www.gnu.org/licenses/>.
++ *
++ * Authors:
++ *  Qingfa Liu
++ */
++#ifndef GLMARK2_NATIVE_STATE_FB_H_
++#define GLMARK2_NATIVE_STATE_FB_H_
++
++#include "native-state.h"
++#include <linux/fb.h>
++
++class NativeStateFB : public NativeState
++{
++public:
++    NativeStateFB() {    }
++    ~NativeStateFB() {}
++
++    bool init_display();
++    void* display();
++    bool create_window(WindowProperties const& properties);
++    void* window(WindowProperties& properties);
++    void visible(bool v);
++    bool should_quit();
++    void flip();
++
++private:
++    static void quit_handler(int signum);
++
++    struct fb_window {
++        unsigned short width;
++        unsigned short height;
++    };
++
++    struct fb_display {
++        fb_window window;
++        int fd_dev;
++        struct fb_var_screeninfo vinfo;
++    } *fb_display_;
++
++    static volatile bool should_quit_;
++};
++
++#endif /* GLMARK2_NATIVE_STATE_FB_H_ */
++
+Index: glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/src/wscript_build
+===================================================================
+--- glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8.orig/src/wscript_build
++++ glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/src/wscript_build
+@@ -20,7 +20,8 @@ flavor_sources = {
+   'mir-gl' : common_flavor_sources + ['native-state-mir.cpp', 'gl-state-egl.cpp'],
+   'mir-glesv2' : common_flavor_sources + ['native-state-mir.cpp', 'gl-state-egl.cpp'],
+   'wayland-gl' : common_flavor_sources + ['native-state-wayland.cpp', 'gl-state-egl.cpp'],
+-  'wayland-glesv2' : common_flavor_sources + ['native-state-wayland.cpp', 'gl-state-egl.cpp']
++  'wayland-glesv2' : common_flavor_sources + ['native-state-wayland.cpp', 'gl-state-egl.cpp'],
++  'fb-glesv2' : common_flavor_sources + ['native-state-fb.cpp', 'gl-state-egl.cpp']
+ }
+ flavor_uselibs = {
+   'x11-gl' : ['x11', 'gl', 'matrix-gl', 'common-gl'],
+@@ -30,7 +31,8 @@ flavor_uselibs = {
+   'mir-gl' : ['mirclient', 'egl', 'gl', 'matrix-gl', 'common-gl'],
+   'mir-glesv2' : ['mirclient', 'egl', 'glesv2', 'matrix-glesv2', 'common-glesv2'],
+   'wayland-gl' : ['wayland-client', 'wayland-egl', 'egl', 'gl', 'matrix-gl', 'common-gl'],
+-  'wayland-glesv2' : ['wayland-client', 'wayland-egl', 'egl', 'glesv2', 'matrix-glesv2', 'common-glesv2']
++  'wayland-glesv2' : ['wayland-client', 'wayland-egl', 'egl', 'glesv2', 'matrix-glesv2', 'common-glesv2'],
++  'fb-glesv2' : ['egl', 'glesv2', 'matrix-glesv2', 'common-glesv2']
+ }
+ flavor_defines = {
+   'x11-gl' : ['GLMARK2_USE_X11', 'GLMARK2_USE_GL', 'GLMARK2_USE_GLX'],
+@@ -40,7 +42,8 @@ flavor_defines = {
+   'mir-gl' : ['GLMARK2_USE_MIR', 'GLMARK2_USE_GL', 'GLMARK2_USE_EGL'],
+   'mir-glesv2' : ['GLMARK2_USE_MIR', 'GLMARK2_USE_GLESv2', 'GLMARK2_USE_EGL'],
+   'wayland-gl' : ['GLMARK2_USE_WAYLAND', 'GLMARK2_USE_GL', 'GLMARK2_USE_EGL'],
+-  'wayland-glesv2' : ['GLMARK2_USE_WAYLAND', 'GLMARK2_USE_GLESv2', 'GLMARK2_USE_EGL']
++  'wayland-glesv2' : ['GLMARK2_USE_WAYLAND', 'GLMARK2_USE_GLESv2', 'GLMARK2_USE_EGL'],
++  'fb-glesv2' : ['GLMARK2_USE_FB', 'GLMARK2_USE_GLESv2', 'GLMARK2_USE_EGL']
+ }
+ 
+ includes = ['.', 'scene-ideas', 'scene-terrain']
+Index: glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/wscript
+===================================================================
+--- glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8.orig/wscript
++++ glmark2-9b1070fe9c5cf908f323909d3c8cbed08022abe8/wscript
+@@ -15,7 +15,8 @@ FLAVORS = {
+     'mir-gl' : 'glmark2-mir',
+     'mir-glesv2' : 'glmark2-es2-mir',
+     'wayland-gl' : 'glmark2-wayland',
+-    'wayland-glesv2' : 'glmark2-es2-wayland'
++    'wayland-glesv2' : 'glmark2-es2-wayland',
++    'fb-glesv2' : 'glmark2-es2-fb'
+ }
+ FLAVORS_STR = ", ".join(FLAVORS.keys())
+ 

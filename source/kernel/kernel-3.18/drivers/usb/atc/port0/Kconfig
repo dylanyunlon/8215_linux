@@ -1,0 +1,57 @@
+#
+# USB Dual Role (OTG-ready) Controller Drivers
+# for silicon based on Mentor Graphics INVENTRA designs
+#
+
+# (M)HDRC = (Multipoint) Highspeed Dual-Role Controller
+#
+#
+
+config ATC_MUSB_QMU_SUPPORT
+	bool "QMU Transfer mode of Autochip MUSB"
+	default n
+
+config USB_ATC_HDRC
+	tristate "Autochip MUSB support"
+	select USB_GADGET_SELECTED
+	select USB_GADGET_DUALSPEED
+	default y
+
+config USB_ATC_HDRC_GADGET
+	 tristate "Autochip MUSB Gadget support"
+
+config USB_ATC_OTG
+	tristate "Autochip MUSB OTG support"
+
+config USB_ATC_DUALMODE
+	bool "Autochip DUAL MODE support"
+	default n
+
+config USB_ATC_DEBUG
+	 tristate "Autochip MUSB Debug support"
+
+config USB_ATC_HDRC_HCD
+	 tristate "Autochip USB HDRC support"
+
+config ATC_USB_UNIQUE_SERIAL
+	 tristate "Autochip USB unique serial number"
+
+config ATC_USBFSH # USBFSH
+	bool "Autochip USB fullspeed Host driver"
+	default n
+
+config MUSBFSH_PIO_ONLY
+	bool "Transfer mode of Autochip USB fullspeed Host driver"
+	default n
+
+config ATC_UART_USB_SWITCH
+	bool "ATC_UART_USB_SWITCH"
+	help
+	  Support share USB DP/DM as UART TX/RX.
+
+# USB # TODO Check Choice
+config ATC_USB_GADGET # USB_GADGET_MT6516 USB_GADGET_MT6573
+	boolean "Autochip USB Gadget Driver"
+	select USB_GADGET_SELECTED
+	select USB_GADGET_DUALSPEED
+	default y

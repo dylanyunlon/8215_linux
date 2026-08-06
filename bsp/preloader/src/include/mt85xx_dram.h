@@ -1,0 +1,3286 @@
+/* Copyright Statement:
+ *
+ * This software/firmware and related documentation ("AutoChips Software") are
+ * protected under relevant copyright laws. The information contained herein is
+ * confidential and proprietary to AutoChips Inc. and/or its licensors. Without
+ * the prior written permission of AutoChips inc. and/or its licensors, any
+ * reproduction, modification, use or disclosure of AutoChips Software, and
+ * information contained herein, in whole or in part, shall be strictly
+ * prohibited.
+ * 
+ * AutoChips Inc. (C) 2016. All rights reserved.
+ * 
+ * BY OPENING THIS FILE, RECEIVER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ * THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("AUTOCHIPS SOFTWARE")
+ * RECEIVED FROM AUTOCHIPS AND/OR ITS REPRESENTATIVES ARE PROVIDED TO RECEIVER
+ * ON AN "AS-IS" BASIS ONLY. AUTOCHIPS EXPRESSLY DISCLAIMS ANY AND ALL
+ * WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR
+ * NONINFRINGEMENT. NEITHER DOES AUTOCHIPS PROVIDE ANY WARRANTY WHATSOEVER WITH
+ * RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ * INCORPORATED IN, OR SUPPLIED WITH THE AUTOCHIPS SOFTWARE, AND RECEIVER AGREES
+ * TO LOOK ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO.
+ * RECEIVER EXPRESSLY ACKNOWLEDGES THAT IT IS RECEIVER'S SOLE RESPONSIBILITY TO
+ * OBTAIN FROM ANY THIRD PARTY ALL PROPER LICENSES CONTAINED IN AUTOCHIPS
+ * SOFTWARE. AUTOCHIPS SHALL ALSO NOT BE RESPONSIBLE FOR ANY AUTOCHIPS SOFTWARE
+ * RELEASES MADE TO RECEIVER'S SPECIFICATION OR TO CONFORM TO A PARTICULAR
+ * STANDARD OR OPEN FORUM. RECEIVER'S SOLE AND EXCLUSIVE REMEDY AND AUTOCHIPS'S
+ * ENTIRE AND CUMULATIVE LIABILITY WITH RESPECT TO THE AUTOCHIPS SOFTWARE
+ * RELEASED HEREUNDER WILL BE, AT AUTOCHIPS'S OPTION, TO REVISE OR REPLACE THE
+ * AUTOCHIPS SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE
+ * CHARGE PAID BY RECEIVER TO AUTOCHIPS FOR SUCH AUTOCHIPS SOFTWARE AT ISSUE.
+ */
+
+#ifndef __MT85xx_DRAM_REG_H__
+#define __MT85xx_DRAM_REG_H__
+
+//zhishang 3363 
+#define FOR_MT3363
+
+#ifdef FOR_MT3363
+  #ifndef IO_BASE
+  #define IO_BASE 0xf0000000
+  #endif
+#endif
+
+//[QW] base address define, also should be fined in x_hal_8563.h
+#ifdef FOR_MT3363
+#define DRAM_DDRPHY_BASE			(IO_BASE + 0x5A000)   //zhishang 3363
+#else
+#define DRAM_DDRPHY_BASE			(IO_BASE + 0x58000)  
+#endif
+
+#define DRAM_DMARB_BASE             (IO_BASE + 0x06000)
+#define DRAM_DRAMC_BASE             (IO_BASE + 0x07000)
+//[QW] mt8563 has no channel B
+#define DRAM_DRAMC_CHB_BASE         (IO_BASE + 0x0F000)
+#define DRAM_DMARB_CHB_BASE			(IO_BASE + 0x10000)
+
+// PLL registers
+#if 1
+#if 1
+/*********************dramc register*********************/
+//Page DRAMC_A
+#define DRAMC_REG_ACTIM0 (0x0000)
+    #define POS_ACTIM0_BL2 15
+    #define FLD_TRCD Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_TRP Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_TFAW Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_TWR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_BL2 Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_CL2 Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_TWTR Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_TRC Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_TRAS Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_CONF1 (0x0004)
+    #define POS_CONF1_BL4 10
+    #define POS_CONF1_SELFREF 26
+    #define POS_CONF1_TESTLP 27    
+    #define FLD_TESTLP Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_SELFREF Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_TCMD Fld(3,20,AC_MSKB2)//[22:20]
+    #define FLD_CKEON Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_FW2R Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_BL4 Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_MATYPE Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_TRRD Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_DM64BITDYNSEL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_PAGDIS Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_DMDATMOD Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_DM64BITDYN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_DM64BITEN Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_CONF2 (0x0008)    
+    #define POS_CONF2_TEST1 29
+    #define MASK_CONF2_TE12_ENABLE 0xe0000000
+    #define FLD_TEST2W Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_TEST2R Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_TEST1 Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_REFTHD Fld(3,24,AC_MSKB3)//[26:24]
+    #define FLD_REFCNT Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_PADCTL1 (0x000C)
+    #define FLD_CS1DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_CLKDLY Fld(4,24,AC_MSKB3)//[27:24]
+#define DRAMC_REG_PADCTL2 (0x0010)
+    #define FLD_DQM3DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQM2DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQM1DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_DQM0DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_PADCTL3 (0x0014)
+    #define FLD_DQS3ODLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQS2ODLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQS1ODLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_DQS0ODLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DELDLY1 (0x0018)
+    #define FLD_DEL3DLY Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DEL2DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DEL1DLY Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DEL0DLY Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_DIFDLY1 (0x0020)
+    #define FLD_DIF3DLY Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DIF2DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DIF1DLY Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DIF0DLY Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_DLLCONF (0x0028)
+    #define FLD_DLLFRZ Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_PAT32B Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_MDQS Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_WCKSEL2 Fld(1,21,AC_MSKB2)//[21:21]
+#define DRAMC_REG_TESTMODE (0x002C)
+    #define FLD_TESTM_PAT0 Fld(8,24,AC_FULLB3)//[31:24]
+#define DRAMC_REG_TEST2_0 (0x0038)
+    #define FLD_TEST2_PAT1 Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_TEST2_PAT0 Fld(8,16,AC_FULLB2)//[23:16]
+#define DRAMC_REG_TEST2_1 (0x003C)
+    #define FLD_R_DMROWTYPE Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_TEST2_BASE_32TO5 Fld(28,0,AC_MSKDW)//[27:0]
+#define DRAMC_REG_TEST2_2 (0x0040)
+    #define FLD_TEST2_OFF_32TO5 Fld(28,0,AC_MSKDW)//[27:0]
+#define DRAMC_REG_TEST2_3 (0x0044)
+    #define POS_TEST2_3_ADVREFEN 30
+    #define POS_TEST2_3_TESTAUDPAT 7
+        // bit0~3
+    #define MASK_TEST2_3_TESTCNT 0x0000000f
+    #define POS_TEST2_3_TESTCNT 0
+    #define FLD_ADVPREEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_ADVREFEN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_DMPGTIM Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_TRFC Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_PERBIT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_DQSUPDMODE Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_MANUDQSUPD Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_MANUDLLFRZ Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_DQDLYAUTO Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_DQSICALSTP Fld(3,8,AC_MSKB1)//[10:8]
+    #define FLD_TESTAUDPAT Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_DQSICALUPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_DQSICALEN Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_TESTCNT Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_TEST2_4 (0x0048)
+        // bit0~4
+    #define MASK_TEST2_4_TESTAUDINC 0x0000001f
+    #define POS_TEST2_4_TESTAUDINC 0
+    	//bit5
+    #define POS_TEST2_4_TEST2DISSCRAM 5
+        // bit8~12
+    #define MASK_TEST2_4_TESTAUDINIT 0x00001f00
+    #define POS_TEST2_4_TESTAUDINIT 8
+        // bit 14, 15
+    #define POS_TEST2_4_TESTAUDBITINV 14
+    #define POS_TEST2_4_TESTAUDMODE 15
+        //bit 16
+    #define POS_TEST2_4_TESTXTALKPAT 16
+    #define FLD_TZQCS Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_TESTXTALKPAT Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_TESTAUDMODE Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_TESTAUDBITINV Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_TESTAUDINIT Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_TEST2DISSCRAM Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_TESTAUDINC Fld(5,0,AC_MSKB0)//[4:0]
+#define DRAMC_REG_DDR2CTL (0x007C)
+    #define MASK_DDR2CTL_DATLAT 0x00000070
+    #define POS_DDR2CTL_DTALAT 4
+    #define POS_DDR2CTL_WOEN 3
+    #define FLD_RODTE Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_WLAT Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_FIXRODT Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RODT Fld(3,24,AC_MSKB3)//[26:24]
+    #define FLD_TWODT Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_TR2W Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_TRTP Fld(3,8,AC_MSKB1)//[10:8]
+    #define FLD_EROT Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_DATLAT Fld(3,4,AC_MSKB0)//[6:4]
+    #define FLD_WOEN Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_ROEN Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_DDR2EN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_FDIV2 Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_MRS (0x0088)
+    #define FLD_MRSOP Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_MRSBA Fld(3,13,AC_MSKB1)//[15:13]
+    #define FLD_MRSMA Fld(13,0,AC_MSKW10)//[12:0]
+#define DRAMC_REG_CLK1DELAY (0x008C)
+    #define FLD_CLK1DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_FIFOLEN1 Fld(1,1,AC_MSKB0)//[1:1]
+#define DRAMC_REG_IOCTL (0x0090)
+    #define FLD_SIOEN Fld(1,31,AC_MSKB3)//[31:31]
+#define DRAMC_REG_DQSIEN (0x0094)
+    #define FLD_DQS3IEN Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQS2IEN Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQS1IEN Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQS0IEN Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_DRVCTL0 (0x00B8)
+    #define MASK_DRVCTL0_DQDRVN 0x00000f00
+    #define MASK_DRVCTL0_DQDRVP 0x0000f000
+    #define MASK_DRVCTL0_DQSDRVN 0x0f000000
+    #define MASK_DRVCTL0_DQSDRVP 0xf0000000
+    #define POS_DRVCTL0_DQDRVN 8
+    #define POS_DRVCTL0_DQDRVP 12
+    #define POS_DRVCTL0_DQSDRVN 24
+    #define POS_DRVCTL0_DQSDRVP 28
+    #define FLD_DQSDRVP Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_DQSDRVN Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQSRTTBPJ Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_DSODTP Fld(3,20,AC_MSKB2)//[22:20]
+    #define FLD_DQSRTTBNJ Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_DSODTN Fld(3,16,AC_MSKB2)//[18:16]
+    #define FLD_DQDRVP Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQDRVN Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQRTTBPJ Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_DQODTP Fld(3,4,AC_MSKB0)//[6:4]
+    #define FLD_DQRTTBNJ Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_DQODTN Fld(3,0,AC_MSKB0)//[2:0]
+#define DRAMC_REG_DRVCTL1 (0x00BC)
+    #define MASK_DRVCTL1_CLKDRVN 0x0f000000
+    #define MASK_DRVCTL1_CLKDRVP 0xf0000000
+    #define POS_DRVCTL1_CLKDRVN 24
+    #define POS_DRVCTL1_CLKDRVP 28
+    #define FLD_CLKDRVP Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_CLKDRVN Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_CLKRTTBPJ Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_CKODTP Fld(3,20,AC_MSKB2)//[22:20]
+    #define FLD_CLKRTTBNJ Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_CKODTN Fld(3,16,AC_MSKB2)//[18:16]
+    #define FLD_CMDDRVP Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_CMDDRVN Fld(4,8,AC_MSKB1)//[11:8]
+#define DRAMC_REG_DLLSEL (0x00C0)
+    #define FLD_DLL67SEL Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_DLL45SEL Fld(2,28,AC_MSKB3)//[29:28]
+    #define FLD_DLL23SEL Fld(2,26,AC_MSKB3)//[27:26]
+    #define FLD_DLL01SEL Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_DLLCNTSEL Fld(2,22,AC_MSKB2)//[23:22]
+    #define FLD_AUTOKMODE Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_CMPEN Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_CMPCAL Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_CMPDRVNE Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_CMPDRVPE Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_CMPDRVP Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_CMPDRVN Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_CMODTPE Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_CMPODTP Fld(3,4,AC_MSKB0)//[6:4]
+    #define FLD_CMODTNE Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_CMPODTN Fld(3,0,AC_MSKB0)//[2:0]
+#define DRAMC_REG_TDSEL0 (0x00CC)
+    #define FLD_DQS3TDSEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQS2TDSEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_CMDTDSEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_CLKTDSEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_TDSEL1 (0x00D0)
+    #define FLD_DQS1TDSEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQS0TDSEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQB3TDSEL Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQB2TDSEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQB1TDSEL Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_DQB0TDSEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_MCKDLY (0x00D8)
+        //bit 23
+    #define POS_MCKDLY_FIXODT 23
+        //bit 12~15
+    #define POS_MCKDLY_FIXDQIEN 12
+    #define MASK_MCKDLY_FIXDQIEN 0x0000f000
+    #define FLD_MCKDLY_PINMUX Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_MCKDLY_16BITFULL Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_ODTREN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_DISDQIEN Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_FIXDQIEN Fld(4,12,AC_MSKB1)//[15:12]
+#define DRAMC_REG_DQSCTL0 (0x00DC)
+    #define FLD_DQS1CTL Fld(12,12,AC_MSKW21)//[23:12]
+    #define FLD_DQS0CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DRAMC_REG_DQSCTL1 (0x00E0)
+    #define POS_DQSCTL1_DQSIENMODE 28
+    #define MASK_DQSCTL1_DQSINCTL 0x07000000
+    #define POS_DQSCTL1_DQSINCTL 24
+    #define FLD_DQSIENMODE Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_DQSINCTL Fld(3,24,AC_MSKB3)//[26:24]
+    #define FLD_DQS3CTL Fld(12,12,AC_MSKW21)//[23:12]
+    #define FLD_DQS2CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DRAMC_REG_PADCTL4 (0x00E4)
+    #define POS_PADCTL4_DATLAT3 4
+    #define POS_PADCTL4_CKEFIXON 2
+    #define FLD_CLKPADCTL Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_CMDPADCTL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQSPADCTL Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_DQPADCTL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQSRTT Fld(3,12,AC_MSKB1)//[14:12]
+    #define FLD_DQRTT Fld(3,8,AC_MSKB1)//[10:8]
+    #define FLD_DDR3EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_ZQCSEN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_BC4OTF Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_DATLAT3 Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_CKEFIXOFF Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_CKEFIXON Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_GDDR3RST Fld(1,1,AC_MSKB0)//[1:1]
+#define DRAMC_REG_PADCTL5 (0x00E8)
+    #define FLD_DQS3RDSEL Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_DQS2RDSEL Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_DQS1RDSEL Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_DQS0RDSEL Fld(6,0,AC_MSKB0)//[5:0]
+#define DRAMC_REG_PADCTL6 (0x00EC)
+    #define FLD_DQ3RDSEL Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_DQ2RDSEL Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_DQ1RDSEL Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_DQ0RDSEL Fld(6,0,AC_MSKB0)//[5:0]
+#define DRAMC_REG_PHYCTL1 (0x00F0)
+    #define POS_PHYCTL1_PHYRST 28
+    #define FLD_DQ4BMUX Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_PHYRST Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_FIXDQSIEN Fld(1,24,AC_MSKB3)//[24:24]
+#define DRAMC_REG_GDDR3CTL1 (0x00F4)
+    #define POS_GDDR3CTL1_DQMSWAP 31
+    #define POS_GDDR3CTL1_RDATRST 25
+    #define POS_GDDR3CTL1_BKSWAP 20
+    #define FLD_R_DMDQMSWAP Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_PHYSYNCM Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RDATRST Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_GDDR3CTL1_8BKEN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_BKSWAP Fld(2,20,AC_MSKB2)//[21:20]
+#define DRAMC_REG_PADCTL7 (0x00F8)
+    #define FLD_DRAMOEN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_LBTEST Fld(1,8,AC_MSKB1)//[8:8]
+#define DRAMC_REG_MISCTL0 (0x00FC)
+    #define FLD_TXP Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_REFP_ARB_EN Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_REFA_ARB_EN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_PBC_ARB_EN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_ASYNCEN Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_INTLBT Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_MODE18V Fld(1,16,AC_MSKB2)//[16:16]
+#define DRAMC_REG_OCDK (0x0100)
+    #define FLD_WDATKEY7 Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_WDATKEY6 Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_R_DMWDATKEY64 Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_WDATITLV Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_WDATKEY5 Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_WDATKEY4 Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_DRVREF Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_WDATKEY3 Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_WDATKEY2 Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_WDATKEY1 Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_WDATKEY0 Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_INTREF_SEL Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_DRDELSWEN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_DRDELSWSEL Fld(3,9,AC_MSKB1)//[11:9]
+    #define FLD_AUTOCALDRV Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_AUTOKCNT Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_LBWDAT0 (0x0104)
+    #define FLD_LBWDATA0 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_LBWDAT1 (0x0108)
+    #define FLD_LBWDATA1 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_LBWDAT2 (0x010C)
+    #define FLD_LBWDATA2 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_RKCFG (0x0110)
+    #define POS_RKCFG_WDATKEY64 29	 //32-bit channel it is 0, for 16-bit or asym DRAM it is 1
+    #define FLD_RKSIZE Fld(3,24,AC_MSKB3)//[26:24]
+    #define FLD_XRTW2W Fld(2,18,AC_MSKB2)//[19:18]
+    #define FLD_XRTW2R Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_XRTR2W Fld(3,12,AC_MSKB1)//[14:12]
+    #define FLD_XRTR2R Fld(3,8,AC_MSKB1)//[10:8]
+    #define FLD_PBREFEN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_MRS2RK Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RKSWAP Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RKMODE Fld(3,0,AC_MSKB0)//[2:0]
+#define DRAMC_REG_CKPHDET (0x0114)
+    #define FLD_CKPHCNTEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_CKPHCHKCYC Fld(16,0,AC_FULLW10)//[15:0]
+#define DRAMC_REG_DQSGCTL (0x0124)
+    #define FLD_NEWDQSG_SEL Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_BYPASS_DMPAD_COM1 Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_BYPASS_DMPAD_COM0 Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_DMYPAD_RXSEL Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_DQSG_FINE_DLY_COM1 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQSG_FINE_DLY_COM0 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQSG_COARSE_DLY_COM1 Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_DQSG_COARSE_DLY_COM0 Fld(2,0,AC_MSKB0)//[1:0]
+#define DRAMC_REG_CLKENCTL (0x0130)
+    #define FLD_CLK1EN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_CLK0EN Fld(1,28,AC_MSKB3)//[28:28]
+#define DRAMC_REG_DQSGCTL1 (0x0140)
+    #define FLD_DQSIPRE1DLY Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQSIPOS1DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQSIPRE0DLY Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQSIPOS0DLY Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_158 (0x0158)
+#define DRAMC_REG_DQSGCTL2 (0x0144)
+    #define FLD_DQSIPRE3DLY Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQSIPOS3DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQSIPRE2DLY Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQSIPOS2DLY Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_ARBCTL0 (0x0168)
+    #define FLD_MAXPENDCNT Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_CMDDLY0 (0x01A8)
+    #define FLD_RA3DLY Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_RA2DLY Fld(5,16,AC_MSKB2)//[20:16]
+    #define FLD_RA1DLY Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_RA0DLY Fld(5,0,AC_MSKB0)//[4:0]
+#define DRAMC_REG_CMDDLY1 (0x01AC)
+    #define FLD_RA7DLY Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_RA6DLY Fld(5,16,AC_MSKB2)//[20:16]
+    #define FLD_RA5DLY Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_RA4DLY Fld(5,0,AC_MSKB0)//[4:0]
+#define DRAMC_REG_CMDDLY2 (0x01B0)
+    #define FLD_RA11DLY Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_RA10DLY Fld(5,16,AC_MSKB2)//[20:16]
+    #define FLD_RA9DLY Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_RA8DLY Fld(5,0,AC_MSKB0)//[4:0]
+#define DRAMC_REG_CMDDLY3 (0x01B4)
+    #define FLD_BA2DLY Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_BA1DLY Fld(5,16,AC_MSKB2)//[20:16]
+    #define FLD_BA0DLY Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_RA12DLY Fld(5,0,AC_MSKB0)//[4:0]
+#define DRAMC_REG_CMDDLY4 (0x01B8)
+    #define FLD_CASDLY Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_RASDLY Fld(5,16,AC_MSKB2)//[20:16]
+    #define FLD_CKEDLY Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_CSMONSEL Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_CSMONEN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_CSDLY Fld(5,0,AC_MSKB0)//[4:0]
+#define DRAMC_REG_CMDDLY5 (0x01BC)
+    #define FLD_CSXMONSEL Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_CSXMONEN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_OTDLY Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_RA13DLY Fld(5,16,AC_MSKB2)//[20:16]
+    #define FLD_WEDLY Fld(5,8,AC_MSKB1)//[12:8]
+#define DRAMC_REG_DQSCAL0 (0x01C0)
+    #define FLD_STBCALEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RA14DLY Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_RA15DLY Fld(5,16,AC_MSKB2)//[20:16]
+    #define FLD_DQSIENHLMTEN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_DQSIENHLMT Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQSIENLLMTEN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_DQSIENLLMT Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_DMMONITOR (0x01D8)
+    #define FLD_JMTRCNT Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_DSMONSEL Fld(10,4,AC_MSKW10)//[13:4]
+    #define FLD_BUSMONEN_SW Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_MONPAUSE_SW Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_JMTR_EN Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_DRAMC_PD_CTRL (0x01DC)
+    #define MASK_DRAMC_PD_CTRL_REFCNT_FR_CLK 0x00ff0000
+    #define FLD_MIOCKCTRLOFF Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_DCMEN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_REFFRERUN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_REFCNT_FR_CLK Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_TXREFCNT Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DCMDLYREF Fld(3,4,AC_MSKB0)//[6:4]
+#define DRAMC_REG_LPDDR2 (0x01E0)
+    #define POS_LPDDR2_ADRDECEN 31
+    #define FLD_ADRDECEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_SELO1ASO Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_DDRA14 Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_LPDDR2EN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_WDATRGO Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_FASTOE Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_DDRA15 Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_DDRCS1 Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_DDRODT Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_DDRCKE Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_DDRCS Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_DDRRAS Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_DDRCAS Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_DDRWE Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_DDRBA Fld(3,14,AC_MSKW21)//[16:14]
+    #define FLD_DDRA Fld(14,0,AC_MSKW10)//[13:0]
+#define DRAMC_REG_SPCMD (0x01E4)
+    #define FLD_PADRG_RDSEL Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_ZQCSCNT Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_CMPPD Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_DQSGCNTRST Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_DQSGCNTEN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_TCMDEN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_ZQCEN Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_AREFEN Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_PREAEN Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_MRREN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_MRWEN Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_ACTIM1 (0x01E8)
+    #define FLD_TRPAB Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_REFRCNT Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_TRFCPB Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_TRFC_BIT7_4 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_TRRD_BIT2 Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_TFAW_BIT4 Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_TRC_BIT4 Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_PERFCTL0 (0x01EC)
+    #define FLD_DISDMOEDIS Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_CS2RANK Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RWAGEEN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RWLLATEN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RWHPRIEN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RWOFOWNUM Fld(3,5,AC_MSKB0)//[7:5]
+    #define FLD_RWOFOEN Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_DUALSCHEN Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_AC_DERATING (0x01F0)
+    #define FLD_TRRD_DERATE Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_TRPAB_DERATE Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_TRP_DERATE Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_TRAS_DERATE Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_TRC_DERATE Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_TRCD_DERATE Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_ACDERATEEN Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_DQODLY1 (0x0200)
+    #define FLD_DQ7DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_DQ6DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ5DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_DQ4DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ3DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQ2DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ1DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_DQ0DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQODLY2 (0x0204)
+    #define FLD_DQ15DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_DQ14DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ13DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_DQ12DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ11DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQ10DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ9DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_DQ8DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQODLY3 (0x0208)
+    #define FLD_DQ23DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_DQ22DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ21DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_DQ20DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ19DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQ18DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ17DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_DQ16DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQODLY4 (0x020C)
+    #define FLD_DQ31DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_DQ30DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ29DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_DQ28DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ27DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_DQ26DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ25DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_DQ24DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQIDLY1 (0x0210)
+    #define FLD_DQ3DEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ2DEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ1DEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ0DEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQIDLY2 (0x0214)
+    #define FLD_DQ7DEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ6DEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ5DEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ4DEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQIDLY3 (0x0218)
+    #define FLD_DQ11DEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ10DEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ9DEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ8DEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQIDLY4 (0x021C)
+    #define FLD_DQ15DEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ14DEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ13DEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ12DEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQIDLY5 (0x0220)
+    #define FLD_DQ19DEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ18DEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ17DEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ16DEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQIDLY6 (0x0224)
+    #define FLD_DQ23DEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ22DEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ21DEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ20DEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQIDLY7 (0x0228)
+    #define FLD_DQ27DEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ26DEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ25DEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ24DEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_DQIDLY8 (0x022C)
+    #define FLD_DQ31DEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_DQ30DEL Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_DQ29DEL Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DQ28DEL Fld(4,0,AC_MSKB0)//[3:0]
+#define DRAMC_REG_R2R_PAGE_HIT_COUNTER (0x0280)
+    #define FLD_R2R_PAGE_HIT_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_R2R_PAGE_MISS_COUNTER (0x0284)
+    #define FLD_R2R_PAGE_MISS_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_R2R_INTERBANK_COUNTER (0x0288)
+    #define FLD_R2R_INTERBANK_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_R2W_PAGE_HIT_COUNTER (0x028C)
+    #define FLD_R2W_PAGE_HIT_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_R2W_PAGE_MISS_COUNTER (0x0290)
+    #define FLD_R2W_PAGE_MISS_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_R2W_INTERBANK_COUNTER (0x0294)
+    #define FLD_R2W_INTERBANK_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_W2R_PAGE_HIT_COUNTER (0x0298)
+    #define FLD_W2R_PAGE_HIT_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_W2R_PAGE_MISS_COUNTER (0x029C)
+    #define FLD_W2R_PAGE_MISS_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_W2R_INTERBANK_COUNTER (0x02A0)
+    #define FLD_W2R_INTERBANK_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_W2W_PAGE_HIT_COUNTER (0x02A4)
+    #define FLD_W2W_PAGE_HIT_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_W2W_PAGE_MISS_COUNTER (0x02A8)
+    #define FLD_W2W_PAGE_MISS_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_W2W_INTERBANK_COUNTER (0x02AC)
+    #define FLD_W2W_INTERBANK_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DRAMC_IDLE_COUNTER (0x02B0)
+    #define FLD_DRAMC_IDLE_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_FREERUN_26M_COUNTER (0x02B4)
+    #define FLD_FREERUN_26M_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_REFRESH_POP_COUNTER (0x02B8)
+    #define FLD_REFRESH_POP_COUNTER Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_JMETER_ST (0x02BC)
+    #define FLD_JMTR_DONE Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_ONES_CNT Fld(15,16,AC_MSKW32)//[30:16]
+    #define FLD_ZEROS_CNT Fld(15,0,AC_MSKW10)//[14:0]
+#define DRAMC_REG_DQ_CAL_MAX_0 (0x02C0)
+    #define FLD_DQ0_3_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQ0_2_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQ0_1_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQ0_0_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQ_CAL_MAX_1 (0x02C4)
+    #define FLD_DQ0_7_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQ0_6_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQ0_5_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQ0_4_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQ_CAL_MAX_2 (0x02C8)
+    #define FLD_DQ1_3_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQ1_2_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQ1_1_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQ1_0_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQ_CAL_MAX_3 (0x02CC)
+    #define FLD_DQ1_7_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQ1_6_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQ1_5_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQ1_4_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQ_CAL_MAX_4 (0x02D0)
+    #define FLD_DQ2_3_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQ2_2_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQ2_1_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQ2_0_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQ_CAL_MAX_5 (0x02D4)
+    #define FLD_DQ2_7_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQ2_6_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQ2_5_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQ2_4_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQ_CAL_MAX_6 (0x02D8)
+    #define FLD_DQ3_3_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQ3_2_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQ3_1_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQ3_0_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQ_CAL_MAX_7 (0x02DC)
+    #define FLD_DQ3_7_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQ3_6_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQ3_5_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQ3_4_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MIN_0 (0x02E0)
+    #define FLD_DQS0_3_DLY_MIN Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS0_2_DLY_MIN Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS0_1_DLY_MIN Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS0_0_DLY_MIN Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MIN_1 (0x02E4)
+    #define FLD_DQS0_7_DLY_MIN Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS0_6_DLY_MIN Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS0_5_DLY_MIN Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS0_4_DLY_MIN Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MIN_2 (0x02E8)
+    #define FLD_DQS1_3_DLY_MIN Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS1_2_DLY_MIN Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS1_1_DLY_MIN Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS1_0_DLY_MIN Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MIN_3 (0x02EC)
+    #define FLD_DQS1_7_DLY_MIN Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS1_6_DLY_MIN Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS1_5_DLY_MIN Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS1_4_DLY_MIN Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MIN_4 (0x02F0)
+    #define FLD_DQS2_3_DLY_MIN Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS2_2_DLY_MIN Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS2_1_DLY_MIN Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS2_0_DLY_MIN Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MIN_5 (0x02F4)
+    #define FLD_DQS2_7_DLY_MIN Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS2_6_DLY_MIN Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS2_5_DLY_MIN Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS2_4_DLY_MIN Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MIN_6 (0x02F8)
+    #define FLD_DQS3_3_DLY_MIN Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS3_2_DLY_MIN Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS3_1_DLY_MIN Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS3_0_DLY_MIN Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MIN_7 (0x02FC)
+    #define FLD_DQS3_7_DLY_MIN Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS3_6_DLY_MIN Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS3_5_DLY_MIN Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS3_4_DLY_MIN Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MAX_0 (0x0300)
+    #define FLD_DQS0_3_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS0_2_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS0_1_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS0_0_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MAX_1 (0x0304)
+    #define FLD_DQS0_7_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS0_6_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS0_5_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS0_4_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MAX_2 (0x0308)
+    #define FLD_DQS1_3_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS1_2_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS1_1_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS1_0_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MAX_3 (0x030C)
+    #define FLD_DQS1_7_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS1_6_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS1_5_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS1_4_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MAX_4 (0x0310)
+    #define FLD_DQS2_3_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS2_2_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS2_1_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS2_0_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MAX_5 (0x0314)
+    #define FLD_DQS2_7_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS2_6_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS2_5_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS2_4_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MAX_6 (0x0318)
+    #define FLD_DQS3_3_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS3_2_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS3_1_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS3_0_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQS_CAL_MAX_7 (0x031C)
+    #define FLD_DQS3_7_DLY_MAX Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS3_6_DLY_MAX Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS3_5_DLY_MAX Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS3_4_DLY_MAX Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_STBENERR_R (0x0320)
+    #define FLD_STBENERR_R Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_STBENERR_F (0x0324)
+    #define FLD_STBENERR_F Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_STBRCV_CNT (0x0328)
+    #define FLD_STBRCV_CNT Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_TOGGLE_CNT (0x032C)
+    #define FLD_TOGGLE_CNT Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DQS_ERR_CNT (0x0330)
+    #define FLD_DQS_ERR_CNT Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DQ_ERR_CNT (0x0334)
+    #define FLD_DQ_ERR_CNT Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_WLEV (0x0340)
+        //bit 8
+    #define POS_WRLEV_DQS_WLEV 8
+        //bit 1~4
+    #define POS_WRLEV_DQS_Bx_G 1
+    #define MASK_WRLEV_DQS_Bx_G 0x0000001e
+        //bit 0
+    #define POS_WRLEV_WRITE_LEVEL_EN 0
+    #define FLD_DQS_WLEV Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_R_DQS_B3_G Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_R_DQS_B2_G Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_R_DQS_B1_G Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_R_DQS_B0_G Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_R_WRITE_LEVEL_EN Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_DQ_SELPH (0x0344)
+    #define FLD_REG_TX_DLY_DQS_MCK Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_REG_TX_DLY_DQM_MCK Fld(3,25,AC_MSKB3)//[27:25]
+    #define FLD_REG_TX_DLY_DQ_MCK Fld(3,22,AC_MSKW32)//[24:22]
+    #define FLD_REG_TX_DLY_OEN_DQS_MCK Fld(3,19,AC_MSKB2)//[21:19]
+    #define FLD_REG_TX_DLY_OEN_DQ_MCK Fld(3,16,AC_MSKB2)//[18:16]
+    #define FLD_REG_DLY_DQS Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_REG_DLY_DQM Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_REG_DLY_DQ Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_REG_DLY_OEN_DQS Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_REG_DLY_OEN_DQM Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_REG_DLY_OEN_DQ Fld(2,0,AC_MSKB0)//[1:0]
+#define DRAMC_REG_DCBLNC_EYESCAN (0x0348)
+    #define POS_DCBLN_RSTBCNT_LATCH_EN 11
+    #define POS_DCBLN_RX_MIOCK_JIT_EN 2
+    #define POS_DCBLN_RX_EYE_SCAN_EN 1
+    #define POS_DCBLN_REG_SW_RST 0
+    #define FLD_R_DMBLNCINS Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_R_DMDCBLNCEN Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_R_RSTBCNT_LATCH_EN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_R_DMSTBENCMPEN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_R_DMSTBRCV Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_R_DMSTBENERRINTEN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_RX_DQ_EYE_SEL Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_RX_MIOCK_JIT_EN Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_RX_EYE_SCAN_EN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_REG_SW_RST Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_DQICAL0 (0x0350)
+    #define FLD_DQ3_DLY_MAX Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQ2_DLY_MAX Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQ1_DLY_MAX Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQ0_DLY_MAX Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_DQICAL1 (0x0354)
+    #define FLD_DQS3_DLY_MIN Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQS2_DLY_MIN Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQS1_DLY_MIN Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQS0_DLY_MIN Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_DQICAL2 (0x0358)
+    #define FLD_DQS3_DLY_MAX Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQS2_DLY_MAX Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQS1_DLY_MAX Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQS0_DLY_MAX Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_DQICAL3 (0x035C)
+    #define FLD_DQS3_DLY_AVG Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQS2_DLY_AVG Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQS1_DLY_AVG Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQS0_DLY_AVG Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_TOGGLE_CNT_2 (0x0360)
+    #define FLD_TOGGLE_CNT_2 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DQS_ERR_CNT_2 (0x0364)
+    #define FLD_DQS_ERR_CNT_2 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DQ_ERR_CNT_2 (0x0368)
+    #define FLD_DQ_ERR_CNT_2 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_CMP_ERR (0x0370)
+    #define FLD_CMP_ERR Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DQSIENDLY (0x0374)
+    #define FLD_DQS3IENDLY Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQS2IENDLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQS1IENDLY Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQS0IENDLY Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_DQ_O1 (0x0380)
+    #define FLD_DQ_O1 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DQ_O1_B (0x0384)
+    #define FLD_DQ_O1_B Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_STBEN0 (0x038C)
+    #define FLD_STBEN0 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_STBEN1 (0x0390)
+    #define FLD_STBEN1 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_STBEN2 (0x0394)
+    #define FLD_STBEN2 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_STBEN3 (0x0398)
+    #define FLD_STBEN3 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DQSDLY0 (0x03A0)
+    #define FLD_DQSDLY0_DEL3DLY Fld(7,24,AC_MSKB3)//[30:24]
+    #define FLD_DQSDLY0_DEL2DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_DQSDLY0_DEL1DLY Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_DQSDLY0_DEL0DLY Fld(7,0,AC_MSKB0)//[6:0]
+#define DRAMC_REG_SPCMDRESP (0x03B8)
+    #define POS_SPCMD_MRWEN 0
+    #define POS_SPCMD_DQSGCNTEN 8
+    #define POS_SPCMD_DQSGCNTRST 9
+    #define FLD_SREF_STATE Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_REFRESH_RATE Fld(3,8,AC_MSKB1)//[10:8]
+    #define FLD_TCMD_RESPONSE Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_ZQC_RESPONSE Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_AREF_RESPONSE Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_PREA_RESPONSE Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_MRR_RESPONSE Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_MRW_RESPONSE Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_IORGCNT (0x03BC)
+    #define FLD_IO_RING_COUNTER Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_IO_RING_COUNTER_K Fld(16,0,AC_FULLW10)//[15:0]
+#define DRAMC_REG_DQSGNWCNT0 (0x03C0)
+    #define FLD_DQS1R_GATING_COUNTER Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS1F_GATING_COUNTER Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS0R_GATING_COUNTER Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS0F_GATING_COUNTER Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQSGNWCNT1 (0x03C4)
+    #define FLD_DQS3R_GATING_COUNTER Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS3F_GATING_COUNTER Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS2R_GATING_COUNTER Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS2F_GATING_COUNTER Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQSGNWCNT2 (0x03C8)
+    #define FLD_DQS0R_PRE_GATING_COUNTER Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS0F_PRE_GATING_COUNTER Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS0R_POS_GATING_COUNTER Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS0F_POS_GATING_COUNTER Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQSGNWCNT3 (0x03CC)
+    #define FLD_DQS1R_PRE_GATING_COUNTER Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS1F_PRE_GATING_COUNTER Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS1R_POS_GATING_COUNTER Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS1F_POS_GATING_COUNTER Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQSGNWCNT4 (0x03D0)
+    #define FLD_DQS2R_PRE_GATING_COUNTER Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS2F_PRE_GATING_COUNTER Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS2R_POS_GATING_COUNTER Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS2F_POS_GATING_COUNTER Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQSGNWCNT5 (0x03D4)
+    #define FLD_DQS3R_PRE_GATING_COUNTER Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_DQS3F_PRE_GATING_COUNTER Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DQS3R_POS_GATING_COUNTER Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_DQS3F_POS_GATING_COUNTER Fld(8,0,AC_FULLB0)//[7:0]
+#define DRAMC_REG_DQSSAMPLEV (0x03D8)
+    #define FLD_CMPCNT Fld(6,4,AC_MSKW10)//[9:4]
+    #define FLD_SAMPLE_OUT1_DQS3 Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_SAMPLE_OUT1_DQS2 Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_SAMPLE_OUT1_DQS1 Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_SAMPLE_OUT1_DQS0 Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_DLLCNT0 (0x03DC)
+    #define FLD_CMPOT Fld(1,31,AC_MSKB3)//[31:31]
+#define DRAMC_REG_CKPHCNT (0x03E8)
+    #define FLD_CKPHCHKCNT Fld(16,0,AC_FULLW10)//[15:0]
+#define DRAMC_REG_TESTRPT (0x03FC)
+    #define POS_TESTRPT_DM_CMP_CPT 10
+    #define POS_TESTRPT_DM_CMP_ERR 14
+    #define FLD_CALI_DONE_MON Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_LB_CMP_FAIL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_DLE_CNT_OK Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_DM_CMP_ERR Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_DM_CMP_CPT Fld(1,10,AC_MSKB1)//[10:10]
+#define DRAMC_REG_DCBLNC_MA0 (0x0480)
+    #define FLD_DCBLNC_MA0 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA1 (0x0484)
+    #define FLD_DCBLNC_MA1 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA2 (0x0488)
+    #define FLD_DCBLNC_MA2 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA3 (0x048C)
+    #define FLD_DCBLNC_MA3 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA4 (0x0490)
+    #define FLD_DCBLNC_MA4 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA5 (0x0494)
+    #define FLD_DCBLNC_MA5 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA6 (0x0498)
+    #define FLD_DCBLNC_MA6 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA7 (0x049C)
+    #define FLD_DCBLNC_MA7 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA8 (0x04A0)
+    #define FLD_DCBLNC_MA8 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA9 (0x04A4)
+    #define FLD_DCBLNC_MA9 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA10 (0x04A8)
+    #define FLD_DCBLNC_MA10 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA11 (0x04AC)
+    #define FLD_DCBLNC_MA11 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA12 (0x04B0)
+    #define FLD_DCBLNC_MA12 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA13 (0x04B4)
+    #define FLD_DCBLNC_MA13 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA14 (0x04B8)
+    #define FLD_DCBLNC_MA14 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_MA15 (0x04BC)
+    #define FLD_DCBLNC_MA15 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_BA0 (0x04C0)
+    #define FLD_DCBLNC_BA0 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_BA1 (0x04C4)
+    #define FLD_DCBLNC_BA1 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_BA2 (0x04C8)
+    #define FLD_DCBLNC_BA2 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_RAS (0x04D0)
+    #define FLD_DCBLNC_RAS Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_CAS (0x04D4)
+    #define FLD_DCBLNC_CAS Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_WE (0x04D8)
+    #define FLD_DCBLNC_WE Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_CAS1 (0x04DC)
+    #define FLD_DCBLNC_CAS1 Fld(32,0,AC_FULLDW)//[31:0]
+#define DRAMC_REG_DCBLNC_CS (0x04E0)
+    #define FLD_DCBLNC_CS Fld(32,0,AC_FULLDW)//[31:0]
+/*************************************************************
+#define DRAMC_REG_MEMPLL0 (0x0600)
+    #define FLD_RG_MEMPLL_VCO_DIF_EN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_MEMPLL_CKCTRL Fld(2,29,AC_MSKB3)//[30:29]
+    #define FLD_RG_MEMPLL_ACCEN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_MEMPLL_FBKSEL Fld(2,26,AC_MSKB3)//[27:26]
+    #define FLD_RG_MEMPLL_DDSEN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_MEMPLL_FBDIV Fld(7,18,AC_MSKW32)//[24:18]
+    #define FLD_RG_MEMPLL_PREDIV Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_RG_MEMPLL_POSDIV Fld(2,14,AC_MSKB1)//[15:14]
+    #define FLD_RG_MEMPLL_VCO_DIV_SEL Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_MEMPLL_BLP Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_MEMPLL_BP Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_MEMPLL_BR Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEMPLL_BC Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL_DIVEN Fld(3,6,AC_MSKW10)//[8:6]
+    #define FLD_RG_MEMPLL_MONCK_EN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_MEMPLL_MONVC_EN Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_MEMPLL_MONREF_EN Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_MEMPLL_EN Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_MEMPLL_RST_DLY Fld(2,0,AC_MSKB0)//[1:0]
+#define DRAMC_REG_MEMPLL1 (0x0604)
+    #define FLD_RG_MEMPLL_DIV Fld(7,25,AC_MSKB3)//[31:25]
+    #define FLD_RG_MEMPLL_DIV_EN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_MEMPLL_RESERVE Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_MEMPLL_BIAS_LPF_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPLL_BIAS_EN Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_MEMPLL_REFCK_EN Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_MEMPLL_REFCK_SEL Fld(2,11,AC_MSKB1)//[12:11]
+    #define FLD_RG_MEMPLL_MON Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEMPLL_A2DCK_EN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL_DCK_TST_EN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_MEMPLL_TSTCK_EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_MEMPLL_TSTOD_AMP Fld(2,5,AC_MSKB0)//[6:5]
+    #define FLD_RG_MEMPLL_TSTOD_EN Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_MEMPLL_TST_EN Fld(1,3,AC_MSKB0)//[3:3]
+#define DRAMC_REG_MEMPLL2 (0x0608)
+    #define FLD_RG_MEMPLL_TST_SEL Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_MEMPLL_TOP_RESERVE Fld(9,16,AC_MSKW32)//[24:16]
+    #define FLD_RG_MEMPLL2_VCO_DIF_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPLL2_CKCTRL Fld(2,13,AC_MSKB1)//[14:13]
+    #define FLD_RG_MEMPLL2_ACCEN Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_MEMPLL2_FBKSEL Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_MEMPLL2_DDSEN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL2_FBDIV Fld(7,2,AC_MSKW10)//[8:2]
+    #define FLD_RG_MEMPLL2_PREDIV Fld(2,0,AC_MSKB0)//[1:0]
+#define DRAMC_REG_MEMPLL3 (0x060C)
+    #define FLD_RG_MEMPLL2_POSDIV Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_RG_MEMPLL2_VCO_DIV_SEL Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_MEMPLL2_BLP Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_MEMPLL2_BP Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_MEMPLL2_BR Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_MEMPLL2_BC Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_MEMPLL2_DIVEN Fld(3,22,AC_MSKW32)//[24:22]
+    #define FLD_RG_MEMPLL2_MONCK_EN Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_MEMPLL2_MONVC_EN Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_MEMPLL2_MONREF_EN Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_MEMPLL2_EN Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_MEMPLL2_RST_DLY Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_RG_MEMPLL2_M4PDIV Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_MEMPLL2_FB_MCK_SEL Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL2_RESERVE Fld(9,0,AC_MSKW10)//[8:0]
+#define DRAMC_REG_MEMPLL4 (0x0610)
+    #define FLD_RG_MEMPLL2_REF_DL Fld(5,27,AC_MSKB3)//[31:27]
+    #define FLD_RG_MEMPLL2_FB_DL Fld(5,22,AC_MSKW32)//[26:22]
+    #define FLD_RG_MEMPLL2_DL_RESERVE Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_MEMPLL3_VCO_DIF_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPLL3_CKCTRL Fld(2,13,AC_MSKB1)//[14:13]
+    #define FLD_RG_MEMPLL3_ACCEN Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_MEMPLL3_FBKSEL Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_MEMPLL3_DDSEN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL3_FBDIV Fld(7,2,AC_MSKW10)//[8:2]
+    #define FLD_RG_MEMPLL3_PREDIV Fld(2,0,AC_MSKB0)//[1:0]
+#define DRAMC_REG_MEMPLL5 (0x0614)
+    #define FLD_RG_MEMPLL3_POSDIV Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_RG_MEMPLL3_VCO_DIV_SEL Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_MEMPLL3_BLP Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_MEMPLL3_BP Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_MEMPLL3_BR Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_MEMPLL3_BC Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_MEMPLL3_DIVEN Fld(3,22,AC_MSKW32)//[24:22]
+    #define FLD_RG_MEMPLL3_MONCK_EN Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_MEMPLL3_MONVC_EN Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_MEMPLL3_MONREF_EN Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_MEMPLL3_EN Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_MEMPLL3_RST_DLY Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_RG_MEMPLL3_M4PDIV Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_MEMPLL3_FB_MCK_SEL Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL3_RESERVE Fld(9,0,AC_MSKW10)//[8:0]
+#define DRAMC_REG_MEMPLL6 (0x0618)
+    #define FLD_RG_MEMPLL3_REF_DL Fld(5,27,AC_MSKB3)//[31:27]
+    #define FLD_RG_MEMPLL3_FB_DL Fld(5,22,AC_MSKW32)//[26:22]
+    #define FLD_RG_MEMPLL3_DL_RESERVE Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_MEMPLL4_VCO_DIF_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPLL4_CKCTRL Fld(2,13,AC_MSKB1)//[14:13]
+    #define FLD_RG_MEMPLL4_ACCEN Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_MEMPLL4_FBKSEL Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_MEMPLL4_DDSEN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL4_FBDIV Fld(7,2,AC_MSKW10)//[8:2]
+    #define FLD_RG_MEMPLL4_PREDIV Fld(2,0,AC_MSKB0)//[1:0]
+#define DRAMC_REG_MEMPLL7 (0x061C)
+    #define FLD_RG_MEMPLL4_POSDIV Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_RG_MEMPLL4_VCO_DIV_SEL Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_MEMPLL4_BLP Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_MEMPLL4_BP Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_MEMPLL4_BR Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_MEMPLL4_BC Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_MEMPLL4_DIVEN Fld(3,22,AC_MSKW32)//[24:22]
+    #define FLD_RG_MEMPLL4_MONCK_EN Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_MEMPLL4_MONVC_EN Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_MEMPLL4_MONREF_EN Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_MEMPLL4_EN Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_MEMPLL4_RST_DLY Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_RG_MEMPLL4_M4PDIV Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_MEMPLL4_FB_MCK_SEL Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL4_RESERVE Fld(9,0,AC_MSKW10)//[8:0]
+#define DRAMC_REG_MEMPLL8 (0x0620)
+    #define FLD_RG_MEMPLL4_REF_DL Fld(5,27,AC_MSKB3)//[31:27]
+    #define FLD_RG_MEMPLL4_FB_DL Fld(5,22,AC_MSKW32)//[26:22]
+    #define FLD_RG_MEMPLL4_DL_RESERVE Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_DMSS_C Fld(3,13,AC_MSKB1)//[15:13]
+    #define FLD_RG_DMSS_CLK_PH_INV Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_DMSS_FIFO_START_MAN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_DMSS_FRAC_MUTE Fld(3,8,AC_MSKB1)//[10:8]
+    #define FLD_RG_DMSS_HF_EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_DMSS_LPF_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_DMSS_MONEN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_DMSS_NCPO_EN Fld(1,4,AC_MSKB0)//[4:4]
+#define DRAMC_REG_MEMPLL9 (0x0624)
+    #define FLD_RG_DMSS_PCW_NCPO Fld(31,1,AC_MSKDW)//[31:1]
+    #define FLD_RG_DMSS_PCW_NCPO_CHG Fld(1,0,AC_MSKB0)//[0:0]
+#define DRAMC_REG_MEMPLL10 (0x0628)
+    #define FLD_RG_DMSS_PI_PL_EN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_DMSS_POSTDIV2 Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_DMSS_PREDIV2 Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_DMSS_PWDB Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_DMSS_RSTB Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_DMSS_RST_SEL Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_DMSS_SEL_EXT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_DMSS_VADJ Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_DMSS_SSC_DELTA Fld(16,0,AC_FULLW10)//[15:0]
+#define DRAMC_REG_MEMPLL11 (0x062C)
+    #define FLD_RG_DMSS_SSC_PRD Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_DMSS_SSC_DELTA1 Fld(16,0,AC_FULLW10)//[15:0]
+#define DRAMC_REG_MEMPLL12 (0x0630)
+    #define FLD_RG_DMSS_SSC_EN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_DMSS_SSC_PHASE_INI Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_DMSS_SSC_TRI_EN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_DMSS_RESERVE Fld(8,16,AC_FULLB2)//[23:16]
+#define DRAMC_REG_MEMPLL_DIVIDER (0x0640)
+    #define FLD_R_DMPLL2_CLK_EN Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_R_DM1PLL_SYNC_MODE Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_R_DMBYP_PLL3 Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_R_DMBYP_PLL4 Fld(1,0,AC_MSKB0)//[0:0]
+*************************************************************/
+
+/*********************ddrphy register*********************/
+/*************************************************************
+//Page VDOIN_SYS
+#define DDRPHY_INT_COLLECT (0x0000)
+    #define FLD_INTR_SP1_MODE Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_SYS_00 (0x0400)
+    #define FLD_DATA_SYNC_AUTO Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_DATA_SYNC_DUAL Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_DATA_SYNC_HIGH Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_PIC_RST Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_SP1_RST Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_SP0_RST Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_VBI2_RST Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_SP2_RST Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_O_RST Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_PIP_RST Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_MAIN_RST Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_VBI_RST Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_CCH_RST Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_DVI_RST Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_HDMI_RST Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_HDTV_RST Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_TVD3D_RST Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_VSRC_RST Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_REG_RST Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_SYS_03 (0x040C)
+    #define FLD_INT_MASK_H Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_INT_MASK_L Fld(16,0,AC_FULLW10)//[15:0]
+#define DDRPHY_SYS_04 (0x0410)
+    #define FLD_TIMERA_TVD3D Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_DBG_MODE_EXT Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_DBG_MODE1 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_DBG_MODE0 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_SYS_05 (0x0414)
+    #define FLD_CSYNC_CLR Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_CSYNC_DET3 Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_CSYNC_DET2 Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_CSYNC_DET1 Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_CSYNC_DET0 Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_HSYNC_DET Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_VSYNC_DET Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_CVBS_CLR Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_SY2_DET Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_SY1_DET Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_SY0_DET Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_CVBS3_DET Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_CVBS2_DET Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_CVBS1_DET Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_CVBS0_DET Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_DUMP_ADY Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_ADC_SLICE Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_TEST_VGA_ADC Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_TEST_ADC_SEL Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_TVD3D_ADC_SEL Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_STA_SYS_04 (0x0130)
+    #define FLD_MAIN_DATA_SYNC_OVF Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_PIP_DATA_SYNC_OVF Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_VSYNC_ACTIVE Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_HSYNC_ACTIVE Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_CSYNC3_ACTIVE Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_CSYNC2_ACTIVE Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_CSYNC1_ACTIVE Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_CSYNC0_ACTIVE Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_SY2_ACTIVE Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_SY1_ACTIVE Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_SY0_ACTIVE Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_CVBS3_ACTIVE Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_CVBS2_ACTIVE Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_CVBS1_ACTIVE Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_CVBS0_ACTIVE Fld(1,0,AC_MSKB0)//[0:0]
+*************************************************************/
+//Page DDRPHY
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG0 (0x0000)
+    #define FLD_RG_A1_TX_ARDQ_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A1_TX_ARDQ_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A1_TX_ARDQ_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A1_TX_ARDQ_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG1 (0x0004)
+    #define FLD_RG_A1_TX_ARDQ_DMERODT Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_A1_TX_ARDQ_DMOECTL Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_A1_TX_ARDQ_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A1_TX_ARDQ_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A1_TX_ARDQ_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A1_TX_ARDQ_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A1_TX_ARDQ_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A1_TX_ARDQ0_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A1_TX_ARDQ1_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A1_TX_ARDQ2_DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A1_TX_ARDQ3_DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG2 (0x0008)
+    #define FLD_RG_A1_TX_ARDQ4_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A1_TX_ARDQ5_DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A1_TX_ARDQ6_DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_A1_TX_ARDQ7_DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A1_TX_ARDQ8_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A1_TX_ARDQ9_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A1_TX_ARDQ10_DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A1_TX_ARDQ11_DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG3 (0x000C)
+    #define FLD_RG_A1_TX_ARDQ12_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A1_TX_ARDQ13_DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A1_TX_ARDQ14_DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_A1_TX_ARDQ15_DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A1_TX_ARDQ0_REV Fld(2,14,AC_MSKB1)//[15:14]
+    #define FLD_RG_A1_TX_ARDQ1_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_A1_TX_ARDQ2_REV Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_A1_TX_ARDQ3_REV Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_RG_A1_TX_ARDQ4_REV Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_A1_TX_ARDQ5_REV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_A1_TX_ARDQ6_REV Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_A1_TX_ARDQ7_REV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG4 (0x0010)
+    #define FLD_RG_A1_TX_ARDQ8_REV Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_RG_A1_TX_ARDQ9_REV Fld(2,28,AC_MSKB3)//[29:28]
+    #define FLD_RG_A1_TX_ARDQ10_REV Fld(2,26,AC_MSKB3)//[27:26]
+    #define FLD_RG_A1_TX_ARDQ11_REV Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_RG_A1_TX_ARDQ12_REV Fld(2,22,AC_MSKB2)//[23:22]
+    #define FLD_RG_A1_TX_ARDQ13_REV Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_RG_A1_TX_ARDQ14_REV Fld(2,18,AC_MSKB2)//[19:18]
+    #define FLD_RG_A1_TX_ARDQ15_REV Fld(2,16,AC_MSKB2)//[17:16]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG5 (0x0014)
+    #define FLD_RG_A1_TX_ARDQM0_REV Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_A1_TX_ARDQM1_REV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_A1_TX_ARDQS0_REV Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_A1_TX_ARDQS1_REV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG6 (0x0018)
+    #define FLD_RG_A1_TX_ARDQS0_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A1_TX_ARDQS0_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A1_TX_ARDQS0_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A1_TX_ARDQS0_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG7 (0x001C)
+    #define FLD_RG_A1_TX_ARDQS0_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A1_TX_ARDQS0_DMERODT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_A1_TX_ARDQS0_DMOECTL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_A1_TX_ARDQS0_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A1_TX_ARDQS0_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A1_TX_ARDQS0_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A1_TX_ARDQS0_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A1_TX_ARDQS0_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A1_TX_ARDQS1_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A1_TX_ARDQS1_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG8 (0x0020)
+    #define FLD_RG_A1_TX_ARDQS1_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A1_TX_ARDQS1_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A1_TX_ARDQS1_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A1_TX_ARDQS1_DMERODT Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_A1_TX_ARDQS1_DMOECTL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_A1_TX_ARDQS1_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_A1_TX_ARDQS1_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_A1_TX_ARDQS1_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_A1_TX_ARDQS1_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_A1_TX_ARDQS1_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG9 (0x0024)
+    #define FLD_RG_A1_TX_ARDQM0_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A1_TX_ARDQM0_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A1_TX_ARDQM0_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A1_TX_ARDQM0_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG10 (0x0028)
+    #define FLD_RG_A1_TX_ARDQM0_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A1_TX_ARDQM0_DMERODT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_A1_TX_ARDQM0_DMOECTL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_A1_TX_ARDQM0_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A1_TX_ARDQM0_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A1_TX_ARDQM0_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A1_TX_ARDQM0_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A1_TX_ARDQM0_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A1_TX_ARDQM1_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A1_TX_ARDQM1_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG11 (0x002C)
+    #define FLD_RG_A1_TX_ARDQM1_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A1_TX_ARDQM1_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A1_TX_ARDQM1_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A1_TX_ARDQM1_DMERODT Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_A1_TX_ARDQM1_DMOECTL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_A1_TX_ARDQM1_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_A1_TX_ARDQM1_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_A1_TX_ARDQM1_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_A1_TX_ARDQM1_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_A1_TX_ARDQM1_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG12 (0x0030)
+    #define FLD_RG_A1_RX_DLY_DQ15_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_A1_RX_DLY_DQ14_SWEN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_A1_RX_DLY_DQ13_SWEN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_A1_RX_DLY_DQ12_SWEN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_A1_RX_DLY_DQ11_SWEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_A1_RX_DLY_DQ10_SWEN Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_A1_RX_DLY_DQ9_SWEN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_A1_RX_DLY_DQ8_SWEN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_A1_RX_DLY_DQ7_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A1_RX_DLY_DQ6_SWEN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A1_RX_DLY_DQ5_SWEN Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A1_RX_DLY_DQ4_SWEN Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A1_RX_DLY_DQ3_SWEN Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_A1_RX_DLY_DQ2_SWEN Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_A1_RX_DLY_DQ1_SWEN Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_A1_RX_DLY_DQ0_SWEN Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_A1_RX_DLY_DQ15 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A1_RX_DLY_DQ14 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A1_RX_DLY_DQ13 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A1_RX_DLY_DQ12 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG13 (0x0034)
+    #define FLD_RG_A1_RX_DLY_DQ11 Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A1_RX_DLY_DQ10 Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A1_RX_DLY_DQ9 Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_A1_RX_DLY_DQ8 Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A1_RX_DLY_DQ7 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A1_RX_DLY_DQ6 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A1_RX_DLY_DQ5 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A1_RX_DLY_DQ4 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG14 (0x0038)
+    #define FLD_RG_A1_RX_DLY_DQ3 Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A1_RX_DLY_DQ2 Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A1_RX_DLY_DQ1 Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_A1_RX_DLY_DQ0 Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A1_RX_DQS0_CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG15 (0x003C)
+    #define FLD_RG_A1_RX_DLY_DQS0_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_A1_RX_DLY_DQS0 Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_A1_RX_DLY_DQSIENSTB_0_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A1_RX_DLY_DQSIENSTB_0 Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_A1_RX_DQS1_CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG16 (0x0040)
+    #define FLD_RG_A1_RX_DLY_DQS1_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_A1_RX_DLY_DQS1 Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_A1_RX_DLY_DQSIENSTB_1_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A1_RX_DLY_DQSIENSTB_1 Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_A1_RX_REV Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A1_RX_LP_EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_A1_RX_BYTE_SWAP Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_A1_RX_STBENCMP_EN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_A1_RX_DQSIENMODE Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_A1_RX_FREQDIV2 Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_A1_RX_BL2 Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_A1_RX_BL4 Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_A1_RX_FIXDQSIEN Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG17 (0x0044)
+    #define FLD_RG_A1_RX_DQSI_SEL Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_A1_RX_DMDSMONEN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_A1_RX_VREF_OUT_SCAN_SEL Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_A1_RX_VREF_OP_SCAN_EN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_A1_RX_DMDSMON_SEL Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A1_RX_VREF_07V_SEL Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_A1_RX_VREF_OUT_SEL Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_A1_RX_STBEN_RESETB_SWEN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_A1_RX_STBEN_RESETB Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG18 (0x0048)
+    #define FLD_RG_A1_RX_VREF_GEN Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A1_RX_DQ_EYE_SEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A1_RX_DQS_EYE_SEL Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A1_RX_DQS_EYE_DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_A1_RX_EYE_SCAN_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_A1_RX_VREF_EN Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_A1_RX_VREF_OP_EN Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_A1_RX_DQS_MIOCK_SEL Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_A1_RX_DQ_EYE_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A1_RX_VREF_GEN_OUT Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A1_RX_VREF_GEN_SCAN Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG19 (0x004C)
+    #define FLD_RG_A1_RX_SMT_EN Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_A1_TX_CLK_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_A1_TX_CLK_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_A1_TX_CLK_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_A1_TX_CLK_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A1_TX_CLK_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG20 (0x0050)
+    #define FLD_RG_A1_TX_CLK_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A1_TX_CLK_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A1_TX_CLK_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A1_TX_CLK_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A1_TX_CLK_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A1_TX_CLK_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA0_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA0_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA0_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA0_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA0_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG21 (0x0054)
+    #define FLD_RG_TX_ARA0_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA0_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA0_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA0_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA0_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA1_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA1_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA1_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA1_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA1_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG22 (0x0058)
+    #define FLD_RG_TX_ARA1_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA1_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA1_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA1_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA1_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA2_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA2_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA2_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA2_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA2_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG23 (0x005C)
+    #define FLD_RG_TX_ARA2_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA2_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA2_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA2_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA2_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA3_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA3_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA3_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA3_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA3_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG24 (0x0060)
+    #define FLD_RG_TX_ARA3_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA3_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA3_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA3_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA3_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA4_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA4_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA4_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA4_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA4_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG25 (0x0064)
+    #define FLD_RG_TX_ARA4_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA4_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA4_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA4_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA4_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA5_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA5_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA5_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA5_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA5_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG26 (0x0068)
+    #define FLD_RG_TX_ARA5_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA5_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA5_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA5_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA5_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA6_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA6_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA6_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA6_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA6_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG27 (0x006C)
+    #define FLD_RG_TX_ARA6_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA6_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA6_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA6_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA6_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA7_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA7_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA7_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA7_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA7_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG28 (0x0070)
+    #define FLD_RG_TX_ARA7_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA7_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA7_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA7_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA7_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA8_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA8_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA8_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA8_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA8_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG29 (0x0074)
+    #define FLD_RG_TX_ARA8_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA8_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA8_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA8_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA8_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA9_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA9_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA9_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA9_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA9_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG30 (0x0078)
+    #define FLD_RG_TX_ARA9_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA9_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA9_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA9_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA9_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA10_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA10_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA10_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA10_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA10_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG31 (0x007C)
+    #define FLD_RG_TX_ARA10_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA10_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA10_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA10_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA10_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA11_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA11_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA11_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA11_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA11_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG32 (0x0080)
+    #define FLD_RG_TX_ARA11_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA11_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA11_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA11_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA11_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA12_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA12_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA12_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA12_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA12_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG33 (0x0084)
+    #define FLD_RG_TX_ARA12_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA12_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA12_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA12_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA12_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA13_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA13_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA13_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA13_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA13_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG34 (0x0088)
+    #define FLD_RG_TX_ARA13_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA13_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA13_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA13_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA13_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA14_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA14_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA14_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA14_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA14_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG35 (0x008C)
+    #define FLD_RG_TX_ARA14_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA14_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA14_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA14_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA14_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARCKE_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARCKE_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARCKE_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARCKE_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARCKE_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG36 (0x0090)
+    #define FLD_RG_TX_ARCKE_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARCKE_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARCKE_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARCKE_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARCKE_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARBA0_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARBA0_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARBA0_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARBA0_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARBA0_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG37 (0x0094)
+    #define FLD_RG_TX_ARBA0_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARBA0_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARBA0_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARBA0_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARBA0_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARBA1_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARBA1_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARBA1_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARBA1_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARBA1_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG38 (0x0098)
+    #define FLD_RG_TX_ARBA1_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARBA1_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARBA1_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARBA1_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARBA1_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARBA2_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARBA2_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARBA2_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARBA2_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARBA2_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG39 (0x009C)
+    #define FLD_RG_TX_ARBA2_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARBA2_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARBA2_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARBA2_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARBA2_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARA15_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARA15_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARA15_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARA15_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARA15_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG40 (0x00A0)
+    #define FLD_RG_TX_ARA15_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARA15_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARA15_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARA15_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARA15_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARCAS_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARCAS_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARCAS_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARCAS_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARCAS_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG41 (0x00A4)
+    #define FLD_RG_TX_ARCAS_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARCAS_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARCAS_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARCAS_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARCAS_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARRAS_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARRAS_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARRAS_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARRAS_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARRAS_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG42 (0x00A8)
+    #define FLD_RG_TX_ARRAS_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARRAS_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARRAS_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARRAS_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARRAS_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARODT_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARODT_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARODT_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARODT_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARODT_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG43 (0x00AC)
+    #define FLD_RG_TX_ARODT_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARODT_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARODT_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARODT_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARODT_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARCS_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARCS_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARCS_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARCS_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARCS_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG44 (0x00B0)
+    #define FLD_RG_TX_ARCS_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARCS_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARCS_CSBEN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_TX_ARCS_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARCS_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARCS_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARRESET_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARRESET_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARRESET_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARRESET_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARRESET_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG45 (0x00B4)
+    #define FLD_RG_TX_ARRESET_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARRESET_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARRESET_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARRESET_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARRESET_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_ARWE_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARWE_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_ARWE_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_ARWE_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_ARWE_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG46 (0x00B8)
+    #define FLD_RG_TX_ARWE_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARWE_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_ARWE_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_ARWE_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_ARWE_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_CMDACLK_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_CMDACLK_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_CMDACLK_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_CMDACLK_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_CMDACLK_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG47 (0x00BC)
+    #define FLD_RG_TX_CMDACLK_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_CMDACLK_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_CMDACLK_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_TX_CMDACLK_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_CMDACLK_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_CMDACLK_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_CMDA_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_CMDA_RSTB Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_AR_IES Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_TX_AR_SMT Fld(1,12,AC_MSKB1)//[12:12]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG48 (0x00C0)
+    #define FLD_RG_MEMPHYPLL_A1_PWD Fld(1,3,AC_MSKB0)//[3:3]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG49 (0x00C4)
+    #define FLD_RG_MEMPHYPLL_A1_FBDIV Fld(7,25,AC_MSKB3)//[31:25]
+    #define FLD_RG_MEMPHYPLL_A1_FBSEL Fld(2,23,AC_MSKW32)//[24:23]
+    #define FLD_RG_MEMPHYPLL_A1_POSDIV Fld(2,21,AC_MSKB2)//[22:21]
+    #define FLD_RG_MEMPHYPLL_A1_CKCTRL Fld(2,19,AC_MSKB2)//[20:19]
+    #define FLD_RG_MEMPHYPLL_A1_PREDIV Fld(2,17,AC_MSKB2)//[18:17]
+    #define FLD_RG_MEMPHYPLL_A1_ACCEN Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_MEMPHYPLL_A1_DIVEN Fld(3,13,AC_MSKB1)//[15:13]
+    #define FLD_RG_MEMPHYPLL_A1_BIR Fld(4,9,AC_MSKB1)//[12:9]
+    #define FLD_RG_MEMPHYPLL_A1_BR Fld(3,6,AC_MSKW10)//[8:6]
+    #define FLD_RG_MEMPHYPLL_A1_BC Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_MEMPHYPLL_A1_BIC Fld(3,1,AC_MSKB0)//[3:1]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG50 (0x00C8)
+    #define FLD_RG_MEMPHYPLL_A1_BP Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_MEMPHYPLL_A1_VODEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_MEMPHYPLL_A1_V11EN Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_MEMPHYPLL_A1_FPEN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_MEMPHYPLL_A1_DDSEN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_MEMPHYPLL_A1_BAND Fld(6,18,AC_MSKB2)//[23:18]
+    #define FLD_RG_MEMPHYPLL_A1_AUTOK_VCO Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_MEMPHYPLL_A1_AUTOK_LOAD Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_MEMPHYPLL_A1_LOAD_RSTB Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPHYPLL_A1_MONEN Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_MEMPHYPLL_A1_MONCKEN Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_MEMPHYPLL_A1_FMEN Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_MEMPHYPLL_A1_DETEN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_MEMPHYPLL_A1_BIAS_RST Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEMPHYPLL_A1_BIAS_PWD Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPHYPLL_A1_REV Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG51 (0x00CC)
+    #define FLD_RG_MEMPHYPLL_A1_EXT_FBKCK_SEL Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_MEMPHYPLL_A1_REF_DL Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_RG_MEMPHYPLL_A1_FBK_DL Fld(5,0,AC_MSKB0)//[4:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG52 (0x00D0)
+    #define FLD_RG_PI_A1_DQA Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_PI_A1_PBYTEA Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_PI_A1_DQB Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_RG_PI_A1_PBYTEB Fld(7,0,AC_MSKB0)//[6:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG53 (0x00D4)
+    #define FLD_RG_PI_A1_FB Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_PI_A1_CMD Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_PI_A1_CK Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_RG_PI_A1_DQCK Fld(7,0,AC_MSKB0)//[6:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG54 (0x00D8)
+    #define FLD_RG_PI_A1_CAP_SEL Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_PI_A1_BYPASS Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_PI_A1_EN Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_PI_A1_PHJUMP_EN Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_PI_A1_PHJUMP_SER_BYPASS Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_PI_A1_PHJUMP_CKSEL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_PI_A1_PHJUMP_CKDIV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_PI_A1_PBYTEA_SER Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_PI_A1_PBYTEB_SER Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_PI_A1_DQA_SER Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_PI_A1_DQB_SER Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_PI_A1_SET_UPDN Fld(3,5,AC_MSKB0)//[7:5]
+    #define FLD_RG_MEMPHYPLL_A1_TEST_EN Fld(1,4,AC_MSKB0)//[4:4]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG55 (0x00DC)
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG56 (0x00E0)
+    #define FLD_RG_PHYPLL_A1_TOP_REV Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_TX_IMPA_ODT_NDRV_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_TX_IMPA_ODT_PDRV_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG57 (0x00E4)
+    #define FLD_RG_TX_IMPA_ODT_CAL_EN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_TX_IMPA_ODT_PUCMP_EN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_TX_IMPA_OCD_NDRV_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_TX_IMPA_OCD_PDRV_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG58 (0x00E8)
+    #define FLD_RG_TX_IMPA_OCD_CAL_EN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_TX_IMPA_OCD_PUCMP_EN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_MEM_CMDA_TST_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEM_CMDA_TST_SEL Fld(3,12,AC_MSKB1)//[14:12]
+    #define FLD_RG_MEM_CMDA_TSTOD_EN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_MEM_CMDA_A2DCK_EN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEM_CMDA_TSTOD_AMP Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_RG_TX_IMPA_VREFSEL Fld(1,7,AC_MSKB0)//[7:7]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG59 (0x00EC)
+    #define FLD_RG_TX_ARCSD_DMERODT Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_TX_ARCSD_DMOECTL Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_TX_ARCSD_REV Fld(2,5,AC_MSKB0)//[6:5]
+    #define FLD_RG_TX_ARCSD_DLY Fld(4,1,AC_MSKB0)//[4:1]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_A1_CFG60 (0x00F0)
+    #define FLD_RG_TX_ARCSD_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_ARCSD_POCD_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_TX_ARCSD_DOE_DIS Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_ARCSD_R75KPD Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_TX_ARCSD_WL Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_TX_ARCSD_SR Fld(4,8,AC_MSKB1)//[11:8]
+#define DDRPHY_RGS_INT_CMD_DQ2BYTE_A1_CFG0 (0x00F4)
+    #define FLD_RGS_MEMPHYPLL_A1_VCO_STATE Fld(6,26,AC_MSKB3)//[31:26]
+    #define FLD_RGS_MEMPHYPLL_A1_VCOCAL_CPLT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RGS_MEMPHYPLL_A1_VCOCAL_FAIL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RGS_MEMPHYPLL_A1_DLINE_CAL Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RGS_MEMPHYPLL_A1_NO_OSC_FLAG Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RGS_TX_ODT_IMPCALOUTA Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RGS_TX_OCD_IMPCALOUTA Fld(1,20,AC_MSKB2)//[20:20]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG0 (0x0200)
+    #define FLD_RG_A2_TX_ARDQ_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A2_TX_ARDQ_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A2_TX_ARDQ_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A2_TX_ARDQ_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG1 (0x0204)
+    #define FLD_RG_A2_TX_ARDQ_DMERODT Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_A2_TX_ARDQ_DMOECTL Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_A2_TX_ARDQ_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A2_TX_ARDQ_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A2_TX_ARDQ_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A2_TX_ARDQ_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A2_TX_ARDQ_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A2_TX_ARDQ16_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A2_TX_ARDQ17_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A2_TX_ARDQ18_DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A2_TX_ARDQ19_DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG2 (0x0208)
+    #define FLD_RG_A2_TX_ARDQ20_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A2_TX_ARDQ21_DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A2_TX_ARDQ22_DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_A2_TX_ARDQ23_DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A2_TX_ARDQ24_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A2_TX_ARDQ25_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A2_TX_ARDQ26_DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A2_TX_ARDQ27_DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG3 (0x020C)
+    #define FLD_RG_A2_TX_ARDQ28_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A2_TX_ARDQ29_DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A2_TX_ARDQ30_DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_A2_TX_ARDQ31_DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A2_TX_ARDQ16_REV Fld(2,14,AC_MSKB1)//[15:14]
+    #define FLD_RG_A2_TX_ARDQ17_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_A2_TX_ARDQ18_REV Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_A2_TX_ARDQ19_REV Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_RG_A2_TX_ARDQ20_REV Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_A2_TX_ARDQ21_REV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_A2_TX_ARDQ22_REV Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_A2_TX_ARDQ23_REV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG4 (0x0210)
+    #define FLD_RG_A2_TX_ARDQ24_REV Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_RG_A2_TX_ARDQ25_REV Fld(2,28,AC_MSKB3)//[29:28]
+    #define FLD_RG_A2_TX_ARDQ26_REV Fld(2,26,AC_MSKB3)//[27:26]
+    #define FLD_RG_A2_TX_ARDQ27_REV Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_RG_A2_TX_ARDQ28_REV Fld(2,22,AC_MSKB2)//[23:22]
+    #define FLD_RG_A2_TX_ARDQ29_REV Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_RG_A2_TX_ARDQ30_REV Fld(2,18,AC_MSKB2)//[19:18]
+    #define FLD_RG_A2_TX_ARDQ31_REV Fld(2,16,AC_MSKB2)//[17:16]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG5 (0x0214)
+    #define FLD_RG_A2_TX_ARDQM2_REV Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_A2_TX_ARDQM3_REV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_A2_TX_ARDQS2_REV Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_A2_TX_ARDQS3_REV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG6 (0x0218)
+    #define FLD_RG_A2_TX_ARDQS2_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A2_TX_ARDQS2_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A2_TX_ARDQS2_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A2_TX_ARDQS2_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG7 (0x021C)
+    #define FLD_RG_A2_TX_ARDQS2_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A2_TX_ARDQS2_DMERODT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_A2_TX_ARDQS2_DMOECTL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_A2_TX_ARDQS2_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A2_TX_ARDQS2_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A2_TX_ARDQS2_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A2_TX_ARDQS2_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A2_TX_ARDQS2_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A2_TX_ARDQS3_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A2_TX_ARDQS3_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG8 (0x0220)
+    #define FLD_RG_A2_TX_ARDQS3_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A2_TX_ARDQS3_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A2_TX_ARDQS3_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A2_TX_ARDQS3_DMERODT Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_A2_TX_ARDQS3_DMOECTL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_A2_TX_ARDQS3_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_A2_TX_ARDQS3_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_A2_TX_ARDQS3_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_A2_TX_ARDQS3_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_A2_TX_ARDQS3_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG9 (0x0224)
+    #define FLD_RG_A2_TX_ARDQM2_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A2_TX_ARDQM2_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A2_TX_ARDQM2_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A2_TX_ARDQM2_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG10 (0x0228)
+    #define FLD_RG_A2_TX_ARDQM2_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A2_TX_ARDQM2_DMERODT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_A2_TX_ARDQM2_DMOECTL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_A2_TX_ARDQM2_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A2_TX_ARDQM2_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A2_TX_ARDQM2_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A2_TX_ARDQM2_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A2_TX_ARDQM2_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A2_TX_ARDQM3_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A2_TX_ARDQM3_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG11 (0x022C)
+    #define FLD_RG_A2_TX_ARDQM3_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A2_TX_ARDQM3_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_A2_TX_ARDQM3_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A2_TX_ARDQM3_DMERODT Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_A2_TX_ARDQM3_DMOECTL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_A2_TX_ARDQM3_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_A2_TX_ARDQM3_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_A2_TX_ARDQM3_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_A2_TX_ARDQM3_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_A2_TX_ARDQM3_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG12 (0x0230)
+    #define FLD_RG_A2_RX_DLY_DQ31_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_A2_RX_DLY_DQ30_SWEN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_A2_RX_DLY_DQ29_SWEN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_A2_RX_DLY_DQ28_SWEN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_A2_RX_DLY_DQ27_SWEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_A2_RX_DLY_DQ26_SWEN Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_A2_RX_DLY_DQ25_SWEN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_A2_RX_DLY_DQ24_SWEN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_A2_RX_DLY_DQ23_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A2_RX_DLY_DQ22_SWEN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A2_RX_DLY_DQ21_SWEN Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A2_RX_DLY_DQ20_SWEN Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A2_RX_DLY_DQ19_SWEN Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_A2_RX_DLY_DQ18_SWEN Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_A2_RX_DLY_DQ17_SWEN Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_A2_RX_DLY_DQ16_SWEN Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_A2_RX_DLY_DQ31 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A2_RX_DLY_DQ30 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A2_RX_DLY_DQ29 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A2_RX_DLY_DQ28 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG13 (0x0234)
+    #define FLD_RG_A2_RX_DLY_DQ27 Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A2_RX_DLY_DQ26 Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A2_RX_DLY_DQ25 Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_A2_RX_DLY_DQ24 Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A2_RX_DLY_DQ23 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_A2_RX_DLY_DQ22 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A2_RX_DLY_DQ21 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A2_RX_DLY_DQ20 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG14 (0x0238)
+    #define FLD_RG_A2_RX_DLY_DQ19 Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A2_RX_DLY_DQ18 Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A2_RX_DLY_DQ17 Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_A2_RX_DLY_DQ16 Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_A2_RX_DQS2_CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG15 (0x023C)
+    #define FLD_RG_A2_RX_DLY_DQS2_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_A2_RX_DLY_DQS2 Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_A2_RX_DLY_DQSIENSTB_2_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A2_RX_DLY_DQSIENSTB_2 Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_A2_RX_DQS3_CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG16 (0x0240)
+    #define FLD_RG_A2_RX_DLY_DQS3_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_A2_RX_DLY_DQS3 Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_A2_RX_DLY_DQSIENSTB_3_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A2_RX_DLY_DQSIENSTB_3 Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_A2_RX_REV Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_A2_RX_LP_EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_A2_RX_BYTE_SWAP Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_A2_RX_STBENCMP_EN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_A2_RX_DQSIENMODE Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_A2_RX_FREQDIV2 Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_A2_RX_BL2 Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_A2_RX_BL4 Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_A2_RX_FIXDQSIEN Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG17 (0x0244)
+    #define FLD_RG_A2_RX_DQSI_SEL Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_A2_RX_DMDSMONEN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_A2_RX_VREF_OUT_SCAN_SEL Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_A2_RX_VREF_OP_SCAN_EN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_A2_RX_DMDSMON_SEL Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A2_RX_VREF_07V_SEL Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_A2_RX_VREF_OUT_SEL Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_A2_RX_STBEN_RESETB_SWEN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_A2_RX_STBEN_RESETB Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG18 (0x0248)
+    #define FLD_RG_A2_RX_VREF_GEN Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_A2_RX_DQ_EYE_SEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_A2_RX_DQS_EYE_SEL Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A2_RX_DQS_EYE_DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_A2_RX_EYE_SCAN_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_A2_RX_VREF_EN Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_A2_RX_VREF_OP_EN Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_A2_RX_DQS_MIOCK_SEL Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_A2_RX_DQ_EYE_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A2_RX_VREF_GEN_OUT Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_A2_RX_VREF_GEN_SCAN Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG19 (0x024C)
+    #define FLD_RG_A2_RX_SMT_EN Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_A2_TX_CLK_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_A2_TX_CLK_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_A2_TX_CLK_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_A2_TX_CLK_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_A2_TX_CLK_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG20 (0x0250)
+    #define FLD_RG_A2_TX_CLK_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_A2_TX_CLK_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_A2_TX_CLK_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_A2_TX_CLK_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_A2_TX_CLK_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_A2_TX_CLK_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B1_TX_BRDQ_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B1_TX_BRDQ_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG21 (0x0254)
+    #define FLD_RG_B1_TX_BRDQ_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B1_TX_BRDQ_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B1_TX_BRDQ_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_B1_TX_BRDQ_DMOECTL Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_B1_TX_BRDQ_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_B1_TX_BRDQ_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_B1_TX_BRDQ_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_B1_TX_BRDQ_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_B1_TX_BRDQ_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG22 (0x0258)
+    #define FLD_RG_B1_TX_BRDQ0_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B1_TX_BRDQ1_DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B1_TX_BRDQ2_DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_B1_TX_BRDQ3_DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B1_TX_BRDQ4_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B1_TX_BRDQ5_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B1_TX_BRDQ6_DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B1_TX_BRDQ7_DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG23 (0x025C)
+    #define FLD_RG_B1_TX_BRDQ8_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B1_TX_BRDQ9_DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B1_TX_BRDQ10_DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_B1_TX_BRDQ11_DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B1_TX_BRDQ12_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B1_TX_BRDQ13_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B1_TX_BRDQ14_DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B1_TX_BRDQ15_DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG24 (0x0260)
+    #define FLD_RG_B1_TX_BRDQ0_REV Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_RG_B1_TX_BRDQ1_REV Fld(2,28,AC_MSKB3)//[29:28]
+    #define FLD_RG_B1_TX_BRDQ2_REV Fld(2,26,AC_MSKB3)//[27:26]
+    #define FLD_RG_B1_TX_BRDQ3_REV Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_RG_B1_TX_BRDQ4_REV Fld(2,22,AC_MSKB2)//[23:22]
+    #define FLD_RG_B1_TX_BRDQ5_REV Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_RG_B1_TX_BRDQ6_REV Fld(2,18,AC_MSKB2)//[19:18]
+    #define FLD_RG_B1_TX_BRDQ7_REV Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_RG_B1_TX_BRDQ8_REV Fld(2,14,AC_MSKB1)//[15:14]
+    #define FLD_RG_B1_TX_BRDQ9_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_B1_TX_BRDQ10_REV Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_B1_TX_BRDQ11_REV Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_RG_B1_TX_BRDQ12_REV Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_B1_TX_BRDQ13_REV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_B1_TX_BRDQ14_REV Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_B1_TX_BRDQ15_REV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG25 (0x0264)
+    #define FLD_RG_B1_TX_BRDQM0_REV Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_B1_TX_BRDQM1_REV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_B1_TX_BRDQS0_REV Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_B1_TX_BRDQS1_REV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG26 (0x0268)
+    #define FLD_RG_B1_TX_BRDQS0_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B1_TX_BRDQS0_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B1_TX_BRDQS0_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B1_TX_BRDQS0_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG27 (0x026C)
+    #define FLD_RG_B1_TX_BRDQS0_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B1_TX_BRDQS0_DMERODT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_B1_TX_BRDQS0_DMOECTL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_B1_TX_BRDQS0_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B1_TX_BRDQS0_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B1_TX_BRDQS0_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B1_TX_BRDQS0_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B1_TX_BRDQS0_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B1_TX_BRDQS1_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B1_TX_BRDQS1_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG28 (0x0270)
+    #define FLD_RG_B1_TX_BRDQS1_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B1_TX_BRDQS1_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B1_TX_BRDQS1_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B1_TX_BRDQS1_DMERODT Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_B1_TX_BRDQS1_DMOECTL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_B1_TX_BRDQS1_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_B1_TX_BRDQS1_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_B1_TX_BRDQS1_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_B1_TX_BRDQS1_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_B1_TX_BRDQS1_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG29 (0x0274)
+    #define FLD_RG_B1_TX_BRDQM0_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B1_TX_BRDQM0_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B1_TX_BRDQM0_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B1_TX_BRDQM0_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG30 (0x0278)
+    #define FLD_RG_B1_TX_BRDQM0_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B1_TX_BRDQM0_DMERODT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_B1_TX_BRDQM0_DMOECTL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_B1_TX_BRDQM0_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B1_TX_BRDQM0_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B1_TX_BRDQM0_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B1_TX_BRDQM0_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B1_TX_BRDQM0_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B1_TX_BRDQM1_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B1_TX_BRDQM1_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG31 (0x027C)
+    #define FLD_RG_B1_TX_BRDQM1_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B1_TX_BRDQM1_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B1_TX_BRDQM1_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B1_TX_BRDQM1_DMERODT Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_B1_TX_BRDQM1_DMOECTL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_B1_TX_BRDQM1_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_B1_TX_BRDQM1_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_B1_TX_BRDQM1_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_B1_TX_BRDQM1_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_B1_TX_BRDQM1_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG32 (0x0280)
+    #define FLD_RG_B1_RX_DLY_DQ15_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_B1_RX_DLY_DQ14_SWEN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_B1_RX_DLY_DQ13_SWEN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_B1_RX_DLY_DQ12_SWEN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_B1_RX_DLY_DQ11_SWEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_B1_RX_DLY_DQ10_SWEN Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_B1_RX_DLY_DQ9_SWEN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_B1_RX_DLY_DQ8_SWEN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_B1_RX_DLY_DQ7_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B1_RX_DLY_DQ6_SWEN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B1_RX_DLY_DQ5_SWEN Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B1_RX_DLY_DQ4_SWEN Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B1_RX_DLY_DQ3_SWEN Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_B1_RX_DLY_DQ2_SWEN Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_B1_RX_DLY_DQ1_SWEN Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_B1_RX_DLY_DQ0_SWEN Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_B1_RX_DLY_DQ15 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B1_RX_DLY_DQ14 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B1_RX_DLY_DQ13 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B1_RX_DLY_DQ12 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG33 (0x0284)
+    #define FLD_RG_B1_RX_DLY_DQ11 Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B1_RX_DLY_DQ10 Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B1_RX_DLY_DQ9 Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_B1_RX_DLY_DQ8 Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B1_RX_DLY_DQ7 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B1_RX_DLY_DQ6 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B1_RX_DLY_DQ5 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B1_RX_DLY_DQ4 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG34 (0x0288)
+    #define FLD_RG_B1_RX_DLY_DQ3 Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B1_RX_DLY_DQ2 Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B1_RX_DLY_DQ1 Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_B1_RX_DLY_DQ0 Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B1_RX_DQS0_CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG35 (0x028C)
+    #define FLD_RG_B1_RX_DLY_DQS0_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_B1_RX_DLY_DQS0 Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_B1_RX_DLY_DQSIENSTB_0_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B1_RX_DLY_DQSIENSTB_0 Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_B1_RX_DQS1_CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG36 (0x0290)
+    #define FLD_RG_B1_RX_DLY_DQS1_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_B1_RX_DLY_DQS1 Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_B1_RX_DLY_DQSIENSTB_1_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B1_RX_DLY_DQSIENSTB_1 Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_B1_RX_REV Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B1_RX_LP_EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_B1_RX_BYTE_SWAP Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_B1_RX_STBENCMP_EN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_B1_RX_DQSIENMODE Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_B1_RX_FREQDIV2 Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_B1_RX_BL2 Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_B1_RX_BL4 Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_B1_RX_FIXDQSIEN Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG37 (0x0294)
+    #define FLD_RG_B1_RX_DQSI_SEL Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_B1_RX_DMDSMONEN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_B1_RX_VREF_OUT_SCAN_SEL Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_B1_RX_VREF_OP_SCAN_EN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_B1_RX_DMDSMON_SEL Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B1_RX_VREF_07V_SEL Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_B1_RX_VREF_OUT_SEL Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_B1_RX_STBEN_RESETB_SWEN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_B1_RX_STBEN_RESETB Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG38 (0x0298)
+    #define FLD_RG_B1_RX_VREF_GEN Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B1_RX_DQ_EYE_SEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B1_RX_DQS_EYE_SEL Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B1_RX_DQS_EYE_DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_B1_RX_EYE_SCAN_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_B1_RX_VREF_EN Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_B1_RX_VREF_OP_EN Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_B1_RX_DQS_MIOCK_SEL Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_B1_RX_DQ_EYE_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B1_RX_VREF_GEN_OUT Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B1_RX_VREF_GEN_SCAN Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG39 (0x029C)
+    #define FLD_RG_B1_RX_SMT_EN Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_B1_TX_CLK_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_B1_TX_CLK_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_B1_TX_CLK_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_B1_TX_CLK_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B1_TX_CLK_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG40 (0x02A0)
+    #define FLD_RG_B1_TX_CLK_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B1_TX_CLK_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B1_TX_CLK_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B1_TX_CLK_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B1_TX_CLK_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B1_TX_CLK_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_MEMPLL_PWD Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPLL_FBDIV Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_RG_MEMPLL_FBSEL Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_MEMPLL_POSDIV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_MEMPLL_CKCTRL Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_MEMPLL_PREDIV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG41 (0x02A4)
+    #define FLD_RG_MEMPLL_ACCEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_MEMPLL_DIVEN Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_RG_MEMPLL_BIR Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_MEMPLL_BR Fld(3,21,AC_MSKB2)//[23:21]
+    #define FLD_RG_MEMPLL_BC Fld(2,19,AC_MSKB2)//[20:19]
+    #define FLD_RG_MEMPLL_BIC Fld(3,16,AC_MSKB2)//[18:16]
+    #define FLD_RG_MEMPLL_BP Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_MEMPLL_VODEN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_MEMPLL_V11EN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEMPLL_FPEN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPLL_DDSEN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_MEMPLL_BAND Fld(6,2,AC_MSKB0)//[7:2]
+    #define FLD_RG_MEMPLL_AUTOK_VCO Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_MEMPLL_AUTOK_LOAD Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG42 (0x02A8)
+    #define FLD_RG_MEMPLL_LOAD_RSTB Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_MEMPLL_MONEN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_MEMPLL_MONCKEN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_MEMPLL_FMEN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_MEMPLL_DETEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_MEMPLL_BIAS_RST Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_MEMPLL_BIAS_PWD Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_MEMPLL_REV Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_MEMPLL_DDS_PWDB Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPLL_PCW_NCPO Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_RG_MEMPLL_NCPO_EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_MEMPLL_DDS_RSTB Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_MEMPLL_PCW_NCPO_CHG Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_MEMPLL_FIFO_START_MAN Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_MEMPLL_SSC_PHINI Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_MEMPLL_DDS_PI_C Fld(3,0,AC_MSKB0)//[2:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG43 (0x02AC)
+    #define FLD_RG_MEMPLL_SSC_EN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_MEMPLL_CLK_PH_INV Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_MEMPLL_SSC_REV Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_MEMPLL_SSC_PRD Fld(16,0,AC_FULLW10)//[15:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG44 (0x02B0)
+    #define FLD_RG_MEMPLL_SSC_DELTA Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_MEMPLL_SSC_DELTA1 Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_MEMCTLPLL_PWD Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMCTLPLL_FBDIV Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_RG_MEMCTLPLL_FBSEL Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_MEMCTLPLL_POSDIV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_MEMCTLPLL_CKCTRL Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_MEMCTLPLL_PREDIV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG45 (0x02B4)
+    #define FLD_RG_MEMCTLPLL_ACCEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_MEMCTLPLL_DIVEN Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_RG_MEMCTLPLL_BIR Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_MEMCTLPLL_BR Fld(3,21,AC_MSKB2)//[23:21]
+    #define FLD_RG_MEMCTLPLL_BC Fld(2,19,AC_MSKB2)//[20:19]
+    #define FLD_RG_MEMCTLPLL_BIC Fld(3,16,AC_MSKB2)//[18:16]
+    #define FLD_RG_MEMCTLPLL_BP Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_MEMCTLPLL_VODEN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_MEMCTLPLL_V11EN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEMCTLPLL_FPEN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMCTLPLL_DDSEN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_MEMCTLPLL_BAND Fld(6,2,AC_MSKB0)//[7:2]
+    #define FLD_RG_MEMCTLPLL_AUTOK_VCO Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_MEMCTLPLL_AUTOK_LOAD Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG46 (0x02B8)
+    #define FLD_RG_MEMCTLPLL_LOAD_RSTB Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_MEMCTLPLL_MONEN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_MEMCTLPLL_MONCKEN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_MEMCTLPLL_FMEN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_MEMCTLPLL_DETEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_MEMCTLPLL_EXT_FBKCK_SEL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_MEMCTLPLL_REF_DL Fld(5,0,AC_MSKB0)//[4:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG47 (0x02BC)
+    #define FLD_RG_MEMCTLPLL_FBK_DL Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_RG_MEMCTLPLL_REV Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_MEMPHYPLL_AB_PWD Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPHYPLL_AB_FBDIV Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_RG_MEMPHYPLL_AB_FBSEL Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_MEMPHYPLL_AB_POSDIV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_MEMPHYPLL_AB_CKCTRL Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_MEMPHYPLL_AB_PREDIV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG48 (0x02C0)
+    #define FLD_RG_MEMPHYPLL_AB_ACCEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_MEMPHYPLL_AB_DIVEN Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_RG_MEMPHYPLL_AB_BIR Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_MEMPHYPLL_AB_BR Fld(3,21,AC_MSKB2)//[23:21]
+    #define FLD_RG_MEMPHYPLL_AB_BC Fld(2,19,AC_MSKB2)//[20:19]
+    #define FLD_RG_MEMPHYPLL_AB_BIC Fld(3,16,AC_MSKB2)//[18:16]
+    #define FLD_RG_MEMPHYPLL_AB_BP Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_MEMPHYPLL_AB_VODEN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_MEMPHYPLL_AB_V11EN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEMPHYPLL_AB_FPEN Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPHYPLL_AB_DDSEN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_MEMPHYPLL_AB_BAND Fld(6,2,AC_MSKB0)//[7:2]
+    #define FLD_RG_MEMPHYPLL_AB_AUTOK_VCO Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_MEMPHYPLL_AB_AUTOK_LOAD Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG49 (0x02C4)
+    #define FLD_RG_MEMPHYPLL_AB_LOAD_RSTB Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_MEMPHYPLL_AB_MONEN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_MEMPHYPLL_AB_MONCKEN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_MEMPHYPLL_AB_FMEN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_MEMPHYPLL_AB_DETEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_MEMPHYPLL_AB_BIAS_RST Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_MEMPHYPLL_AB_BIAS_PWD Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_MEMPHYPLL_AB_REV Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_MEMPHYPLL_AB_EXT_FBKCK_SEL Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG50 (0x02C8)
+    #define FLD_RG_MEMPHYPLL_AB_REF_DL Fld(5,24,AC_MSKB3)//[28:24]
+    #define FLD_RG_MEMPHYPLL_AB_FBK_DL Fld(5,16,AC_MSKB2)//[20:16]
+    #define FLD_RG_PI_A2_DQA Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_RG_PI_A2_PBYTEA Fld(7,0,AC_MSKB0)//[6:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG51 (0x02CC)
+    #define FLD_RG_PI_A2_DQB Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_PI_A2_PBYTEB Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_PI_A2_FB Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_RG_PI_A2_DQCK Fld(7,0,AC_MSKB0)//[6:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG52 (0x02D0)
+    #define FLD_RG_PI_A2_CAP_SEL Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_PI_A2_BYPASS Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_PI_A2_EN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_PI_A2_PHJUMP_EN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_PI_A2_PHJUMP_SER_BYPASS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_PI_A2_PHJUMP_CKSEL Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_PI_A2_PHJUMP_CKDIV Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_RG_PI_A2_PBYTEA_SER Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_PI_A2_PBYTEB_SER Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_PI_A2_DQA_SER Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_PI_A2_DQB_SER Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_PI_A2_SET_UPDN Fld(3,13,AC_MSKB1)//[15:13]
+    #define FLD_RG_MEMPHYPLL_AB_TEST_EN Fld(1,12,AC_MSKB1)//[12:12]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG53 (0x02D4)
+    #define FLD_RG_PHYPLL_A2_TOP_REV Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_PI_B1_DQA Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_RG_PI_B1_PBYTEA Fld(7,0,AC_MSKB0)//[6:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG54 (0x02D8)
+    #define FLD_RG_PI_B1_DQB Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_PI_B1_PBYTEB Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_PI_B1_FB Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_RG_PI_B1_DQCK Fld(7,0,AC_MSKB0)//[6:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG55 (0x02DC)
+    #define FLD_RG_PI_B1_CAP_SEL Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_PI_B1_BYPASS Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_PI_B1_EN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_PI_B1_PHJUMP_EN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_PI_B1_PHJUMP_SER_BYPASS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_PI_B1_PHJUMP_CKSEL Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_PI_B1_PHJUMP_CKDIV Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_RG_PI_B1_PBYTEA_SER Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_PI_B1_PBYTEB_SER Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_PI_B1_DQA_SER Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_PI_B1_DQB_SER Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_PI_B1_SET_UPDN Fld(3,13,AC_MSKB1)//[15:13]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG56 (0x02E0)
+    #define FLD_RG_PHYPLL_B1_TOP_REV Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_MEMPLLGP_TEST_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPLLGPOD_TST_EN Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_MEMPLLGPOD_TSTOD_EN Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_MEMPLLGPOD_TST_SEL Fld(2,11,AC_MSKB1)//[12:11]
+    #define FLD_RG_MEMPLLGPOD_TSTOD_AMP Fld(2,9,AC_MSKB1)//[10:9]
+    #define FLD_RG_MEMPLLGPOD_A2DCK_EN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_RSTB18V Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_DMSUS18V Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_MEM_DQ2BYTE_AB_CFG57 (0x02E4)
+    #define FLD_RG_MEMPLLGP_REV Fld(16,16,AC_FULLW32)//[31:16]
+#define DDRPHY_RGS_INT_MEM_DQ2BYTE_AB_CFG0 (0x02E8)
+    #define FLD_RGS_MEMPLL_VCO_STATE Fld(6,26,AC_MSKB3)//[31:26]
+    #define FLD_RGS_MEMPLL_VCOCAL_CPLT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RGS_MEMPLL_VCOCAL_FAIL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RGS_MEMCTLPLL_VCO_STATE Fld(6,18,AC_MSKB2)//[23:18]
+    #define FLD_RGS_MEMCTLPLL_VCOCAL_CPLT Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RGS_MEMCTLPLL_VCOCAL_FAIL Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RGS_MEMCTLPLL_DLINE_CAL Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RGS_MEMCTLPLL_NO_OSC_FLAG Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RGS_MEMPHYPLL_AB_VCO_STATE Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_RGS_MEMPHYPLL_AB_VCOCAL_CPLT Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RGS_MEMPHYPLL_AB_VCOCAL_FAIL Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RGS_MEMPHYPLL_AB_DLINE_CAL Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RGS_MEMPHYPLL_AB_NO_OSC_FLAG Fld(1,4,AC_MSKB0)//[4:4]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG0 (0x0400)
+    #define FLD_RG_B2_TX_BRDQ_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B2_TX_BRDQ_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B2_TX_BRDQ_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B2_TX_BRDQ_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG1 (0x0404)
+    #define MASK_TX_DLY_CMD_TX_DLY_DQSGATED_MCK 0x00000007
+    #define POS_TX_DLY_CMD_TX_DLY_DQSGATED_MCK 0
+    #define FLD_RG_B2_TX_BRDQ_DMERODT Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_B2_TX_BRDQ_DMOECTL Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_B2_TX_BRDQ_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B2_TX_BRDQ_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B2_TX_BRDQ_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B2_TX_BRDQ_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B2_TX_BRDQ_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B2_TX_BRDQ16_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B2_TX_BRDQ17_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B2_TX_BRDQ18_DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B2_TX_BRDQ19_DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG2 (0x0408)
+    #define FLD_RG_B2_TX_BRDQ20_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B2_TX_BRDQ21_DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B2_TX_BRDQ22_DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_B2_TX_BRDQ23_DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B2_TX_BRDQ24_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B2_TX_BRDQ25_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B2_TX_BRDQ26_DLY Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B2_TX_BRDQ27_DLY Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG3 (0x040C)
+    #define MASK_DLY_DQ_DLY_DQSGATED 0x70000000
+    #define POS_DLY_DQ_DLY_DQSGATED 28
+    #define FLD_RG_B2_TX_BRDQ28_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B2_TX_BRDQ29_DLY Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B2_TX_BRDQ30_DLY Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_B2_TX_BRDQ31_DLY Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B2_TX_BRDQ16_REV Fld(2,14,AC_MSKB1)//[15:14]
+    #define FLD_RG_B2_TX_BRDQ17_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_B2_TX_BRDQ18_REV Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_RG_B2_TX_BRDQ19_REV Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_RG_B2_TX_BRDQ20_REV Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_B2_TX_BRDQ21_REV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_B2_TX_BRDQ22_REV Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_B2_TX_BRDQ23_REV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG4 (0x0410)
+    #define MASK_DLY_DQ_CB1_DLY_DQSGATED 0x70000000
+    #define POS_DLY_DQ_CB1_DLY_DQSGATED 28
+    #define FLD_RG_B2_TX_BRDQ24_REV Fld(2,30,AC_MSKB3)//[31:30]
+    #define FLD_RG_B2_TX_BRDQ25_REV Fld(2,28,AC_MSKB3)//[29:28]
+    #define FLD_RG_B2_TX_BRDQ26_REV Fld(2,26,AC_MSKB3)//[27:26]
+    #define FLD_RG_B2_TX_BRDQ27_REV Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_RG_B2_TX_BRDQ28_REV Fld(2,22,AC_MSKB2)//[23:22]
+    #define FLD_RG_B2_TX_BRDQ29_REV Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_RG_B2_TX_BRDQ30_REV Fld(2,18,AC_MSKB2)//[19:18]
+    #define FLD_RG_B2_TX_BRDQ31_REV Fld(2,16,AC_MSKB2)//[17:16]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG5 (0x0414)
+    #define FLD_RG_B2_TX_BRDQM2_REV Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_RG_B2_TX_BRDQM3_REV Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_B2_TX_BRDQS2_REV Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_RG_B2_TX_BRDQS3_REV Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG6 (0x0418)
+    #define FLD_RG_B2_TX_BRDQS2_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B2_TX_BRDQS2_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B2_TX_BRDQS2_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B2_TX_BRDQS2_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG7 (0x041C)
+    #define FLD_RG_B2_TX_BRDQS2_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B2_TX_BRDQS2_DMERODT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_B2_TX_BRDQS2_DMOECTL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_B2_TX_BRDQS2_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B2_TX_BRDQS2_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B2_TX_BRDQS2_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B2_TX_BRDQS2_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B2_TX_BRDQS2_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B2_TX_BRDQS3_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B2_TX_BRDQS3_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG8 (0x0420)
+    #define FLD_RG_B2_TX_BRDQS3_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B2_TX_BRDQS3_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B2_TX_BRDQS3_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B2_TX_BRDQS3_DMERODT Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_B2_TX_BRDQS3_DMOECTL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_B2_TX_BRDQS3_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_B2_TX_BRDQS3_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_B2_TX_BRDQS3_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_B2_TX_BRDQS3_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_B2_TX_BRDQS3_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG9 (0x0424)
+    #define FLD_RG_B2_TX_BRDQM2_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B2_TX_BRDQM2_NODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B2_TX_BRDQM2_POCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B2_TX_BRDQM2_PODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG10 (0x0428)
+    #define FLD_RG_B2_TX_BRDQM2_DLY Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B2_TX_BRDQM2_DMERODT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_B2_TX_BRDQM2_DMOECTL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_B2_TX_BRDQM2_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B2_TX_BRDQM2_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B2_TX_BRDQM2_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B2_TX_BRDQM2_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B2_TX_BRDQM2_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B2_TX_BRDQM3_NOCD_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B2_TX_BRDQM3_NODT_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG11 (0x042C)
+    #define FLD_RG_B2_TX_BRDQM3_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B2_TX_BRDQM3_PODT_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_B2_TX_BRDQM3_DLY Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B2_TX_BRDQM3_DMERODT Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_B2_TX_BRDQM3_DMOECTL Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_B2_TX_BRDQM3_DOE_DIS Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_B2_TX_BRDQM3_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_B2_TX_BRDQM3_R75KPD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_B2_TX_BRDQM3_WL Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_B2_TX_BRDQM3_SR Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG12 (0x0430)
+    #define FLD_RG_B2_RX_DLY_DQ31_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_B2_RX_DLY_DQ30_SWEN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_B2_RX_DLY_DQ29_SWEN Fld(1,29,AC_MSKB3)//[29:29]
+    #define FLD_RG_B2_RX_DLY_DQ28_SWEN Fld(1,28,AC_MSKB3)//[28:28]
+    #define FLD_RG_B2_RX_DLY_DQ27_SWEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_B2_RX_DLY_DQ26_SWEN Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_B2_RX_DLY_DQ25_SWEN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_B2_RX_DLY_DQ24_SWEN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_B2_RX_DLY_DQ23_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B2_RX_DLY_DQ22_SWEN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B2_RX_DLY_DQ21_SWEN Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B2_RX_DLY_DQ20_SWEN Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B2_RX_DLY_DQ19_SWEN Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_RG_B2_RX_DLY_DQ18_SWEN Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_B2_RX_DLY_DQ17_SWEN Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_B2_RX_DLY_DQ16_SWEN Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_B2_RX_DLY_DQ31 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B2_RX_DLY_DQ30 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B2_RX_DLY_DQ29 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B2_RX_DLY_DQ28 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG13 (0x0434)
+    #define FLD_RG_B2_RX_DLY_DQ27 Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B2_RX_DLY_DQ26 Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B2_RX_DLY_DQ25 Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_B2_RX_DLY_DQ24 Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B2_RX_DLY_DQ23 Fld(4,12,AC_MSKB1)//[15:12]
+    #define FLD_RG_B2_RX_DLY_DQ22 Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B2_RX_DLY_DQ21 Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B2_RX_DLY_DQ20 Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG14 (0x0438)
+    #define FLD_RG_B2_RX_DLY_DQ19 Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B2_RX_DLY_DQ18 Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B2_RX_DLY_DQ17 Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_B2_RX_DLY_DQ16 Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_B2_RX_DQS2_CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG15 (0x043C)
+    #define FLD_RG_B2_RX_DLY_DQS2_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_B2_RX_DLY_DQS2 Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_B2_RX_DLY_DQSIENSTB_2_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B2_RX_DLY_DQSIENSTB_2 Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_B2_RX_DQS3_CTL Fld(12,0,AC_MSKW10)//[11:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG16 (0x0440)
+    #define FLD_RG_B2_RX_DLY_DQS3_SWEN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_B2_RX_DLY_DQS3 Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_B2_RX_DLY_DQSIENSTB_3_SWEN Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B2_RX_DLY_DQSIENSTB_3 Fld(6,16,AC_MSKB2)//[21:16]
+    #define FLD_RG_B2_RX_REV Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_B2_RX_LP_EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_B2_RX_BYTE_SWAP Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_RG_B2_RX_STBENCMP_EN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_RG_B2_RX_DQSIENMODE Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_RG_B2_RX_FREQDIV2 Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_B2_RX_BL2 Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_B2_RX_BL4 Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_B2_RX_FIXDQSIEN Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG17 (0x0444)
+    #define FLD_RG_B2_RX_DQSI_SEL Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_B2_RX_DMDSMONEN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_B2_RX_VREF_OUT_SCAN_SEL Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_B2_RX_VREF_OP_SCAN_EN Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_B2_RX_DMDSMON_SEL Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B2_RX_VREF_07V_SEL Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_RG_B2_RX_VREF_OUT_SEL Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_RG_B2_RX_STBEN_RESETB_SWEN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_RG_B2_RX_STBEN_RESETB Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG18 (0x0448)
+    #define FLD_RG_B2_RX_VREF_GEN Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_B2_RX_DQ_EYE_SEL Fld(4,24,AC_MSKB3)//[27:24]
+    #define FLD_RG_B2_RX_DQS_EYE_SEL Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B2_RX_DQS_EYE_DLY Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_B2_RX_EYE_SCAN_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_B2_RX_VREF_EN Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_B2_RX_VREF_OP_EN Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_B2_RX_DQS_MIOCK_SEL Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_B2_RX_DQ_EYE_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B2_RX_VREF_GEN_OUT Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_RG_B2_RX_VREF_GEN_SCAN Fld(4,0,AC_MSKB0)//[3:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG19 (0x044C)
+    #define FLD_RG_B2_RX_SMT_EN Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_B2_TX_CLK_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_B2_TX_CLK_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_B2_TX_CLK_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_B2_TX_CLK_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_B2_TX_CLK_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG20 (0x0450)
+    #define FLD_RG_B2_TX_CLK_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_B2_TX_CLK_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_B2_TX_CLK_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_B2_TX_CLK_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_B2_TX_CLK_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_B2_TX_CLK_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA0_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA0_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA0_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA0_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA0_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG21 (0x0454)
+    #define FLD_RG_TX_BRA0_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA0_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA0_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA0_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA0_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA1_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA1_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA1_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA1_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA1_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG22 (0x0458)
+    #define FLD_RG_TX_BRA1_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA1_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA1_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA1_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA1_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA2_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA2_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA2_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA2_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA2_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG23 (0x045C)
+    #define FLD_RG_TX_BRA2_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA2_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA2_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA2_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA2_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA3_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA3_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA3_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA3_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA3_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG24 (0x0460)
+    #define FLD_RG_TX_BRA3_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA3_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA3_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA3_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA3_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA4_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA4_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA4_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA4_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA4_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG25 (0x0464)
+    #define FLD_RG_TX_BRA4_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA4_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA4_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA4_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA4_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA5_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA5_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA5_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA5_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA5_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG26 (0x0468)
+    #define FLD_RG_TX_BRA5_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA5_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA5_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA5_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA5_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA6_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA6_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA6_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA6_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA6_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG27 (0x046C)
+    #define FLD_RG_TX_BRA6_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA6_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA6_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA6_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA6_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA7_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA7_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA7_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA7_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA7_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG28 (0x0470)
+    #define FLD_RG_TX_BRA7_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA7_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA7_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA7_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA7_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA8_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA8_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA8_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA8_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA8_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG29 (0x0474)
+    #define FLD_RG_TX_BRA8_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA8_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA8_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA8_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA8_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA9_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA9_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA9_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA9_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA9_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG30 (0x0478)
+    #define FLD_RG_TX_BRA9_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA9_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA9_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA9_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA9_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA10_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA10_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA10_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA10_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA10_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG31 (0x047C)
+    #define FLD_RG_TX_BRA10_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA10_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA10_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA10_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA10_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA11_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA11_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA11_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA11_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA11_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG32 (0x0480)
+    #define FLD_RG_TX_BRA11_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA11_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA11_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA11_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA11_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA12_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA12_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA12_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA12_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA12_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG33 (0x0484)
+    #define FLD_RG_TX_BRA12_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA12_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA12_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA12_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA12_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA13_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA13_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA13_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA13_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA13_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG34 (0x0488)
+    #define FLD_RG_TX_BRA13_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA13_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA13_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA13_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA13_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA14_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA14_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA14_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA14_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA14_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG35 (0x048C)
+    #define FLD_RG_TX_BRA14_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA14_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA14_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA14_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA14_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRCKE_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRCKE_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRCKE_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRCKE_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRCKE_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG36 (0x0490)
+    #define FLD_RG_TX_BRCKE_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRCKE_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRCKE_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRCKE_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRCKE_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRBA0_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRBA0_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRBA0_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRBA0_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRBA0_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG37 (0x0494)
+    #define FLD_RG_TX_BRBA0_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRBA0_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRBA0_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRBA0_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRBA0_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRBA1_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRBA1_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRBA1_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRBA1_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRBA1_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG38 (0x0498)
+    #define FLD_RG_TX_BRBA1_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRBA1_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRBA1_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRBA1_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRBA1_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRBA2_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRBA2_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRBA2_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRBA2_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRBA2_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG39 (0x049C)
+    #define FLD_RG_TX_BRBA2_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRBA2_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRBA2_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRBA2_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRBA2_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRA15_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRA15_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRA15_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRA15_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRA15_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG40 (0x04A0)
+    #define FLD_RG_TX_BRA15_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRA15_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRA15_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRA15_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRA15_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRCAS_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRCAS_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRCAS_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRCAS_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRCAS_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG41 (0x04A4)
+    #define FLD_RG_TX_BRCAS_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRCAS_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRCAS_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRCAS_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRCAS_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRRAS_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRRAS_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRRAS_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRRAS_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRRAS_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG42 (0x04A8)
+    #define FLD_RG_TX_BRRAS_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRRAS_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRRAS_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRRAS_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRRAS_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRODT_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRODT_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRODT_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRODT_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRODT_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG43 (0x04AC)
+    #define FLD_RG_TX_BRODT_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRODT_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRODT_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRODT_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRODT_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRCS_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRCS_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRCS_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRCS_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRCS_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG44 (0x04B0)
+    #define FLD_RG_TX_BRCS_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRCS_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRCS_CSBEN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_TX_BRCS_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRCS_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRCS_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRRESET_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRRESET_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRRESET_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRRESET_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRRESET_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG45 (0x04B4)
+    #define FLD_RG_TX_BRRESET_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRRESET_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRRESET_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRRESET_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRRESET_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_BRWE_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRWE_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BRWE_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_BRWE_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_BRWE_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG46 (0x04B8)
+    #define FLD_RG_TX_BRWE_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRWE_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_BRWE_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_BRWE_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_BRWE_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_CMDBCLK_DMERODT Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_CMDBCLK_DMOECTL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_CMDBCLK_REV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_TX_CMDBCLK_DLY Fld(4,8,AC_MSKB1)//[11:8]
+    #define FLD_RG_TX_CMDBCLK_NOCD_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG47 (0x04BC)
+    #define FLD_RG_TX_CMDBCLK_POCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_CMDBCLK_DOE_DIS Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RG_TX_CMDBCLK_EN Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RG_TX_CMDBCLK_R75KPD Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RG_TX_CMDBCLK_WL Fld(1,20,AC_MSKB2)//[20:20]
+    #define FLD_RG_TX_CMDBCLK_SR Fld(4,16,AC_MSKB2)//[19:16]
+    #define FLD_RG_TX_CMDB_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_CMDB_RSTB Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_TX_BR_IES Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_TX_BR_SMT Fld(1,12,AC_MSKB1)//[12:12]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG48 (0x04C0)
+    #define FLD_RG_MEMPHYPLL_B2_PWD Fld(1,3,AC_MSKB0)//[3:3]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG49 (0x04C4)
+    #define FLD_RG_MEMPHYPLL_B2_FBDIV Fld(7,25,AC_MSKB3)//[31:25]
+    #define FLD_RG_MEMPHYPLL_B2_FBSEL Fld(2,23,AC_MSKW32)//[24:23]
+    #define FLD_RG_MEMPHYPLL_B2_POSDIV Fld(2,21,AC_MSKB2)//[22:21]
+    #define FLD_RG_MEMPHYPLL_B2_CKCTRL Fld(2,19,AC_MSKB2)//[20:19]
+    #define FLD_RG_MEMPHYPLL_B2_PREDIV Fld(2,17,AC_MSKB2)//[18:17]
+    #define FLD_RG_MEMPHYPLL_B2_ACCEN Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_MEMPHYPLL_B2_DIVEN Fld(3,13,AC_MSKB1)//[15:13]
+    #define FLD_RG_MEMPHYPLL_B2_BIR Fld(4,9,AC_MSKB1)//[12:9]
+    #define FLD_RG_MEMPHYPLL_B2_BR Fld(3,6,AC_MSKW10)//[8:6]
+    #define FLD_RG_MEMPHYPLL_B2_BC Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_RG_MEMPHYPLL_B2_BIC Fld(3,1,AC_MSKB0)//[3:1]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG50 (0x04C8)
+    #define FLD_RG_MEMPHYPLL_B2_BP Fld(4,28,AC_MSKB3)//[31:28]
+    #define FLD_RG_MEMPHYPLL_B2_VODEN Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_RG_MEMPHYPLL_B2_V11EN Fld(1,26,AC_MSKB3)//[26:26]
+    #define FLD_RG_MEMPHYPLL_B2_FPEN Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RG_MEMPHYPLL_B2_DDSEN Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RG_MEMPHYPLL_B2_BAND Fld(6,18,AC_MSKB2)//[23:18]
+    #define FLD_RG_MEMPHYPLL_B2_AUTOK_VCO Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_MEMPHYPLL_B2_AUTOK_LOAD Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_MEMPHYPLL_B2_LOAD_RSTB Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEMPHYPLL_B2_MONEN Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_MEMPHYPLL_B2_MONCKEN Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_MEMPHYPLL_B2_FMEN Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_MEMPHYPLL_B2_DETEN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_MEMPHYPLL_B2_BIAS_RST Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEMPHYPLL_B2_BIAS_PWD Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_MEMPHYPLL_B2_REV Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG51 (0x04CC)
+    #define FLD_RG_MEMPHYPLL_B2_EXT_FBKCK_SEL Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_MEMPHYPLL_B2_REF_DL Fld(5,8,AC_MSKB1)//[12:8]
+    #define FLD_RG_MEMPHYPLL_B2_FBK_DL Fld(5,0,AC_MSKB0)//[4:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG52 (0x04D0)
+    #define FLD_RG_PI_B2_DQA Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_PI_B2_PBYTEA Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_PI_B2_DQB Fld(6,8,AC_MSKB1)//[13:8]
+    #define FLD_RG_PI_B2_PBYTEB Fld(7,0,AC_MSKB0)//[6:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG53 (0x04D4)
+    #define FLD_RG_PI_B2_FB Fld(6,24,AC_MSKB3)//[29:24]
+    #define FLD_RG_PI_B2_CMD Fld(7,16,AC_MSKB2)//[22:16]
+    #define FLD_RG_PI_B2_CK Fld(7,8,AC_MSKB1)//[14:8]
+    #define FLD_RG_PI_B2_DQCK Fld(7,0,AC_MSKB0)//[6:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG54 (0x04D8)
+    #define FLD_RG_PI_B2_CAP_SEL Fld(4,20,AC_MSKB2)//[23:20]
+    #define FLD_RG_PI_B2_BYPASS Fld(1,18,AC_MSKB2)//[18:18]
+    #define FLD_RG_PI_B2_EN Fld(1,17,AC_MSKB2)//[17:17]
+    #define FLD_RG_PI_B2_PHJUMP_EN Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_RG_PI_B2_PHJUMP_SER_BYPASS Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_PI_B2_PHJUMP_CKSEL Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_RG_PI_B2_PHJUMP_CKDIV Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_RG_PI_B2_PBYTEA_SER Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_PI_B2_PBYTEB_SER Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_PI_B2_DQA_SER Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_RG_PI_B2_DQB_SER Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_PI_B2_SET_UPDN Fld(3,5,AC_MSKB0)//[7:5]
+    #define FLD_RG_MEMPHYPLL_B2_TEST_EN Fld(1,4,AC_MSKB0)//[4:4]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG55 (0x04DC)
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG56 (0x04E0)
+    #define FLD_RG_PHYPLL_B2_TOP_REV Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_RG_TX_IMPB_ODT_NDRV_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_TX_IMPB_ODT_PDRV_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG57 (0x04E4)
+    #define FLD_RG_TX_IMPB_ODT_CAL_EN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_TX_IMPB_ODT_PUCMP_EN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_TX_IMPB_OCD_NDRV_C Fld(8,8,AC_FULLB1)//[15:8]
+    #define FLD_RG_TX_IMPB_OCD_PDRV_C Fld(8,0,AC_FULLB0)//[7:0]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG58 (0x04E8)
+    #define FLD_RG_TX_IMPB_OCD_CAL_EN Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_RG_TX_IMPB_OCD_PUCMP_EN Fld(1,30,AC_MSKB3)//[30:30]
+    #define FLD_RG_MEM_CMDB_TST_EN Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_MEM_CMDB_TST_SEL Fld(3,12,AC_MSKB1)//[14:12]
+    #define FLD_RG_MEM_CMDB_TSTOD_EN Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_RG_MEM_CMDB_A2DCK_EN Fld(1,10,AC_MSKB1)//[10:10]
+    #define FLD_RG_MEM_CMDB_TSTOD_AMP Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_RG_TX_IMPB_VREFSEL Fld(1,7,AC_MSKB0)//[7:7]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG59 (0x04EC)
+    #define FLD_RG_TX_BRCSD_DMERODT Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_RG_TX_BRCSD_DMOECTL Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_RG_TX_BRCSD_REV Fld(2,5,AC_MSKB0)//[6:5]
+    #define FLD_RG_TX_BRCSD_DLY Fld(4,1,AC_MSKB0)//[4:1]
+#define DDRPHY_REG_INT_CMD_DQ2BYTE_B2_CFG60 (0x04F0)
+    #define FLD_RG_TX_BRCSD_NOCD_C Fld(8,24,AC_FULLB3)//[31:24]
+    #define FLD_RG_TX_BRCSD_POCD_C Fld(8,16,AC_FULLB2)//[23:16]
+    #define FLD_RG_TX_BRCSD_DOE_DIS Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_RG_TX_BRCSD_R75KPD Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_RG_TX_BRCSD_WL Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_RG_TX_BRCSD_SR Fld(4,8,AC_MSKB1)//[11:8]
+#define DDRPHY_RGS_INT_CMD_DQ2BYTE_B2_CFG0 (0x04F4)
+    #define FLD_RGS_MEMPHYPLL_B2_VCO_STATE Fld(6,26,AC_MSKB3)//[31:26]
+    #define FLD_RGS_MEMPHYPLL_B2_VCOCAL_CPLT Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_RGS_MEMPHYPLL_B2_VCOCAL_FAIL Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_RGS_MEMPHYPLL_B2_DLINE_CAL Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_RGS_MEMPHYPLL_B2_NO_OSC_FLAG Fld(1,22,AC_MSKB2)//[22:22]
+    #define FLD_RGS_TX_ODT_IMPCALOUTB Fld(1,21,AC_MSKB2)//[21:21]
+    #define FLD_RGS_TX_OCD_IMPCALOUTB Fld(1,20,AC_MSKB2)//[20:20]
+
+/*********************ddrphy wrapper register*********************/
+//Page DDRPHY_WRAP
+#define DDRPHY_WRAP_JMETER_CTRL (0x0A40)
+    #define FLD_REG_JMETER3_EN Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_REG_JMETER2_EN Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_REG_JMETER1_EN Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_REG_JMETER0_EN Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_JMETER3_RSTN Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_JMETER2_RSTN Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_JMETER1_RSTN Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_JMETER0_RSTN Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_WRAP_JMETER_CNT_0_1 (0x0A44)
+    #define FLD_REG_JMETER1_CNT Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_REG_JMETER0_CNT Fld(16,0,AC_FULLW10)//[15:0]
+#define DDRPHY_WRAP_JMETER_CNT_2_3 (0x0A48)
+    #define FLD_REG_JMETER3_CNT Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_REG_JMETER2_CNT Fld(16,0,AC_FULLW10)//[15:0]
+#define DDRPHY_WRAP_RESET (0x0A4C)
+    #define FLD_RG_DDRPHY_RESETB Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_R_SEL_STBEN_MON Fld(3,28,AC_MSKB3)//[30:28]
+    #define FLD_R_SEL_LCNT_RST_B Fld(1,25,AC_MSKB3)//[25:25]
+    #define FLD_R_SEL_LCNT_RST Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_REG_DLY_RODTEN_B Fld(3,20,AC_MSKB2)//[22:20]
+    #define FLD_REG_DLY_RODTEN Fld(3,16,AC_MSKB2)//[18:16]
+    #define FLD_REG_DLY_DQSIENSTB_B Fld(3,12,AC_MSKB1)//[14:12]
+    #define FLD_REG_DLY_DQSIENSTB Fld(3,8,AC_MSKB1)//[10:8]
+    #define FLD_DA_TX_CMDBCLK_D3X Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_DA_TX_CMDBCLK_D2X Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_DA_TX_CMDBCLK_D1X Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_DA_TX_CMDBCLK_D0X Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_DA_TX_CMDACLK_D3X Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_DA_TX_CMDACLK_D2X Fld(1,2,AC_MSKB0)//[2:2]
+    #define FLD_DA_TX_CMDACLK_D1X Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_DA_TX_CMDACLK_D0X Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_WRAP_CMD_SELPH (0x0A50)
+    #define FLD_REG_DLY_CMD Fld(2,29,AC_MSKB3)//[30:29]
+    #define FLD_REG_DLY_ODT Fld(2,27,AC_MSKB3)//[28:27]
+    #define FLD_REG_DLY_RESET Fld(2,25,AC_MSKB3)//[26:25]
+    #define FLD_REG_DLY_RAS Fld(2,23,AC_MSKW32)//[24:23]
+    #define FLD_REG_DLY_BA Fld(2,21,AC_MSKB2)//[22:21]
+    #define FLD_REG_DLY_MA Fld(2,19,AC_MSKB2)//[20:19]
+    #define FLD_REG_DLY_WE Fld(2,17,AC_MSKB2)//[18:17]
+    #define FLD_REG_DLY_CAS Fld(2,15,AC_MSKW21)//[16:15]
+    #define FLD_REG_DLY_CS1 Fld(2,13,AC_MSKB1)//[14:13]
+    #define FLD_REG_DLY_CS Fld(2,11,AC_MSKB1)//[12:11]
+    #define FLD_RG_SEL_ANA_TST_IN Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_RG_SEL_ANA_TST_OUT Fld(4,4,AC_MSKB0)//[7:4]
+    #define FLD_R_CSD_CS1_SEL_B Fld(1,1,AC_MSKB0)//[1:1]
+    #define FLD_R_CSD_CS1_SEL Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_WRAP_CMD_SELPH_B (0x0A54)
+    #define FLD_REG_DLY_CLK0_B Fld(2,26,AC_MSKB3)//[27:26]
+    #define FLD_REG_DLY_CKE_B Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_REG_DLY_CMD_B Fld(2,22,AC_MSKB2)//[23:22]
+    #define FLD_REG_DLY_ODT_B Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_REG_DLY_RESET_B Fld(2,18,AC_MSKB2)//[19:18]
+    #define FLD_REG_DLY_RAS_B Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_REG_DLY_BA_B Fld(2,14,AC_MSKB1)//[15:14]
+    #define FLD_REG_DLY_MA_B Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_REG_DLY_WE_B Fld(2,10,AC_MSKB1)//[11:10]
+    #define FLD_REG_DLY_CAS_B Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_REG_DLY_CS1_B Fld(2,6,AC_MSKB0)//[7:6]
+    #define FLD_REG_DLY_CS_B Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_REG_DLY_CLK0 Fld(2,2,AC_MSKB0)//[3:2]
+    #define FLD_REG_DLY_CKE Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_WRAP_ANA_TST_OUT (0x0A58)
+    #define FLD_R_ANA_TST_OUT_RST7 Fld(1,31,AC_MSKB3)//[31:31]
+    #define FLD_R_ANA_TST_OUT_SELDIV7 Fld(2,28,AC_MSKB3)//[29:28]
+    #define FLD_R_ANA_TST_OUT_RST6 Fld(1,27,AC_MSKB3)//[27:27]
+    #define FLD_R_ANA_TST_OUT_SELDIV6 Fld(2,24,AC_MSKB3)//[25:24]
+    #define FLD_R_ANA_TST_OUT_RST5 Fld(1,23,AC_MSKB2)//[23:23]
+    #define FLD_R_ANA_TST_OUT_SELDIV5 Fld(2,20,AC_MSKB2)//[21:20]
+    #define FLD_R_ANA_TST_OUT_RST4 Fld(1,19,AC_MSKB2)//[19:19]
+    #define FLD_R_ANA_TST_OUT_SELDIV4 Fld(2,16,AC_MSKB2)//[17:16]
+    #define FLD_R_ANA_TST_OUT_RST3 Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_R_ANA_TST_OUT_SELDIV3 Fld(2,12,AC_MSKB1)//[13:12]
+    #define FLD_R_ANA_TST_OUT_RST2 Fld(1,11,AC_MSKB1)//[11:11]
+    #define FLD_R_ANA_TST_OUT_SELDIV2 Fld(2,8,AC_MSKB1)//[9:8]
+    #define FLD_R_ANA_TST_OUT_RST1 Fld(1,7,AC_MSKB0)//[7:7]
+    #define FLD_R_ANA_TST_OUT_SELDIV1 Fld(2,4,AC_MSKB0)//[5:4]
+    #define FLD_R_ANA_TST_OUT_RST0 Fld(1,3,AC_MSKB0)//[3:3]
+    #define FLD_R_ANA_TST_OUT_SELDIV0 Fld(2,0,AC_MSKB0)//[1:0]
+#define DDRPHY_WRAP_ASYNC_FIFO (0x0B44)
+    #define FLD_FTDMCKSEL Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_SYNCRSTR_DMSYNCRST Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_NOSYNC Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_PHYCLKP0ENB Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_PHYCLKP1ENB Fld(1,3,AC_MSKB0)//[3:3]
+#define DDRPHY_WRAP_POWERDOWN (0x0B94)
+    #define FLD_DQSIENMACRO1PD Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_DQSIENMACRO0PD Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_DQIENMACRO1PD Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_DQIENMACRO0PD Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_DQMACRO1PD Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_DQMACRO1PDB Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_DOEDIS Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_DQMACRO0PD Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_DQMACRO0PDB Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_PINMUX Fld(3,0,AC_MSKB0)//[2:0]
+#define DDRPHY_WRAP_JMETER_ZERO_ONE_0 (0x0BC0)
+    #define FLD_ZEROS_CNT0_REG Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_ONES_CNT0_REG Fld(16,0,AC_FULLW10)//[15:0]
+#define DDRPHY_WRAP_JMETER_ZERO_ONE_1 (0x0BC4)
+    #define FLD_ZEROS_CNT1_REG Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_ONES_CNT1_REG Fld(16,0,AC_FULLW10)//[15:0]
+#define DDRPHY_WRAP_JMETER_ZERO_ONE_2 (0x0BC8)
+    #define FLD_ZEROS_CNT2_REG Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_ONES_CNT2_REG Fld(16,0,AC_FULLW10)//[15:0]
+#define DDRPHY_WRAP_JMETER_ZERO_ONE_3 (0x0BCC)
+    #define FLD_ZEROS_CNT3_REG Fld(16,16,AC_FULLW32)//[31:16]
+    #define FLD_ONES_CNT3_REG Fld(16,0,AC_FULLW10)//[15:0]
+#define DDRPHY_WRAP_JMETER_DONE (0x0BD0)
+    #define FLD_JMETER3_DONE_REG Fld(1,24,AC_MSKB3)//[24:24]
+    #define FLD_JMETER2_DONE_REG Fld(1,16,AC_MSKB2)//[16:16]
+    #define FLD_JMETER1_DONE_REG Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_JMETER0_DONE_REG Fld(1,0,AC_MSKB0)//[0:0]
+#define DDRPHY_WRAP_POWERDOWN_B (0x0F94)
+    #define FLD_DQSIENMACRO1PD_B Fld(1,15,AC_MSKB1)//[15:15]
+    #define FLD_DQSIENMACRO0PD_B Fld(1,14,AC_MSKB1)//[14:14]
+    #define FLD_DQIENMACRO1PD_B Fld(1,13,AC_MSKB1)//[13:13]
+    #define FLD_DQIENMACRO0PD_B Fld(1,12,AC_MSKB1)//[12:12]
+    #define FLD_DQMACRO1PD_B Fld(1,9,AC_MSKB1)//[9:9]
+    #define FLD_DQMACRO1PDB_B Fld(1,8,AC_MSKB1)//[8:8]
+    #define FLD_DOEDIS_B Fld(1,6,AC_MSKB0)//[6:6]
+    #define FLD_DQMACRO0PD_B Fld(1,5,AC_MSKB0)//[5:5]
+    #define FLD_DQMACRO0PDB_B Fld(1,4,AC_MSKB0)//[4:4]
+    #define FLD_PINMUX_B Fld(3,0,AC_MSKB0)//[2:0]
+#endif
+#else
+// DRAMC registers
+#define DRAMC_REG_ACTIM0 0x000
+    #define POS_ACTIM0_BL2 15
+#define DRAMC_REG_CONF1 0x004
+    #define POS_CONF1_BL4 10
+    #define POS_CONF1_SELFREF 26
+    #define POS_CONF1_TESTLP 27    
+#define DRAMC_REG_CONF2 0x008
+    #define POS_CONF2_TEST1 29
+    #define MASK_CONF2_TE12_ENABLE 0xe0000000
+#define DRAMC_REG_PADCTL1 0x00c
+#define DRAMC_REG_PADCTL2 0x010
+#define DRAMC_REG_PADCTL3 0x014
+#define DRAMC_REG_DELDLY1 0x018
+#define DRAMC_REG_01C 0x01c
+#define DRAMC_REG_DLLCONF 0x028
+#define DRAMC_REG_TEST2_0 0x038   // new on MT5399
+#define DRAMC_REG_TEST2_1 0x03C
+#define DRAMC_REG_TEST2_2 0x040
+#define DRAMC_REG_TEST2_3 0x044
+    #define POS_TEST2_3_ADVREFEN 30
+    #define POS_TEST2_3_TESTAUDPAT 7
+    // bit0~3
+    #define MASK_TEST2_3_TESTCNT 0x0000000f
+    #define POS_TEST2_3_TESTCNT 0
+#define DRAMC_REG_TEST2_4 0x048
+    // bit0~4
+    #define MASK_TEST2_4_TESTAUDINC 0x0000001f
+    #define POS_TEST2_4_TESTAUDINC 0
+	//bit5
+	#define POS_TEST2_4_TEST2DISSCRAM 5
+    // bit8~12
+    #define MASK_TEST2_4_TESTAUDINIT 0x00001f00
+    #define POS_TEST2_4_TESTAUDINIT 8
+    // bit 14, 15
+    #define POS_TEST2_4_TESTAUDBITINV 14
+    #define POS_TEST2_4_TESTAUDMODE 15
+    //bit 16
+    #define POS_TEST2_4_TESTXTALKPAT 16
+#define DRAMC_REG_DDR2CTL 0x07c
+    #define MASK_DDR2CTL_DATLAT 0x00000070
+    #define POS_DDR2CTL_DTALAT 4
+    #define POS_DDR2CTL_WOEN 3
+#define DRAMC_REG_084 0x084
+#define DRAMC_REG_MRS 0x088
+#define DRAMC_REG_CLK1DELAY 0x08c
+#define DRAMC_REG_IOCTL 0x090
+#define DRAMC_REG_DQSIEN 0x094
+#define DRAMC_REG_DRVCTL0 0x0b8
+    #define MASK_DRVCTL0_DQDRVN 0x00000f00
+    #define MASK_DRVCTL0_DQDRVP 0x0000f000
+    #define MASK_DRVCTL0_DQSDRVN 0x0f000000
+    #define MASK_DRVCTL0_DQSDRVP 0xf0000000
+    #define POS_DRVCTL0_DQDRVN 8
+    #define POS_DRVCTL0_DQDRVP 12
+    #define POS_DRVCTL0_DQSDRVN 24
+    #define POS_DRVCTL0_DQSDRVP 28
+#define DRAMC_REG_DRVCTL1 0x0bc
+    #define MASK_DRVCTL1_CLKDRVN 0x0f000000
+    #define MASK_DRVCTL1_CLKDRVP 0xf0000000
+    #define POS_DRVCTL1_CLKDRVN 24
+    #define POS_DRVCTL1_CLKDRVP 28
+#define DRAMC_REG_MCKDLY 0x0d8
+    //bit 23
+    #define POS_MCKDLY_FIXODT 23
+    //bit 12~15
+    #define POS_MCKDLY_FIXDQIEN 12
+    #define MASK_MCKDLY_FIXDQIEN 0x0000f000
+#define DRAMC_REG_DQSCTL0 0x0dc
+#define DRAMC_REG_DQSCTL1 0x0e0
+    #define POS_DQSCTL1_DQSIENMODE 28
+    #define MASK_DQSCTL1_DQSINCTL 0x07000000
+    #define POS_DQSCTL1_DQSINCTL 24
+#define DRAMC_REG_PADCTL4 0x0e4
+    #define POS_PADCTL4_DATLAT3 4
+    #define POS_PADCTL4_CKEFIXON 2
+#define DRAMC_REG_PHYCTL1 0x0f0
+    #define POS_PHYCTL1_PHYRST 28
+#define DRAMC_REG_GDDR3CTL1 0x0f4
+    #define POS_GDDR3CTL1_DQMSWAP 31
+    #define POS_GDDR3CTL1_RDATRST 25
+    #define POS_GDDR3CTL1_BKSWAP 20
+#define DRAMC_REG_PADCTL7 0x0f8
+#define DRAMC_REG_MISCTL0 0x0fc
+#define DRAMC_REG_OCDK 0x100
+#define DRAMC_REG_RKCFG 0x110
+    #define POS_RKCFG_WDATKEY64 29   //32-bit channel it is 0, for 16-bit or asym DRAM it is 1
+#define DRAMC_REG_DQ_DQS01_SEL 0x120
+#define DRAMC_REG_158 0x158
+#define DRAMC_REG_ARBCTL0 0x168
+#define DRAMC_REG_CMDDLY0 0x1a8
+#define DRAMC_REG_DQSCAL0 0x1c0
+#define DRAMC_REG_DRAMC_PD_CTRL 0x1dc
+    #define MASK_DRAMC_PD_CTRL_REFCNT_FR_CLK 0x00ff0000
+#define DRAMC_REG_LPDDR2 0x1e0
+    #define POS_LPDDR2_ADRDECEN 31
+#define DRAMC_REG_SPCMD 0x1e4
+    #define POS_SPCMD_MRWEN 0
+    #define POS_SPCMD_DQSGCNTEN 8
+    #define POS_SPCMD_DQSGCNTRST 9
+#define DRAMC_REG_ACTIM1 0x1e8
+#define DRAMC_REG_PERFCTL0 0x1ec
+#define DRAMC_REG_DQODLY1 0x200
+#define DRAMC_REG_DQODLY2 0x204
+#define DRAMC_REG_DQODLY3 0x208
+#define DRAMC_REG_DQODLY4 0x20c
+#define DRAMC_REG_DQIDLY1 0x210
+#define DRAMC_REG_DQIDLY2 0x214
+#define DRAMC_REG_DQIDLY3 0x218
+#define DRAMC_REG_DQIDLY4 0x21c
+#define DRAMC_REG_DQIDLY5 0x220
+#define DRAMC_REG_DQIDLY6 0x224
+#define DRAMC_REG_DQIDLY7 0x228
+#define DRAMC_REG_DQIDLY8 0x22c
+#define DRAMC_REG_STBENERR_R 0x320
+#define DRAMC_REG_STBENERR_F 0x324
+#define DRAMC_REG_TOGGLE_CNT 0x32c
+#define DRAMC_REG_DQS_ERR_CNT 0x330
+#define DRAMC_REG_DQ_ERR_CNT 0x334
+#define DRAMC_REG_WRLEV 0x340
+    //bit 8
+    #define POS_WRLEV_DQS_WLEV 8
+    //bit 1~4
+    #define POS_WRLEV_DQS_Bx_G 1
+    #define MASK_WRLEV_DQS_Bx_G 0x0000001e
+    //bit 0
+    #define POS_WRLEV_WRITE_LEVEL_EN 0
+#define DRAMC_REG_SELPH 0x344
+#define DRAMC_REG_DCBLN 0x348
+    #define POS_DCBLN_RSTBCNT_LATCH_EN 11
+    #define POS_DCBLN_RX_MIOCK_JIT_EN 2
+    #define POS_DCBLN_RX_EYE_SCAN_EN 1
+    #define POS_DCBLN_REG_SW_RST 0
+#define DRAMC_REG_TOGGLE_CNT_2 0x360
+#define DRAMC_REG_DQS_ERR_CNT_2 0x364
+#define DRAMC_REG_DQ_ERR_CNT_2 0x368
+#define DRAMC_REG_CMP_ERR 0x370
+#define DRAMC_REG_DQSGNWCNT0 0x3c0
+#define DRAMC_REG_DQSGNWCNT1 0x3c4
+#define DRAMC_REG_TESTRPT 0x3fc
+    #define POS_TESTRPT_DM_CMP_CPT 10
+    #define POS_TESTRPT_DM_CMP_ERR 14
+#define DRAMC_REG_DLY_CMD 0x400
+#define DRAMC_REG_TX_DLY_CMD 0x404
+    #define MASK_TX_DLY_CMD_TX_DLY_DQSGATED_MCK 0x00000007
+    #define POS_TX_DLY_CMD_TX_DLY_DQSGATED_MCK 0
+#define DRAMC_REG_TX_DLY_DQ 0x408
+#define DRAMC_REG_DLY_DQ 0x40C
+    #define MASK_DLY_DQ_DLY_DQSGATED 0x70000000
+    #define POS_DLY_DQ_DLY_DQSGATED 28
+#define DRAMC_REG_DLY_DQ_CB1 0x410
+    #define MASK_DLY_DQ_CB1_DLY_DQSGATED 0x70000000
+    #define POS_DLY_DQ_CB1_DLY_DQSGATED 28
+#define DRAMC_REG_DLY_SEL_RAS 0x414
+#define DRAMC_REG_COM0_DLY_SEL_DGTED 0x478
+#define DRAMC_REG_COM0_DLY_SEL_DQS0 0x47C
+#define DRAMC_REG_COM0_DLY_SEL_DQS1 0x480
+#define DRAMC_REG_COM0_DLY_SEL_DQM0 0x484
+#define DRAMC_REG_COM0_DLY_SEL_DQ2 0x494
+#define DRAMC_REG_COM0_DLY_SEL_DQ3 0x498
+#define DRAMC_REG_COM0_DLY_SEL_DQ4 0x49c
+#define DRAMC_REG_COM0_DLY_SEL_DQ5 0x4a0
+#define DRAMC_REG_COM0_DLY_SEL_DQ6 0x4a4
+#define DRAMC_REG_COM0_DLY_SEL_DQ7 0x4a8
+#define DRAMC_REG_COM1_DLY_SEL_DGTED 0x4CC
+#define DRAMC_REG_COM1_DLY_SEL_DQS0 0x4D0
+#define DRAMC_REG_COM1_DLY_SEL_DQS1 0x4D4
+#define DRAMC_REG_COM1_DLY_SEL_DQM0 0x4D8
+#define DRAMC_REG_COM1_DLY_SEL_DQ0 0x4e0
+#define DRAMC_REG_COM1_DLY_SEL_DQ2 0x4e8
+#define DRAMC_REG_COM1_DLY_SEL_DQ3 0x4ec
+#define DRAMC_REG_COM1_DLY_SEL_DQ4 0x4f0
+#define DRAMC_REG_COM1_DLY_SEL_DQ5 0x4f4
+#define DRAMC_REG_COM1_DLY_SEL_DQ6 0x4f8
+#define DRAMC_REG_COM1_DLY_SEL_DQ7 0x4fc
+#define DRAMC_REG_PH_EN 0x520
+#define DRAMC_REG_DLY_SEL_MCK_ANA 0x524
+#define DRAMC_REG_DLY_SEL_CLKGEN 0x528
+#define DRAMC_REG_DLY_SEL_CLKGEN2 0x52C
+
+#endif
+
+
+#endif // _PI_REGISTER_H

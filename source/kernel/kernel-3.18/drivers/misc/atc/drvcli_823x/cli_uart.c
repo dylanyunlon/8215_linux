@@ -1,0 +1,694 @@
+/*
+* Copyright (c) 2016 AutoChips Inc.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License version 2 as
+* published by the Free Software Foundation.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+*/
+
+
+#if defined(CONFIG_SERIAL_AC83XX_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
+#define SUPPORT_SYSRQ
+#endif
+
+#include <linux/module.h>
+#include <linux/ioport.h>
+#include <linux/init.h>
+#include <linux/console.h>
+#include <linux/sysrq.h>
+#include <linux/device.h>
+#include <linux/tty.h>
+#include <linux/tty_flip.h>
+#include <linux/serial_core.h>
+#include <linux/serial.h>
+#include <linux/platform_device.h>
+#include <linux/interrupt.h>
+#include <linux/delay.h>
+#include <linux/signal.h>
+#include "oal.h"
+#include <asm/io.h>
+#include <asm/irq.h>
+#include <linux/of.h>
+#include <linux/of_device.h>
+#include <linux/of_irq.h>
+
+#include <linux/types.h>
+#include <linux/of_address.h>
+
+
+#include "ac83xx_cli.h"
+#include "x_cli.h"
+#include "_cli.h"
+#include "cli.h"
+#define MTK_KERNEL_LINUX_LICENSE     "Proprietary"
+
+bool
+fgSet_Uart_SourceCLK(u32 _u4UART_SourceClk);
+
+extern s32 cli_init(VOID);
+extern s32 cli_uninit(VOID);
+ulong CLI_IO_BASE = 0;
+
+
+#define AC83XX_UART_DEBUG   0
+
+/* support uart0(debug port) and uart 1~6  */
+#define AC83XX_UART_NR          6
+#define UART_NR                 (AC83XX_UART_NR)
+
+#define SERIAL_AC83XX_MAJOR     204
+#define SERIAL_AC83XX_MINOR     16
+
+/*defines for log Async mode: only for UART0*/
+#define SW_FIFO_SIZE	        16384
+
+#define UART_PORT0              0
+
+
+int UartxBaseAddr[UART_NR][2] = {
+	{UART_PORT0, UART0_BASE}
+};
+
+struct SWFIFO_T {
+	uint8_t    aData[SW_FIFO_SIZE];
+	uint32_t   u4Wp;
+	uint32_t   u4Rp;
+	uint32_t   u4DiscardCnt;
+	uint32_t   u4IntCnt;
+	uint32_t   u4Overflow;
+	uint32_t   u4TotalRWCnt;
+};
+
+
+bool g_UartAsyncMode = false;
+
+#define TXFIFO_DATASIZE(u1Port) (((_arTxSWFIFO_U0.u4Wp >= _arTxSWFIFO_U0.u4Rp)) ? \
+									(_arTxSWFIFO_U0.u4Wp - _arTxSWFIFO_U0.u4Rp) : \
+									((SW_FIFO_SIZE + _arTxSWFIFO_U0.u4Wp) - _arTxSWFIFO_U0.u4Rp))
+#define TXFIFO_FREESIZE(u1Port) ((SW_FIFO_SIZE - TXFIFO_DATASIZE(u1Port)) - 1)
+#define TXFIFO_EMPTY(u1Port)    (_arTxSWFIFO_U0.u4Wp == _arTxSWFIFO_U0.u4Rp)
+#define TXFIFO_PW_DATA(u1Port)  (_arTxSWFIFO_U0.aData[_arTxSWFIFO_U0.u4Wp])
+#define TXFIFO_PR_DATA(u1Port)  (_arTxSWFIFO_U0.aData[_arTxSWFIFO_U0.u4Rp])
+
+#define RXFIFO_DATASIZE(u1Port) (((_arTxSWFIFO_U0.u4Wp >= _arTxSWFIFO_U0.u4Rp)) ? \
+									(_arTxSWFIFO_U0.u4Wp - _arTxSWFIFO_U0.u4Rp) : \
+									((SW_FIFO_SIZE + _arTxSWFIFO_U0.u4Wp) - _arTxSWFIFO_U0.u4Rp))
+#define RXFIFO_FREESIZE(u1Port) ((SW_FIFO_SIZE - RXFIFO_DATASIZE(u1Port)) - 1)
+#define RXFIFO_EMPTY(u1Port)    (_arTxSWFIFO_U0.u4Wp == _arTxSWFIFO_U0.u4Rp)
+#define RXFIFO_PW_DATA(u1Port)  (_arTxSWFIFO_U0.aData[_arTxSWFIFO_U0.u4Wp])
+#define RXFIFO_PR_DATA(u1Port)  (_arTxSWFIFO_U0.aData[_arTxSWFIFO_U0.u4Rp])
+#define RXFIFO_CLEAR_BUF(u1Port)  (_arTxSWFIFO_U0.u4Wp = _arTxSWFIFO_U0.u4Rp)
+
+/*
+ * Port
+ */
+struct AC83XX_uart_port {
+	struct uart_port port;
+	int nport;
+	unsigned int old_status;
+	unsigned int tx_stop;
+	unsigned int rx_stop;
+	unsigned int ms_enable;
+
+	unsigned int    (*fn_read_allow)(int);
+	unsigned int    (*fn_write_allow)(int);
+	void            (*fn_int_enable)(int, int enable);
+	void            (*fn_empty_int_enable)(int, int enable);
+	unsigned int    (*fn_read_byte)(int);
+	void            (*fn_write_byte)(int, unsigned int byte);
+	void            (*fn_flush)(int);
+	void            (*fn_get_top_err)(int, int *p_parity, int *p_end, int *p_break);
+};
+
+#define UART_READ32_(REG)            readl(CLI_IO_BASE + REG)  //__raw_readl(__io(RS232_BASE_VA + REG))
+#define UART_WRITE32_(VAL, REG)      writel(VAL, (CLI_IO_BASE + REG))   //__raw_writel(VAL, __io(RS232_BASE_VA + REG))
+
+
+#define CKGEN_VIRT_READ32(REG)            readl(CLI_IO_BASE + REG)  //__raw_readl(__io(CKGEN_BASE_VA + REG))
+#define CKGEN_VIRT_WRITE32(VAL, REG)      writel(VAL, (CLI_IO_BASE + REG))  //__raw_writel(VAL, __io(CKGEN_BASE_VA + REG))
+#define CKGEN_READ32_(REG)                readl(CLI_IO_BASE + REG)  //__raw_readl(__io(CKGEN_BASE_VA + REG))
+#define CKGEN_WRITE32_(VAL, REG)          writel(VAL, (CLI_IO_BASE + REG))   //__raw_writel(VAL, __io(CKGEN_BASE_VA + REG))
+
+/*
+ * Macros
+ */
+#define UART_REG_BITCLR(BITS, REG)      UART_WRITE32_(UART_READ32_(REG) & ~(BITS), REG)
+#define UART_REG_BITSET(BITS, REG)      UART_WRITE32_(UART_READ32_(REG) | (BITS), REG)
+#define UART0_FLUSH()   UART_REG_BITSET((CLEAR_TBUF | CLEAR_RBUF), UART0_BUFCTRL)
+#define UART1_FLUSH()   UART_REG_BITSET((CLEAR_TBUF | CLEAR_RBUF), UART1_BUFCTRL)
+
+
+#define  UART1_PINMUX_EN  (1L<<11)
+#define  UART2_PINMUX_EN  (1L<<13)
+#define  UART3_PINMUX_EN  (1L<<16)
+#define  UART4_PINMUX_EN  (1L<<18)
+#define  UART5_PINMUX_EN  (1L<<20)
+#define  UART6_PINMUX_EN  (1L<<23)
+
+
+#define UART_PINMUX_OFFSET            (0x006C)
+#define UART_PINMUX_WRITE(value)      CKGEN_VIRT_WRITE32((value), UART_PINMUX_OFFSET)
+#define UART_PINMUX_REG()             CKGEN_VIRT_READ32(UART_PINMUX_OFFSET)
+
+/*
+ * used for dsp debug only
+ */
+#define  UART_DSP_DEBUG        1
+#define  CONFIG_DRV_AC83XX     0
+
+#if UART_DSP_DEBUG
+
+/*---------------------------------------------------------------------------
+// Defines
+---------------------------------------------------------------------------*/
+
+#define  DRAM_READ32(addr)               HAL_READ32(phys_to_virt((unsigned long)(addr)))
+#define  DRAM_WRITE32(addr, val)         HAL_WRITE32(phys_to_virt((unsigned long)(addr)), (val))
+
+#define  USE_MEMORY_MAPING       1
+
+#if (CONFIG_DRV_AC83XX)
+#define DSP_CKGEN_BASE           0xD0000
+#else
+#define DSP_CKGEN_BASE           0x00000
+#endif
+#define MAX_RS232W_NUM          80
+
+#define R232_READREG            0
+#define R232_WRITEREG           1
+#define R232_WRITEDRAM          5
+#define R232_READDRAM           9
+#define R232_RISC_WRITEDRAM     12
+#define R232_RISC_READDRAM      13
+#define RS232_WRITE_CACHE       0x1C
+
+/*---------------------------------------------------------------------------
+ Static variables
+---------------------------------------------------------------------------*/
+
+static uint32_t _dwR232Addr;
+static uint32_t _dwR232Length;
+static uint32_t _dwRS232ResetStatus;
+
+static uint32_t _dwR232OpCnt;
+static uint32_t _dwR232OpCode;
+static uint32_t dwCnt = 0;
+
+/*VOID SwitchUartMode(u32 u4UartMode)
+{
+	if (u4UartMode == UART_NORMAL_MODE) {
+		fgSet_Uart_SourceCLK(27000000);
+		UART_WRITE32_(0x2, UART0_STATUS);
+	} else {
+		UART_WRITE32_(0xE2, UART0_STATUS);
+	}
+}*/
+
+/*---------------------------------------------------------------------------
+	local functions
+---------------------------------------------------------------------------*/
+
+/* *********************************************************************
+	Function : void vRs232WriteData(DWRD dData)
+	Description : Write to RS232 port
+	Parameter : dData: Data to write
+	Return    : None
+ **********************************************************************/
+void vRs232WriteData(uint32_t dData)
+{
+	UART_WRITE32_(dData, UART0_DATA_BYTE);
+}
+
+/* *********************************************************************
+// Function : void vRs232WriteData(DWRD dData)
+// Description : Write to RS232 port
+// Parameter : dData: Data to write
+// Return    : None
+ **********************************************************************/
+void vRs232NonTransparentMode(void)
+{
+	UART_WRITE32_(0X2, UART0_STATUS);
+}
+
+/* *********************************************************************
+// Function : DWRD dRs232ReadData(void)
+// Description : Read from RS232 port
+// Parameter : None
+// Return    : RS232 Data
+ *********************************************************************/
+uint32_t dRs232ReadData(void)
+{
+	uint32_t dRegVal;
+
+	dRegVal = UART_READ32_(0);
+	return dRegVal;
+}
+
+/* *********************************************************************
+// Function : DWRD dRs232Status(void)
+// Description : Read RS232 port status
+// Parameter : None
+// Return    : RS232 Status
+ *********************************************************************/
+uint32_t dRs232Status(void)
+{
+	return UART_READ32(0x4);
+}
+
+
+/* *********************************************************************
+// Function : DWRD dRs232Status(void)
+// Description : Read RS232 port status
+// Parameter : None
+// Return    : RS232 Status
+ *********************************************************************/
+bool fgIsRs232RdAllow(void)
+{
+	return (dRs232Status() & 0x1) > 0;
+}
+
+
+/* *********************************************************************
+// Function : DWRD dRs232Status(void)
+// Description : Read RS232 port status
+// Parameter : None
+// Return    : RS232 Status
+ *********************************************************************/
+bool fgIsRs232WrAllow(void)
+{
+	return (dRs232Status() & 0x2) > 0;
+}
+
+
+/* *********************************************************************
+// Function : void vRs232Write(DWRD dwValue)
+// Description : Out data to RS232 queue
+// Parameter : dwValue : Value output to RS232 port
+// Return    :
+ *********************************************************************/
+void vRs232Write(uint32_t dwValue)
+{
+	while (!fgIsRs232WrAllow()) {
+		;
+	}
+	vRs232WriteData(dwValue);
+}
+/*---------------------------------------------------------------------------
+// Static functions
+//---------------------------------------------------------------------------
+// *********************************************************************
+// Function : DWRD dRs232ReadDram(DWRD dAddr)
+// Description : General Read dram
+// Parameter : dAddr: Address of dram,
+// Return    : dram value
+// *********************************************************************/
+static uint32_t dRs232ReadDram(uint32_t dAddr)
+{
+	uint32_t dRegVal;
+
+	dRegVal = DRAM_READ32(dAddr);
+
+	return dRegVal;
+}
+
+/*---------------------------------------------------------------------------
+// Static functions
+//---------------------------------------------------------------------------
+// *********************************************************************
+// Function : DWRD dRs232WriteDram(DWRD dAddr)
+// Description : General Read Register
+// Parameter : dAddr: Address of register, -IO address
+// Return    : None
+// *********************************************************************/
+static uint32_t dRs232WriteDram(uint32_t dAddr, uint32_t dValue)
+{
+	uint32_t dRegVal;
+
+	dRegVal = DRAM_WRITE32(dAddr, dValue);
+
+	return dRegVal;
+}
+
+/*---------------------------------------------------------------------------
+// Static functions
+//---------------------------------------------------------------------------
+// *********************************************************************
+// Function : DWRD dRs232ReadREG(DWRD dAddr)
+// Description : General Read Register
+// Parameter : dAddr: Address of register, -IO address
+// Return    : None
+// *********************************************************************/
+static uint32_t dRs232ReadREG(uint32_t dAddr)
+{
+	uint32_t dRegVal;
+
+	dAddr <<= 2;
+	dAddr  &= 0x000FFFFFL;
+	dRegVal = CKGEN_READ32_(dAddr);
+
+	return dRegVal;
+}
+
+/* *********************************************************************
+// Function : void vRs232WriteREG(DWRD dAddr, DWRD dValue)
+// Description : General Write Register
+// Parameter : dAddr: Address of register, -IO address
+//             dValue: value to write
+// Return    : None
+// *********************************************************************/
+static void vRs232WriteREG(uint32_t dAddr, uint32_t dValue)
+{
+	dAddr <<= 2;
+	dAddr  &= 0x000FFFFFL;
+	CKGEN_WRITE32_(dValue, dAddr);
+}
+
+/* *********************************************************************
+// Function : void _Uart2Isr(UINT16 u2Vector)
+// Description : General Write Register
+// Parameter : dAddr: Address of register, -IO address
+//             dValue: value to write
+// Return    : None
+// *********************************************************************/
+void _Uart2Isr(uint32_t  irq)
+{
+	uint32_t dwRsData;
+	uint32_t dwValue;
+	uint32_t *pdwAddr;
+	uint32_t dwTemp;
+
+	dwCnt = dwCnt+1;
+
+	/* input data increment */
+	dwRsData = dRs232ReadData();
+
+
+	/* begin to parse a new command */
+	if ((_dwR232OpCnt == 0)) {
+		_dwR232OpCode = dwRsData;
+		/* count the number of op */
+		_dwR232OpCnt = 1;
+	} else {                  /* count = 1 or 2 */
+		_dwR232OpCnt++;       /* count = 2 or 3 */
+
+		switch (_dwR232OpCode) {
+		case R232_READREG:
+			_dwR232Addr = dwRsData;
+			/* send header of 1 word */
+			vRs232Write(0xc0000400);
+			dwTemp = dRs232ReadREG(_dwR232Addr);
+			vRs232Write(dwTemp);
+			_dwR232OpCnt = 0;
+			break;
+		case R232_WRITEREG:
+			if (_dwR232OpCnt == 2) {
+				_dwR232Addr = dwRsData;
+			} else {               /* count == 3 */
+				dwValue = dwRsData;
+				vRs232WriteREG(_dwR232Addr, dwValue);
+				_dwR232OpCnt = 0;
+			}
+			break;
+		case R232_WRITEDRAM:
+			if (_dwR232OpCnt == 2) {
+				_dwR232Addr = dwRsData;
+			} else if (_dwR232OpCnt == 3) {
+				_dwR232Length = dwRsData;
+			} else {
+				dwValue = dwRsData;
+				/* transmit back what receive to verify */
+				vRs232Write(dwValue);
+
+#if USE_MEMORY_MAPING
+				dRs232WriteDram(_dwR232Addr, dwValue);
+#else
+				pdwAddr = (uint32_t *)(_dwR232Addr);
+				*pdwAddr = dwValue;
+#endif
+
+				_dwR232Addr = _dwR232Addr + 4;
+				_dwR232Length--;
+				if (_dwR232Length == 0) {
+					_dwR232OpCnt = 0;
+				}
+			}
+			break;
+		case R232_RISC_WRITEDRAM:
+			if (_dwR232OpCnt == 2) {
+				_dwR232Addr = dwRsData;
+			} else if (_dwR232OpCnt == 3) {
+				dwValue = dwRsData;
+#if USE_MEMORY_MAPING
+				dRs232WriteDram(4 * _dwR232Addr, dwValue);
+#else
+				pdwAddr = (uint32_t *) (4*_dwR232Addr);
+				*pdwAddr = dwValue;
+#endif
+				_dwR232OpCnt = 0;
+			}
+			break;
+		case R232_RISC_READDRAM:
+			if (_dwR232OpCnt == 2) {
+				_dwR232Addr = dwRsData;  /* read dram address */
+				pdwAddr = (uint32_t *)(4*_dwR232Addr);
+#if USE_MEMORY_MAPING
+				dwValue = dRs232ReadDram(4*_dwR232Addr);
+#else
+				dwValue = *pdwAddr;
+#endif
+				vRs232Write(0xC0000400); /* send header of 1 word */
+				vRs232Write(dwValue);
+				_dwR232OpCnt = 0;
+			}
+			break;
+		case R232_READDRAM:
+			if (_dwR232OpCnt == 2) {
+				_dwR232Addr = dwRsData; /* read dram address */
+			} else if (_dwR232OpCnt == 3) {
+				_dwR232Length = dwRsData; /* read dram length */
+				vRs232Write(0xc0000000 + ((_dwR232Length & 0x3fff) << 10));
+			}
+			break;
+		case RS232_WRITE_CACHE:
+			if (_dwR232OpCnt == 2) {
+				/* which cache */
+				_dwR232Addr = (uint32_t)(dwRsData);
+			} else if (_dwR232OpCnt == 3) {
+				/* length */
+				_dwR232Length = dwRsData;
+			} else {
+				dwValue = dwRsData;
+				/* transmit back what receive to verify */
+				vRs232Write(dwValue);
+
+#if USE_MEMORY_MAPING
+				dRs232WriteDram(_dwR232Addr, dwValue);
+#else
+				pdwAddr = (uint32_t *)(_dwR232Addr);
+				*pdwAddr = dwValue;
+#endif
+
+				_dwR232Addr = _dwR232Addr + 4;
+				_dwR232Length--;
+				if (_dwR232Length == 0) {
+					_dwR232OpCnt = 0;
+				}
+			}
+			break;
+
+		default:     /* error op code receive, ignore and reset to original state */
+			_dwR232OpCnt = 0;     /* show error flag */
+		}    /* switch */
+	}   /* _dealing with command end */
+
+	/* Reset */
+	if (dwRsData == 0x0000ffff && _dwRS232ResetStatus == 0) {
+		_dwRS232ResetStatus = 1;
+	} else if (dwRsData == 0x12345678 && _dwRS232ResetStatus == 1) {
+		_dwRS232ResetStatus = 2;
+	} else if (dwRsData == 0x34345678 && _dwRS232ResetStatus == 2) {
+		_dwRS232ResetStatus = 3;
+	} else if (dwRsData == 0x78781234 && _dwRS232ResetStatus == 3) {
+		_dwRS232ResetStatus = 4;
+	} else if (dwRsData == 0x87654321 && _dwRS232ResetStatus == 4) {
+		_dwRS232ResetStatus = 0;
+		vRs232Write(0x11110000); /* send ack */
+		_dwR232OpCnt = 0;
+	} else {
+		_dwRS232ResetStatus = 0;
+	}
+
+}
+#endif   /* endif UART_DSP_DEBUG */
+
+bool fgSet_Uart_SourceCLK(u32 _u4UART_SourceClk)
+{
+	u32 u4Temp;
+	u32 u4TempTwo;
+
+	u4Temp = __raw_readl((const volatile void *)(0xFD000000 + 0xC));
+	u4TempTwo = __raw_readl((const volatile void *)(0xFD000000 + 0x8));
+
+	switch (_u4UART_SourceClk) {
+	case 32400000:
+		u4Temp &= (~(3 << 27));
+		__raw_writel((u4Temp | (1 << 27)), (volatile void *)(0xFD000000 + 0xC));
+		__raw_writel(0x2207E2, (volatile void *)(0xFD00C000 + 0x4));
+		break;
+	case 27000000:
+		u4Temp &= (~(3 << 27));
+		__raw_writel(u4Temp, (volatile void *)(0xFD000000 + 0xC));
+
+		u4TempTwo &= (~(0xFFF<<12));
+		__raw_writel(u4TempTwo, (volatile void *)(0xFD000000 + 0x8));
+		__raw_writel(0xE2, (volatile void *)(0xFD00C000 + 0x4));
+		break;
+	default:
+		return FALSE;
+	}
+	return TRUE;
+}
+
+
+
+/*
+* init, exit and module
+*/
+
+int k_cli_open(struct inode *inode, struct file *flip)
+{
+	return 0;
+}
+
+int k_cli_release(struct inode *inode, struct file *flip)
+{
+	return 0;
+}
+/*-----------------------------------------------------------------------------
+cli_ioctl.
+ -----------------------------------------------------------------------------*/
+
+long k_cli_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+{
+	return FALSE;
+}
+
+
+static const struct file_operations cli_fops = {
+	.owner            = THIS_MODULE,
+	.open       = k_cli_open,
+	.unlocked_ioctl = k_cli_ioctl,
+	.release    = k_cli_release,
+};
+
+/*
+ * Add device attribute for CLI
+ */
+
+cli_str_sync clistrsync;
+
+static ssize_t commands_show(struct kobject *kobj, struct kobj_attribute *attr,
+		char *buf)
+{
+	char *buff = buf;
+
+	return buff - buf;
+}
+
+static ssize_t commands_store(struct kobject *kobj, struct kobj_attribute *attr,
+				const char *buf, size_t n)
+{
+	if (sizeof(buf) != 0 && sizeof(buf) < CLI_STR_LENGTH) {
+		strncpy(clistrsync.clistr, buf, n);
+		clistrsync.clistr[n] = 0x0d;
+	}
+	complete(&clistrsync.cli_complete);
+	return n;
+}
+
+#define cli_attr(_name)								\
+static struct kobj_attribute _name##_attr = {		\
+	.attr   = {										\
+		.name = __stringify(_name),					\
+		.mode = 0644,								\
+	},												\
+	.show   = _name##_show,							\
+	.store  = _name##_store,						\
+}
+
+cli_attr(commands);
+
+static struct attribute *g[] = {
+	&commands_attr.attr,
+	NULL,
+};
+
+static struct attribute_group attr_group = {
+	.attrs = g,
+};
+
+static struct kobject *cli_kobj = NULL;
+
+static int __init drvcli_init(VOID)
+{
+    int ret;
+	struct device_node *node = NULL;
+	node = of_find_compatible_node(NULL, NULL, "atc,ac823x-drvcli");
+	if (node)
+	{
+		CLI_IO_BASE = (ulong)of_iomap(node, 0);
+		if (CLI_IO_BASE == 0)
+		{
+			pr_err("[drvcli]can't find io virtual base address");
+			return -1;
+		}
+		pr_info("CLI_IO_BASE=%lx\n", CLI_IO_BASE);
+	}
+	else
+	{ 
+		pr_err("[drcli]can't find compatible node\n");
+	}
+
+	//UART_WRITE32_(0x0, UART0_INT_EN);
+	//UART_WRITE32_(0x0100, 0x1C);
+	//UART_WRITE32_(0xA0, UART0_INT_EN);
+	ret = register_chrdev(240, "drvcli", &cli_fops);
+
+	if (ret) {
+		pr_err(TEXT("Unable to register \"drvcli\" misc device\n"));
+	} else {
+		pr_info(TEXT("cli device init success\n"));
+	}
+	memset(clistrsync.clistr, 0x00, CLI_STR_LENGTH);
+	init_completion(&clistrsync.cli_complete);
+	clistrsync.cli_getcharnum = 0;
+
+	cli_init();
+
+	cli_kobj = os_create_and_add_node("cli", NULL);
+	os_create_fs_group(cli_kobj, &attr_group);
+	return ret;
+}
+
+static void __exit drvcli_exit(void)
+{
+	if (cli_kobj) {
+		kobject_del(cli_kobj);
+		os_remove_fs_group(cli_kobj, &attr_group);
+	}
+	unregister_chrdev(240, "drvcli");
+	cli_uninit();
+}
+
+module_init(drvcli_init);
+module_exit(drvcli_exit);
+
+MODULE_AUTHOR("Autochips");
+MODULE_DESCRIPTION("Autochips ac823x GPIO Driver");
+MODULE_LICENSE("GPL");

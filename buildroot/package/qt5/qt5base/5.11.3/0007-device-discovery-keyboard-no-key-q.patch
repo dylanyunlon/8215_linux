@@ -1,0 +1,17 @@
+Index: qt5base-5.11.3/src/platformsupport/devicediscovery/qdevicediscovery_static.cpp
+===================================================================
+--- qt5base-5.11.3.orig/src/platformsupport/devicediscovery/qdevicediscovery_static.cpp	2018-11-25 20:51:11.000000000 +0800
++++ qt5base-5.11.3/src/platformsupport/devicediscovery/qdevicediscovery_static.cpp	2020-04-03 10:20:41.886018000 +0800
+@@ -158,10 +158,10 @@
+     QT_CLOSE(fd);
+ 
+     if ((m_types & Device_Keyboard)) {
+-        if (testBit(KEY_Q, bitsKey)) {
++        //if (testBit(KEY_Q, bitsKey)) {
+             qCDebug(lcDD) << "Found keyboard at" << device;
+             return true;
+-        }
++        //}
+     }
+ 
+     if ((m_types & Device_Mouse)) {

@@ -1,0 +1,5 @@
+.*
+!/.gitignore
+*.o
+*.o.cmd
+built-in.c

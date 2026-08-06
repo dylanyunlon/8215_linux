@@ -1,0 +1,4 @@
+config ATC_AP2ARM2
+	tristate "ATC OS AP2ARM2"
+	default y
+	help

@@ -1,0 +1,458 @@
+/dts-v1/;
+#include <dt-bindings/mmc/arm-gic.h>
+#include <dt-bindings/mmc/irq.h>
+#include <dt-bindings/mmc/ac8237-msdc.h>
+/ {
+	model = "MT3365";
+	compatible = "mediatek,MT3365";
+	interrupt-parent = <&gic>;
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+/*
+	aliases {		
+		timer0 = &bim_timer0;		
+		timer1 = &bim_timer1;	
+		timer2 = &bim_timer2;
+	};
+*/
+	
+	
+	chosen {
+		bootargs = "root=/dev/ram0 rw initrd=0x101100000,16M console=ttyMT0 loglevel=8";
+	};
+	/* Do not put any bus before mtk-msdc, because it should be mtk-msdc.0 for partition device node usage */
+	/*workaround for .0*/
+	atc-msdc.0 {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges = <0 0 0 0xffffffff>;
+
+		mmc0: msdc0@0x1000B000{
+				compatible = "autochips,MSDC0";
+				reg = <0x1000B000 0x1000>;  /* MSDC0_BASE   */
+				interrupts = <GIC_SPI 227 IRQ_TYPE_LEVEL_LOW>;
+				clk_src = /bits/ 8 <MSDC50_CLKSRC_400MHZ>;
+				bus-width = <8>;
+				max-frequency = <200000000>;
+				cap-mmc-highspeed;
+				msdc-sys-suspend;
+				mmc-ddr-1_8v;
+				mmc-hs200-1_8v;
+				mmc-hs400-1_8v;
+				non-removable;
+				pinctl = <&mmc0_pins_default>;
+				register_setting = <&mmc0_register_setting_default>;
+				host_function = /bits/ 8 <MSDC_EMMC>;
+				bootable;
+				status = "okay";
+			
+		};
+
+		mmc1: msdc1@0x10021000{
+				compatible = "autochips,MSDC0";
+				reg = <0x10021000 0x1000>;  /* MSDC1_BASE   */
+				interrupts = <GIC_SPI 228 IRQ_TYPE_LEVEL_LOW>;
+				clk_src = /bits/ 8 <MSDC30_CLKSRC_200MHZ>;
+				bus-width = <4>;
+				max-frequency = <200000000>;
+				msdc-sys-suspend;
+				cap-sd-highspeed;
+				/*sd-uhs-sdr12;
+				sd-uhs-sdr25;
+				sd-uhs-sdr50;
+				sd-uhs-sdr104;
+				sd-uhs-ddr50;*/
+				pinctl = <&mmc1_pins_default>;
+				pinctl_sdr104 = <&mmc1_pins_sdr104>;
+				pinctl_sdr50 = <&mmc1_pins_sdr50>;
+				pinctl_ddr50 = <&mmc1_pins_ddr50>;
+				register_setting = <&mmc1_register_setting_default>;
+				host_function = /bits/ 8 <MSDC_SD>;
+				cd_level = /bits/ 8 <MSDC_CD_LOW>;
+				//cd-gpios = <&pio 5 0>;
+				status = "okay";
+			
+				
+		};
+
+		mmc2: msdc2@0x1000A000{
+				compatible = "autochips,MSDC0";
+				reg = <0x1000A000 0x1000>;  /* MSDC2_BASE   */
+				interrupts = <GIC_SPI 229 IRQ_TYPE_LEVEL_LOW>;
+				clk_src = /bits/ 8 <MSDC30_CLKSRC_200MHZ>;
+				bus-width = <4>;
+				max-frequency = <200000000>;
+				msdc-sys-suspend;
+				cap-sd-highspeed;
+				/*sd-uhs-sdr12;
+				sd-uhs-sdr25;
+				sd-uhs-sdr50;
+				sd-uhs-sdr104;
+				sd-uhs-ddr50;*/
+				pinctl = <&mmc1_pins_default>;
+				pinctl_sdr104 = <&mmc1_pins_sdr104>;
+				pinctl_sdr50 = <&mmc1_pins_sdr50>;
+				pinctl_ddr50 = <&mmc1_pins_ddr50>;
+				register_setting = <&mmc1_register_setting_default>;
+				host_function = /bits/ 8 <MSDC_SD>;
+				cd_level = /bits/ 8 <MSDC_CD_LOW>;
+				//cd-gpios = <&pio 5 0>;
+				status = "okay";					
+		};
+
+		mmc3: msdc3@0x1001A000{
+				compatible = "autochips,MSDC0";
+				reg = <0x1001A000 0x1000>;  /* MSDC2_BASE   */
+				interrupts = <GIC_SPI 213 IRQ_TYPE_LEVEL_LOW>;
+				clk_src = /bits/ 8 <MSDC30_CLKSRC_200MHZ>;
+				bus-width = <4>;
+				max-frequency = <200000000>;
+				msdc-sys-suspend;
+				cap-sd-highspeed;
+				/*sd-uhs-sdr12;
+				sd-uhs-sdr25;
+				sd-uhs-sdr50;
+				sd-uhs-sdr104;
+				sd-uhs-ddr50;*/
+				pinctl = <&mmc1_pins_default>;
+				pinctl_sdr104 = <&mmc1_pins_sdr104>;
+				pinctl_sdr50 = <&mmc1_pins_sdr50>;
+				pinctl_ddr50 = <&mmc1_pins_ddr50>;
+				register_setting = <&mmc1_register_setting_default>;
+				host_function = /bits/ 8 <MSDC_SD>;
+				cd_level = /bits/ 8 <MSDC_CD_LOW>;
+				//cd-gpios = <&pio 5 0>;
+				status = "okay";
+				
+		};
+
+	/* only used for old way of DCT, can be removed in new platform */
+	msdc1_ins: default {
+		compatible = "mediatek, msdc1_ins-eint";
+	};
+	};
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu-map {
+			cluster0 {
+				core0 {
+					cpu = <&cpu0>;
+				};
+			/*
+				core1 {
+					cpu = <&cpu1>;
+				};
+				core2 {
+					cpu = <&cpu2>;
+				};
+				core3 {
+					cpu = <&cpu3>;
+				};
+			*/
+			};
+
+			/*
+			cluster1 {
+				core0 {
+					cpu = <&cpu4>;
+				};
+				core1 {
+					cpu = <&cpu5>;
+				};
+				core2 {
+					cpu = <&cpu6>;
+				};
+				core3 {
+					cpu = <&cpu7>;
+				};
+			};
+			*/
+		};
+
+		cpu0: cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000000>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+
+		/*
+		cpu1: cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000001>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+
+		cpu2: cpu@2 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000002>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+
+		cpu3: cpu@3 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000003>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+
+		cpu4: cpu@4 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000100>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+
+		cpu5: cpu@5 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x101>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+
+		cpu6: cpu@6 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000102>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+
+		cpu7: cpu@7 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x000103>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x10008110>;
+		};
+		*/
+	};
+
+	memory {
+		device_type = "memory";
+		reg = <0x1 0x00000000 0x0 0x10000000>;
+	};
+/* mmc start */
+
+
+
+	mmc0_pins_default: mmc0@default {
+			pins_cmd {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_dat {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_clk {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_rst {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_ds {
+				drive-strength = /bits/ 8 <2>;
+			};
+	};
+
+	mmc0_register_setting_default: mmc0@register_default {
+		dat0rddly      = /bits/ 8 <0>;
+		dat1rddly      = /bits/ 8 <0>;
+		dat2rddly      = /bits/ 8 <0>;
+		dat3rddly      = /bits/ 8 <0>;
+		dat4rddly      = /bits/ 8 <0>;
+		dat5rddly      = /bits/ 8 <0>;
+		dat6rddly      = /bits/ 8 <0>;
+		dat7rddly      = /bits/ 8 <0>;
+		datwrddly      = /bits/ 8 <0>;
+		cmdrrddly      = /bits/ 8 <0>;
+		cmdrddly       = /bits/ 8 <0>;
+		cmd_edge = /bits/ 8 <MSDC_SMPL_FALLING>;
+		rdata_edge = /bits/ 8 <MSDC_SMPL_FALLING>;
+		wdata_edge = /bits/ 8 <MSDC_SMPL_FALLING>;
+
+		ett-hs200-cells = <12>;
+		ett-hs200-default = <OFFSET_MSDC_PATCH_BIT0	MSDC_PB0_INT_DAT_LATCH_CK_SEL 0x0
+			OFFSET_MSDC_PATCH_BIT0	MSDC_PB0_CKGEN_MSDC_DLY_SEL   0x0
+			OFFSET_MSDC_PATCH_BIT1	MSDC_PB1_CMD_RSP_TA_CNTR      0x1
+			OFFSET_MSDC_IOCON		MSDC_IOCON_RSPL               0x0
+			OFFSET_MSDC_PAD_TUNE0	MSDC_PAD_TUNE0_CMDRDLY        0x7
+			OFFSET_MSDC_PAD_TUNE0	MSDC_PAD_TUNE0_CMDRRDLY       0xb
+			OFFSET_MSDC_PATCH_BIT1		MSDC_PB1_WRDAT_CRCS_TA_CNTR   0x1
+			OFFSET_MSDC_PAD_TUNE0	MSDC_PAD_TUNE0_DATWRDLY       0xb
+			OFFSET_MSDC_IOCON			MSDC_IOCON_W_D0SPL            0x0
+			OFFSET_MSDC_DAT_RDDLY0		MSDC_DAT_RDDLY0_D0            0x7
+			OFFSET_MSDC_PAD_TUNE0	MSDC_PAD_TUNE0_DATRRDLY       0x9
+			OFFSET_MSDC_IOCON		MSDC_IOCON_R_D_SMPL           0x0>;
+
+		ett-hs400-cells = <8>;
+		ett-hs400-default = <OFFSET_MSDC_PATCH_BIT0	MSDC_PB0_INT_DAT_LATCH_CK_SEL	0x0
+			OFFSET_MSDC_PATCH_BIT0		MSDC_PB0_CKGEN_MSDC_DLY_SEL		0x0
+			OFFSET_EMMC50_PAD_DS_TUNE	MSDC_EMMC50_PAD_DS_TUNE_DLY1	0x2
+			OFFSET_EMMC50_PAD_DS_TUNE	MSDC_EMMC50_PAD_DS_TUNE_DLY3	0x10
+			OFFSET_MSDC_PATCH_BIT1			MSDC_PB1_CMD_RSP_TA_CNTR	0x1
+			OFFSET_MSDC_IOCON		MSDC_IOCON_RSPL				0x0
+			OFFSET_MSDC_PAD_TUNE0			MSDC_PAD_TUNE0_CMDRDLY		0x6
+			OFFSET_MSDC_PAD_TUNE0		MSDC_PAD_TUNE0_CMDRRDLY		0x6>;
+	};
+
+	mmc1_pins_default: mmc1@default {
+			pins_cmd {
+				drive-strength = /bits/ 8 <3>;
+			};
+			pins_dat {
+				drive-strength = /bits/ 8 <3>;
+			};
+			pins_clk {
+				drive-strength = /bits/ 8 <3>;
+			};
+	};
+
+	mmc1_pins_sdr104: mmc1@sdr104 {
+			pins_cmd {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_dat {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_clk {
+				drive-strength = /bits/ 8 <3>;
+			};
+	};
+
+	mmc1_pins_sdr50: mmc1@sdr50 {
+			pins_cmd {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_dat {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_clk {
+				drive-strength = /bits/ 8 <3>;
+			};
+	};
+
+	mmc1_pins_ddr50: mmc1@ddr50 {
+			pins_cmd {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_dat {
+				drive-strength = /bits/ 8 <2>;
+			};
+			pins_clk {
+				drive-strength = /bits/ 8 <3>;
+			};
+	};
+
+	mmc1_register_setting_default: mmc1@register_default {
+				dat0rddly      = /bits/ 8 <0>;
+				dat1rddly      = /bits/ 8 <0>;
+				dat2rddly      = /bits/ 8 <0>;
+				dat3rddly      = /bits/ 8 <0>;
+				datwrddly      = /bits/ 8 <0>;
+				cmdrrddly      = /bits/ 8 <0>;
+				cmdrddly       = /bits/ 8 <0>;
+				cmd_edge = /bits/ 8 <MSDC_SMPL_FALLING>;
+				rdata_edge = /bits/ 8 <MSDC_SMPL_FALLING>;
+				wdata_edge = /bits/ 8 <MSDC_SMPL_FALLING>;
+	};
+
+/* mmc end */
+	gic: interrupt-controller@0x13110000 {
+		compatible = "arm,gic-400";
+		interrupt-controller;
+		#interrupt-cells = <3>;
+
+		reg = <0 0x13110000 0 0x1000
+		       0 0x13120000 0 0x2000
+		       0 0x13140000 0 0x2000
+		       0 0x13160000 0 0x1000>;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupts = <1 13 0xff08>, /*Secure Physical Timer Event*/
+			     <1 14 0xff08>, /*Non-Secure Physical Timer Event*/
+			     <1 11 0xff08>, /*Virtual Timer Event*/
+			     <1 10 0xff08>; /*Hypervisor Timer Event*/
+		clock-frequency = <27000000>;
+	};
+
+	timer64b@0x10008000 {
+		compatible = "mediatek,mt33xx-timer-64b";
+		reg = <0 0x10008000 0 0x1000>;
+	};	
+
+/*
+	bim_timer0: timer@0x10008148{
+		compatible = "Mediatek,mt33xx-timer";
+		reg = <0 0x10008148 0 0x100>,<0 0x10008000 0 0x100>;
+		interrupts = <0 99 4>;
+	};
+
+	bim_timer1: timer@0x10008154{
+		compatible = "Mediatek,mt33xx-timer";
+		reg = <0 0x10008154 0 0x100>,<0 0x10008000 0 0x100>;
+		interrupts = <0 98 4>;
+	};
+
+	bim_timer2: timer@0x1000815C{
+		compatible = "Mediatek,mt33xx-timer";
+		reg = <0 0x1000815C 0 0x100>,<0 0x10008000 0 0x100>;
+		interrupts = <0 97 4>;
+	};
+	
+		
+  	xgpt {
+  		compatible = "Mediatek,mcusys-xgpt";
+  		reg = <0 0x10055670 0 0x100>;
+  		interrupts = <0 64 4>,<0 65 4>,<0 66 4>,<0 67 4>,<0 68 4>,<0 69 4>,<0 70 4>,<0 71 4>;
+  	};
+	
+	extint@10008740 {
+		compatible = "Mediatek,mt33xx-extint";
+	   	reg = <0 0x10008740 0 0x20>;
+		interrupts = <0 173 4>,<0 77 4>,<0 82 4>,<0 168 4>,<0 169 4>,<0 170 4>,<0 171 4>,<0 172 4>;
+	};
+*/	
+	
+	serial@0x1000c000 {
+		compatible = "atc,mt33xx-serial0";
+		reg = <0 0x1000c000 0 0x1000>;
+		interrupts = <0 86 4>;
+	};
+
+	bim@0x10008000 {
+		compatible = "mediatek,mt33xx-bim";
+		reg = <0 0x10008000 0 0x1000>;
+	};
+
+	iodev@0x10000000 {
+		compatible = "mediatek,mt33xx-iodev";
+		reg = <0 0x10000000 0 0x00400000>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		vfy_reserved {
+			compatible = "verify-reserve-memory";
+			reg = <0x1 0x08000000 0 0x02000000>;
+		};
+	};
+};
+
+

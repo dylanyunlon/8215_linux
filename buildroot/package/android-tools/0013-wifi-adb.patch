@@ -1,0 +1,12 @@
+--- a/core/adbd/adb.c
++++ b/core/adbd/adb.c
+@@ -1323,7 +1323,8 @@ int adb_main(int is_daemon, int server_port)
+         // listen on TCP port specified by service.adb.tcp.port property
+     //    local_init(port);
+     //} else 
+-    if (!usb) {
++    //if (!usb)
++    {
+         printf("Using USB\n");
+         // listen on default port
+         local_init(DEFAULT_ADB_LOCAL_TRANSPORT_PORT);

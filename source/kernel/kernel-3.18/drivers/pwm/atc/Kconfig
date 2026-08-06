@@ -1,0 +1,5 @@
+#
+# Autochips pwm configuration
+#
+config PWM_ATC
+       tristate "Autochips PWM Support"

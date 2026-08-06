@@ -1,0 +1,135 @@
+
+comment "ATC Misc config for 3.18 kernel"
+
+
+menu "ATC Misc config"
+
+menuconfig ATC_SOLUTION
+	bool "Autochips Properitary Configuration"
+	help
+	  Check this to enable Autochips properity configuration.
+	  
+
+if ATC_SOLUTION
+
+source "drivers/misc/atc/aee/Kconfig"
+source "drivers/misc/atc/boot/Kconfig"
+source "drivers/misc/atc/ram_console/Kconfig"
+source "drivers/misc/atc/gator-driver/Kconfig"
+
+endif
+
+source "drivers/misc/atc/power-loss-test/Kconfig"
+
+config ATC_LIB_OSAL
+	tristate "ATC OS interface Driver"
+	default y
+	help
+
+	  This is basic driver. If unsure say Y.
+
+config ATC_LIB_BSP
+	tristate "ATC BSP interface Driver"
+	default y
+	help
+
+	  This is basic driver. If unsure say Y.
+
+config ATC_DUAL_ARM
+	tristate "ATC Main core and slave core Communication Driver"
+	default y
+	help
+
+          This is basic driver. If unsure say Y.
+
+config ATC_CPUFREQ
+       tristate "ATC CPUfreq driver"
+       default m
+       help
+         This is for cpufreq driver, If unsure say Y.
+
+
+config ATC_AC8237_BIM
+	bool "support ac823x bim Communication Driver"
+	default y
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_BOOTPROF
+	bool "ATC bootprof driver support"
+	default y
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_GPS
+	tristate "support atc gps"
+	default n
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_CLI
+	tristate "support atc cli driver"
+	default m
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_CLI_823x
+	tristate "support atc cli 823x driver"
+	default m
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_METAZONE
+	tristate "support atc metazone driver"
+	default m
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_GPS_6630
+	tristate "support atc gps 6630 driver"
+	default n
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_DVP
+	tristate "support atc dvp driver"
+	default m
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_BKCAR
+	tristate "support atc backcar driver"
+	default m
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_RAM_CONSOLE
+	bool "support atc ram console driver"
+	default y
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_AEE_SUPPORT
+	bool "support atc aee"
+	default y
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_TEE_SUPPORT
+	bool "support atc tee"
+	default y
+	help
+	  This is basic driver. If unsure say Y.
+
+config ATC_BASE_POWER
+	bool "support atc base power control"
+	default n
+	help
+	  atc power control drivers. 
+
+config ATC_BOOT_STATE
+	bool "Enable ATC BOOT STATE Driver"
+	default y
+	help
+	  Show Boot state.
+endmenu

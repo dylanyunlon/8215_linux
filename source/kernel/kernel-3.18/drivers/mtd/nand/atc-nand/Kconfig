@@ -1,0 +1,10 @@
+config MTD_NAND_ATC
+        tristate "Support for ATC 83xx NAND controller"
+        help
+                Enables support for NAND Flash on ATC SoC based boards.
+
+config NAND_ATC_SW_WP
+		bool "ATC NAND software write protect"
+		depends on MTD_NAND_ATC != n
+		help
+		  This is an option for software write protect feature.

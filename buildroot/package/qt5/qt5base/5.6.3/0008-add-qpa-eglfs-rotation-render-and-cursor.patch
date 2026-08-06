@@ -1,0 +1,210 @@
+Index: qt5base-5.6.3/src/platformsupport/platformcompositor/qopenglcompositor.cpp
+===================================================================
+--- qt5base-5.6.3.orig/src/platformsupport/platformcompositor/qopenglcompositor.cpp
++++ qt5base-5.6.3/src/platformsupport/platformcompositor/qopenglcompositor.cpp
+@@ -72,7 +72,8 @@ static QOpenGLCompositor *compositor = 0
+ 
+ QOpenGLCompositor::QOpenGLCompositor()
+     : m_context(0),
+-      m_targetWindow(0)
++      m_targetWindow(0),
++      m_rotation(0)
+ {
+     Q_ASSERT(!compositor);
+     m_updateTimer.setSingleShot(true);
+@@ -93,6 +94,13 @@ void QOpenGLCompositor::setTarget(QOpenG
+     m_targetWindow = targetWindow;
+ }
+ 
++void QOpenGLCompositor::setRotation(int degrees)
++{
++    m_rotation = degrees;
++    m_rotationMatrix.setToIdentity();
++    m_rotationMatrix.rotate(degrees, 0, 0, 1);
++}
++
+ void QOpenGLCompositor::update()
+ {
+     if (!m_updateTimer.isActive())
+@@ -175,7 +183,9 @@ static inline QRect toBottomLeftRect(con
+                  topLeftRect.width(), topLeftRect.height());
+ }
+ 
+-static void clippedBlit(const QPlatformTextureList *textures, int idx, const QRect &targetWindowRect, QOpenGLTextureBlitter *blitter)
++static void clippedBlit(const QPlatformTextureList *textures, int idx, const QRect &sourceWindowRect,
++                        const QRect &targetWindowRect,
++                        QOpenGLTextureBlitter *blitter, QMatrix4x4 *rotationMatrix)
+ {
+     const QRect clipRect = textures->clipRect(idx);
+     if (clipRect.isEmpty())
+@@ -185,7 +195,10 @@ static void clippedBlit(const QPlatformT
+     const QRect clippedRectInWindow = rectInWindow & clipRect.translated(rectInWindow.topLeft());
+     const QRect srcRect = toBottomLeftRect(clipRect, rectInWindow.height());
+ 
+-    const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(clippedRectInWindow, targetWindowRect);
++    QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(clippedRectInWindow, targetWindowRect);
++    if (rotationMatrix)
++        target = *rotationMatrix * target;
++
+     const QMatrix3x3 source = QOpenGLTextureBlitter::sourceTransform(srcRect, rectInWindow.size(),
+                                                                      QOpenGLTextureBlitter::OriginBottomLeft);
+ 
+@@ -201,7 +214,7 @@ void QOpenGLCompositor::render(QOpenGLCo
+     const QRect targetWindowRect(QPoint(0, 0), m_targetWindow->geometry().size());
+     float currentOpacity = 1.0f;
+     BlendStateBinder blend;
+-
++    const QRect sourceWindowRect = window->sourceWindow()->geometry();
+     for (int i = 0; i < textures->count(); ++i) {
+         uint textureId = textures->textureId(i);
+         const float opacity = window->sourceWindow()->opacity();
+@@ -213,25 +226,29 @@ void QOpenGLCompositor::render(QOpenGLCo
+         if (textures->count() > 1 && i == textures->count() - 1) {
+             // Backingstore for a widget with QOpenGLWidget subwidgets
+             blend.set(true);
+-            const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(textures->geometry(i), targetWindowRect);
++            QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(textures->geometry(i), targetWindowRect);
++            if (m_rotation)
++                target = m_rotationMatrix * target;
+             m_blitter.blit(textureId, target, QOpenGLTextureBlitter::OriginTopLeft);
+         } else if (textures->count() == 1) {
+             // A regular QWidget window
+             const bool translucent = window->sourceWindow()->requestedFormat().alphaBufferSize() > 0;
+             blend.set(translucent);
+-            const QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(textures->geometry(i), targetWindowRect);
++            QMatrix4x4 target = QOpenGLTextureBlitter::targetTransform(textures->geometry(i), targetWindowRect);
++            if (m_rotation)
++                target = m_rotationMatrix * target;
+             m_blitter.blit(textureId, target, QOpenGLTextureBlitter::OriginTopLeft);
+         } else if (!textures->flags(i).testFlag(QPlatformTextureList::StacksOnTop)) {
+             // Texture from an FBO belonging to a QOpenGLWidget
+             blend.set(false);
+-            clippedBlit(textures, i, targetWindowRect, &m_blitter);
++            clippedBlit(textures, i, sourceWindowRect, targetWindowRect, &m_blitter, m_rotation ? &m_rotationMatrix : nullptr);
+         }
+     }
+ 
+     for (int i = 0; i < textures->count(); ++i) {
+         if (textures->flags(i).testFlag(QPlatformTextureList::StacksOnTop)) {
+             blend.set(true);
+-            clippedBlit(textures, i, targetWindowRect, &m_blitter);
++            clippedBlit(textures, i, sourceWindowRect, targetWindowRect, &m_blitter, m_rotation ? &m_rotationMatrix : nullptr);
+         }
+     }
+ 
+Index: qt5base-5.6.3/src/platformsupport/platformcompositor/qopenglcompositor_p.h
+===================================================================
+--- qt5base-5.6.3.orig/src/platformsupport/platformcompositor/qopenglcompositor_p.h
++++ qt5base-5.6.3/src/platformsupport/platformcompositor/qopenglcompositor_p.h
+@@ -47,6 +47,7 @@
+ 
+ #include <QtCore/QTimer>
+ #include <QtGui/private/qopengltextureblitter_p.h>
++#include <QtGui/QMatrix4x4>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+@@ -73,6 +74,7 @@ public:
+     static void destroy();
+ 
+     void setTarget(QOpenGLContext *context, QWindow *window);
++    void setRotation(int degrees);
+     QOpenGLContext *context() const { return m_context; }
+     QWindow *targetWindow() const { return m_targetWindow; }
+ 
+@@ -100,6 +102,8 @@ private:
+ 
+     QOpenGLContext *m_context;
+     QWindow *m_targetWindow;
++    int m_rotation;
++    QMatrix4x4 m_rotationMatrix;
+     QTimer m_updateTimer;
+     QOpenGLTextureBlitter m_blitter;
+     QList<QOpenGLCompositorWindow *> m_windows;
+Index: qt5base-5.6.3/src/plugins/platforms/eglfs/qeglfscursor.cpp
+===================================================================
+--- qt5base-5.6.3.orig/src/plugins/platforms/eglfs/qeglfscursor.cpp
++++ qt5base-5.6.3/src/plugins/platforms/eglfs/qeglfscursor.cpp
+@@ -56,6 +56,7 @@ QEglFSCursor::QEglFSCursor(QPlatformScre
+       m_screen(static_cast<QEglFSScreen *>(screen)),
+       m_program(0),
+       m_textureEntry(0),
++      m_matEntry(0),
+       m_deviceListener(0),
+       m_updateRequested(false)
+ {
+@@ -64,6 +65,10 @@ QEglFSCursor::QEglFSCursor(QPlatformScre
+         m_visible = hideCursorVal.toInt() == 0;
+     if (!m_visible)
+         return;
++	
++	int rotation = qEnvironmentVariableIntValue("QT_QPA_EGLFS_ROTATION");
++		if (rotation)
++			m_rotationMatrix.rotate(rotation, 0, 0, 1);
+ 
+     // Try to load the cursor atlas. If this fails, m_visible is set to false and
+     // paintOnScreen() and setCurrentCursor() become no-ops.
+@@ -122,9 +127,10 @@ void QEglFSCursor::createShaderPrograms(
+         "attribute highp vec2 vertexCoordEntry;\n"
+         "attribute highp vec2 textureCoordEntry;\n"
+         "varying highp vec2 textureCoord;\n"
++        "uniform highp mat4 mat;\n"
+         "void main() {\n"
+         "   textureCoord = textureCoordEntry;\n"
+-        "   gl_Position = vec4(vertexCoordEntry, 1.0, 1.0);\n"
++        "   gl_Position = mat * vec4(vertexCoordEntry, 1.0, 1.0);\n"
+         "}\n";
+ 
+     static const char *textureFragmentProgram =
+@@ -142,6 +148,8 @@ void QEglFSCursor::createShaderPrograms(
+     m_program->link();
+ 
+     m_textureEntry = m_program->uniformLocation("texture");
++    m_matEntry = m_program->uniformLocation("mat");
++
+ }
+ 
+ void QEglFSCursor::createCursorTexture(uint *texture, const QImage &image)
+@@ -485,6 +493,7 @@ void QEglFSCursor::draw(const QRectF &r)
+     m_program->setAttributeArray(1, textureCoordinates, 2);
+ 
+     m_program->setUniformValue(m_textureEntry, 0);
++    m_program->setUniformValue(m_matEntry, m_rotationMatrix);
+ 
+     glDisable(GL_CULL_FACE);
+     glFrontFace(GL_CCW);
+Index: qt5base-5.6.3/src/plugins/platforms/eglfs/qeglfscursor.h
+===================================================================
+--- qt5base-5.6.3.orig/src/plugins/platforms/eglfs/qeglfscursor.h
++++ qt5base-5.6.3/src/plugins/platforms/eglfs/qeglfscursor.h
+@@ -50,6 +50,7 @@
+ #include <qpa/qplatformscreen.h>
+ #include <QtGui/QOpenGLFunctions>
+ #include <QtGui/private/qinputdevicemanager_p.h>
++#include <QtGui/QMatrix4x4>
+ 
+ QT_BEGIN_NAMESPACE
+ 
+@@ -132,8 +133,10 @@ private:
+     QEglFSScreen *m_screen;
+     QOpenGLShaderProgram *m_program;
+     int m_textureEntry;
++	int m_matEntry;
+     QEglFSCursorDeviceListener *m_deviceListener;
+     bool m_updateRequested;
++    QMatrix4x4 m_rotationMatrix;
+ };
+ 
+ QT_END_NAMESPACE
+Index: qt5base-5.6.3/src/plugins/platforms/eglfs/qeglfswindow.cpp
+===================================================================
+--- qt5base-5.6.3.orig/src/plugins/platforms/eglfs/qeglfswindow.cpp
++++ qt5base-5.6.3/src/plugins/platforms/eglfs/qeglfswindow.cpp
+@@ -138,6 +138,7 @@ void QEglFSWindow::create()
+         if (!context->create())
+             qFatal("EGLFS: Failed to create compositing context");
+         compositor->setTarget(context, window());
++        compositor->setRotation(qEnvironmentVariableIntValue("QT_QPA_EGLFS_ROTATION"));
+         // If there is a "root" window into which raster and QOpenGLWidget content is
+         // composited, all other contexts must share with its context.
+         if (!qt_gl_global_share_context()) {

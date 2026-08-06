@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config ATC_WIFI_CHIP_AIC8800_SDIO
+	tristate "ATC_WIFI_CHIP=AIC8800"
+	depends on ATC_WIFI_CHIP_SELF_ADAPTIVE || (ATC_WIFI_CHIP="AIC8800" && ATC_WLAN_TRANSMISSION_MODE="SDIO_MODE")
+	select ATC_COMBO
+	default y
+
+#if ATC_WIFI_CHIP_AIC8800_SDIO
+if ATC_WIFI_CHIP_AIC8800_SDIO_n # if 0
+
+config AIC_WLAN_SUPPORT
+	bool "AIC wireless Support"
+	default n
+	help
+	  This is support for aic wireless chip.
+
+config AIC_FW_PATH
+	depends on AIC_WLAN_SUPPORT
+	string "Firmware & config file path"
+	default "/vendor/etc/firmware"
+	#default "/lib/firmware/aic8800_sdio"
+	help
+	  Path to the firmware & config file.
+
+source "drivers/net/wireless/aic/aic8800/aic8800_fdrv/Kconfig"
+source "drivers/net/wireless/aic/aic8800/aic8800_btlpm/Kconfig"
+
+endif

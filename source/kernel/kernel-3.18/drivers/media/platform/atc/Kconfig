@@ -1,0 +1,148 @@
+#
+# Platform drivers
+#	All media drivers here are currently for atc support
+
+menuconfig ATC_MEDIA_DRIVERS
+	bool "Autochips V4L media devices"
+	depends on MEDIA_SUPPORT
+	default y
+	---help---
+	  Say Y here to enable support for platform-specific V4L drivers.
+
+if ATC_MEDIA_DRIVERS
+
+#
+# Platform multimedia device configuration
+#
+
+#source "drivers/media/platform/atc/tvd/Kconfig"
+
+config ATC_MEDIA_STORAGE_HELPER
+	bool "storage helper driver"
+
+	help
+	  Support for the storage helper.
+
+config ATC_USB_SUPPORT_BLACKLIST
+	bool "Not support have none driver USB devices"
+
+	help
+	  Not support have none driver USB devices.
+
+config VIDEO_CVBS
+	tristate "CVBS_In driver"
+	#depends on MEDIA_SUPPORT
+	help
+	  Support for the cvbs_in on ac83**.
+
+config ATC_MEDIA_SUPPORT_MMISC
+	tristate "media misc driver"
+	---help---
+	  Support for ATC media misc driver. 
+	  This device is used for manage the media reserved memory.
+	  Say Y here if you want to enable this device.
+	  In doubt, say N.
+	  
+config ATC_MEDIA_SUPPORT_STC
+	tristate "stc driver"
+	---help---
+	  Support for ATC media stc driver. 
+	  This device is used for get or set the stc value, 
+	  pause or resume stc run.
+	  Say Y here if you want to enable this device.
+	  In doubt, say N.	  
+
+config ATC_MEDIA_SUPPORT_DEMUXER
+	tristate "demuxer driver"
+	---help---
+	  Support for ATC demuxer driver. 
+	  This device splits multimedia data into difference stream,
+	  such as video, audio, subtitle, and so on.
+	  Say Y here if you want to enable this device.
+	  In doubt, say N.
+
+config ATC_MEDIA_SUPPORT_VDEC
+	tristate "videodecoder driver"
+	---help---
+	  Support for ATC video decoder driver. 
+	  This device decode various of compressed video bitstream.
+	  Say Y here if you want to enable this device.
+	  In doubt, say N.	 
+
+config ATC_MEDIA_SUPPORT_AUDIO
+	tristate "Audio DEC & ALSA PCM driver"
+	---help---
+	  Support for ATC Audio Decoder & ALSA PCM driver. 
+	  This device decode various of compressed video bitstream.
+	  Say Y here if you want to enable this device.
+	  In doubt, say N.	 
+
+config ATC_MEDIA_SUPPORT_IMGRESZ
+	tristate "Autochips Image Resize Support"
+	
+config ATC_MEDIA_SUPPORT_IRTDMA
+	tristate "Autochips IRTDMA Support"
+	default y
+config ATC_MEDIA_SUPPORT_GFX
+	tristate "Autochips gfx Support"
+	default y
+config WCH_ATC
+       tristate "Autochips Write Channel Support"
+       default m
+
+config VCP_ATC
+       tristate "Autochips Video Color Process Support"
+       default m
+
+config NR_ATC
+       tristate "Autochips noise reduce Support"
+       default n
+
+config VIDEO_ATC_VOUT
+	tristate "ATC V4L2-Display driver"
+	select VIDEOBUF_GEN
+	select VIDEOBUF_DMA_CONTIG
+	default m
+
+config VIDEO_ATC_CVBS_CAPTURE
+	tristate "Autochips cvbs video capture driver"
+	select VIDEOBUF2_DMA_CONTIG
+	select VIDEOBUF2_VMALLOC
+	default m
+	help
+	  Enables Autochips cvbs module used for capture devices.
+	  This module is used for capture on AC83**/AC80** SoCs.
+
+	  To compile this driver as a module, choose M here. There will
+	  be one module called cvbs.ko
+
+config ATC_MEDIA_SUPPORT_YBRVGA
+	tristate "YBRVGA driver"
+	---help---
+	  Support for ATC ybr vga driver. 
+	  This device for ybr vga video in.
+	  Say Y here if you want to enable this device.
+	  In doubt, say N.
+
+config ATC_MEDIA_SUPPORT_MHL
+	tristate "HDMI MHL  driver"
+	---help---
+	  Support for ATC HDMI MHL driver. 
+	  This device for HDMI MHL in.
+	  Say Y here if you want to enable this device.
+	  In doubt, say N.
+config ATC_MEDIA_SUPPORT_HDMI_VOIN
+	tristate "HDMI MHL v4l2 driver"
+	---help---
+	  Support for ATC HDMI MHL v4l2 driver.
+	  This device for HDMI MHL in.
+	  Say Y here if you want to enable this device.
+	  In doubt, say N.
+
+source "drivers/media/platform/atc/mali400/Kconfig"
+source "drivers/media/platform/atc/mali_midgard/Kconfig"
+
+endif # ATC_MEDIA_DRIVERS
+
+
+

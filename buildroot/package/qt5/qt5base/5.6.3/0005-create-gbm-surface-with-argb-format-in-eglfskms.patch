@@ -1,0 +1,28 @@
+Index: qt5base-5.6.3/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsintegration.cpp
+===================================================================
+--- qt5base-5.6.3.orig/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsintegration.cpp	2017-09-06 20:13:54.000000000 +0800
++++ qt5base-5.6.3/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsintegration.cpp	2020-06-29 16:01:45.579464000 +0800
+@@ -147,7 +147,8 @@
+     qCDebug(qLcEglfsKmsDebug) << "Creating native off screen window";
+     gbm_surface *surface = gbm_surface_create(m_device->device(),
+                                               1, 1,
+-                                              GBM_FORMAT_XRGB8888,
++                                              //GBM_FORMAT_XRGB8888,
++                                              GBM_FORMAT_ARGB8888,
+                                               GBM_BO_USE_RENDERING);
+ 
+     return reinterpret_cast<EGLNativeWindowType>(surface);
+Index: qt5base-5.6.3/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsscreen.cpp
+===================================================================
+--- qt5base-5.6.3.orig/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsscreen.cpp	2017-09-06 20:13:54.000000000 +0800
++++ qt5base-5.6.3/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsscreen.cpp	2020-06-29 16:00:07.402211000 +0800
+@@ -209,7 +209,8 @@
+         m_gbm_surface = gbm_surface_create(m_device->device(),
+                                            geometry().width(),
+                                            geometry().height(),
+-                                           GBM_FORMAT_XRGB8888,
++                                           //GBM_FORMAT_XRGB8888,
++                                           GBM_FORMAT_ARGB8888,
+                                            GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING);
+     }
+     return m_gbm_surface;

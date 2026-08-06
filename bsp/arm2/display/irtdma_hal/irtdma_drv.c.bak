@@ -1,0 +1,210 @@
+/*
+* Copyright (c) 2016 AutoChips Inc.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License version 2 as
+* published by the Free Software Foundation.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+*/
+
+#include <linux/fs.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/platform_device.h>
+#include <linux/module.h>
+#include <linux/slab.h>
+#include <linux/io.h>
+#include <linux/err.h>
+#include <linux/pm.h>
+#include <linux/pm_runtime.h>
+#include <asm/uaccess.h>
+#include <asm/current.h>
+#include <linux/sched.h>
+#include <linux/types.h>
+
+#include <linux/miscdevice.h>
+#include <linux/ioctl.h>
+//#include <asm/system.h>
+#include "x_bim_83xx.h"
+#include "x_ckgen.h"
+#include "oal.h"
+#include "irtdma_drv.h"
+#include "irt_dma_hw.h"
+#include "irtdma_log.h"
+
+
+
+
+//static struct irtdma_device *g_irtdmadev = NULL;
+extern void __iomem *irt_dma_base ;
+extern unsigned int irtdmairq ;
+extern struct clk* irtdmaclk ;
+unsigned int Begin_call_arm1 =0;
+
+
+#define WriteREG(arg, val) *(volatile UINT32 *)(IO_BASE_VA + (arg)) = val
+#define ReadREG(arg)       *(volatile UINT32 *)(IO_BASE_VA + (arg))
+#define WriteREGMsk(arg, val, msk) WriteREG((arg), (ReadREG(arg) & (~(msk))) | ((val) & (msk)))
+#define WriteRegMsk(arg, val, msk) WriteREG((arg), (ReadREG(arg) & (~(msk))) | ((val) & (msk)))
+
+UINT32 _u4IRD_DBG_LVL = IRD_LOG_LVL_ERR;
+UCHAR* _pcIrtDmaLogLevel[] = {
+    "[IRTDMA OFF]",
+    "[IRTDMA ERR]",
+    "[IRTDMA WARN]",
+    "[IRTDMA INFO]",
+    "[IRTDMA HAL]",
+    "[IRTDMA DBG]",
+    "[IRTDMA IRQ]",
+    "[IRTDMA REGRW]",
+};
+
+IRT_DMA_SRC_MODE_T g_rIrtSrcMode = {0, 0, 1, 16, 32,0};
+
+static INT32 IrtDmaCheckSrcMode(UINT32 *pu4ScanLineMode, UINT32 *pu45351Mode, UINT32 *u4BlockBurstRead)
+{
+
+    IRD_LOG(IRD_LOG_LVL_DBG, "IrtDmaCheckSrcMode\n");
+
+    g_rIrtSrcMode.fgScanLineMode = (BOOL)(*pu4ScanLineMode);
+    g_rIrtSrcMode.fg5351Mode     = (BOOL)(*pu45351Mode);
+
+    if(g_rIrtSrcMode.fgScanLineMode)
+    {
+        EV_IRTDMA_W_ALIGN = SCANLINE_MODE_WIDTH_AGLINE;
+        EV_IRTDMA_H_ALIGN = SCANLINE_MODE_HEIGHT_AGLINE;
+        g_rIrtSrcMode.uc5351ModeSel    = 0;
+        g_rIrtSrcMode.fg5351Mode       = FALSE;
+        g_rIrtSrcMode.fgBlockBurstRead = 0; //add@jgao ,only blcok mode support burst read ,others MUST be 0.
+        *pu45351Mode                   = 0;
+        *u4BlockBurstRead              = 0; //add@jgao
+    }
+    else if(g_rIrtSrcMode.fg5351Mode)
+    {
+        EV_IRTDMA_W_ALIGN = B5351_MODE_WIDTH_AGLINE;
+        EV_IRTDMA_H_ALIGN = B5351_MODE_HEIGHT_AGLINE;
+        g_rIrtSrcMode.fgBlockBurstRead = 0; //add@jgao ,only blcok mode support burst read,others MUST be 0.
+        g_rIrtSrcMode.uc5351ModeSel    = 2; // only support mb 64x32.
+        g_rIrtSrcMode.fgScanLineMode   = FALSE;
+        *pu4ScanLineMode               = 0;     
+        *u4BlockBurstRead              = 0; //add@jgao
+    }
+    else
+    {
+        EV_IRTDMA_W_ALIGN = BLOCK_MODE_WIDTH_AGLINE;
+        EV_IRTDMA_H_ALIGN = BLOCK_MODE_HEIGHT_AGLINE;
+        *u4BlockBurstRead = (*u4BlockBurstRead) & 0x1; //add@jgao       
+        g_rIrtSrcMode.fgBlockBurstRead = *u4BlockBurstRead; //add@jgao ,only blcok mode support burst read.     
+        g_rIrtSrcMode.uc5351ModeSel    = 0;
+    }
+    return (IRT_DMA_ERR_NONE);
+}
+
+static INT32 IrtDmaHwRotateMirror(UINT32 *u4SrcYSa,UINT32 *u4SrcCSa,UINT32 *u4DstYSa, UINT32 *u4DstCSa,UINT32 u4Width, UINT32 u4Height, IRT_DMA_MODE_T eMode)
+{
+    VERIFY(u4SrcYSa != NULL);
+    VERIFY(u4SrcCSa != NULL);
+    VERIFY(u4DstYSa != NULL);
+    VERIFY(u4DstCSa != NULL);
+
+    if(0 != (u4Width % IRT_DMA_MODE_AGLINE))
+    {
+        u4Width = ((u4Width / IRT_DMA_MODE_AGLINE + 1) * IRT_DMA_MODE_AGLINE);
+    }
+
+    if(0 != (u4Height % IRT_DMA_MODE_AGLINE))
+    {
+        u4Height = ((u4Height / IRT_DMA_MODE_AGLINE + 1) * IRT_DMA_MODE_AGLINE);
+    }
+
+    eMode = (eMode % IRT_DMA_MODE_MAX); 
+
+    IRT_DMA_HwSrcModeSet(g_rIrtSrcMode.fg5351Mode, g_rIrtSrcMode.uc5351ModeSel, g_rIrtSrcMode.fgScanLineMode, g_rIrtSrcMode.fgBlockBurstRead);
+
+    if(IRT_DMA_HwSrcSa(u4SrcYSa,u4SrcCSa))
+    {
+        IRD_LOG(IRD_LOG_LVL_ERR, "IrtDma_SrcSa Failed \r\n");
+    }
+    if(IRT_DMA_HwDstSa(u4DstYSa,u4DstCSa))
+    {
+        IRD_LOG(IRD_LOG_LVL_ERR, "IrtDma_DstSa Failed \r\n");
+    }
+    if (IRT_DMA_HwHVSize(u4Width,u4Height))
+    {
+        IRD_LOG(IRD_LOG_LVL_ERR, "IRT_DMA_HwWROffset Failed \r\n");
+    }
+    if(IRT_DMA_HwYCAndRotMode(eMode))
+    {
+        IRD_LOG(IRD_LOG_LVL_ERR, "IRT_DMA_HwRotMode Failed \r\n");
+    }
+    if(IRT_DMA_HwTrig())
+    {
+        IRD_LOG(IRD_LOG_LVL_ERR, "IrtDma_Trig Failed \r\n");
+    }
+    return (IRT_DMA_ERR_NONE);
+}
+
+static void IrtDma_FlterPara_H_V_M(UINT32 *pu4FrameWidth, UINT32 *pu4FrameHeight, UINT32 *pu4ModeOpt)
+{   
+    UINT32 u4Width  = *pu4FrameWidth;
+    UINT32 u4Height = *pu4FrameHeight;
+    UINT32 u4Mode   = *pu4ModeOpt;
+
+    if(0 != (u4Width % EV_IRTDMA_W_ALIGN))
+    {
+        u4Width = ((u4Width / EV_IRTDMA_W_ALIGN + 1) * EV_IRTDMA_W_ALIGN);
+
+        if (u4Width > EV_IRT_MAX_WIDTH)
+        {
+            u4Width -= EV_IRTDMA_W_ALIGN;
+        }
+    }
+    *pu4FrameWidth = u4Width;
+
+    if(0 != (u4Height % EV_IRTDMA_H_ALIGN))
+    {
+        u4Height = ((u4Height / EV_IRTDMA_H_ALIGN + 1) * EV_IRTDMA_H_ALIGN);
+
+        if (u4Height > EV_IRT_MAX_HEIGHT)
+        {
+            u4Height -= EV_IRTDMA_H_ALIGN;
+        }
+    }
+    *pu4FrameHeight = u4Height;
+
+    *pu4ModeOpt = (u4Mode % IRT_DMA_MODE_MAX);
+}
+
+UINT32 IrtDma_Rotate(VOID * pCtrlPara)
+{
+    PIRT_DMA_APP_INFO_T pIrtDmaInfo = (PIRT_DMA_APP_INFO_T)pCtrlPara;    
+    UINT32 *pu4SrcYBufAddr = pIrtDmaInfo->pu4SrcYBufAddr;
+    UINT32 *pu4SrcCBufAddr = pIrtDmaInfo->pu4SrcCBufAddr;
+    UINT32 *pu4DstYBufAddr = pIrtDmaInfo->pu4DstYBufAddr;
+    UINT32 *pu4DstCBufAddr = pIrtDmaInfo->pu4DstCBufAddr;
+    UINT32 u4FrameWidth   = pIrtDmaInfo->u4FrameWidth;
+    UINT32 u4FrameHeight  = pIrtDmaInfo->u4FrameHeight;
+    UINT32 u4ModeOpt      = pIrtDmaInfo->eModeOpt;
+    UINT32 u4ScanLineMode = pIrtDmaInfo->fgScanLineMode;
+    UINT32 u45351Mode     = pIrtDmaInfo->fg5351Mode;
+    UINT32 u4BlockBurstRead = pIrtDmaInfo->fgBlockBurstRead; 
+    IRT_DMA_HwReset();
+    IrtDmaCheckSrcMode(&u4ScanLineMode, &u45351Mode,&u4BlockBurstRead);
+    IrtDma_FlterPara_H_V_M(&u4FrameWidth, &u4FrameHeight, &u4ModeOpt);
+
+    IRD_LOG(IRD_LOG_LVL_DBG, "Paras: ScanLine=%d, 5351Mode=%d, W=%d, H=%d, Mode=%d..Align=%dx%d ,u4BlockBurstRead=%d,\
+        SrcY:%x, SrcC:%x, DstY:%x, DstC:%x\r\n",u4ScanLineMode, u45351Mode, u4FrameWidth, u4FrameHeight, u4ModeOpt,
+        EV_IRTDMA_W_ALIGN, EV_IRTDMA_H_ALIGN, u4BlockBurstRead, pu4SrcYBufAddr,pu4SrcCBufAddr, pu4DstYBufAddr, pu4DstCBufAddr);
+    
+    IrtDmaHwRotateMirror(pu4SrcYBufAddr, pu4SrcCBufAddr, pu4DstYBufAddr, pu4DstCBufAddr, u4FrameWidth, u4FrameHeight, u4ModeOpt); 
+    return (IRT_DMA_ERR_NONE);
+}
+EXPORT_SYMBOL(IrtDma_Rotate);
+
+
+

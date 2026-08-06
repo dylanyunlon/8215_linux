@@ -1,0 +1,90 @@
+#ifndef _MT_SYNC_WRITE_H
+#define _MT_SYNC_WRITE_H
+
+#if defined(__KERNEL__)
+
+#include <linux/io.h>
+#include <asm/cacheflush.h>
+//#include <asm/system.h>
+
+/*
+ * Define macros.
+ */
+
+#ifdef CONFIG_ARM64
+#define IOMEM(a)	((void __force __iomem *)((a)))
+#endif
+
+#define atc_reg_sync_writel(v, a) \
+        do {    \
+            __raw_writel((v), IOMEM((a)));   \
+            mb();  \
+        } while (0)
+
+#define atc_reg_sync_writew(v, a) \
+        do {    \
+            __raw_writew((v), IOMEM((a)));   \
+            mb();  \
+        } while (0)
+
+#define atc_reg_sync_writeb(v, a) \
+        do {    \
+            __raw_writeb((v), IOMEM((a)));   \
+            mb();  \
+        } while (0)
+
+
+
+#else   /* __KERNEL__ */
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+
+#define dsb()   \
+        do {    \
+            __asm__ __volatile__ ("dsb" : : : "memory"); \
+        } while (0)
+
+#define ac83xx_reg_sync_writel(v, a) \
+        do {    \
+            *(volatile unsigned int *)(a) = (v);    \
+            dsb(); \
+        } while (0)
+
+#define ac83xx_reg_sync_writew(v, a) \
+        do {    \
+            *(volatile unsigned short *)(a) = (v);    \
+            dsb(); \
+        } while (0)
+
+#define ac83xx_reg_sync_writeb(v, a) \
+        do {    \
+            *(volatile unsigned char *)(a) = (v);    \
+            dsb(); \
+        } while (0)
+
+#define atc_reg_sync_writel(v, a) \
+        do {    \
+            *(volatile unsigned int *)(a) = (v);    \
+            dsb(); \
+        } while (0)
+
+#define atc_reg_sync_writew(v, a) \
+        do {    \
+            *(volatile unsigned short *)(a) = (v);    \
+            dsb(); \
+        } while (0)
+
+#define atc_reg_sync_writeb(v, a) \
+        do {    \
+            *(volatile unsigned char *)(a) = (v);    \
+            dsb(); \
+        } while (0)
+
+
+#endif  /* __KERNEL__ */
+
+#endif  /* !_MT_SYNC_WRITE_H */

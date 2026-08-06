@@ -1,0 +1,5 @@
+config AC823X_BIM
+	tristate "MT33xx BIM Driver"
+	default n
+	---help---
+	  BIM

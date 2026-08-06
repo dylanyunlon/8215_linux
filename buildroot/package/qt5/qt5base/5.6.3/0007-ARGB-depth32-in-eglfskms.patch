@@ -1,0 +1,13 @@
+Index: qt5base-5.6.3/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsscreen.cpp
+===================================================================
+--- qt5base-5.6.3.orig/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsscreen.cpp	2021-11-08 09:37:16.457348000 +0800
++++ qt5base-5.6.3/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms/qeglfskmsscreen.cpp	2021-11-08 09:43:55.763373000 +0800
+@@ -90,7 +90,7 @@
+ 
+     QScopedPointer<FrameBuffer> fb(new FrameBuffer);
+ 
+-    int ret = drmModeAddFB(m_device->fd(), width, height, 24, 32,
++    int ret = drmModeAddFB(m_device->fd(), width, height, 32, 32,
+                            stride, handle, &fb->fb);
+ 
+     if (ret) {

@@ -1,0 +1,99 @@
+[CONFIG_MT8550_ECO]
+aud_drv_config.h:
+    #define AUD_DRV_MT8550_ECO 1
+
+[CONFIG_AUDIO_CERT]
+aud_drv_config.h:
+    #define AUD_DRV_IC_CERT 1
+
+[CONFIG_HDMI_HOT_PLUG_SUPPORT]
+aud_drv_config.h:
+    #define AUD_DRV_HDMI_HOT_PLUG_SUPPORT 1
+
+[CONFIG_SUPPORT_PHILIPS_BDP]
+aud_drv_config.h:
+    #define AUD_DRV_PHILIPS_BDP_SUPPORT 1
+    
+[CONFIG_SUPPORT_PHILIPS_HTS]
+aud_drv_config.h:
+    #define AUD_DRV_PHILIPS_HTS_SUPPORT 1
+    
+[CONFIG_SUPPORT_HDMI_CLK]
+aud_drv_config.h:
+    #define AUD_DRV_HDMI_CLK_SUPPORT 1    
+   
+[CONFIG_SUPPORT_SPDIF_IN_SLAVE_MODE]
+aud_drv_config.h:
+    #define AUD_DRV_SPDIF_IN_SLAVE_MODE  1  
+
+[CONFIG_SUPPORT_HDMI_IN_SLAVE_MODE]
+aud_drv_config.h:
+    #define AUD_DRV_HDMI_IN_SLAVE_MODE  1  
+    
+[CONFIG_SUPPORT_BASE]
+aud_drv_config.h:
+    #define AUD_DRV_BASE_SUPPORT 1
+    
+[CONFIG_NEW_REENC_SUPPORT]
+aud_drv_config.h:
+    #define AUD_DRV_NEW_REENC_SUPPORT 1
+    
+[CONFIG_AUD_SONY] 
+aud_drv_config.h:
+   #define AUD_DRV_DECODING_CHANNEL 1
+   #define AUD_DRV_DECODING_TYPE 1
+   #define DSP_DOWNSAMPLE_SUPPORT 1
+   #define AUD_DRV_EXT_DEVICE_CTRL 1
+   #define AUD_DRV_DOT_MUTE 1
+   #define AUD_DRV_SONY 1
+   #define AUD_DRV_SPDIF_FIXED_48K_16B 1    
+   #define AUD_DRV_CHANNEL_LAYOUT 1
+   #define AUD_DRV_FORCE_AC3_KARAOKE_OUTPUT_2CH 1
+   #define AUD_DRV_HTS_MODEL_NOTIFY_INFO 1
+
+[CONFIG_AUD_DRV_HDMI_OUTPUT_2]
+aud_drv_config.h:
+		#define AUD_DRV_HDMI_OUTPUT_2 1
+		
+[CONFIG_AUD_DRV_HDMI_OUTPUT_5_1]
+aud_drv_config.h:
+		#define AUD_DRV_HDMI_OUTPUT_5_1 1
+		
+[CONFIG_AUD_DRV_HDMI_OUTPUT_7_1]
+aud_drv_config.h:
+		#define AUD_DRV_HDMI_OUTPUT_7_1 1				
+		
+[CONFIG_AUD_DRV_HW_SD0_SD4]
+aud_drv_config.h:
+		#define AUD_DRV_HW_SD0_SD4 1
+		
+[CONFIG_AUD_DRV_SUPPORT_5_1_MIXER]
+aud_drv_config.h:
+		#define AUD_DRV_SUPPORT_5_1_MIXER 1
+		
+[CONFIG_AUD_DRV_SUPPORT_7_1_MIXER]
+aud_drv_config.h:
+		#define AUD_DRV_SUPPORT_7_1_MIXER 1
+		
+[CONFIG_AUD_DRV_PHILIPS_TRIM_TABLE]
+aud_drv_config.h:
+		#define AUD_DRV_PHILIPS_TRIM_TABLE 1					
+
+[CONFIG_DRAM256_MODEL&& (!MSB)]
+aud_drv_config.h:
+        #define AUD_AOUT_MAX_CH_NUM     2           // 256M Aout Max 2 Channel
+
+[CONFIG_DRAM256_MODEL]
+aud_drv_config.h:        
+        #define AUD_AOUT_BYPASS_2CH_DOWNMIX_EN  1   // 256M enable bypass 2ch downmix function
+        #define AUD_DRV_LIP_SYNC_SUPPORT  0         // 256M disable Lip Sync
+        
+[CONFIG_NEW_DIVERSITY]
+aud_drv_config.h:
+        #define AUD_DRV_NEW_DIVERSITY_SCHEME   1 
+
+[CONFIG_SUPPORT_SKYPE]
+aud_drv_config.h:
+        #define AUD_DRV_DEC3_SUPPORT 1
+
+

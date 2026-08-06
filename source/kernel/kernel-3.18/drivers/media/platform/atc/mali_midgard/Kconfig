@@ -1,0 +1,1 @@
+source "drivers/media/platform/atc/mali_midgard/drivers/Kconfig"

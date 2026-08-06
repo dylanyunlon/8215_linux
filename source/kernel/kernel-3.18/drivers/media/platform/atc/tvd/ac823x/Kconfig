@@ -1,0 +1,8 @@
+config VIDEO_TVD
+	tristate "autochips tvd support"
+	depends on VIDEO_CVBS
+	---help---
+	  This is a video4linux2 driver for the autochips 8317 integrated
+	  cvbs in.  
+
+

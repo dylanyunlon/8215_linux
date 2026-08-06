@@ -1,0 +1,2 @@
+source "drivers/media/platform/atc/mali_midgard/drivers/base/Kconfig"
+source "drivers/media/platform/atc/mali_midgard/drivers/gpu/Kconfig"

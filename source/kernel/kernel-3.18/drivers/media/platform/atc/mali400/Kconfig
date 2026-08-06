@@ -1,0 +1,1 @@
+source "drivers/media/platform/atc/mali400/r6p1/Kconfig"	

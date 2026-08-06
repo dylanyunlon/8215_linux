@@ -1,0 +1,4 @@
+config ATC_ATCLIB
+	tristate "ATCLib driver"
+	help
+	  This is the ATCLib driver

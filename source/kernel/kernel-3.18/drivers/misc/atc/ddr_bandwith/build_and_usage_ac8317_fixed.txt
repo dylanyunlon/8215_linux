@@ -1,0 +1,28 @@
+# Build example
+# Assume current directory contains:
+#   ddr_bw_mt8317_fixed_addr.c
+#   Makefile
+#
+# Build:
+#   make -C /path/to/linux-3.18 M=$PWD modules
+#
+# Install:
+#   adb push ddr_bw_mt8317_fixed.ko /data/
+#   adb shell insmod /data/ddr_bw_mt8317_fixed.ko
+#
+# Sysfs path:
+#   /sys/devices/platform/ddr_bw_mt8317/
+#
+# Example:
+#   adb shell "echo 2 > /sys/devices/platform/ddr_bw_mt8317/agent_id"
+#   adb shell "echo 100 > /sys/devices/platform/ddr_bw_mt8317/step_ms"
+#   adb shell "echo 1 > /sys/devices/platform/ddr_bw_mt8317/times"
+#   adb shell "echo 1 > /sys/devices/platform/ddr_bw_mt8317/run"
+#   adb shell "cat /sys/devices/platform/ddr_bw_mt8317/summary"
+#
+# Scan all agents:
+#   adb shell "echo 1 > /sys/devices/platform/ddr_bw_mt8317/scan_all"
+#   adb shell dmesg | tail -100
+#
+# IMPORTANT:
+# Replace DRAM_DMARB_PHY_BASE if your real physical address is not 0xFD006000.

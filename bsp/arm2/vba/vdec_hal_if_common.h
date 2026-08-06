@@ -1,0 +1,81 @@
+/********************************************************************************************
+ *     LEGAL DISCLAIMER
+ *
+ *     (Header of MediaTek Software/Firmware Release or Documentation)
+ *
+ *     BY OPENING OR USING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
+ *     THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE") RECEIVED
+ *     FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON AN "AS-IS" BASIS
+ *     ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES, EXPRESS OR IMPLIED,
+ *     INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR
+ *     A PARTICULAR PURPOSE OR NONINFRINGEMENT. NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY
+ *     WHATSOEVER WITH RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY,
+ *     INCORPORATED IN, OR SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK
+ *     ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+ *     NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S SPECIFICATION
+ *     OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+ *
+ *     BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE LIABILITY WITH
+ *     RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE, AT MEDIATEK'S OPTION,
+ *     TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE
+ *     FEES OR SERVICE CHARGE PAID BY BUYER TO MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+ *
+ *     THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE WITH THE LAWS
+ *     OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF LAWS PRINCIPLES.
+ ************************************************************************************************/
+#ifndef _VDEC_HAL_IF_COMMON_H_
+#define _VDEC_HAL_IF_COMMON_H_
+
+#include "x_typedef.h"
+//#include "vdec_hal_errcode.h"
+#include "vdec_hw_common.h"
+#include "vdec_info_common.h"
+//#include "vdec_init.h"
+
+
+/// This function turns on video decoder HAL
+/// \return If return value < 0, it's failed. Please reference drv_vdec_errcode.h.
+INT32 i4VDEC_HAL_Common_Init(
+    UINT32 u4ChipID            ///< [IN] Chip ID
+);
+
+/// This function turns off video decoder HAL
+/// \return If return value < 0, it's failed. Please reference drv_vdec_errcode.h.
+INT32 i4VDEC_HAL_Common_Uninit(void);
+
+
+typedef struct _VDEC_HAL_COMMON_DEC_PRM_T_
+{
+    UCHAR   ucAddrSwapMode; // AVS/MPEG
+    UCHAR   ucPicStruct;// MPEG
+    UCHAR   ucPicType; // MPEG
+    UCHAR   ucDecFBufIdx; // MPEG
+    UINT32  u4PicBW; // MPEG
+    UINT32  u4PicW; // MPEG
+    UINT32  u4PicH; // MPEG
+
+    VOID *prVDecCodecHalPrm;
+}VDEC_HAL_COMMON_DEC_PRM_T;
+
+extern BOOL vVDec_HAL_COMMON_WaitVldFetchOk(
+    UINT32 u4BSID, 
+    UINT32 u4VDecID);
+
+extern UINT32 vVDec_HAL_COMMON_VLDGetBits(
+    UINT32 u4BSID, 
+    UINT32 u4VDecID, UINT32 dShiftBit);
+
+extern void vVDec_HAL_COMMON_SetVLDFIFO(
+    UINT32 u4BSID, UINT32 u4VDecID, 
+    UINT32 u4VFifoSa, UINT32 u4VFifoEa);
+
+
+
+extern void vVDec_HAL_COMMON_ResetHW(UINT32 u4VDecID, UINT32 u4VDecType);
+
+
+//
+/*! @} */
+
+#endif //#ifndef _HAL_VDEC_COMMON_IF_H_
+

@@ -10,3 +10,5 @@
 *.d
 *.ko
 out/
+bsp/preloader/i686/sysroot/usr/lib/locale/locale-archive
+bsp/trustzone/i686/sysroot/usr/lib/locale/locale-archive

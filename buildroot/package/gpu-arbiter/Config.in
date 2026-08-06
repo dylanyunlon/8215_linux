@@ -1,0 +1,5 @@
+config BR2_PACKAGE_GPU_ARBITER
+	bool "gpu-arbiter"
+	help
+	  Autochips GPU arbiter implementation.
+

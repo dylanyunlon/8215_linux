@@ -1,0 +1,17 @@
+Index: qt5base-5.6.3/src/platformsupport/devicediscovery/qdevicediscovery_static.cpp
+===================================================================
+--- qt5base-5.6.3.orig/src/platformsupport/devicediscovery/qdevicediscovery_static.cpp	2017-09-06 20:13:54.000000000 +0800
++++ qt5base-5.6.3/src/platformsupport/devicediscovery/qdevicediscovery_static.cpp	2021-10-26 15:58:59.051135000 +0800
+@@ -123,10 +123,10 @@
+     long bitsKey[LONG_FIELD_SIZE(KEY_CNT)];
+     if (ioctl(fd, EVIOCGBIT(EV_KEY, sizeof(bitsKey)), bitsKey) >= 0 ) {
+         if (!ret && (m_types & Device_Keyboard)) {
+-            if (testBit(KEY_Q, bitsKey)) {
++            //if (testBit(KEY_Q, bitsKey)) {
+                 qCDebug(lcDD) << "Found keyboard at" << device;
+                 ret = true;
+-            }
++            //}
+         }
+ 
+         if (!ret && (m_types & Device_Mouse)) {

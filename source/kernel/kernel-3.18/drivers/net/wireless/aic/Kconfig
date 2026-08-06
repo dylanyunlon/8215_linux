@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+
+config WLAN_VENDOR_AIC
+	bool "AIC devices"
+	default y
+
+if WLAN_VENDOR_AIC
+source "drivers/net/wireless/aic/aic8800/Kconfig"
+endif

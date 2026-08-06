@@ -1,0 +1,1424 @@
+/********************************************************************************************
+ *     LEGAL DISCLAIMER 
+ *
+ *     (Header of MediaTek Software/Firmware Release or Documentation)
+ *
+ *     BY OPENING OR USING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES 
+ *     THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE") RECEIVED 
+ *     FROM MEDIATEK AND/OR ITS REPRESENTATIVES ARE PROVIDED TO BUYER ON AN "AS-IS" BASIS 
+ *     ONLY. MEDIATEK EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES, EXPRESS OR IMPLIED, 
+ *     INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR 
+ *     A PARTICULAR PURPOSE OR NONINFRINGEMENT. NEITHER DOES MEDIATEK PROVIDE ANY WARRANTY 
+ *     WHATSOEVER WITH RESPECT TO THE SOFTWARE OF ANY THIRD PARTY WHICH MAY BE USED BY, 
+ *     INCORPORATED IN, OR SUPPLIED WITH THE MEDIATEK SOFTWARE, AND BUYER AGREES TO LOOK 
+ *     ONLY TO SUCH THIRD PARTY FOR ANY WARRANTY CLAIM RELATING THERETO. MEDIATEK SHALL ALSO
+ *     NOT BE RESPONSIBLE FOR ANY MEDIATEK SOFTWARE RELEASES MADE TO BUYER'S SPECIFICATION 
+ *     OR TO CONFORM TO A PARTICULAR STANDARD OR OPEN FORUM.
+ *     
+ *     BUYER'S SOLE AND EXCLUSIVE REMEDY AND MEDIATEK'S ENTIRE AND CUMULATIVE LIABILITY WITH 
+ *     RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE, AT MEDIATEK'S OPTION, 
+ *     TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICENSE 
+ *     FEES OR SERVICE CHARGE PAID BY BUYER TO MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE. 
+ *     
+ *     THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE WITH THE LAWS 
+ *     OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF LAWS PRINCIPLES.  
+ ************************************************************************************************/
+
+/** @file gfx_hw.c
+ *  gfx hardware interfaces
+ *  purely hardware related functions, include crash detection routines,
+ */
+
+/*
+    lint inhibition(s)
+        961 - #undef (used in middleware u_common.h and gfx engine workaround
+        970 - use char when CHAR is defined
+        971 - use char without signed or unsigned
+        683 - known function redefined (eg. printf --> Printf)
+        613 - Possible use of null pointer
+*/
+
+
+//---------------------------------------------------------------------------
+// Include files
+//---------------------------------------------------------------------------
+#include <linux/interrupt.h>
+#include "gfx_hw.h"
+#include "gfx_cmdque.h"
+#include "gfx_if.h"
+#include "gfx_dif.h"
+//#include "gfx_time.h"
+//#include "gfx_debug.h"
+//#include "drv_rle.h"
+//#include "gfx_drv.h"
+#include "x_debug.h"
+#include "x_hal_ic.h"
+//#include "gfx_drv_if.h" --ATC68024
+#include "dram_model.h"
+#include "chip_ver.h"
+#include <linux/io.h>
+
+
+
+//---------------------------------------------------------------------------
+// Configurations
+//---------------------------------------------------------------------------
+//ATC68024 --dont find symbol:GFX_IsLog
+#define GFX_IsLog
+#define DEFINE_IS_LOG   GFX_IsLog       // for LOG use
+#define D_GFX_CRASH_DEAD_LINE   ((uint32_t) 10)   // crash dead line (10 seconds)
+
+#ifdef GFX_DRV_LOG
+extern GFX_CMD_QUEUE_TEST_T _t_cmd_queue_s50_test_struct[200];
+extern GFX_CMD_QUEUE_TEST_T _t_cmd_queue_s100_test_struct[200];
+extern GFX_CMD_QUEUE_TEST_T _t_cmd_queue_sc100_test_struct[200];
+extern GFX_CMD_QUEUE_TEST_T _t_cmd_queue_ea100_test_struct[200];
+extern GFX_CMD_QUEUE_TEST_T _t_cmd_queue_s200_test_struct[200];
+
+extern uint32_t  ui4_s50_test_count;
+extern uint32_t  ui4_s100_test_count;
+extern uint32_t  ui4_sc100_test_count;
+extern uint32_t  ui4_ea100_test_count;
+extern uint32_t  ui4_s200_test_count;
+extern UINT8  _ui1_test_type;
+
+#endif
+//---------------------------------------------------------------------------
+// Constant definitions
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+// Type definitions
+//---------------------------------------------------------------------------
+
+// 5 hw engine state
+typedef enum _ENUM_GFX_CORE_STATUS_T
+{
+    EGFX_IDLE = 0,
+    EGFX_BUSY,
+    EGFX_SEMIIDLE,
+    EGFX_CRASHED,
+    EGFX_UNKNOWN
+} ENUM_GFX_CORE_STATUS_T;
+
+
+//---------------------------------------------------------------------------
+// Macro definitions
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+// Imported variables
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+// Imported functions
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+// Static function forward declarations
+//---------------------------------------------------------------------------
+
+
+//---------------------------------------------------------------------------
+// Static variables
+//---------------------------------------------------------------------------
+
+//  gfx statistics : interrupt count
+//#if ((1 == CONFIG_DRAM256_MODEL) || (CONFIG_CHIP_VER_CURR == CONFIG_CHIP_VER_MT8520) || (CONFIG_CHIP_VER_CURR == CONFIG_CHIP_VER_MT8550) || (CONFIG_CHIP_VER_CURR == CONFIG_CHIP_VER_MT8560))
+#if (2 != GFX_HAL_HW_INST_NUM)
+static uint32_t _u4GfxHwIntCount[GFX_HAL_HW_INST_NUM] = {0};
+#else
+static uint32_t _u4GfxHwIntCount[GFX_HAL_HW_INST_NUM] = {0,0};
+#endif
+
+//static INT32 _i4GfxStartToMonitorFlag[GFX_HAL_HW_INST_NUM] ={0,0};
+
+//static HAL_TIME_T _rGfxCrashStartTime[GFX_HAL_HW_INST_NUM];
+
+static INT32 _i4GfxSetupISR = GFX_DISABLE;
+static GFX_HAL_INST_T _tGfx_Hal_Inst[GFX_HAL_HW_INST_NUM];
+extern unsigned int gfxirq;
+extern  unsigned int gfx_base ;
+#ifdef GFX_PERFORMANCE_TEST
+HAL_TIME_T g_rGfxStartTime, g_rGfxEndTime, g_rGfxResultTime;
+BOOL       g_fgGfxPfmTesting = FALSE;
+#endif
+
+uint32_t _gu4GfxCheckSum = 0;
+
+//---------------------------------------------------------------------------
+// Static functions
+//---------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------
+/** _GfxHwRealIsr
+ *  gfx interrupt service routine
+ *  clear irq, calculate time, trigger hw_isr interface
+ */
+//-------------------------------------------------------------------------
+
+BOOL _fgGfxInt = FALSE;
+BOOL _fgGfxSrcQInt = FALSE;
+BOOL _fgGfxDstQInt = FALSE;
+//extern uint32_t RleFlushFlag;
+#ifdef GFX_QUE_REG 
+extern void GFX_MoniterQueueReset();
+#endif
+
+INT32 i4GfxHwProc(uint32_t u4HwInstId)
+{
+    GFX_HAL_INST_T*      prGfx_HalInst = &(_tGfx_Hal_Inst[u4HwInstId]);
+    INT32               i4Ret = 1;
+
+    //clean event
+    i4Ret = x_ev_group_set_event(prGfx_HalInst->hEvent, 0x00, X_EV_OP_CLEAR);
+    VERIFY(i4Ret == OSR_OK);
+
+    i4Ret = x_ev_group_set_event(prGfx_HalInst->hEvent, GFX_HAL_EV_PROC, X_EV_OP_OR);
+    VERIFY(i4Ret == OSR_OK);
+    return 0;
+}
+
+INT32 i4GfxHwWait(uint32_t u4HwInstId)
+{
+    GFX_HAL_INST_T*      prGfx_HalInst = &(_tGfx_Hal_Inst[u4HwInstId]);
+    INT32               i4Ret = 1;
+    EV_GRP_EVENT_T      eGfxEvent;
+    EV_GRP_EVENT_T      eGfxEventGet;
+
+    eGfxEvent = GFX_HAL_EV_DONE_IRQ; 
+    i4Ret = x_ev_group_wait_event(prGfx_HalInst->hEvent, eGfxEvent, &eGfxEventGet, X_EV_OP_OR_CONSUME);
+    VERIFY(i4Ret == OSR_OK);
+    return 0;
+}
+
+void GFX_HalSetNotify(uint32_t u4HwInstId)
+{
+  /*  GFX_HAL_INST_T*      prGfx_HalInst = &(_tGfx_Hal_Inst[u4HwInstId]);
+    INT32 i4Ret = 1;
+   // if (_b_hal_event[u4HwInstId])
+    {
+       // i4Ret = x_ev_group_set_event(prGfx_HalInst->hEvent, GFX_HAL_EV_DONE_IRQ, X_EV_OP_OR);
+       // VERIFY(i4Ret == OSR_OK);
+    }*/
+}
+
+#if 0
+//extern void mt3363_mask_ack_bim_irq(unsigned int irq);
+//#include <mach/memory.h>
+#include <asm/io.h>
+
+#define IO_SPACE_LIMIT 0xffffffff
+#define BIM_BASE_VA                    (0xFD000000 + 0x00008000)
+#define PCI0_BASE           0
+
+#define __io(a)         ((void __iomem *)(PCI0_BASE + (a)))
+#define __mem_pci(a)    (a)
+#define __mem_isa(a)    (a)
+#define REG_IRQST           0x0030        //RISC L1 IRQ Status Register
+#define REG_IRQEN           0x0034        //RISC L1 IRQ Enable Register
+#define REG_IRQCL           0x0038        //RISC L1 IRQ Clear Register
+
+#define __bim_writel(val,add)  __raw_writel(val,__io(BIM_BASE_VA+add))
+#define __bim_readl(add)       __raw_readl(__io(BIM_BASE_VA+add))
+
+void mt3363_mask_ack_bim_irq(unsigned int irq)
+{
+    u32 regval32;
+    unsigned long flags;
+
+
+
+    //assert(irq < NR_IRQS);
+
+    local_irq_save(flags);
+
+    if(irq < 32)
+    {
+        //set 1 to clear
+        regval32 = (1 << irq);
+        __bim_writel(regval32, REG_IRQCL);
+        __bim_writel(regval32, REG_IRQST);
+    }
+    else
+    {
+
+    }
+
+    local_irq_restore(flags);
+}
+#endif
+extern void ac83xx_mask_ack_bim_irq(unsigned int irq);
+
+static irqreturn_t GfxHwRealIsr(int irq, void *dev_id)
+{
+    uint32_t u4GfxHwId = 0;
+    UNUSED(irq);  
+
+	//pr_debug("Enter gfx isr:%d!\n",irq);
+    u4GfxHwId = 0;
+	// for lint happy
+    if (1)//(BIM_ClearIrq(irq))
+    {
+    	ac83xx_mask_ack_bim_irq(irq);
+        #ifdef GFX_QUE_REG
+        GFX_MoniterQueueReset();
+        #endif
+        _fgGfxInt = TRUE;
+        ++_u4GfxHwIntCount[u4GfxHwId];         // hw interrupt count
+     //   GFX_SET_CUR_STATUS(u4GfxHwId, (INT32)EGFX_IDLE);
+
+        GFX_HwISR(u4GfxHwId);
+
+        GFX_UnlockCmdque(u4GfxHwId);         // release cmdque resource
+
+        // use for verify code
+    
+        _gu4GfxCheckSum = GFX_READ32(u4GfxHwId, 0x258);
+
+        UNUSED(_u4GfxHwIntCount[u4GfxHwId]);   // for lint happy
+       // GFX_INC_DRV_INT_COUNT(u4GfxHwId);    // for debug use
+    }
+	return IRQ_HANDLED;
+}
+
+#if 0
+static void _GfxHwRealIsr(UINT16 u2Vector)
+{
+    uint32_t u4GfxHwId = 0;
+    UNUSED(u2Vector);  
+
+    u4GfxHwId = 0;
+// for lint happy
+    if (BIM_ClearIrq((uint32_t)u2Vector))
+    {
+        #ifdef GFX_QUE_REG
+        GFX_MoniterQueueReset();
+        #endif
+        _fgGfxInt = TRUE;
+        ++_u4GfxHwIntCount[u4GfxHwId];         // hw interrupt count
+     //   GFX_SET_CUR_STATUS(u4GfxHwId, (INT32)EGFX_IDLE);
+
+        GFX_HwISR(u4GfxHwId);
+
+        GFX_UnlockCmdque(u4GfxHwId);         // release cmdque resource
+
+        // use for verify code
+    
+        _gu4GfxCheckSum = GFX_READ32(u4GfxHwId, 0x258);
+
+        UNUSED(_u4GfxHwIntCount[u4GfxHwId]);   // for lint happy
+       // GFX_INC_DRV_INT_COUNT(u4GfxHwId);    // for debug use
+    }
+}
+#endif
+
+#ifdef GL_XOR
+void GFX_Hal_SetCallback(uint32_t u4GfxHwId, BOOL bEnableCallback)
+{
+    //_b_hal_event[u4GfxHwId]  = bEnableCallback;
+}
+void GFX_Hal_SetSwISR(uint32_t u4GfxHwId)
+{
+    GFX_HalSetNotify(u4GfxHwId);
+}
+#endif
+
+
+//-------------------------------------------------------------------------
+/** _GfxStartMonitorCrash
+ *  start to monitor GFX engine crash status
+ *  
+ */
+//-------------------------------------------------------------------------
+#if 0
+static void _GfxStartMonitorCrash(uint32_t u4GfxHwId)
+{
+    _rGfxCrashStartTime[u4GfxHwId].u4Seconds = 0;
+    _rGfxCrashStartTime[u4GfxHwId].u4Micros  = 0;
+
+    _i4GfxStartToMonitorFlag[u4GfxHwId] = 1;
+}
+
+
+//-------------------------------------------------------------------------
+/** _GfxKeepMonitorCrash
+ *  check whether GFX engine is crash or not
+ *  
+ */
+//-------------------------------------------------------------------------
+static INT32 _GfxKeepMonitorCrash(uint32_t u4GfxHwId)
+{
+    HAL_TIME_T rCurrentTime;
+    HAL_TIME_T rDiffTime;
+
+    // first time to record crash-time
+    if (_i4GfxStartToMonitorFlag[u4GfxHwId])
+    {
+        _i4GfxStartToMonitorFlag[u4GfxHwId] = 0;
+        HAL_GetTime(&_rGfxCrashStartTime[u4GfxHwId]);        
+        return (INT32)EGFX_SEMIIDLE;
+    }
+    
+    HAL_GetTime(&rCurrentTime);
+    HAL_GetDeltaTime(&rDiffTime, &_rGfxCrashStartTime[u4GfxHwId], &rCurrentTime);
+
+    if (rDiffTime.u4Seconds > D_GFX_CRASH_DEAD_LINE)
+    {
+        LOG(5, "\tCrash start time = %u\n", _rGfxCrashStartTime[u4GfxHwId].u4Seconds);
+        LOG(5, "\tCrash end time = %u\n", rCurrentTime.u4Seconds);
+        LOG(5, "\tCrash diff time = %u\n", rDiffTime.u4Seconds);
+        return (INT32)EGFX_CRASHED;
+    }
+
+    return (INT32)EGFX_SEMIIDLE;
+}
+
+
+//-------------------------------------------------------------------------
+/** _GfxStopMonitorCrash
+ *  stop to monitor GFX engine crash status
+ *  
+ */
+//-------------------------------------------------------------------------
+static void _GfxStopMonitorCrash(void)
+{
+    return;
+}
+
+#endif
+//---------------------------------------------------------------------------
+// Inter-file functions
+//---------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------
+/** _GFX_GetInterruptCount
+ *  get gfx hw interrupt count
+ *  
+ */
+//-------------------------------------------------------------------------
+uint32_t _GFX_GetInterruptCount(uint32_t u4GfxHwId)
+{
+    return _u4GfxHwIntCount[u4GfxHwId];
+}
+
+void _GFX_DecInterruptCount(uint32_t u4GfxHwId)
+{
+    if (_u4GfxHwIntCount[u4GfxHwId])
+        _u4GfxHwIntCount[u4GfxHwId]--;
+}
+
+
+//---------------------------------------------------------------------------
+// Public functions
+//---------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwCrashDetect
+ *  check gfx core crash state
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwCrashDetect(uint32_t u4GfxHwId)
+{
+#if 0
+    // idle ?
+    if (_GFX_GetFlushCount(u4GfxHwId) == _GFX_GetInterruptCount(u4GfxHwId))
+    {
+        if (GFX_HwGetIdle(u4GfxHwId) && GFX_DifGetIdle(u4GfxHwId))
+        {
+            // pure idle
+            return (INT32)EGFX_IDLE;
+        }        
+    }
+
+    // busy or crash ?
+    return _GfxKeepMonitorCrash(u4GfxHwId);
+	#endif
+	   return (INT32)EGFX_SEMIIDLE;
+}
+
+//-------------------------------------------------------------------------
+/** GFX_HwCrashRecover
+ *  recover gfx from crash
+ */
+//-------------------------------------------------------------------------
+void GFX_HwCrashRecover(void)
+{
+    GFX_UNUSED_RET(GFX_Init())
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwInit
+ *  init gfx hardware
+ *  set control register address to default
+ *  set default isr
+ *  do hw reset
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwInit(void)
+{
+    INT32   i4,i4Ret = 1;
+    CHAR  szEvName[16] = "GHwEv0";
+    //x_os_isr_fct pfnOldIsr;
+	int irq;
+   
+    // setup ISR
+    if (_i4GfxSetupISR == GFX_DISABLE)
+    {
+       for (i4=0; i4 < GFX_HAL_HW_INST_NUM; i4++)
+       {
+          
+          szEvName[5] = 0x30 + i4;
+          i4Ret = x_ev_group_create(&_tGfx_Hal_Inst[i4].hEvent, szEvName, GFX_HAL_EV_INITIAL);
+	      VERIFY(i4Ret == OSR_OK);
+        }
+       //VERIFY(x_reg_isr(7, _GfxHwRealIsr, &pfnOldIsr) == OSR_OK);
+       // VERIFY(x_reg_isr((UINT16)VECTOR_SRCQ, _GfxHwPgigQueueIsr, &pfnOldIsr) == OSR_OK);
+       // VERIFY(x_reg_isr((UINT16)VECTOR_PSTQ, _GfxHwPgigQueueIsr, &pfnOldIsr) == OSR_OK);
+       irq = gfxirq;
+	
+	   request_irq(irq,GfxHwRealIsr,0,"ac83xx_gfx",NULL);
+	   printk("requese irq,gfxirq is %d\n",gfxirq);
+      _i4GfxSetupISR = GFX_ENABLE;
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+//-------------------------------------------------------------------------
+/** GFX_HwUninit
+ *  uninit gfx hardware
+ *  set control register address to default
+ *  set default isr to NULL
+ *  do hw reset
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwUninit(void)
+{
+    INT32   i4,i4Ret = 1;
+    x_os_isr_fct pfnOldIsr;
+
+    // setup ISR
+    if (_i4GfxSetupISR == GFX_ENABLE)
+    {
+		for (i4= 0; i4< GFX_HAL_HW_INST_NUM; i4++)
+		{
+			i4Ret = x_ev_group_delete(_tGfx_Hal_Inst[i4].hEvent);
+			VERIFY(i4Ret == OSR_OK);
+		}
+    
+        //VERIFY(x_reg_isr(7, NULL, &pfnOldIsr) == OSR_OK);
+        _i4GfxSetupISR = GFX_DISABLE;
+    }
+
+    return (INT32)E_GFX_OK;
+}
+//INT32 GFX_HwInit2(void)
+//{
+  //  x_os_isr_fct pfnOldIsr;
+
+   // VERIFY(x_reg_isr((UINT16)VECTOR_GFX_0, _GfxHwRealIsr, &pfnOldIsr) == OSR_OK);
+    
+
+  //  return (INT32)E_GFX_OK;
+//}
+
+//-------------------------------------------------------------------------
+/** GFX_HwGetRegBase
+ *  get gfx hw control register base
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwGetRegBase(uint32_t u4GfxHwId, uint32_t **ppu4RegBase)
+{
+    if ((ppu4RegBase != NULL)/* && (*ppu4RegBase != NULL)*/)
+    {
+        *ppu4RegBase = gfx_base;
+        return (INT32)E_GFX_OK;
+    }
+
+    return -(INT32)E_GFX_INV_ARG;
+}
+
+//-------------------------------------------------------------------------
+/** GFX_HwISR
+ *  gfx hw isr
+ *  reset crash detection vars
+ *  set engine to idle
+ *  notify if notification was set
+ */
+//-------------------------------------------------------------------------
+void GFX_HwISR(uint32_t u4GfxHwId)
+{
+#ifdef GFX_PERFORMANCE_TEST
+    if (g_fgGfxPfmTesting)
+    {
+        HAL_TIME_T rTmp;
+      	HAL_GetTime(&g_rGfxEndTime);
+		UTIL_Printf("	   g_rGfxEndTime.u4Seconds = %d, g_rGfxEndTime.u4Micros = %d\n", g_rGfxEndTime.u4Seconds, g_rGfxEndTime.u4Micros);
+        HAL_GetDeltaTime(&rTmp, &g_rGfxStartTime, &g_rGfxEndTime);
+        g_rGfxResultTime.u4Seconds += rTmp.u4Seconds;
+        g_rGfxResultTime.u4Micros += rTmp.u4Micros;
+        g_rGfxResultTime.u4Seconds += (g_rGfxResultTime.u4Micros/1000000);
+        g_rGfxResultTime.u4Micros %= 1000000;
+    }
+#endif
+      GFX_DifSetIdle(u4GfxHwId,TRUE);
+	//GFX_HalSetNotify(u4GfxHwId);
+}
+
+#define REG_WT_BASE   (IO_BASE_VA +0x40804)
+
+/// Read 32 bits data from GFX HW registers.
+#define WT_READ32(offset)           IO_READ32((REG_WT_BASE), (offset))
+
+/// Write 32 bits data into GFX HW registers.
+#define WT_WRITE32(offset, value)   IO_WRITE32((REG_WT_BASE), (offset), (value))
+
+//-------------------------------------------------------------------------
+/** GFX_HwReset
+ *  gfx hw reset
+ *  trigger hw reset
+ *  enter any non-zero gfx mode (start clock)
+ *  enable interrupt
+ *  set register to default
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwReset(uint32_t u4GfxHwId, uint32_t u4Reset)
+{
+	printk("enter hwreset\n");
+    volatile uint32_t u4Value;
+    uint32_t u4ResHi = (uint32_t)0x3;
+    uint32_t u4ResLo = (uint32_t)0x0;
+    #if 1//((CONFIG_DRV_VERIFY_SUPPORT) && (!GFX_PERFORMANCE_TEST_SUPPORT))
+	printk("begin read32\n");
+    volatile uint32_t u4i = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+	printk("end read32\n");
+	//UTIL_Printf("[Gfx][Ev] ->u4i:0x%8x \n",u4i);
+    #endif
+	printk("begin unsed\n");
+    UNUSED(u4Reset);
+	printk("end unsed\n");
+
+    ///??
+    // do GFX module clock selection
+    /*CLKSRC_ChangeGFXClock();*/
+    // reset gfx config register
+
+	//UTIL_Printf("[Gfx][Ev] ->GFX_IO_base:0x%8x \n",IMAGE_BASE);
+	printk("begin write32\n");
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, 0xA0000000);
+	printk("end write32\n");
+    //GFX_MB();
+    // enable gfx engine clock (set non-zero value)
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_MODE, 0xC00001F0);        // fg_OP_MODE = 0x1F;
+    //GFX_MB();
+    
+    // reset engine and cmdque :
+    // 1. set fg_G_RST to 0x3 and fg_CQ_RST to 0x3
+    // 2. set fg_G_RST to 0x0 and fg_CQ_RST to 0x0
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+
+    u4Value = (u4Value & (~(GREG_MSK_G_RST | GREG_MSK_CQ_RST)));
+    u4Value = (u4Value) | (u4ResHi << GREG_SHT_G_RST) | (u4ResHi << GREG_SHT_CQ_RST);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+
+    u4Value = (u4Value & (~(GREG_MSK_G_RST | GREG_MSK_CQ_RST)));
+    u4Value = (u4Value) | (u4ResLo << GREG_SHT_G_RST) | (u4ResLo << GREG_SHT_CQ_RST);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+	printk("11111\n");
+
+    // wait gfx hw reset ready
+    for ( ; ; )
+    {
+    printk("enter for\n");
+        u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+
+        if (((u4Value & GREG_MSK_G_RST)  == GFX_G_RST_READY) &&
+            ((u4Value & GREG_MSK_CQ_RST) == GFX_CQ_RST_READY))
+        {	
+        printk("leave for\n");
+            break;
+        }
+    }
+#if 1//((CONFIG_DRV_VERIFY_SUPPORT) && (!GFX_PERFORMANCE_TEST_SUPPORT))
+	printk("2222t\n");
+
+    u4i     = u4i & (GREG_MSK_REQ_INTVAL | GREG_MSK_SDFIFO_THRS | GREG_MSK_CMDFIFO_THRS | GREG_MSK_POST_THRS | GREG_MSK_INT_MASK);
+    u4Value = u4Value & (~(GREG_MSK_REQ_INTVAL | GREG_MSK_SDFIFO_THRS | GREG_MSK_CMDFIFO_THRS | GREG_MSK_POST_THRS | GREG_MSK_INT_MASK));
+    u4Value = u4Value | u4i;
+	//UTIL_Printf("[Gfx][Ev] ->u4Value:0x%8x \n",u4Value);
+#else
+    // set SDFIFO threshold
+    u4Value = (u4Value) & (~(GREG_MSK_SDFIFO_THRS));
+    u4Value = (u4Value) | (0x1 << GREG_SHT_SDFIFO_THRS);
+
+    // set CMDFIFO threshold
+    u4Value = (u4Value) & (~(GREG_MSK_CMDFIFO_THRS));
+    u4Value = (u4Value) | (0x1 << GREG_SHT_CMDFIFO_THRS);
+
+    // set POST threshold
+    u4Value = (u4Value) & (~(GREG_MSK_POST_THRS));
+    u4Value = (u4Value) | (0x3 << GREG_SHT_POST_THRS);
+
+    // set REQ INTVAL
+    u4Value = (u4Value) & (~(GREG_MSK_REQ_INTVAL));
+    u4Value = (u4Value) | (0x1 << GREG_SHT_REQ_INTVAL);
+#endif
+
+	#ifdef GFXMMU
+	#ifndef GFX_RISC_MODE
+    u4Value = u4Value | GREG_MSK_MMU_CMQ;
+	#endif
+	#endif
+    printk("33333\n");
+    // set CMDAdv power down
+    u4Value = (u4Value) & (~(GREG_MSK_ENG_LP));
+    u4Value = (u4Value) | (0x1 << GREG_SHT_ENG_LP);
+
+    u4Value = (u4Value | GREG_MSK_INT_MASK);
+    
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+
+	//set new sw mode
+	u4Value = GFX_READ32(u4GfxHwId, GFX_REG_DRAMQ_LEN);
+	u4Value =  u4Value | (0x1 << GREG_SHT_SW_MODE);
+	GFX_WRITE32(u4GfxHwId, GFX_REG_DRAMQ_LEN, u4Value);
+	printk("44444t\n");
+
+//Default Set WDLE
+#if 1 //(((CONFIG_CHIP_VER_CURR >= CONFIG_CHIP_VER_MT8560)||(CONFIG_CHIP_VER_CURR == CONFIG_CHIP_VER_MT3363)) && CONFIG_ENABLE_IOMMU)
+	u4Value = GFX_READ32(u4GfxHwId, GFX_REG_DST_RING);
+	
+    {
+        u4Value =  u4Value | (0x1 << GREG_SHT_WDLE);
+		//u4Value =  u4Value | 0x5;
+    }
+	GFX_WRITE32(u4GfxHwId, GFX_REG_DST_RING, u4Value);
+	printk("55555\n");
+	
+#endif
+
+    if(GFX_RESET_POWERDOWN==u4Reset)
+    {
+        GFX_WRITE32(u4GfxHwId, GFX_REG_G_MODE, 0x1f0); 
+		printk("666\n");
+    }
+    return (INT32)E_GFX_OK;
+	printk("leave hwreset\n");
+}
+
+
+
+INT32 GFX_HwEnableWT(BOOL fgEnable)
+{
+    if (fgEnable)
+    {   // Enable WT
+        WT_WRITE32(0, (WT_READ32(0) & 0xfffefffe)); //[0]  = 0; [16] = 0;
+    }
+    else
+    {
+        // Disable WT
+        WT_WRITE32(0, (WT_READ32(0) | 0x00010000)); //[16] = 1
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+INT32 GFX_HwEnableWTEx(BOOL fgEnable, BOOL fgCompactMode)
+{
+    if (fgEnable)
+    {   // Enable WT
+        WT_WRITE32(0, (WT_READ32(0) & 0xfffeffff)); //[16] = 0;
+    }
+    else
+    {
+        // Disable WT
+        WT_WRITE32(0, (WT_READ32(0) | 0x00010000)); //[16] = 1
+    }
+
+    if (fgCompactMode)
+    {   // CompactMode Mode
+        WT_WRITE32(0, (WT_READ32(0) | 0x00200000)); //[21] = 1
+    }
+    else
+    {
+        // !CompactMode Mode
+        WT_WRITE32(0, (WT_READ32(0) & 0xFFDFFFFF)); //[21] = 0
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+INT32 GFX_HwSetWTMode(BOOL fg4888Mode)
+{
+    if (fg4888Mode)
+    { //4888 mode
+        WT_WRITE32(0, (WT_READ32(0) | 0x00400000)); //[22]=1     
+    }
+    else
+    { // 8888 mode
+        WT_WRITE32(0, (WT_READ32(0) & 0xffbfffff)); //[22]=0
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+INT32 GFX_HwSetWTModeEx(BOOL fg4888Mode, BOOL fgNoRnd)
+{
+    if (fg4888Mode)
+    { //4888 mode
+        WT_WRITE32(0, (WT_READ32(0) | 0x00400000)); //[22]=1     
+    }
+    else
+    { // 8888 mode
+        WT_WRITE32(0, (WT_READ32(0) & 0xffbfffff)); //[22]=0
+    }
+
+    if (fgNoRnd)
+    {
+        WT_WRITE32(0, (WT_READ32(0) | 0x00020000)); //17]=1
+    }
+    else
+    {
+        WT_WRITE32(0, (WT_READ32(0) & 0xfffdffff)); //[17]=0        
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+INT32 GFX_HwEnableWTQualityECO(BOOL fgEnableQualityECO)
+{
+    if (!fgEnableQualityECO)
+    {
+        // 40804:[7:6]   --> 2'b11
+        // 40804:[25:24] --> 2'b11
+        WT_WRITE32(0, (WT_READ32(0) | 0x030000C0));
+    }
+    else
+    {
+        WT_WRITE32(0, (WT_READ32(0) & 0xFCFFFF3F));
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+INT32 GFX_HwWTConfig(WT_CONFIG_T *prCfg)
+{
+    volatile uint32_t u4CurVal;
+    volatile WT_CONFIG_REG_T rCurCfg;
+
+    if (!prCfg)
+    {
+        return (INT32)E_GFX_OK;
+    }
+
+    u4CurVal = WT_READ32(0);
+    rCurCfg = *(WT_CONFIG_REG_T *)&u4CurVal;
+
+    if (prCfg->u4Flag & WT_CF_WEIGHT_PAD)
+    {
+        rCurCfg.fg_WT_WEIGHT_PAD = prCfg->rReg.fg_WT_WEIGHT_PAD;
+    }
+    if (prCfg->u4Flag & WT_CF_EDGE57_BYP)
+    {
+        rCurCfg.fg_WT_EDGE57_BYP = prCfg->rReg.fg_WT_WEIGHT_PAD;
+    }
+    if (prCfg->u4Flag & WT_CF_FIFO_LEVEL)
+    {
+        rCurCfg.fg_WT_FIFO_LEVEL = prCfg->rReg.fg_WT_FIFO_LEVEL;
+    }
+    if (prCfg->u4Flag & WT_CF_PQ_RGB_PROC)
+    {
+        rCurCfg.fg_PQ_RGB_PROC = prCfg->rReg.fg_PQ_RGB_PROC;
+    }
+    if (prCfg->u4Flag & WT_CF_PQ_EDGE_PROC)
+    {
+        rCurCfg.fg_PQ_EDGE_PROC = prCfg->rReg.fg_PQ_EDGE_PROC;
+    }
+    if (prCfg->u4Flag & WT_CF_CONT_BE)
+    {
+        rCurCfg.fg_WT_CONT_BE = prCfg->rReg.fg_WT_CONT_BE;
+    }
+    if (prCfg->u4Flag & WT_CF_PQ_SMART_MODE_A)
+    {
+        rCurCfg.fg_PQ_SMART_MODE_A = prCfg->rReg.fg_PQ_SMART_MODE_A;
+    }
+    if (prCfg->u4Flag & WT_CF_EDGE_THR)
+    {
+        rCurCfg.fg_EDGE_THR = prCfg->rReg.fg_EDGE_THR;
+    }
+    if (prCfg->u4Flag & WT_CF_EDGE_DIFF)
+    {
+        rCurCfg.fg_EDGE_DIFF = prCfg->rReg.fg_EDGE_DIFF;
+    }
+    if (prCfg->u4Flag & WT_CF_BYPASS)
+    {
+        rCurCfg.fg_WT_BYPASS = prCfg->rReg.fg_WT_BYPASS;
+    }
+    if (prCfg->u4Flag & WT_CF_EDGE_THR2)
+    {
+        rCurCfg.fg_EDGE_THR2 = prCfg->rReg.fg_EDGE_THR2;
+    }
+    if (prCfg->u4Flag & WT_CF_BURST)
+    {
+        rCurCfg.fg_WT_BURST = prCfg->rReg.fg_WT_BURST;
+    }
+    if (prCfg->u4Flag & WT_CF_CHKSUM_SHFT)
+    {
+        rCurCfg.fg_WT_CHKSUM_SHFT = prCfg->rReg.fg_WT_CHKSUM_SHFT;
+    }
+    if (prCfg->u4Flag & WT_CF_COMPACT)
+    {
+        rCurCfg.fg_WT_COMPACT = prCfg->rReg.fg_WT_COMPACT;
+    }
+    if (prCfg->u4Flag & WT_CF_ARGB4888)
+    {
+        rCurCfg.fg_WT_ARGB4888 = prCfg->rReg.fg_WT_ARGB4888;
+    }
+    if (prCfg->u4Flag & WT_CF_MON_SEL)
+    {
+        rCurCfg.fg_WT_MON_SEL = prCfg->rReg.fg_WT_MON_SEL;
+    }
+    if (prCfg->u4Flag & WT_CF_PQ_PRE)
+    {
+        rCurCfg.fg_PQ_PRE = prCfg->rReg.fg_PQ_PRE;
+    }
+    if (prCfg->u4Flag & WT_CF_EDGE_MEAN)
+    {
+        rCurCfg.fg_EDGE_MEAN = prCfg->rReg.fg_EDGE_MEAN;
+    }
+    if (prCfg->u4Flag & WT_CF_SE_THR)
+    {
+        rCurCfg.fg_SE_THR = prCfg->rReg.fg_SE_THR;
+    }
+    if (prCfg->u4Flag & WT_CF_SW_DRAM_RSTB)
+    {
+        rCurCfg.fg_WT_SW_DRAM_RSTB = prCfg->rReg.fg_WT_SW_DRAM_RSTB;
+    }
+    if (prCfg->u4Flag & WT_CF_SW_RSTB)
+    {
+        rCurCfg.fg_WT_SW_RSTB = prCfg->rReg.fg_WT_SW_RSTB;
+    }
+
+    u4CurVal = *(uint32_t *)&rCurCfg;
+    WT_WRITE32(0, u4CurVal);
+
+    return (INT32)E_GFX_OK;
+}
+
+#include "x_hal_ic.h"
+//[YgLi] WT Reset Many Time will hangs up.
+static BOOL _fgWtResetOnce = FALSE;
+uint32_t    g_u4WTDefaultValue = 0xe82a6e11; // MT8555 IC or MT8550 ECO IC.  //0xe82a6e11 -> 0xe82a6e11 --for wt performance
+//-------------------------------------------------------------------------
+/** GFX_HwReset
+ *  gfx hw reset
+ *  trigger hw reset
+ *  enter any non-zero gfx mode (start clock)
+ *  enable interrupt
+ *  set register to default
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwResetWT(uint32_t u4GfxHwId, uint32_t u4Reset)
+{
+    volatile uint32_t u4Value;
+
+
+    UNUSED(u4Reset);
+#if 0
+
+    if (!_fgWtResetOnce)
+    {
+       _fgWtResetOnce = TRUE;
+
+       u4Value =(*(volatile uint32_t *) (0x70040800)) ; 
+       (*(volatile uint32_t *) (0x70040800)) = u4Value & 0x3fffffff; //[31:30] = 00
+       x_thread_delay(100);
+
+       u4Value = (*(volatile uint32_t *) (0x70040800)) ; 
+       (*(volatile uint32_t *) (0x70040800)) = u4Value | 0xf0000000; //[31:30] = 11
+       x_thread_delay(100);
+
+       u4Value = (*(volatile uint32_t *) (0x70040800)) ; 
+
+       u4Value &= 0xfffffffe;  //[0]  = 0;
+       u4Value &= 0xfffeffff;  //[16] = 0;
+
+       if (IC_8530_VER_B == BSP_GetIcVersion())
+       {
+           u4Value |=0x07820000;
+       }
+
+       (*(volatile uint32_t *) (0x70040800)) = u4Value;
+
+       // Test Only: Set 40800[26] = 1
+       u4Value = (*(volatile uint32_t *) (0x70040800)) ; 
+       (*(volatile uint32_t *) (0x70040800)) = u4Value | 0x04000000; //[26]=1
+    }
+#else
+
+    if (!_fgWtResetOnce)
+    {
+       _fgWtResetOnce = TRUE;
+
+       u4Value = WT_READ32(-4); // 0xF0040800
+       u4Value &= ~0x20;
+       WT_WRITE32(-4, u4Value);
+
+
+       u4Value =WT_READ32(0);
+       WT_WRITE32(0, u4Value & 0x3fffffff); //[31:30] = 00
+       x_thread_delay(100);
+
+       u4Value = WT_READ32(0) ; 
+       WT_WRITE32(0, u4Value | 0xf0000000); //[31:30] = 11
+       x_thread_delay(100);
+
+       u4Value = WT_READ32(0) ; 
+
+       u4Value &= 0xfffffffe;  //[0]  = 0;
+       u4Value &= 0xfffeffff;  //[16] = 0;
+       u4Value &= 0xfffffeff;   //[8] = 0;
+
+
+       WT_WRITE32(0, u4Value);
+
+#if 1 //use defaut value for wt
+       WT_WRITE32(0, g_u4WTDefaultValue);
+#endif
+    }
+
+#endif
+
+
+    return (INT32)E_GFX_OK;
+}
+
+INT32 GFX_HwGlobalBypassWT(BOOL fgBypass)
+{
+    if (fgBypass)
+    {
+        WT_WRITE32(0, (WT_READ32(0) | 0x00010000)); //[16] = 1;
+    }
+    else
+    {
+        WT_WRITE32(0, (WT_READ32(0) & ~0x00010000)); //[16] = 0;
+    }
+    return (INT32)E_GFX_OK;
+}
+
+// For 8550 Sample IC ECO
+INT32 GFX_HwPreProcEn(BOOL fgEnable)
+{
+    if (fgEnable)
+    {
+        WT_WRITE32(0, (WT_READ32(0) & ~0x03000000)); //[25:24] = 00;
+    }
+    else
+    {
+        WT_WRITE32(0, (WT_READ32(0) | 0x03000000));    //[25:24] = 11;
+    }
+    return (INT32)E_GFX_OK;
+}
+
+void GFX_SetFifo(
+    uint32_t u4GfxHwId,
+    uint32_t   ui4_sdfifo,
+    uint32_t   ui4_cmdfifo,
+    uint32_t   ui4_postthrs)
+{
+    uint32_t   u4Value;
+
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+
+    u4Value = (u4Value) & (~(GREG_MSK_SDFIFO_THRS));
+    u4Value = (u4Value) | (ui4_sdfifo << GREG_SHT_SDFIFO_THRS);
+
+    // set CMDFIFO threshold
+    u4Value = (u4Value) & (~(GREG_MSK_CMDFIFO_THRS));
+    u4Value = (u4Value) | (ui4_cmdfifo << GREG_SHT_CMDFIFO_THRS);
+
+    // set POST threshold
+    u4Value = (u4Value) & (~(GREG_MSK_POST_THRS));
+    u4Value = (u4Value) | (ui4_postthrs << GREG_SHT_POST_THRS);
+    
+
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+    
+}
+//-------------------------------------------------------------------------
+/** GFX_HwGetIdle
+ *  get gfx hardware idle status
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwGetIdle(uint32_t u4GfxHwId)
+{
+    volatile uint32_t u4Value;
+
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_STATUS);
+    u4Value = ((u4Value & GREG_MSK_IDLE) >> GREG_SHT_IDLE);
+
+    return (INT32)(u4Value);
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwGetHwVersion
+ *  get gfx hw version (control register)
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwGetHwVersion(uint32_t u4GfxHwId, uint32_t *pu4HwVersion)
+{
+    volatile uint32_t u4Value;
+
+    if (pu4HwVersion == NULL)
+    {
+        return -(INT32)E_GFX_INV_ARG;
+    }
+
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_STATUS);
+    u4Value = ((u4Value & GREG_MSK_VERSION_ID) >> GREG_SHT_VERSION_ID);
+    
+    *pu4HwVersion = u4Value;
+
+    return (INT32)E_GFX_OK;
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwEnableLowPowerMode
+ *  enable gfx engine advanced low power mode
+ *  legacy, left blanc here for future use
+ */
+//-------------------------------------------------------------------------
+void GFX_HwEnableLowPowerMode(uint32_t u4GfxHwId)
+{
+    volatile uint32_t u4Value;
+
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+    u4Value = (u4Value) | (GREG_MSK_ENG_LP);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwDisableLowPowerMode
+ *  disable gfx engine advanced low power mode
+ *  legacy, left blanc here for future use
+ */
+//-------------------------------------------------------------------------
+void GFX_HwDisableLowPowerMode(uint32_t u4GfxHwId)
+{
+    volatile uint32_t u4Value;
+
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+    u4Value = (u4Value) & (~GREG_MSK_ENG_LP);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwAction
+ *  start gfx hardware engine
+ *  used in interrupt mode only
+ *  in command queue mode, use command queue action
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwAction(uint32_t u4GfxHwId)
+{
+    // busy mode
+    GFX_DifSetIdle(u4GfxHwId, FALSE);
+    
+    return (INT32)E_GFX_OK;
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwWait
+ *  busy wait for gfx hw complete
+ */
+//-------------------------------------------------------------------------
+void GFX_HwWait(void )
+{
+  return;
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwSetRiscMode
+ *  disable gfx command que mode
+ */
+//-------------------------------------------------------------------------
+void GFX_HwSetRiscMode(uint32_t u4GfxHwId)
+{
+    volatile uint32_t u4Value;
+
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+    u4Value = (u4Value) & (~GREG_MSK_EN_DRAMQ);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwSetCmdQMode
+ *  re-enable gfx command que mode
+ */
+//-------------------------------------------------------------------------
+void GFX_HwSetCmdQMode(uint32_t u4GfxHwId)
+{
+    volatile uint32_t u4Value;
+
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+    u4Value = (u4Value) | (GREG_MSK_EN_DRAMQ);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwSetSDFifoThreshold
+ *  set source/destination fifo request threshold
+ */
+//-------------------------------------------------------------------------
+void GFX_HwSetSDFifoThreshold(uint32_t u4GfxHwId, uint32_t u4Value)
+{
+    volatile uint32_t u4RegVal;
+
+    u4RegVal = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+    u4RegVal = (u4RegVal) & (~GREG_MSK_SDFIFO_THRS);
+    u4RegVal = (u4RegVal) | (u4Value << GREG_SHT_SDFIFO_THRS);
+    GFX_WRITE32(u4GfxHwId,GFX_REG_G_CONFIG, u4RegVal);
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwSetCMDFifoThreshold
+ *  set command fifo request threshold
+ */
+//-------------------------------------------------------------------------
+void GFX_HwSetCMDFifoThreshold(uint32_t u4GfxHwId, uint32_t u4Value)
+{
+    volatile uint32_t u4RegVal;
+
+    u4RegVal = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+    u4RegVal = (u4RegVal) & (~GREG_MSK_CMDFIFO_THRS);
+    u4RegVal = (u4RegVal) | (u4Value << GREG_SHT_CMDFIFO_THRS);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4RegVal);
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwSetPOSTFifoThreshold
+ *  set post-write fifo request threshold
+ */
+//-------------------------------------------------------------------------
+void GFX_HwSetPOSTFifoThreshold(uint32_t u4GfxHwId, uint32_t u4Value)
+{
+    volatile uint32_t u4RegVal;
+
+    u4RegVal = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+    u4RegVal = (u4RegVal) & (~GREG_MSK_POST_THRS);
+    u4RegVal = (u4RegVal) | (u4Value << GREG_SHT_POST_THRS);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4RegVal);
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwDbgInfo
+ *  show gfx hw debug information
+ */
+//-------------------------------------------------------------------------
+void GFX_HwDbgInfo(uint32_t u4GfxHwId)
+{
+    LOG(5, "\ngfx hw dump - begin\n");
+
+    LOG(5, "\tflush count = %u\n", _GFX_GetFlushCount(u4GfxHwId));
+    LOG(5, "\tinterrupt count = %u\n", _GFX_GetInterruptCount(u4GfxHwId));
+    LOG(5, "\thw fire count = %u\n", 
+            (GFX_READ32(u4GfxHwId, GFX_REG_0x40E0) & 0x0000ffff));
+    LOG(5, "\thw cmdq index = %u\n", 
+            ((GFX_READ32(u4GfxHwId, GFX_REG_0x40E4) & 0x3fff0000) >> 16));
+    LOG(5, "\thw read  count of dram word = %u\n", GFX_READ32(u4GfxHwId, GFX_REG_0x40EC));
+    LOG(5, "\thw write count of dram word = %u\n", GFX_READ32(u4GfxHwId, GFX_REG_0x40F0));
+
+    LOG(5, "gfx hw dump - end\n\n");
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwResetEngine
+ *  gfx hw reset engine only (for debug use)
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwResetEngine(uint32_t u4GfxHwId)
+{
+    volatile uint32_t u4Value;
+    uint32_t u4ResHi = (uint32_t)0x3;
+    uint32_t u4ResLo = (uint32_t)0x0;
+        
+    // reset engine :
+    // 1. set fg_G_RST to 0x3
+    // 2. set fg_G_RST to 0x0
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+
+    u4Value = (u4Value) & (~(GREG_MSK_G_RST));
+    u4Value = (u4Value) | (u4ResHi << GREG_SHT_G_RST);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+    GFX_MB();
+
+    u4Value = (u4Value) & (~(GREG_MSK_G_RST));
+    u4Value = (u4Value) | (u4ResLo << GREG_SHT_G_RST);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+    GFX_MB();
+
+    // wait gfx hw reset ready
+    for ( ; ; )
+    {
+        u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+
+        if ((u4Value & GREG_MSK_G_RST) == GFX_G_RST_READY)
+        {
+            break;
+        }
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwResetCmdQue
+ *  gfx hw reset cmd queue only (for debug use)
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwResetCmdQue(uint32_t u4GfxHwId)
+{
+    volatile uint32_t u4Value;
+    uint32_t u4ResHi = (uint32_t)0x3;
+    uint32_t u4ResLo = (uint32_t)0x0;
+
+    // reset cmdque :
+    // 1. set fg_CQ_RST to 0x3
+    // 2. set fg_CQ_RST to 0x0
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+
+    u4Value = (u4Value) & (~(GREG_MSK_CQ_RST));
+    u4Value = (u4Value) | (u4ResHi << GREG_SHT_CQ_RST);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+    GFX_MB();
+
+    u4Value = (u4Value) & (~(GREG_MSK_CQ_RST));
+    u4Value = (u4Value) | (u4ResLo << GREG_SHT_CQ_RST);
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+    GFX_MB();
+
+    // wait gfx hw reset ready
+    for ( ; ; )
+    {
+        u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+
+        if ((u4Value & GREG_MSK_CQ_RST) == GFX_CQ_RST_READY)
+        {
+            break;
+        }
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwGetMemCompareResult
+ *  gfx get memory compare result from hw register
+ *  if no error, return 0
+ */
+//-------------------------------------------------------------------------
+INT32 GFX_HwGetMemCompareResult(uint32_t u4GfxHwId)
+{
+    volatile uint32_t u4Value;
+
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_ROP);
+    u4Value = (u4Value & GREG_MSK_CMP_FLAG) >> GREG_SHT_CMP_FLAG;
+
+    return (INT32)u4Value;
+}
+
+
+//-------------------------------------------------------------------------
+/** GFX_HwSetReqInterval
+ *  set REQ_INTERVAL
+ *  only for rectangle fill.
+ */
+//-------------------------------------------------------------------------
+void GFX_HwSetReqInterval(uint32_t u4GfxHwId, uint32_t u4ReqInterval)
+{
+    volatile uint32_t u4Value;
+    
+    u4Value = GFX_READ32(u4GfxHwId, GFX_REG_G_CONFIG);
+    
+    // set request interval
+    u4Value = (u4Value) & (~(GREG_MSK_REQ_INTVAL));
+    u4Value = (u4Value) | (u4ReqInterval << GREG_SHT_REQ_INTVAL);
+    
+    GFX_WRITE32(u4GfxHwId, GFX_REG_G_CONFIG, u4Value);
+}
+
+
+static GFX_BPCOMP_STOP_ID_T _rBpCompStopID;
+
+INT32 GFX_HwGetBpCompStopID(uint32_t u4GfxHwId, GFX_BPCOMP_STOP_ID_T *prBpCompStopID)
+{
+    _rBpCompStopID.u4StopID[0] = GFX_READ32(u4GfxHwId, GREG_BPCOMP_STOP_ID_0*4);
+    _rBpCompStopID.u4StopID[1] = GFX_READ32(u4GfxHwId, GREG_BPCOMP_STOP_ID_1*4);
+    _rBpCompStopID.u4StopID[2] = GFX_READ32(u4GfxHwId, GREG_BPCOMP_STOP_ID_2*4);
+    _rBpCompStopID.u4StopID[3] = GFX_READ32(u4GfxHwId, GREG_BPCOMP_STOP_ID_3*4);
+   
+    if (NULL != prBpCompStopID)
+    {
+        prBpCompStopID->u4StopID[0] = _rBpCompStopID.u4StopID[0];
+        prBpCompStopID->u4StopID[1] = _rBpCompStopID.u4StopID[1];
+        prBpCompStopID->u4StopID[2] = _rBpCompStopID.u4StopID[2];
+        prBpCompStopID->u4StopID[3] = _rBpCompStopID.u4StopID[3];
+    }
+   
+    if ((_rBpCompStopID.u4StopID[0]) || 
+        (_rBpCompStopID.u4StopID[1]) || 
+        (_rBpCompStopID.u4StopID[2]) || 
+        (_rBpCompStopID.u4StopID[3]))
+    {
+        //return -(INT32)E_GFX_BPCOMP_STOP;
+    }
+
+    return (INT32)E_GFX_OK;
+}
+
+
+#ifdef GFX_PERFORMANCE_TEST
+VOID  vGfxStartPfmTest()
+{
+    g_fgGfxPfmTesting = TRUE;
+    g_rGfxResultTime.u4Seconds = 0;
+    g_rGfxResultTime.u4Micros = 0;
+}
+
+VOID vGfxEndPfmTest()
+{
+    g_fgGfxPfmTesting = FALSE;
+}
+
+uint32_t u4GetAverageMicrosPerLoop(uint32_t u4Loop)
+{
+    uint32_t u4Micros;
+
+    u4Micros = (g_rGfxResultTime.u4Seconds * 1000000 + g_rGfxResultTime.u4Micros) / u4Loop;
+
+    return (u4Micros);
+}
+#endif

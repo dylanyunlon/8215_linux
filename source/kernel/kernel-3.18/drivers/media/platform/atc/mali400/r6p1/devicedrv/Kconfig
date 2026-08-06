@@ -1,0 +1,6 @@
+#
+# Platform drivers
+#	All gpu drivers here are currently for atc/arm support
+
+source "drivers/media/platform/atc/mali400/r6p1/devicedrv/mali/Kconfig"
+source "drivers/media/platform/atc/mali400/r6p1/devicedrv/ump/Kconfig"

@@ -1,0 +1,1 @@
+int Uboot_DisplayInit(UINT32 u4DataPA, INT32 i4Width, INT32 i4Height, UINT32 u4BitCount);

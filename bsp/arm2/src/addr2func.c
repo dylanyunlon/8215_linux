@@ -1,0 +1,1 @@
+../tools/gen_func_table/addr2func.c

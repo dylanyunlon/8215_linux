@@ -1,0 +1,2 @@
+
+obj-$(CONFIG_PWR_LOSS_ATC_TEST) += $(subst ",,$(CONFIG_ATC_PLATFORM))/
