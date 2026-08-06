@@ -1,5 +1,0 @@
-init
-uis8581/mcc400-mnc100
-uis8581/mcc109
-
-
