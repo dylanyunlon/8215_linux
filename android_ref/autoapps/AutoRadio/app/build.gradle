@@ -1,0 +1,123 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "com.hcn.autoradio"
+        minSdkVersion 26
+        targetSdkVersion 28
+        versionName versionTag()
+    }
+
+    signingConfigs {
+        //调试时或者有单独更新APK时候使用，发版本集成到系统，不需要签名,由Android.mk签名
+        MT8163 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('./signature/platform_8163.jks')
+            storePassword 'hcnrd123'
+        }
+        UIS8581 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('./signature/platform_8581.jks')
+            storePassword 'hcnrd123'
+        }
+        AC8257 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('./signature/platform_8257.jks')
+            storePassword 'hcnrd123'
+        }
+        AC8227L {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('./signature/platform_8227.jks')
+            storePassword 'hcnrd123'
+        }
+        SM6225 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('./signature/platform_6225.jks')
+            storePassword 'hcnrd123'
+        }
+        RK3326 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('./signature/platform_rk3326.jks')
+            storePassword 'hcnrd123'
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.MT8163
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.MT8163
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    if (System.properties['os.name'].toLowerCase().contains('windows') && isRemote) {
+        // windows 环境，as 直接导入服务器代码编译会报错，将 build 目录指定到本地磁盘即可
+        buildDir = "D:\\gradle_build_cache\\" + rootProject.name + "\\" + defaultConfig.versionCode
+        Console.println("grale build cache dir : " + buildDir)
+    }
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = "AutoRadio.apk"
+            }
+    }
+}
+
+dependencies {
+    implementation project(path: ':radio-api')
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    compileOnly files('libs/framework.jar')
+    implementation files('libs/litepal.jar')
+    implementation files('libs/auto-sdk-release.aar')
+    implementation 'com.hcn.libs:auto-compat:1.1.0@aar'
+    implementation 'com.hcn.libs:common-utils:1.1.3@aar'
+    implementation 'com.hcn.libs:skin-support-android:1.0.1@aar'
+    implementation 'com.hcn.libs:theme-utils:1.0.0@aar'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation "androidx.media:media:1.1.0-alpha01"
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        Set<File> fileSet = options.bootstrapClasspath.getFiles()
+        List<File> newFileList =  new ArrayList<>();
+        //"libs/framework.jar" 为相对位置
+        newFileList.add(new File("libs/framework.jar"))
+        newFileList.addAll(fileSet)
+        options.bootstrapClasspath = files(newFileList.toArray())
+    }
+}
+
+static def versionTag() {
+    def time = new Date().format("YYMMddHHmm", TimeZone.getTimeZone("GMT+8:00"))
+    def decoratedTime
+    decoratedTime = time
+    return "V.1.0." + decoratedTime
+}

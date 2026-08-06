@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "com.hcn.autoeq.skin.xt510"
+        minSdkVersion 27
+        targetSdkVersion 28
+        versionCode 2023
+        versionName new Date().format("yyyy_MM_dd_HH_mm_ss")
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        all {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res']
+            java.srcDirs = ['src']
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+        }
+    }
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = "HEQSkins_xt510.apk"
+            }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    if (System.properties['os.name'].toLowerCase().contains('windows') && isRemote) {
+        // windows 环境，as 直接导入服务器代码编译会报错，将 build 目录指定到本地磁盘即可
+        buildDir = "D:\\gradle_build_cache\\" + rootProject.name + "\\" + project.name + "\\" + defaultConfig.versionCode
+        Console.println("grale build cache dir : " + buildDir)
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation project(path: ':app-language')
+    compileOnly project(path: ':for_build')
+    compileOnly 'com.hcn.libs:HEqualizer:1.0.8@aar'
+}

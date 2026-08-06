@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="color_4E7FE0">#FF4E7FE0</color>
+    <color name="color_7C98FF">#FF7C98FF</color>
+    <color name="color_498DFF">#FF498DFF</color>
+    <color name="color_77B0FF">#FF77B0FF</color>
+    <color name="red">#ffff0000</color>
+
+    <color name="silver">#FFE6E8FA</color>
+    <color name="eq_bg_color">@android:color/black</color>
+    <color name="bar_color">#88BBFFFF</color>
+    <color name="bg_shader_color_1">#80FF0000</color>
+    <color name="bg_shader_color_2">#80F0FF00</color>
+    <color name="bg_shader_color_3">#8000DDFF</color>
+    <color name="bg_shader_color_4">#8033B5E5</color>
+    <color name="bg_shader_color_5">#800099CC</color>
+    <color name="bg_shader_color_6">#801e74a5</color>
+    <color name="freq_curve_color_1">#2000DDFF</color>
+    <color name="freq_curve_color_2">#4033B5E5</color>
+    <color name="bar_text_shadow_color">#FFE6E8FA</color>
+    <color name="bar_knob_color">#FFFFFFFF</color>
+    <color name="dsp_source_select">#FF33b4FB</color>
+    <color name="radio_text_color_select_p">#FF30aaef</color>
+    <color name="radio_text_color_select_n">#1B1D22</color>
+    <color name="tab_text_color_select_p">#FF33B4FB</color>
+    <color name="tab_text_color_select_n">@android:color/white</color>
+    <color name="xt540_text_color_translate">#00ffffff</color>
+
+    <color name="extdsp_radio_text_color_select_p">#FF30aaef</color>
+
+    <!--spartview use-->
+    <color name="colorlines">#ffff6eb4</color>
+
+
+    <color name="indicator_seek_bar_textcolor">#1B1D22</color>
+
+    <color name="extdsp_radio_text_selector_n">#8e94a0</color>
+
+
+</resources>

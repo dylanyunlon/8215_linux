@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="nine_main_radio_group_bg_color">#660E121A</color>
+    <color name="nine_main_radio_group_bg_eq_color">#660E121A</color>
+    <color name="nine_dts_radio_group_bg_color">#212630</color>
+    <color name="nine_dsp_seek_bar_group_bg_color">#ff212633</color>
+    <color name="nine_dts_btn_bg_color">#2A303D</color>
+    <color name="nine_dts_btn_bg_color_p">#B22A303D</color>
+    <color name="nine_text_color_1">#E6FFFFFF</color>
+    <color name="nine_text_color_2">#99FFFFFF</color>
+    <color name="nine_text_color_3">#66FFFFFF</color>
+    <color name="nine_text_color_5">#99FFFFFF</color>
+    <color name="nine_text_color_6">#CCFFFFFF</color>
+    <color name="nine_text_color_7">#CCFFFFFF</color>
+    <color name="nine_text_color_8">#CCFFFFFF</color>
+    <color name="nine_text_color_9">#B2FFFFFF</color>
+    <color name="nine_text_color_10">#E6FFFFFF</color>
+    <color name="nine_text_color_11">#99FFFFFF</color>
+    <color name="nine_text_color_13">#33FFFFFF</color>
+    <color name="nine_text_color_n">#99FFFFFF</color>
+    <color name="nine_text_color_p">#B2FFFFFF</color>
+    <color name="nine_text_color_p_2">#CCFFFFFF</color>
+    <color name="nine_main_radio_button_bg_color">#33FFFFFF</color>
+    <color name="nine_seek_bar_text_color_01">#ccFFFFFF</color>
+    <color name="nine_seek_bar_text_color_02">#b3FFFFFF</color>
+    <color name="nine_seek_bar_scale_text_color_01">#66FFFFFF</color>
+    <color name="nine_seek_bar_icon_color">#99FFFFFF</color>
+    <color name="nine_filter_line_bg_color">#800E121A</color>
+    <color name="nine_eq_line_bg_color_edit">#800E121A</color>
+    <color name="nine_eq_loudness_item_bg_color">#33FFFFFF</color>
+    <color name="nine_eq_loudness_bg">#330E121A</color>
+    <color name="nine_seek_bar_bg_color">#800E121A</color>
+    <array name="nine_gradient_colors">
+        <item>#2B7EA1</item>
+        <item>#22986C</item>
+    </array>
+    <array name="gradient_unable_colors">
+        <item>#1aFFFFFF</item>
+        <item>#1aFFFFFF</item>
+    </array>
+</resources>

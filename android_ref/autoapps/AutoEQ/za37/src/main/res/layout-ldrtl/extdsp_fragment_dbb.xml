@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_dbb_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/extdsp_dbb_car"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_lf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_lf_n"
+        app:layout_constraintBottom_toTopOf="@+id/iv_dbb_speaker_lr"
+        app:layout_constraintStart_toStartOf="@+id/iv_dbb_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_car" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_rf_n"
+        app:layout_constraintBottom_toTopOf="@+id/iv_dbb_speaker_rr"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dbb_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_car" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_lr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_lr_n"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dbb_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_dbb_car"
+        app:layout_constraintTop_toBottomOf="@+id/iv_dbb_speaker_lf" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_rr_n"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dbb_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dbb_car"
+        app:layout_constraintTop_toBottomOf="@+id/iv_dbb_speaker_rf" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_subwoofer_n"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dbb_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dbb_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_dbb_car" />
+
+    <RadioGroup
+        android:id="@+id/rg_dbb_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dbb_car"
+        app:layout_constraintStart_toEndOf="@+id/iv_dbb_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_car">
+
+        <RadioButton
+            android:id="@+id/rb_dbb_mode_fl_fr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/extdsp_dbb_mode_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/dbb_fl_fr"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/extdsp_balance_mode_text_size" />
+
+        <RadioButton
+            android:id="@+id/rb_dbb_mode_rl_rr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/extdsp_hlpf_radio_button_layout_marginTop"
+            android:background="@drawable/extdsp_dbb_mode_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/dbb_rl_rr"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/extdsp_balance_mode_text_size" />
+
+        <RadioButton
+            android:id="@+id/rb_dbb_mode_subwoofer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/extdsp_hlpf_radio_button_layout_marginTop"
+            android:background="@drawable/extdsp_dbb_mode_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/str_subwoofer"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/extdsp_balance_mode_text_size" />
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/iv_dbb_touch_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:background="@drawable/extdsp_dbb_touch_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rg_dbb_mode"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.ExtDspDbbView
+        android:id="@+id/v_dbb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/extdsp_dbb_touch_fg"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dbb_touch_bg"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dbb_touch_bg"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="@+id/iv_dbb_touch_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_touch_bg"
+        app:layout_constraintVertical_bias="0.506" />
+
+    <Button
+        android:id="@+id/btn_reset_dbb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/extdsp_filter_btn_reset_dbb_layout_marginBottom"
+        android:background="@drawable/extdsp_band_reset_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dbb_touch_bg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

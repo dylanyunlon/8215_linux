@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="balance_mode_marginStart">330dip</dimen>
+    <dimen name="balance_mode_marginTop">70dip</dimen>
+    <dimen name="eq_balance_marginEnd">330dip</dimen>
+
+    <dimen name="asp_balance_width">230dip</dimen>
+    <dimen name="asp_balance_height">230dip</dimen>
+
+    <dimen name="dsp_frequency_layout_height">260dp</dimen>
+    <dimen name="dsp_frequency_layout_padding">15dp</dimen>
+
+    <dimen name="balance_mode_text_size">22sp</dimen>
+
+    <dimen name="dsp_tab_eq_width">130dp</dimen>
+    <dimen name="dsp_tab_surround_width">200dp</dimen>
+    <dimen name="dsp_tab_subwoofer_width">250dp</dimen>
+
+    <dimen name="dsp_seekbar_subwoofer_width">836dp</dimen>
+
+    <dimen name="indicator_seek_bar_width">200dp</dimen>
+    <dimen name="indicator_seek_bar_height">14dp</dimen>
+
+</resources>

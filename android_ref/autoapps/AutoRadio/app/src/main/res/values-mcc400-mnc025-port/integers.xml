@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="AUTO_STROE_CENTER_POINT_X">512</integer>
+    <integer name="AUTO_STROE_CENTER_POINT_Y">210</integer>
+    <!-- For FullScreen -->
+    <integer name="ChinaFMBeginPosFullScreen">8</integer>
+    <integer name="ChinaAMBeginPosFullScreen">8</integer>
+    <integer name="EuropeFMBeginPosFullScreen">8</integer>
+    <integer name="EuropeAMBeginPosFullScreen">8</integer>
+    <integer name="JapanFMBeginPosFullScreen">8</integer>
+    <integer name="JapanAMBeginPosFullScreen">8</integer>
+    <integer name="LatinFMBeginPosFullScreen">8</integer>
+    <integer name="LatinAMBeginPosFullScreen">8</integer>
+    <integer name="USAFMBeginPosFullScreen">8</integer>
+    <integer name="USAAMBeginPosFullScreen">8</integer>
+    <integer name="OIRTFMBeginPosFullScreen">8</integer>
+    <integer name="OIRTAMBeginPosFullScreen">8</integer>
+    <integer name="Latin2FMBeginPosFullScreen">8</integer>
+    <integer name="Latin2AMBeginPosFullScreen">8</integer>
+
+    <integer name="CALIBRATE_OFFSET_X">10</integer>
+    <integer name="CALIBRATE_OFFSET_Y">10</integer>
+</resources>

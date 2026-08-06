@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="eq_balance_marginEnd">145dip</dimen>
+    <dimen name="balance_direct_padding">0dip</dimen>
+    <dimen name="asp_balance_width">390dp</dimen>
+    <dimen name="asp_balance_height">390dp</dimen>
+    <dimen name="dsp_tab_surround_tv_size">38sp</dimen>
+    <dimen name="dsp_freq_curve_width_1">3dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">3dp</dimen>
+    <dimen name="dsp_frequency_bar_width">5dp</dimen>
+</resources>

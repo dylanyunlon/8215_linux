@@ -1,0 +1,133 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofm="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/radio_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/radio_main_bg"
+    android:divider="@drawable/layout_divider"
+    android:fitsSystemWindows="true"
+    android:orientation="horizontal"
+    android:showDividers="middle">
+
+    <com.hcn.autoradio.view.VerticalViewPager
+        android:id="@+id/PresetViewPaper"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/green" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/band_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/butt_fm_band"
+                style="@style/band_info_btn_style"
+                android:layout_marginStart="@dimen/btn_band_margin_start"
+                android:text="@string/fm" />
+
+            <Button
+                android:id="@+id/butt_am_band"
+                style="@style/band_info_btn_style"
+                android:layout_marginStart="10dp"
+                android:text="@string/am" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/rds_imgbtn"
+                style="@style/hcn_rds_icon_style"
+                android:background="@drawable/rds_styles_selector" />
+
+            <Button
+                android:id="@+id/auto_test"
+                android:layout_width="@dimen/btn_auto_test_width"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/rds_rt_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:singleLine="true"
+                    android:textColor="@color/pty_text_color"
+                    android:textSize="@dimen/rds_rt_info_text_size" />
+
+                <include
+                    layout="@layout/radio_show_info_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <com.hcn.autoradio.view.FMSeekBarView
+                    android:id="@+id/id_china_seekbar_fm"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/radio_scroll_fm_china"
+                    autofm:scroll_item="@drawable/radio_scroll_thumb"
+                    autofm:thumb_offset_y="-14" />
+
+                <include
+                    layout="@layout/radio_status_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_edit_rds_ps"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/ps_margin_end"
+                android:drawableTop="@drawable/radio_cover"
+                android:gravity="center"
+                android:textColor="@color/pty_text_color"
+                android:textSize="@dimen/rds_ps_text_size" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_divider" />
+
+        <include
+            android:id="@+id/bottom_layout"
+            layout="@layout/bottom_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

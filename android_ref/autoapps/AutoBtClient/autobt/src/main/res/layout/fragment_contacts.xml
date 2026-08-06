@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="468dp"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/id_contacts_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fastScrollAlwaysVisible="true"
+            android:fastScrollEnabled="true"
+            android:scrollbarSize="4dp"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="none" />
+
+        <TextView
+            android:id="@+id/id_contact_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_loading"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_item_title_normal"
+            android:textSize="@dimen/sp_main_menu_title" />
+    </RelativeLayout>
+
+    <include
+        layout="@layout/layout_contact_key"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

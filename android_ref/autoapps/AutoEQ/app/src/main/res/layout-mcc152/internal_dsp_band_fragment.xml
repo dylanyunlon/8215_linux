@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.InternalDspFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <com.auto.hequalizer.EqualizerSurface
+        android:id="@+id/frequencyResponse"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dsp_frequency_layout_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/dsp_frequency_layout_padding"
+        android:layout_marginTop="@dimen/dsp_frequency_layout_padding"
+        android:layout_marginEnd="@dimen/dsp_frequency_layout_padding"
+        android:background="@color/eq_bg_color"
+        app:bar_color="@color/bar_color"
+        app:bar_text_color="@android:color/white"
+        app:bar_text_shadow_color="@color/silver"
+        app:bar_text_size="@dimen/dsp_frequency_bar_tv_size"
+        app:bar_width="@dimen/dsp_frequency_bar_width"
+        app:freq_curve_bg_shader_color_1="@color/bg_shader_color_1"
+        app:freq_curve_bg_shader_color_2="@color/bg_shader_color_2"
+        app:freq_curve_bg_shader_color_3="@color/bg_shader_color_3"
+        app:freq_curve_bg_shader_color_4="@color/bg_shader_color_4"
+        app:freq_curve_bg_shader_color_5="@color/bg_shader_color_5"
+        app:freq_curve_color_1="@color/freq_curve_color_1"
+        app:freq_curve_color_2="@color/freq_curve_color_2"
+        app:freq_curve_width_1="@dimen/dsp_freq_curve_width_1"
+        app:freq_curve_width_2="@dimen/dsp_freq_curve_width_2"
+        app:gain_text_color="@android:color/white"
+        app:gain_text_size="@dimen/dsp_frequency_gain_tv_size"
+        app:heq_bar_knob_color="@color/bar_knob_color"
+        app:layout_constraintTop_toBottomOf="@+id/dsp_reverb_group" />
+
+    <RadioGroup
+        android:id="@+id/dsp_reverb_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dsp_frequency_layout_padding"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/frequencyResponse"
+        app:layout_constraintEnd_toStartOf="@+id/dsp_reset"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_user"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_user"
+            android:text="@string/reverb_user" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_news"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_news"
+            android:text="@string/reverb_news" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_jazz"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_jazz"
+            android:text="@string/reverb_jazz" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_city"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_city"
+            android:text="@string/reverb_city" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_pop"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_pop"
+            android:text="@string/reverb_pop" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_electronic"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_electronic"
+            android:text="@string/reverb_electronic" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_classiz"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_classic"
+            android:text="@string/reverb_classiz" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_movie"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_movie"
+            android:text="@string/reverb_movie" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_rock"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_rock"
+            android:text="@string/reverb_rock" />
+
+        <RadioButton
+            android:id="@+id/dsp_reverb_techno"
+            style="@style/asp_mode_btn"
+            android:background="@drawable/asp_mode_techno"
+            android:text="@string/reverb_techno" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/dsp_reset"
+        android:layout_width="@dimen/asp_reverb_width"
+        android:layout_height="@dimen/asp_reverb_height"
+        android:layout_marginStart="@dimen/dsp_frequency_layout_padding"
+        android:background="@drawable/dsp_reset_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/dsp_reverb_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dsp_reverb_group"
+        app:layout_constraintTop_toTopOf="@+id/dsp_reverb_group" />
+</androidx.constraintlayout.widget.ConstraintLayout>

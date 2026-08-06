@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <!-- TODO: Update blank fragment layout -->
+    <CheckBox
+        android:id="@+id/dsp_ck_surround"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/internal_dsp_surround_ck_selector"
+        app:layout_constraintBottom_toTopOf="@+id/dsp_ck_loudness"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/dsp_tv_surround"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/dsp_tv_surround"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:text="@string/dsp_second_page_surround"
+        android:textSize="@dimen/dsp_tab_surround_tv_size"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/dsp_ck_surround"
+        app:layout_constraintEnd_toStartOf="@+id/dsp_ck_surround"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dsp_ck_surround" />
+
+    <CheckBox
+        android:id="@+id/dsp_ck_loudness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:button="@drawable/internal_dsp_surround_ck_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dsp_ck_surround"
+        app:layout_constraintTop_toBottomOf="@+id/dsp_ck_surround" />
+
+    <TextView
+        android:id="@+id/dsp_tv_loudness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:text="@string/dsp_second_page_loudness"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dsp_tab_surround_tv_size"
+        app:layout_constraintBottom_toBottomOf="@+id/dsp_ck_loudness"
+        app:layout_constraintEnd_toStartOf="@+id/dsp_ck_loudness"
+        app:layout_constraintTop_toTopOf="@+id/dsp_ck_loudness" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

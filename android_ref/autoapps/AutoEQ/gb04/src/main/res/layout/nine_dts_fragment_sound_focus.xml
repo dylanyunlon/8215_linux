@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_sound_car"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_car_layout_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_car_layout_height"
+        android:layout_marginStart="@dimen/nine_dts_fragment_sound_focus_iv_sound_car_marginStart"
+        android:layout_marginTop="@dimen/nine_dts_fragment_sound_focus_iv_sound_car_marginTop"
+        android:src="@drawable/nine_sound_focus_car"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_sound_front_l"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginStart="@dimen/nine_dts_fragment_sound_focus_iv_sound_front_l_marginStart"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_sound_focus_iv_sound_front_l_marginBottom"
+        android:src="@drawable/icon_nine_audio_left_03"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sound_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_sound_car" />
+
+    <ImageView
+        android:id="@+id/iv_sound_rear_l"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginStart="@dimen/nine_dts_fragment_sound_focus_iv_sound_rear_l_marginStart"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_sound_focus_iv_sound_rear_l_marginBottom"
+        android:src="@drawable/icon_nine_audio_left_10"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sound_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_sound_car" />
+
+    <ImageView
+        android:id="@+id/iv_sound_forefront"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_sound_focus_iv_sound_forefront_marginBottom"
+        android:src="@drawable/icon_nine_audio_forefront_07"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sound_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_sound_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_sound_car" />
+
+    <ImageView
+        android:id="@+id/iv_sound_front_r"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginEnd="@dimen/nine_dts_fragment_sound_focus_iv_sound_front_r_marginEnd"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_sound_focus_iv_sound_front_r_marginBottom"
+        android:src="@drawable/icon_nine_audio_right_03"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sound_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_sound_car" />
+
+    <ImageView
+        android:id="@+id/iv_sound_rear_r"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginEnd="@dimen/nine_dts_fragment_sound_focus_iv_sound_rear_r_marginStart"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_sound_focus_iv_sound_rear_r_marginBottom"
+        android:src="@drawable/icon_nine_audio_right_10"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sound_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_sound_car" />
+
+    <ImageView
+        android:id="@+id/iv_sound_focus"
+        android:layout_width="@dimen/x500"
+        android:layout_height="@dimen/y580"
+        android:layout_marginEnd="193dp"
+        android:layout_marginBottom="85dp"
+        android:visibility="gone"
+        android:src="@drawable/icon_nine_sound_focus_gb02"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sound_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_sound_car" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_sound_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nine_dts_fragment_sound_focus_cl_sound_bar_marginTop"
+        android:background="@drawable/nine_dsp_seek_bar_group_bg"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/nine_dts_fragment_sound_focus_cl_sound_bar_paddingVertical"
+        android:paddingLeft="@dimen/nine_dts_fragment_sound_focus_cl_sound_bar_paddingLeft"
+        android:paddingRight="@dimen/nine_dts_fragment_sound_focus_cl_sound_bar_paddingRight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.hcn.autoeq.view.NineCommonSeekBar
+            android:id="@+id/sb_sound_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="Front"
+            app:layout_constraintEnd_toStartOf="@+id/sb_sound_rear"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:nine_seek_bar_down_name="@string/nine_tv_front"
+            app:nine_seek_bar_top_name_two="10" />
+
+        <com.hcn.autoeq.view.NineCommonSeekBar
+            android:id="@+id/sb_sound_rear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="Rear"
+            app:layout_constraintEnd_toStartOf="@+id/sb_sound_center"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@+id/sb_sound_front"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:nine_seek_bar_down_name="@string/nine_tv_rear"
+            app:nine_seek_bar_top_name_two="10" />
+
+        <com.hcn.autoeq.view.NineCommonSeekBar
+            android:id="@+id/sb_sound_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="Center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@+id/sb_sound_rear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:nine_seek_bar_down_name="@string/nine_tv_channel_center"
+            app:nine_seek_bar_top_name_two="10" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_sound_reset"
+        android:layout_width="@dimen/x180"
+        android:layout_height="@dimen/y88"
+        android:layout_marginTop="@dimen/y40"
+        android:background="@drawable/nine_dts_btn_bg_selector"
+        android:gravity="center"
+        android:text="@string/nine_btn_reset"
+        android:textColor="@color/nine_text_color_n"
+        android:textSize="@dimen/x32"
+        app:layout_constraintEnd_toEndOf="@+id/cl_sound_bar"
+        app:layout_constraintStart_toStartOf="@+id/cl_sound_bar"
+        app:layout_constraintTop_toBottomOf="@+id/cl_sound_bar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

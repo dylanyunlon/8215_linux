@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_bt_call_status">#FFFFFF</color>
+    <color name="calling_status_text_color">#FFFFFF</color>
+
+    <color name="color_blue_dark">#FFFFFF</color>
+    <color name="background">#0d1017</color>
+</resources>

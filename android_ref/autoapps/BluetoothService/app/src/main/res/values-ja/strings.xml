@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth</string>
+    <string name="str_handsfree_device_connected">ハンズフリーデバイスが接続されています</string>
+    <string name="str_a2dp_device_connected">音楽デバイスが接続されています</string>
+    <string name="str_hid_device_connected">HIDデバイスが接続されています</string>
+    <string name="str_income_call_status">電話</string>
+    <string name="str_out_call_status">呼び出し</string>
+    <string name="str_bt_call_active">呼び出し</string>
+    <string name="str_bt_call_held">保留</string>
+    <string name="str_bt_call_waiting">キャッチホン</string>
+    <string name="str_bt_call_abnormal">異常な呼び出し</string>
+    <string name="str_bt_call_multiparty">電話会議</string>
+    <string name="str_bt_call_accept_terminate">終了して答える</string>
+    <string name="str_bt_call_accept_held">ホールドして答える</string>
+    <string name="str_bt_call_swap">通話を切り替える</string>
+    <string name="str_bt_call_merge">マージコール</string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">不明</string>
+    <string name="time_text">00:00:00</string>
+</resources>

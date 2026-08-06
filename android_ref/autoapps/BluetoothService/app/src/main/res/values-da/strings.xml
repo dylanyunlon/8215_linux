@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth</string>
+   
+    <string name="str_income_call_status">Indgående opkald</string>
+    <string name="str_handsfree_device_connected">Håndfri enhed er tilsluttet</string>
+    <string name="str_a2dp_device_connected">Musikenheden er tilsluttet</string>
+    <string name="str_hid_device_connected">HID-enheden er tilsluttet</string>
+    <string name="str_out_call_status">Udgående opkald</string>
+    <string name="str_bt_call_active">Ring til Aktiv</string>
+    <string name="str_bt_call_held">Opkald holdt</string>
+    <string name="str_bt_call_waiting">Opkald venter</string>
+    <string name="str_bt_call_abnormal">Unormalt opkald</string>
+    <string name="str_bt_call_multiparty">Flerpartsopkald</string>
+    <string name="str_bt_call_accept_terminate">Afslut og accepter</string>
+    <string name="str_bt_call_accept_held">Holdt og accepteret</string>
+    <string name="str_bt_call_swap">Byt opkald</string>
+    <string name="str_bt_call_merge">Flet opkald</string>
+    <string name="str_calling_phone_number">10086</string>
+   
+    <string name="unkown">Ukendt</string>
+    <string name="time_text">00:00:00</string>
+</resources>

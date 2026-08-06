@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Bluetooth Hizmeti</string>
+    <string name="str_handsfree_device_connected">Ahizesiz kullanım cihazı bağlı</string>
+    <string name="str_a2dp_device_connected">Müzik cihazı bağlı</string>
+    <string name="str_hid_device_connected">HID cihazı bağlı</string>
+    <string name="str_income_call_status">Gelen çağrı</string>
+    <string name="str_out_call_status">Giden arama</string>
+    <string name="str_bt_call_active">Etkin Çağrı</string>
+    <string name="str_bt_call_held">Çağrı Bekletildi</string>
+    <string name="str_bt_call_waiting">Görüşme beklemede</string>
+    <string name="str_bt_call_abnormal">Anormal Çağrı</string>
+    <string name="str_bt_call_multiparty">Çok Taraflı Çağrı</string>
+    <string name="str_bt_call_accept_terminate">Sonlandır ve Kabul Et</string>
+    <string name="str_bt_call_accept_held">Tutuldu ve Kabul Edildi</string>
+    <string name="str_bt_call_swap">Çağrıyı Değiştir</string>
+    <string name="str_bt_call_merge">Aramayı Birleştir</string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">Bilinmeyen</string>
+    <string name="time_text">00:00:00</string>
+    <string name="str_letter_hicar_tips">HiCar çalışıyor, Bluetooth kullanımına izin verilmiyor.</string>
+    <string name="bluetooth_profile_a2dp">Ses kaynağı</string>
+    <string name="bluetooth_profile_a2dp_sink">Ses alıcısı</string>
+    <string name="bluetooth_profile_pbap">Kişi paylaşımı</string>
+    <string name="bluetooth_profile_headset_client">Telefon istemcisi</string>
+    <string name="bluetooth_profile_pan_NAP">Ağ Erişim Noktası</string>
+    <string name="bluetooth_pairing_error_message">Şununla eşleştirilirken bir sorun oluştu:</string>
+    <string name="bluetooth_pairing_pin_error_message">PIN veya Parolanın yanlış olması nedeniyle eşleştirmede bir sorun oluştu.</string>
+    <string name="bluetooth_pairing_device_down_error_message">Mesajlar İle iletişim kurulamıyor</string>
+    <string name="bluetooth_pairing_rejected_error_message">Eşleştirme tarafından reddedildi.</string>
+    <string name="bluetooth_unpair_device_message">Cihazın Eşleşmesini Kaldır, Lütfen bu makinenin Telefondaki eşleştirmesini kaldırın ve Bluetooth Cihazını tekrar tarayın!</string>
+
+</resources>

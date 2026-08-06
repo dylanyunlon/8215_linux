@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#ffffffff</color>
+    <color name="deep_yellow">#ffd45b3e</color>
+    <color name="black">#ff000000</color>
+    <color name="yellow">#fffefe41</color>
+    <color name="green">#ff00ff00</color>
+    <color name="button_text_color_n">@color/white</color>
+    <color name="button_text_color_p">#ff1559bf</color>
+    <color name="preset_text_color_n">@color/white</color>
+    <color name="preset_text_color_p">@color/white</color>
+    <color name="preset_index_color">@color/white</color>
+    <color name="main_text_color">@color/white</color>
+    <color name="pty_text_color">@color/white</color>
+</resources>

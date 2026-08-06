@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <RadioGroup
+        android:id="@+id/rg_csc_asp_band_top_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/csc_asp_main_top_bg"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/tab_rg_hcn_asp_band_top_tab_paddingHorizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/btn_csc_asp_volume"
+            style="@style/csc_asp_tab_button_style"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/tab_btn_csc_asp_volume_marginEnd"
+            android:paddingEnd="@dimen/tab_btn_csc_asp_volume_paddingEnd"
+            android:background="@null"
+            android:checked="false"
+            android:gravity="center"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:text="@string/tab_btn_csc_asp_volume"
+            android:textColor="@color/radio_text_color_select_n" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/btn_csc_asp_reverb_mode"
+            style="@style/csc_asp_tab_button_style"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/tab_btn_csc_asp_reverb_mode_marginHorizontal"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/tab_btn_csc_asp_reverb_mode" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/btn_csc_asp_user_reverb_mode"
+            style="@style/csc_asp_tab_button_style"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/tab_btn_csc_asp_user_reverb_mode_marginStart"
+            android:paddingEnd="@dimen/tab_btn_csc_asp_volume_paddingEnd"
+            android:background="@null"
+            android:gravity="center"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:text="@string/tab_btn_csc_asp_user_reverb_mode" />
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:id="@+id/ll_asp_band_reverb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:gravity="center"
+        android:visibility="gone"
+        android:paddingHorizontal="@dimen/csc_asp_ll_band_reverb_paddingHorizontal"
+        android:layout_marginTop="@dimen/ll_asp_band_reverb_marginTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.hcn.autoeq.view.CscAspGalleryViewPager
+            android:id="@+id/gvp_asp_band_reverb"
+            android:layout_width="@dimen/tab_gvp_asp_band_reverb_layout_width"
+            android:layout_height="@dimen/tab_gvp_asp_band_reverb_layout_height"
+            android:clipChildren="false"
+            android:overScrollMode="never" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

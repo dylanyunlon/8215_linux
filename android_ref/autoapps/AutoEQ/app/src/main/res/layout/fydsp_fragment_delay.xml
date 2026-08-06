@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_sample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fydsp_fragment_delay_btn_sample_marginStart"
+        android:layout_marginTop="@dimen/fydsp_fragment_delay_btn_sample_marginTop"
+        android:background="@drawable/fydsp_band_mode_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text="@string/fydsp_balance_or_delay_simple"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_reset_delay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/fydsp_delay_reset_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_sample" />
+
+    <com.hcn.autoeq.view.FyDspDelayView
+        android:id="@+id/fddv_lf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:tag="LF"
+        app:layout_constraintBottom_toTopOf="@+id/fddv_way2_lr"
+        app:layout_constraintEnd_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car" />
+
+    <com.hcn.autoeq.view.FyDspDelayView
+        android:id="@+id/fddv_way2_lr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="LR"
+        app:layout_constraintBottom_toTopOf="@+id/fddv_channel51_lr"
+        app:layout_constraintEnd_toEndOf="@+id/fddv_lf"
+        app:layout_constraintStart_toStartOf="@+id/fddv_lf"
+        app:layout_constraintTop_toBottomOf="@+id/fddv_lf" />
+
+    <com.hcn.autoeq.view.FyDspDelayView
+        android:id="@+id/fddv_channel51_lr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="LR"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_delay_car"
+        app:layout_constraintEnd_toEndOf="@+id/fddv_lf"
+        app:layout_constraintStart_toStartOf="@+id/fddv_lf"
+        app:layout_constraintTop_toBottomOf="@+id/fddv_way2_lr" />
+
+    <com.hcn.autoeq.view.FyDspDelayView
+        android:id="@+id/fddv_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="CENTER"
+        app:layout_constraintBottom_toTopOf="@+id/iv_delay_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car" />
+
+    <ImageView
+        android:id="@+id/iv_delay_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/fydsp_delay_car_way2" />
+
+    <com.hcn.autoeq.view.FyDspDelayView
+        android:id="@+id/fddv_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="SUBWOOFER"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toBottomOf="@+id/iv_delay_car" />
+
+    <com.hcn.autoeq.view.FyDspDelayView
+        android:id="@+id/fddv_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:tag="RF"
+        app:layout_constraintBottom_toBottomOf="@+id/fddv_lf"
+        app:layout_constraintStart_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/fddv_lf" />
+
+    <com.hcn.autoeq.view.FyDspDelayView
+        android:id="@+id/fddv_way2_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="RR"
+        app:layout_constraintBottom_toBottomOf="@+id/fddv_way2_lr"
+        app:layout_constraintEnd_toEndOf="@+id/fddv_rf"
+        app:layout_constraintStart_toStartOf="@+id/fddv_rf"
+        app:layout_constraintTop_toTopOf="@+id/fddv_way2_lr" />
+
+    <com.hcn.autoeq.view.FyDspDelayView
+        android:id="@+id/fddv_channel51_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="RR"
+        app:layout_constraintBottom_toBottomOf="@+id/fddv_channel51_lr"
+        app:layout_constraintEnd_toEndOf="@+id/fddv_rf"
+        app:layout_constraintStart_toStartOf="@+id/fddv_rf"
+        app:layout_constraintTop_toTopOf="@+id/fddv_channel51_lr" />
+
+    <RadioGroup
+        android:id="@+id/rg_delay_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/fddv_subwoofer"
+        app:layout_constraintEnd_toEndOf="@+id/btn_reset_delay"
+        app:layout_constraintTop_toTopOf="@+id/fddv_subwoofer">
+
+        <RadioButton
+            android:id="@+id/rb_delay_unit_ms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fydsp_delay_unit_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/sound_field_ms"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/fydsp_textSize" />
+
+        <RadioButton
+            android:id="@+id/rb_delay_unit_cm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fydsp_delay_unit_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/sound_field_cm"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/fydsp_textSize" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

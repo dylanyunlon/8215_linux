@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="side_bar_text_size">22</integer>
+
+    <!--paired_fragment_type = 0 默认UI使用 通过点击按钮配对和连接的方式-->
+    <!--paired_fragment_type = 1 8581平台通过点击配对列表弹窗选择配对和连接的方式-->
+    <integer name="paired_fragment_type">0</integer>
+
+    <!--setup_fragment_type = -1 无独立设置界面-->
+    <!--setup_fragment_type = 0 默认UI使用 独立设置界面-->
+    <!--setup_fragment_type = 1 8581使用的独立设置界面UI-->
+    <integer name="setup_fragment_type">0</integer>
+
+
+    <integer name="bt_phonebook_phonebook_listview_numColumns">3</integer>
+</resources>

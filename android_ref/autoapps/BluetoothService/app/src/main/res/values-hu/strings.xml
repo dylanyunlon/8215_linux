@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth</string>
+    <string name="str_handsfree_device_connected">A kihangosító eszköz csatlakoztatva van</string>
+    <string name="str_a2dp_device_connected">A zenei eszköz csatlakoztatva van</string>
+    <string name="str_hid_device_connected">A HID eszköz csatlakoztatva van</string>
+    <string name="str_income_call_status">Bejövő hívás</string>
+    <string name="str_out_call_status">Kimenő hívás</string>
+    <string name="str_bt_call_active">Hívja aktív</string>
+    <string name="str_bt_call_held">Hívás tartott</string>
+    <string name="str_bt_call_waiting">Várakozó hívás</string>
+    <string name="str_bt_call_abnormal">Rendellenes hívás</string>
+    <string name="str_bt_call_multiparty">Többpárt hívás</string>
+    <string name="str_bt_call_accept_terminate">Felmondás és elfogadás</string>
+    <string name="str_bt_call_accept_held">Held és elfogadja</string>
+    <string name="str_bt_call_swap">Swap Call</string>
+    <string name="str_bt_call_merge">Összehívás</string>
+    <string name="str_calling_phone_number">10086</string>
+   
+    <string name="unkown">Ismeretlen</string>
+    <string name="time_text">00:00:00</string>
+</resources>

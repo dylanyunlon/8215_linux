@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="AUTO_STROE_CENTER_POINT_X">512</integer>
+    <integer name="AUTO_STROE_CENTER_POINT_Y">210</integer>
+    <!-- For FullScreen -->
+    <integer name="ChinaFMBeginPosFullScreen">15</integer>
+    <integer name="ChinaAMBeginPosFullScreen">20</integer>
+    <integer name="EuropeFMBeginPosFullScreen">15</integer>
+    <integer name="EuropeAMBeginPosFullScreen">20</integer>
+    <integer name="JapanFMBeginPosFullScreen">15</integer>
+    <integer name="JapanAMBeginPosFullScreen">20</integer>
+    <integer name="LatinFMBeginPosFullScreen">15</integer>
+    <integer name="LatinAMBeginPosFullScreen">20</integer>
+    <integer name="USAFMBeginPosFullScreen">15</integer>
+    <integer name="USAAMBeginPosFullScreen">20</integer>
+    <integer name="OIRTFMBeginPosFullScreen">15</integer>
+    <integer name="OIRTAMBeginPosFullScreen">20</integer>
+    <integer name="Latin2FMBeginPosFullScreen">15</integer>
+    <integer name="Latin2AMBeginPosFullScreen">20</integer>
+
+    <!-- For MultiWindowMode HalfScreen -->
+    <integer name="ChinaFMBeginPosHalfScreen">15</integer>
+    <integer name="ChinaAMBeginPosHalfScreen">20</integer>
+    <integer name="EuropeFMBeginPosHalfScreen">15</integer>
+    <integer name="EuropeAMBeginPosHalfScreen">20</integer>
+    <integer name="JapanFMBeginPosHalfScreen">15</integer>
+    <integer name="JapanAMBeginPosHalfScreen">20</integer>
+    <integer name="LatinFMBeginPosHalfScreen">15</integer>
+    <integer name="LatinAMBeginPosHalfScreen">20</integer>
+    <integer name="USAFMBeginPosHalfScreen">15</integer>
+    <integer name="USAAMBeginPosHalfScreen">20</integer>
+    <integer name="OIRTFMBeginPosHalfScreen">15</integer>
+    <integer name="OIRTAMBeginPosHalfScreen">20</integer>
+    <integer name="Latin2FMBeginPosHalfScreen">15</integer>
+    <integer name="Latin2AMBeginPosHalfScreen">20</integer>
+
+    <integer name="CALIBRATE_OFFSET_X">10</integer>
+    <integer name="CALIBRATE_OFFSET_Y">10</integer>
+</resources>

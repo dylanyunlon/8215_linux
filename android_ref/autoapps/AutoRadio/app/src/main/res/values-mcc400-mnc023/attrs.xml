@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="center_x" format="integer" />
+    <attr name="center_y" format="integer" />
+    <attr name="circle_r" format="integer" />
+    <attr name="scroll_bar" format="integer" />
+    <attr name="scroll_item" format="integer" />
+    <attr name="scroll_begin" format="float" />
+    <attr name="scroll_end" format="float" />
+    <attr name="scroll_uid" format="integer" />
+    <attr name="copy_scroll_bar" format="integer" />
+    <attr name="copy_scroll_item" format="integer" />
+    <attr name="copy_scroll_begin_angle" format="float" />
+    <attr name="copy_scroll_end_angle" format="float" />
+    <attr name="thumb_offset_y" format="integer" />
+
+</resources>

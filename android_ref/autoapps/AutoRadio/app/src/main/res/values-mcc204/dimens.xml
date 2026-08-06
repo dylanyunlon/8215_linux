@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="PresetViewFreqTextSize">34sp</dimen>
+    <dimen name="PresetViewIndexTextSize">30sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">30sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">25sp</dimen>
+    <dimen name="band_info_text_size">36sp</dimen>
+    <dimen name="bottom_menu_margin">28dp</dimen>
+    <dimen name="preset_viewpager_height">110dp</dimen>
+    <dimen name="band_info_margin_end">50dp</dimen>
+
+    <dimen name="digit_freq_text_size">100sp</dimen>
+    <dimen name="digit_freq_middle_text_size">70sp</dimen>
+    <dimen name="digit_freq_small_text_size">60sp</dimen>
+</resources>

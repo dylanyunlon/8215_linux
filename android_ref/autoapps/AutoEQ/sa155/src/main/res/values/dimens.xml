@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    filter-DBB-->
+    <dimen name="main_radiobutton_text_size">32sp</dimen>
+    <dimen name="dsp_frequency_bar_width">5dp</dimen>
+    <dimen name="dsp_freq_curve_width_1">3dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">2dp</dimen>
+    <integer name="band_user_reverb_mode_x">20</integer>
+    <integer name="band_user_reverb_mode_y">10</integer>
+    <dimen name="dbb_speaker_layout_Top">114dp</dimen>
+    <dimen name="dbb_speaker_layout_Start">20dp</dimen>
+    <dimen name="dbb_speaker_layout_Start2">98dp</dimen>
+    <dimen name="dbb_speaker_layout_Bottom">39dp</dimen>
+    <dimen name="dbb_car_layout_Start">62dp</dimen>
+    <dimen name="dbb_rg_dbb_mode_layout_Start">25dp</dimen>
+    <dimen name="dbb_rg_dbb_mode_layout_Top">90dp</dimen>
+    <dimen name="dbb_iv_dbb_touch_bg_layout_End">25dp</dimen>
+    <dimen name="dbb_btn_reset_dbb_layout_Top">12dp</dimen>
+    <dimen name="iv_dbb_speaker_subwoofer_layout_Bottom">-35dp</dimen>
+
+    <!--    delay-->
+    <dimen name="iv_delay_speaker_lf_layout_Top">68dp</dimen>
+    <dimen name="iv_delay_speaker_lf_layout_Start">0dp</dimen>
+    <dimen name="iv_delay_speaker_lr_layout_Top">78dp</dimen>
+    <dimen name="iv_delay_rksb_lf_layout_Start">5dp</dimen>
+    <dimen name="iv_delay_btn_reset_delay_layout_End">48dp</dimen>
+    <dimen name="iv_delay_rksb_lf_layout_Top">15dp</dimen>
+
+    <!--    filter-hlpf-->
+    <dimen name="iv_seekbar_bg_layout_Bottom">15dp</dimen>
+    <dimen name="iv_hlpf_speaker_lf_layout_Start">12dp</dimen>
+    <dimen name="iv_hlpf_car_layout_Start">35dp</dimen>
+    <dimen name="iv_hlpf_speaker_lf_layout_Top">24dp</dimen>
+    <dimen name="iv_hlpf_speaker_rf_layout_Start">98dp</dimen>
+    <dimen name="rg_hlpf_output_mode_layout_Top">24dp</dimen>
+    <dimen name="iv_hpf_layout_Top">26dp</dimen>
+    <dimen name="iv_hlpf_speaker_rr_layout_Top">12dp</dimen>
+    <dimen name="sp_hpf_slope_width">142dp</dimen>
+    <dimen name="sp_hpf_slope_height">42dp</dimen>
+
+    <!--    filter-surround-->
+    <dimen name="btn_surround_enable_layout_End">89dp</dimen>
+    <dimen name="iv_speaker_anim_layout_Top">137dp</dimen>
+    <dimen name="btn_loudness_enable_layout_Top">70dp</dimen>
+    <dimen name="btn_loudness_line_layout_Top">13dp</dimen>
+
+    <!--    balance-->
+    <dimen name="balance_mode_co_layout_Top">38dp</dimen>
+    <dimen name="tv_mute_layout_Start">92dp</dimen>
+    <dimen name="tv_invert_layout_Bottom">22dp</dimen>
+
+    <!--    band-->
+    <dimen name="btn_band_reset_layout_Start">20dp</dimen>
+    <dimen name="btn_band_reset_size">24sp</dimen>
+    <dimen name="btn_reset_band_layout_End">42dp</dimen>
+    <dimen name="rg_band_user_layout_End">48dp</dimen>
+    <dimen name="tes_freq_height">170dp</dimen>
+    <dimen name="hsv_band_layout_Start">5dp</dimen>
+    <dimen name="tv_q_title_layout_Bottom">18dp</dimen>
+    <dimen name="tv_g_title_layout_Bottom">6dp</dimen>
+    <dimen name="tv_gain_center_layout_Bottom">62dp</dimen>
+    <dimen name="tv_g_title_layout_Start">10dp</dimen>
+    <dimen name="rg_band_user_layout_Start">28dp</dimen>
+    <dimen name="rg_band_user_height">100dp</dimen>
+
+</resources>

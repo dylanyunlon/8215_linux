@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="fydsp_fragment_band_freq_curve_color_1">#3699ff</color>
+    <color name="fydsp_fragment_band_freq_curve_color_2">#3699ff</color>
+    <color name="fydsp_fragment_band_freq_curve_color_3">#3699ff</color>
+    <color name="fydsp_fragment_band_freq_curve_color_4">#3699ff</color>
+    <color name="fydsp_fragment_band_freq_curve_color_5">#3699ff</color>
+
+    <color name="fydsp_bg_shader_color_1">#991924A9</color>
+    <color name="fydsp_bg_shader_color_2">#991924A9</color>
+    <color name="fydsp_bg_shader_color_3">#991924A9</color>
+    <color name="fydsp_bg_shader_color_4">#991924A9</color>
+    <color name="fydsp_bg_shader_color_5">#991924A9</color>
+
+    <color name="fydsp_hlpf_color_channel51_center">#d0070b</color>
+    <color name="fydsp_hlpf_color_channel51_f">#00d0e9</color>
+    <color name="fydsp_hlpf_color_channel51_r">#ffcb3f</color>
+    <color name="fydsp_hlpf_color_channel51_subwoofer">#5582f6</color>
+
+    <color name="fydsp_hlpf_color_way2_f">#00d0e9</color>
+    <color name="fydsp_hlpf_color_way2_r">#ffcb3f</color>
+    <color name="fydsp_hlpf_color_way2_subwoofer_center">#db6327</color>
+
+    <color name="fydsp_hlpf_color_way3_f">#00d0e9</color>
+    <color name="fydsp_hlpf_color_way3_r">#ffcb3f</color>
+    <color name="fydsp_hlpf_color_way3_subwoofer_center">#db6327</color>
+
+    <color name="fydsp_hlpf_color_way6_f">#00d0e9</color>
+    <color name="fydsp_hlpf_color_way6_r">#ffcb3f</color>
+    <color name="fydsp_hlpf_color_way6_subwoofer_center">#db6327</color>
+</resources>

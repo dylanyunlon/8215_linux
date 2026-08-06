@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.AspFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/asp_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/xt540_asp_reset_marginStart"
+        android:layout_marginTop="@dimen/xt540_asp_reset_margintop"
+        android:background="@drawable/dsp_reset_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/asp_reverb_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/xt540_asp_reverb_group_marginStart"
+        android:layout_marginTop="@dimen/xt540_asp_reverb_group_marginTop"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/asp_reverb_user"
+            style="@style/asp_mode_btn"
+
+            android:text="@string/reverb_user" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_news"
+            style="@style/asp_mode_btn"
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+
+            android:text="@string/reverb_news" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_jazz"
+            style="@style/asp_mode_btn"
+
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+            android:text="@string/reverb_jazz" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_city"
+            style="@style/asp_mode_btn"
+
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+            android:text="@string/reverb_city" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_pop"
+            style="@style/asp_mode_btn"
+
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+            android:text="@string/reverb_pop" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_electronic"
+            style="@style/asp_mode_btn"
+
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+            android:text="@string/reverb_electronic" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_classiz"
+            style="@style/asp_mode_btn"
+
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+            android:text="@string/reverb_classiz" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_movie"
+            style="@style/asp_mode_btn"
+
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+            android:text="@string/reverb_movie" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_rock"
+            style="@style/asp_mode_btn"
+
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+            android:text="@string/reverb_rock" />
+
+        <RadioButton
+            android:id="@+id/asp_reverb_techno"
+            style="@style/asp_mode_btn"
+
+            android:layout_marginStart="@dimen/xt540_asp_reverb_group_item_marginStart"
+            android:text="@string/reverb_techno" />
+    </RadioGroup>
+
+    <include
+        android:id="@+id/layout_asp_band_seekbar"
+        layout="@layout/asp_band_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xt540_layout_asp_band_seekbar_marginTop"
+        android:layout_marginStart="@dimen/layout_asp_band_seekbar_margin"
+        android:layout_marginEnd="@dimen/layout_asp_band_seekbar_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/asp_reverb_group" />
+
+
+    <com.hcn.autoeq.view.CustomSpinner
+        android:id="@+id/sp_reverb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/extdsp_sp_reverb_layout_marginStart"
+        android:background="@drawable/tap_asp_close_n"
+        android:dropDownSelector="@android:color/transparent"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:popupBackground="@drawable/drop_down_bg"
+        android:spinnerMode="dropdown"
+        android:layout_marginTop="@dimen/xt540_asp_reset_margintop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dsp_tv_surround"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/xt540_internal_surround_tv_bassboot_marginEnd"
+        android:text="@string/dsp_second_page_subwoofer"
+        android:textColor="@color/radio_text_color_select_n"
+        android:textSize="@dimen/dsp_tab_surround_tv_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/asp_reset"
+        app:layout_constraintBottom_toBottomOf="@id/asp_reset"
+        />
+    <CheckBox
+        android:id="@+id/dsp_ck_surround"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/asp_surround_ck_selector"
+        app:layout_constraintTop_toTopOf="@id/dsp_tv_surround"
+        app:layout_constraintBottom_toBottomOf="@id/dsp_tv_surround"
+        app:layout_constraintStart_toEndOf="@id/dsp_tv_surround"
+        android:layout_marginStart="@dimen/dsp_ck_surround_layout_marginStart"
+        />
+    <TextView
+        android:id="@+id/dsp_tv_loudness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/xt540_internal_surround_tv_surround_marginEnd"
+        android:text="@string/dsp_second_page_loudness"
+        android:textSize="@dimen/dsp_tab_surround_tv_size"
+        android:textColor="@color/radio_text_color_select_n"
+        app:layout_constraintTop_toTopOf="@id/dsp_tv_surround"
+        app:layout_constraintBottom_toBottomOf="@id/dsp_tv_surround"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <CheckBox
+        android:id="@+id/dsp_ck_loudness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/asp_surround_ck_selector"
+        app:layout_constraintTop_toTopOf="@id/dsp_tv_surround"
+        app:layout_constraintBottom_toBottomOf="@id/dsp_tv_surround"
+        app:layout_constraintStart_toEndOf="@id/dsp_tv_loudness"
+        android:layout_marginStart="@dimen/dsp_ck_surround_layout_marginStart"
+
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

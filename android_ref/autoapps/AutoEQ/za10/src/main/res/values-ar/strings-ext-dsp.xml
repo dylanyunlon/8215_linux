@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="band_user0">المستخدم 1</string>
+    <string name="band_user1">المستخدم 2</string>
+    <string name="band_user2">المستخدم 3</string>
+
+    <string name="balance_field_lf">الجبهة اليسرى</string>
+    <string name="balance_field_lr">اليسار الخلفي</string>
+    <string name="balance_field_rf">الجبهة اليمنى</string>
+    <string name="balance_field_rr">حق خلفي</string>
+
+    <string name="str_subwoofer">مضخم الصوت</string>
+    <string name="str_center">المركز</string>
+
+<!--    <string name="sound_field_ms">ms</string>
+    <string name="sound_field_cm">سم</string>-->
+
+    <!-- attenuate -->
+    <string name="attenuate_mute">:Mute</string>
+    <string name="attenuate_invert">:Invert</string>
+
+    <string name="hlpf_freq_hz">%d Hz</string>
+    <string name="hlpf_freq_khz">%d KHz</string>
+    <string name="hlpf_hpf">HPF</string>
+    <string name="hlpf_lpf">LPF</string>
+    <string name="hlpf_freq_title">تردد</string>
+    <string name="hlpf_slope_title">المنحدر</string>
+
+    <string name="dbb_fl_fr">FL/FR</string>
+    <string name="dbb_rl_rr">RL/RR</string>
+    <string name="band_tv_g_title">:FC</string>
+    <string name="band_tv_q_title">:Q</string>
+
+    <string name="extdsp_main_tab_band">EQ</string>
+    <string name="extdsp_main_tab_balance">التوازن</string>
+    <string name="extdsp_main_tab_attenuate">التوهين</string>
+    <string name="extdsp_main_tab_filter">فلتر</string>
+    <string name="extdsp_main_tab_delay">تأخير</string>
+
+    <string name="extdsp_band_reverb_mode_title">وضع المشهد</string>
+    <string name="extdsp_band_reset_title">افتراضي</string>
+</resources>

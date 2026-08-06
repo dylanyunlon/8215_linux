@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extdsp_band_seekbar_width">70dp</dimen>
+    <dimen name="extdsp_ll_band_minWidth">1480dp</dimen>
+    <dimen name="extdsp_sp_reverb_layout_marginStart">32dp</dimen>
+    <dimen name="extdsp_btn_reset_band_layout_marginEnd">32dp</dimen>
+
+</resources>

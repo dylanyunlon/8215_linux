@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="PresetViewFreqTextSize">28sp</dimen>
+    <dimen name="PresetViewIndexTextSize">28sp</dimen>
+    <dimen name="preset_viewpager_height">150dp</dimen>
+
+    <dimen name="preset_layout_padding">28dp</dimen>
+    <dimen name="preset_view_padding">7dp</dimen>
+
+    <dimen name="band_info_margin_start">81dp</dimen>
+</resources>

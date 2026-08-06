@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="0"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num0" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="1"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num1" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="2"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num2" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="3"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num3" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="4"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num4" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="5"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num5" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="6"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num6" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="7"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num7" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="8"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num8" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="9"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num9" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="10"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num10" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="11"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num11" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="12"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num12" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="13"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num13" />
+
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="14"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num14" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="15"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_si_num15" />
+</LinearLayout>

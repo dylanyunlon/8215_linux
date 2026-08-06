@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wallpaper"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/id_music_control_page"
+        android:layout_width="@dimen/dp_830"
+        android:layout_height="match_parent"
+        android:background="@drawable/ic_music_left_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/id_music_name"
+            android:layout_width="@dimen/dp_580"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="50dp"
+            android:singleLine="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="1"
+            android:gravity="center"
+            android:text="@string/txt_music_deft_title_unknown"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/sp_music_title" />
+
+        <TextView
+            android:id="@+id/id_music_artist"
+            android:layout_width="@dimen/dp_580"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:singleLine="true"
+            android:focusableInTouchMode="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="1"
+            android:gravity="center"
+            android:text="@string/txt_music_deft_title_unknown"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/sp_music_subtitle" />
+
+        <TextView
+            android:id="@+id/id_music_album"
+            android:layout_width="@dimen/dp_580"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:singleLine="true"
+            android:focusableInTouchMode="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:marqueeRepeatLimit="1"
+            android:gravity="center"
+            android:text="@string/txt_music_deft_title_unknown"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/sp_music_subtitle" />
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/id_music_play_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_135"
+                android:background="@drawable/selector_music_prev" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_music_album" />
+
+            <com.autochips.bluetooth.view.HCircleSeekBar
+                android:id="@+id/id_music_progress"
+                app:circle_can_touch="false"
+                android:layout_width="274dp"
+                android:layout_height="274dp"
+                android:layout_centerInParent="true" />
+
+            <ImageButton
+                android:id="@+id/id_music_play_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dp_135"
+                android:background="@drawable/selector_music_next" />
+
+            <ImageButton
+                android:id="@+id/id_music_play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="98dp"
+                android:background="@drawable/selector_music_btn_pause" />
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/id_music_eq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@null"
+            android:src="@drawable/selector_music_btn_eq" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/id_music_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_music_bt_icon" />
+
+        <TextView
+            android:id="@+id/id_music_bt_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_bt_state_disconnected"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_music_title" />
+
+        <Button
+            android:id="@+id/id_music_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_music_btn_bt_setting"
+            android:text="@string/txt_music_bt_setting"
+            android:layout_marginTop="@dimen/dp_25"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_music_subtitle" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

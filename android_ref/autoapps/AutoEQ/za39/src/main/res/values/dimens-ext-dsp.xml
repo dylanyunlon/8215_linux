@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- band -->
+    <dimen name="extdsp_band_user_paddingStart">16dp</dimen>
+    <dimen name="extdsp_band_user_textSize">24sp</dimen>
+    <dimen name="extdsp_balance_mode_style_layout_width">280dp</dimen>
+    <dimen name="extdsp_seekbar_rotator_margin_top">12dp</dimen>
+    <dimen name="extdsp_attenuate_cb_invert_layout_marginTop">55dp</dimen>
+    <dimen name="extdsp_attenuate_tv_right_layout_margin">10dp</dimen>
+
+    <!-- 宽度比实际图片宽一些，14段时正好铺满整屏，也方便手指拖动 -->
+    <dimen name="extdsp_band_seekbar_width">70dp</dimen>
+    <dimen name="extdsp_band_seekbar_height">200dp</dimen>
+    <dimen name="extdsp_scroll_title_textSize">22sp</dimen>
+    <dimen name="extdsp_seekbar_margin">0dp</dimen>
+    <dimen name="extdsp_seekbar_padding">0dp</dimen>
+    <dimen name="extdsp_seekbar_thumb_offset">0dp</dimen>
+    <dimen name="extdsp_tv_gain_margin_bottom">64dp</dimen>
+    <dimen name="extdsp_tv_g_title_margin_bottom">0dp</dimen>
+    <dimen name="extdsp_tv_q_title_margin_bottom">31dp</dimen>
+    <dimen name="extdsp_band_button_marginEnd">100dp</dimen>
+    <dimen name="extdsp_es_freq_layout_height">162dp</dimen>
+    <dimen name="extdsp_sp_reverb_layout_marginStart">32dp</dimen>
+    <dimen name="extdsp_btn_reset_band_layout_marginEnd">16dp</dimen>
+    <dimen name="extdsp_ll_band_minWidth">1544dp</dimen>
+    <dimen name="extdsp_tv_gain_min_margin_bottom">2dp</dimen>
+    <dimen name="extdsp_band_hsv_band_layout_marginStart">5dp</dimen>
+    <dimen name="extdsp_frequency_bar_width_layout_marginTop">24dp</dimen>
+    <dimen name="extdsp_main_rb_extdsp_band_textSize">20sp</dimen>
+    <dimen name="extdsp_band_gvp_band_reverb_layout_width">256dp</dimen>
+    <dimen name="extdsp_band_gvp_band_ll_band_reverb_paddingHorizontal">40dp</dimen>
+
+    <!-- balance -->
+    <dimen name="extdsp_balance_marginEnd">160dip</dimen>
+    <dimen name="extdsp_balance_direct_padding">0dip</dimen>
+    <dimen name="balance_mode_text_size">46sp</dimen>
+
+    <!-- attenuate -->
+    <dimen name="extdsp_attenuate_title_textSize">26sp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_width">64dp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_height">280dp</dimen>
+    <dimen name="extdsp_attenuate_tv_mute_layout_marginBottom">70dp</dimen>
+    <dimen name="extdsp_attenuate_tv_invert_layout_marginBottom">60dp</dimen>
+
+
+    <!-- filter -->
+    <dimen name="extdsp_filter_slope_minHeight">42dp</dimen>
+    <dimen name="extdsp_filter_slope_textSize">20sp</dimen>
+    <dimen name="extdsp_hlpf_rsb_width">973dp</dimen>
+    <dimen name="extdsp_hlpf_rsb_height">100dp</dimen>
+    <dimen name="extdsp_hlpf_progress_height">60dp</dimen>
+    <dimen name="iv_hlpf_car_layout_width">230dp</dimen>
+    <dimen name="extdspiv_hlpf_speaker_lf_layout_width">70dp</dimen>
+    <dimen name="extdspiv_hlpf_speaker_lf_layout_marginTop">70dp</dimen>
+    <dimen name="extdspiv_btn_reset_hlpf_layout_marginEnd">140dp</dimen>
+    <dimen name="extdsp_hlpf_radio_button_layout_marginTop">16dp</dimen>
+
+    <!-- delay -->
+    <dimen name="extdsp_round_knob_seek_bar_width">170dp</dimen>
+    <dimen name="extdsp_round_knob_seek_bar_arc_width">17dp</dimen>
+    <integer name="extdsp_round_knob_seek_bar_pic_transparent_distance">-4</integer>
+    <dimen name="extdsp_tv_time_textSize">26sp</dimen>
+    <dimen name="extdsp_tv_value_textSize">20sp</dimen>
+
+    <dimen name="extdsp_main_rg_main_layout_height">25dp</dimen>
+    <dimen name="extdsp_balance_mode_text_size">32sp</dimen>
+    <dimen name="extdsp_filter_btn_reset_hlpf_layout_marginBottom">27dp</dimen>
+    <dimen name="extdsp_filter_btn_reset_delay_layout_marginBottom">20dp</dimen>
+    <dimen name="extdsp_filter_btn_reset_dbb_layout_marginBottom">15dp</dimen>
+    <dimen name="extdsp_attenuate_title_layout_marginStart">70dp</dimen>
+    <dimen name="extdsp_iv_hlpf_car_layout_marginTop">260dp</dimen>
+
+    <!-- gallery -->
+    <dimen name="extdsp_gallery_item_btn_name_textSize">24sp</dimen>
+    <dimen name="extdsp_gallery_item_btn_name_layout_marginBottom">13dp</dimen>
+
+    <!-- DBB -->
+    <dimen name="extdsp_dbb_rg_dbb_mode_marginStart">15dp</dimen>
+    <dimen name="extdsp_dbb_iv_dbb_touch_bg_marginStart">20dp</dimen>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="radio_text_color_select_p">@color/theme_color</color>
+    <color name="radio_text_color_select_n">@android:color/white</color>
+    <color name="eq_bg_color">@android:color/transparent</color>
+    <color name="silver">#FFE6E8FA</color>
+</resources>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:tag="delay">
+
+    <ImageView
+        android:id="@+id/iv_delay_car"
+        android:layout_width="@dimen/nine_surround_fragment_gain_iv_gain_car_width"
+        android:layout_height="@dimen/nine_surround_fragment_gain_iv_gain_car_height"
+        android:layout_marginTop="@dimen/nine_surround_fragment_gain_iv_gain_car_marginTop"
+        android:layout_marginStart="@dimen/nine_surround_fragment_gain_iv_gain_car_marginStart"
+        android:src="@drawable/nine_surround_gain_car"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_delay_front_l"
+        android:layout_width="@dimen/nine_surround_fragment_gain_iv_gain_front_l_width"
+        android:layout_height="@dimen/nine_surround_fragment_gain_iv_gain_front_l_height"
+        android:layout_marginTop="@dimen/nine_surround_fragment_gain_iv_gain_front_l_marginTop"
+        android:src="@drawable/icon_nine_surround_gain_audio_left_08"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car" />
+
+    <ImageView
+        android:id="@+id/iv_delay_rear_l"
+        android:layout_width="@dimen/nine_surround_fragment_gain_iv_gain_front_l_width"
+        android:layout_height="@dimen/nine_surround_fragment_gain_iv_gain_front_l_height"
+        android:layout_marginTop="@dimen/nine_surround_fragment_gain_iv_gain_rear_l_marginTop"
+        android:src="@drawable/icon_nine_surround_gain_audio_left_08"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car" />
+
+    <ImageView
+        android:id="@+id/iv_delay_forefront"
+        android:layout_width="@dimen/nine_surround_fragment_gain_iv_gain_forefront_width"
+        android:layout_height="@dimen/nine_surround_fragment_gain_iv_gain_forefront_height"
+        android:layout_marginTop="@dimen/nine_surround_fragment_gain_iv_gain_forefront_marginTop"
+        android:src="@drawable/icon_nine_surround_gain_audio_forefront_08"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car" />
+
+    <ImageView
+        android:id="@+id/iv_delay_front_r"
+        android:layout_width="@dimen/nine_surround_fragment_gain_iv_gain_front_l_width"
+        android:layout_height="@dimen/nine_surround_fragment_gain_iv_gain_front_l_height"
+        android:layout_marginTop="@dimen/nine_surround_fragment_gain_iv_gain_front_l_marginTop"
+        android:src="@drawable/icon_nine_surround_gain_audio_right_08"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car" />
+
+    <ImageView
+        android:id="@+id/iv_delay_rear_r"
+        android:layout_width="@dimen/nine_surround_fragment_gain_iv_gain_front_l_width"
+        android:layout_height="@dimen/nine_surround_fragment_gain_iv_gain_front_l_height"
+        android:layout_marginTop="@dimen/nine_surround_fragment_gain_iv_gain_rear_l_marginTop"
+        android:src="@drawable/icon_nine_surround_gain_audio_right_08"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car" />
+
+    <ImageView
+        android:id="@+id/iv_delay_rear"
+        android:layout_width="@dimen/nine_surround_fragment_gain_iv_gain_rear_width"
+        android:layout_height="@dimen/nine_surround_fragment_gain_iv_gain_rear_height"
+        android:src="@drawable/icon_nine_surround_gain_audio_rear_05"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_delay_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_delay_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x35"
+        android:layout_marginTop="@dimen/nine_surround_fragment_delay_cl_delay_bar_marginTop"
+        android:background="@drawable/nine_dsp_seek_bar_group_bg"
+        android:paddingStart="@dimen/nine_surround_fragment_delay_cl_delay_bar_paddingStart"
+        android:paddingTop="@dimen/nine_surround_fragment_delay_cl_delay_bar_paddingTop"
+        android:paddingEnd="@dimen/nine_surround_fragment_delay_cl_delay_bar_paddingEnd"
+        android:paddingBottom="@dimen/nine_surround_fragment_delay_cl_delay_bar_paddingBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.hcn.autoeq.view.NineDelaySeekBar
+            android:id="@+id/sb_delay_front_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="LF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sb_delay_front_r"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:nine_seek_bar_down_name="@string/nine_surround_channel_fl"
+            app:nine_seek_bar_top_name_one="2ms"
+            app:nine_seek_bar_top_name_two="2cm" />
+
+        <com.hcn.autoeq.view.NineDelaySeekBar
+            android:id="@+id/sb_delay_front_r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="RF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sb_delay_rear_l"
+            app:layout_constraintStart_toEndOf="@+id/sb_delay_front_l"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:nine_seek_bar_down_name="@string/nine_surround_channel_fr"
+            app:nine_seek_bar_top_name_one="2ms"
+            app:nine_seek_bar_top_name_two="2cm" />
+
+        <com.hcn.autoeq.view.NineDelaySeekBar
+            android:id="@+id/sb_delay_rear_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="LR"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sb_delay_rear_r"
+            app:layout_constraintStart_toEndOf="@+id/sb_delay_front_r"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:nine_seek_bar_down_name="@string/nine_surround_channel_rl"
+            app:nine_seek_bar_top_name_one="2ms"
+            app:nine_seek_bar_top_name_two="2cm" />
+
+        <com.hcn.autoeq.view.NineDelaySeekBar
+            android:id="@+id/sb_delay_rear_r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="RR"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sb_delay_center"
+            app:layout_constraintStart_toEndOf="@+id/sb_delay_rear_l"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:nine_seek_bar_down_name="@string/nine_surround_channel_rr"
+            app:nine_seek_bar_top_name_one="2ms"
+            app:nine_seek_bar_top_name_two="2cm" />
+
+        <com.hcn.autoeq.view.NineDelaySeekBar
+            android:id="@+id/sb_delay_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="CENTER"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sb_delay_bass"
+            app:layout_constraintStart_toEndOf="@+id/sb_delay_rear_r"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:nine_seek_bar_down_name="@string/nine_tv_channel_center"
+            app:nine_seek_bar_top_name_one="2ms"
+            app:nine_seek_bar_top_name_two="2cm" />
+
+        <com.hcn.autoeq.view.NineDelaySeekBar
+            android:id="@+id/sb_delay_bass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="SUBWOOFER"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/sb_delay_center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:nine_seek_bar_down_name="@string/str_subwoofer"
+            app:nine_seek_bar_top_name_one="2ms"
+            app:nine_seek_bar_top_name_two="2cm" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

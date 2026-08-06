@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/sb_seekbar"
+        app:layout_constraintEnd_toStartOf="@+id/sb_seekbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sb_seekbar"
+        tools:text="增益" />
+
+    <SeekBar
+        android:id="@+id/sb_seekbar"
+        android:layout_width="@dimen/fydsp_band_sb_seekbar_layout_width"
+        android:layout_height="@dimen/fydsp_band_sb_seekbar_layout_height"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:paddingStart="@dimen/fydsp_seekbar_padding"
+        android:paddingEnd="@dimen/fydsp_seekbar_padding"
+        android:progressDrawable="@drawable/fydsp_bass_boost_seek_bar_bg"
+        android:splitTrack="false"
+        android:thumb="@drawable/fydsp_bass_boost_seek_bar_thumb"
+        android:thumbOffset="0dp"
+        android:progress="15"
+        app:layout_constraintBottom_toTopOf="@+id/tv_min_text"
+        app:layout_constraintEnd_toStartOf="@+id/tv_value"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tv_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_seek_bar_value_bg"
+        android:gravity="center"
+        android:paddingStart="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/sb_seekbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sb_seekbar"
+        tools:text="20" />
+
+    <TextView
+        android:id="@+id/tv_min_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/sb_seekbar"
+        app:layout_constraintTop_toBottomOf="@+id/sb_seekbar"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="0" />
+
+    <TextView
+        android:id="@+id/tv_max_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_min_text"
+        app:layout_constraintEnd_toEndOf="@+id/sb_seekbar"
+        app:layout_constraintTop_toTopOf="@+id/tv_min_text"
+        tools:text="0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

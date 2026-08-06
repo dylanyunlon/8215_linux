@@ -1,0 +1,164 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.hcn.autoeq"
+        minSdkVersion 27
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 31
+        flavorDimensions ""
+        versionCode 2077
+        // 版本名字规则：渠道前缀加编译时间，方便调试问题时查看区分
+        versionName variantName() + "_" + new Date().format("yyyy_MM_dd_HH_mm_ss")
+    }
+
+    signingConfigs {
+        // 调试时或者有单独更新 APK 时候使用，发版本集成到系统，不需要签名,由 Android.mk 签名
+        AC8227L {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_ac8227.jks')
+            storePassword 'hcnrd123'
+        }
+        AC8257 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_ac8257.jks')
+            storePassword 'hcnrd123'
+        }
+        MT8163 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_mt8163.jks')
+            storePassword 'hcnrd123'
+        }
+        UIS8581 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_uis8581.jks')
+            storePassword 'hcnrd123'
+        }
+        SM6225 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_sm6225.jks')
+            storePassword 'hcnrd123'
+        }
+        RK3326 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../security/platform_rk3326.jks')
+            storePassword 'hcnrd123'
+        }
+    }
+
+    // main 目录为各渠道公用
+    productFlavors {
+        // 渠道名字和 src 下的目录名一致
+        ac8227 {
+            signingConfig signingConfigs.AC8227L
+        }
+        ac8257 {
+            signingConfig signingConfigs.AC8257
+        }
+        mt8163 {
+            signingConfig signingConfigs.MT8163
+        }
+        uis8581 {
+            signingConfig signingConfigs.UIS8581
+        }
+        sm6225 {
+            signingConfig signingConfigs.SM6225
+        }
+        rk3326 {
+            signingConfig signingConfigs.MT8163
+        }
+    }
+
+    buildTypes {
+        all {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = "HEQ.apk"
+            }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    if (System.properties['os.name'].toLowerCase().contains('windows') && isRemote) {
+        // windows 环境，as 直接导入服务器代码编译会报错，将 build 目录指定到本地磁盘即可
+        buildDir = "D:\\gradle_build_cache\\" + rootProject.name + "\\" + defaultConfig.versionCode
+        Console.println("grale build cache dir : " + buildDir)
+    }
+}
+
+
+dependencies {
+    implementation project(path: ':hcn_library')
+    implementation project(path: ':app-language')
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.blankj:utilcodex:1.31.0'
+    implementation 'org.greenrobot:eventbus:3.3.1'
+    //implementation 'com.hcn.libs:skin-support:1.1.6@aar'
+    implementation 'com.hcn.libs:skin2-extend:1.0.3@aar'
+    implementation 'com.hcn.libs:skin2-support:1.0.1@aar'
+    implementation 'com.hcn.libs:auto-compat:1.1.8@aar'
+    implementation 'com.hcn.libs:common-utils:1.1.3@aar'
+
+    implementation 'com.hcn.libs:HEqualizer:1.1.0@aar'
+    compileOnly 'com.hcn.libs:carservices:1.1.0'
+    implementation 'androidx.core:core-ktx:1.5.0'
+}
+
+def variantName() {
+    def split = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
+    if (split.contains("ac8227")) {
+        return "ac8227"
+    } else if (split.contains("ac8257")) {
+        return "ac8257"
+    } else if (split.contains("mt8163")) {
+        return "mt8163"
+    } else if (split.contains("uis8581")) {
+        return "uis8581"
+    } else if (split.contains("sm6225")) {
+        return "sm6225"
+    } else if (split.contains("rk3326")) {
+        return "rk3326"
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        def flavor = variantName()
+        if (flavor != null) {
+            Set<File> fileSet = options.bootstrapClasspath.getFiles()
+            List<File> newFileList = new ArrayList<>();
+            newFileList.add(new File("../security/framework_" + flavor + ".jar"))
+            newFileList.addAll(fileSet)
+            options.bootstrapClasspath = files(newFileList.toArray())
+        }
+    }
+}

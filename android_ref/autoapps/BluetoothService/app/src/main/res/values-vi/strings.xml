@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth</string>
+    <string name="str_handsfree_device_connected">Thiết bị rảnh tay được kết nối</string>
+    <string name="str_a2dp_device_connected">Thiết bị âm nhạc được kết nối</string>
+    <string name="str_hid_device_connected">Thiết bị HID được kết nối</string>
+    <string name="str_income_call_status">Cuộc gọi đến</string>
+    <string name="str_out_call_status">Cuộc gọi đi</string>
+    <string name="str_bt_call_active">cuộc gọi đang hoạt động</string>
+    <string name="str_bt_call_held">cuộc gọi được giữ máy</string>
+    <string name="str_bt_call_waiting">Chờ cuộc gọi</string>
+    <string name="str_bt_call_abnormal">Cuộc gọi bất thường</string>
+    <string name="str_bt_call_multiparty">Cuộc gọi nhiều bên</string>
+    <string name="str_bt_call_accept_terminate">Chấm dứt và chấp nhận</string>
+    <string name="str_bt_call_accept_held">Giữ và chấp nhận</string>
+    <string name="str_bt_call_swap">Cuộc gọi Swap</string>
+    <string name="str_bt_call_merge">Hợp nhất cuộc gọi</string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">Chưa xác định</string>
+   
+    <string name="time_text">00:00:00</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="radio_text_color_select_p">@color/theme_color</color>
+    <color name="radio_text_color_select_n">@android:color/white</color>
+    <color name="color_black">#FFFFFF</color>
+    <color name="color_gridlines">#6f7379</color>
+    <color name="shell_Color">@color/color_black</color>
+</resources>

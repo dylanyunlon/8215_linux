@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">บลูทูธ</string>
+    <string name="str_handsfree_device_connected">ได้เชื่อมต่ออุปกรณ์แฮนด์ฟรี</string>
+    <string name="str_a2dp_device_connected">ได้เชื่อมต่ออุปกรณ์ดนตรี</string>
+    <string name="str_hid_device_connected">ได้เชื่อมต่ออุปกรณ์HID</string>
+    <string name="str_income_call_status">สายเรียกเข้า</string>
+    <string name="str_out_call_status">สายเรียกออก</string>
+    <string name="str_bt_call_active">พร้อมโทร</string>
+    <string name="str_bt_call_held">ถือสาย</string>
+    <string name="str_bt_call_waiting">รอสาย</string>
+    <string name="str_bt_call_abnormal">โทรผิดปกติ</string>
+    <string name="str_bt_call_multiparty">การประชุมหลายสาย</string>
+    <string name="str_bt_call_accept_terminate">สิ้นสุดและยอมรับ</string>
+    <string name="str_bt_call_accept_held">ถือและยอมรับ</string>
+    <string name="str_bt_call_swap">สวอปการโทร</string>
+    <string name="str_bt_call_merge">รวมสาย</string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">ไม่ระบุ</string>
+    <string name="time_text">00:00:00</string>
+</resources>

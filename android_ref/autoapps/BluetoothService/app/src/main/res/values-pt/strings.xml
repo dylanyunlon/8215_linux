@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Bluetooth</string>
+    <string name="str_handsfree_device_connected">Handsfree conectado</string>
+    <string name="str_a2dp_device_connected">Music conectado</string>
+    <string name="str_hid_device_connected">HID conectado</string>
+    <string name="str_income_call_status">Ligação recebida</string>
+    <string name="str_out_call_status">Ligação realizadas</string>
+    <string name="str_bt_call_active">Ligação ativa</string>
+    <string name="str_bt_call_held">Ligação em stand by</string>
+    <string name="str_bt_call_waiting">Ligação em espera</string>
+    <string name="str_bt_call_abnormal">Ligação desconhecida</string>
+    <string name="str_bt_call_multiparty">Conferência</string>
+    <string name="str_bt_call_accept_terminate">Aceitar e terminar</string>
+    <string name="str_bt_call_accept_held">Standby e aceitar</string>
+    <string name="str_bt_call_swap">Alternar chamadas</string>
+    <string name="str_bt_call_merge">Conferência</string>
+    <string name="str_calling_phone_number">10086</string>
+   
+</resources>

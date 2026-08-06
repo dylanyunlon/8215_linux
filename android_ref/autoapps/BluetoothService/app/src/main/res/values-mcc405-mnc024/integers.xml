@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- mini通话框 0： 不使用mini通话框 -->
+    <integer name="mini_call_view_type">1</integer>
+    <!--是否监听屏幕旋转，适用于横屏和竖屏dialog样式不一样的情况-->
+    <!--0：不监听；1：监听-->
+    <integer name="monitor_screen_orientation">1</integer>
+</resources>

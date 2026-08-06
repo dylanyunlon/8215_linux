@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item  android:state_pressed="true">
+        <layer-list>
+            <item>
+                <!-- 背景图 -->
+                <shape android:gravity="center">
+                    <solid android:color="@color/nine_main_radio_group_bg_eq_color" />
+                    <corners android:radius="@dimen/x12"/>
+                    <size android:width="@dimen/x240" android:height="@dimen/y88" />
+                </shape>
+            </item>
+            <item android:right="@dimen/x20">
+                <bitmap android:gravity="right|center_vertical" android:src="@drawable/icon_nine_eq_fold_p" />
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_checked="false" android:state_pressed="false" android:state_selected="false">
+        <layer-list>
+            <item>
+                <!-- 背景图 -->
+                <shape android:gravity="center">
+                    <solid android:color="@color/nine_main_radio_group_bg_eq_color" />
+                    <corners android:radius="@dimen/x12"/>
+                    <size android:width="@dimen/x240" android:height="@dimen/y88" />
+                </shape>
+            </item>
+            <item android:right="@dimen/x20">
+                <bitmap android:gravity="right|center_vertical" android:src="@drawable/icon_nine_eq_fold_n" />
+            </item>
+        </layer-list>
+    </item>
+</selector>

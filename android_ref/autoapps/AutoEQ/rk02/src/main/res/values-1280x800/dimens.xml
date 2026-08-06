@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="xt540_asp_reset_margintop">38dp</dimen>
+    <dimen name="eq_balance_marginTop">184dp</dimen>
+    <dimen name="balance_front_layout_marginTop">121dp</dimen>
+    <dimen name="xt540_layout_asp_band_seekbar_marginTop">80dp</dimen>
+    <integer name="asp_reverb_height">480</integer>
+</resources>

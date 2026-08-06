@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="AUTO_STROE_CENTER_POINT_X">200</integer>
+    <integer name="AUTO_STROE_CENTER_POINT_Y">200</integer>
+    <integer name="CALIBRATE_OFFSET_X">10</integer>
+    <integer name="CALIBRATE_OFFSET_Y">10</integer>
+</resources>

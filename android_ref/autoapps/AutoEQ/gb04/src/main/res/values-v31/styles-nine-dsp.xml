@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="EqStart" parent="Theme.AutoEQ">
+        <!-- extdsp 模式选择下拉框所需要的样式 -->
+        <item name="android:windowBackground">@drawable/nine_start_bg_top</item>
+        <item name="android:dropDownListViewStyle">@style/extdsp_band_mode_style</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@color/transparent_color</item>
+
+    </style>
+</resources>

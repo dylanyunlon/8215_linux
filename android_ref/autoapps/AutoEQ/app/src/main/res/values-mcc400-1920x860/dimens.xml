@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="dsp_seekbar_subwoofer_width">1210dp</dimen>
+
+    <dimen name="balance_mode_marginStart">300dip</dimen>
+    <dimen name="balance_mode_marginTop">150dip</dimen>
+    <dimen name="eq_balance_marginEnd">330dip</dimen>
+
+</resources>

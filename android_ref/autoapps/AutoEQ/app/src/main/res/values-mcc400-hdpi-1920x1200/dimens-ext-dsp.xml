@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extdsp_ll_band_minWidth">1820dp</dimen>
+    <dimen name="extdsp_es_freq_layout_height">429dp</dimen>
+    <dimen name="extdsp_fragment_band_es_freq_layout_marginTop">20dp</dimen>
+
+    <dimen name="extdsp_fragment_attenuate_asb_lf_layout_marginTop">205dp</dimen>
+    <dimen name="extdsp_fragment_attenuate_paddingBottom">200dp</dimen>
+
+    <dimen name="extdsp_attenuate_tv_mute_layout_marginBottom">32dp</dimen>
+    <dimen name="extdsp_attenuate_tv_invert_layout_marginBottom">30dp</dimen>
+    <dimen name="extdsp_attenuate_tv_mute_paddingTop">32dp</dimen>
+    <dimen name="extdsp_attenuate_tv_invert_paddingTop">32dp</dimen>
+
+    <dimen name="extdsp_band_seekbar_height">276dp</dimen>
+
+    <dimen name="extdsp_tv_gain_margin_bottom">95dp</dimen>
+
+    <dimen name="extdsp_attenuate_cb_invert_layout_marginTop">30dp</dimen>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extdsp_fragment_band_es_freq_layout_marginTop">65dp</dimen>
+    <dimen name="extdsp_fragment_attenuate_paddingTop">65dp</dimen>
+    <dimen name="extdsp_attenuate_tv_attenuate_text_maxWith">150dp</dimen>
+
+</resources>

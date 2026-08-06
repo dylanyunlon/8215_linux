@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!--  
+    <ImageView
+        android:id="@+id/phonebook_backimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        android:src="@drawable/bt_phonebook_highlight"
+        android:visibility="invisible" />
+        -->
+
+    <ImageView
+        android:layout_width="@dimen/x72"
+        android:layout_height="@dimen/x72"
+        android:layout_marginStart="@dimen/x15"
+        android:src="@drawable/contact" />
+
+    <LinearLayout
+        android:id="@+id/phonebook_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x15"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_phonebook_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/textview_color"
+            android:textSize="@dimen/x23" />
+
+        <TextView
+            android:id="@+id/item_phonebook_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y5"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/textview_color"
+            android:textSize="@dimen/x20" />
+
+        <ImageView
+            android:id="@+id/btn_phonebook_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/bt_phonebook_path_phone"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

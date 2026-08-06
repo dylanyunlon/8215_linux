@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/x30"
+        android:textColor="@color/nine_text_color_n"
+        android:gravity="start|center_vertical"
+        android:id="@+id/item_text"
+        android:background="@drawable/nine_eq_grid_item_bg_selector"
+        android:layout_width="@dimen/x240"
+        android:layout_height="@dimen/y88"
+        android:text="Sample Item"
+        android:paddingStart="@dimen/x30"/>
+    <View
+        android:id="@+id/dividerBottom"
+        android:background="@android:color/darker_gray"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y2"/>
+</LinearLayout>

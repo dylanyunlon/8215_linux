@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autoeq="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/balance_tv_csc_asp_title_layout_marginStart"
+        android:layout_marginTop="@dimen/balance_tv_csc_asp_title_layout_marginTop"
+        android:text="@string/balance_csc_asp_balance_title"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/balance_tv_csc_asp_title_textSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.BalanceView
+        android:id="@+id/id_csc_asp_eq_balance"
+        android:layout_width="@dimen/balance_id_csc_asp_width"
+        android:layout_height="@dimen/balance_id_csc_asp_height"
+        android:background="@drawable/csc_asp_balance_mode_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        autoeq:thumb="@drawable/csc_asp_icon_balance_thumb_selector" />
+
+    <Button
+        android:id="@+id/btn_csc_asp_balance_front"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/balance_btn_csc_asp_front_margin"
+        android:background="@drawable/csc_asp_btn_balance_front_selector"
+        app:layout_constraintBottom_toTopOf="@+id/id_csc_asp_eq_balance"
+        app:layout_constraintEnd_toEndOf="@+id/id_csc_asp_eq_balance"
+        app:layout_constraintStart_toStartOf="@+id/id_csc_asp_eq_balance" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_front_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/balance_tv_csc_asp_front_title_margin"
+        android:text="@string/balance_csc_asp_balance_front_title"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/balance_tv_csc_asp_front_title_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_csc_asp_balance_front"
+        app:layout_constraintEnd_toStartOf="@+id/tv_csc_asp_balance_front_value"
+        app:layout_constraintTop_toTopOf="@id/btn_csc_asp_balance_front" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_front_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/balance_tv_csc_asp_balance_rear_value_marginEnd"
+        android:gravity="center"
+        android:minEms="1"
+        android:textColor="@color/tv_csc_asp_balance_right_value_color"
+        android:textSize="@dimen/balance_tv_csc_asp_front_title_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_csc_asp_balance_front_title"
+        app:layout_constraintEnd_toStartOf="@+id/btn_csc_asp_balance_front"
+        app:layout_constraintTop_toTopOf="@id/tv_csc_asp_balance_front_title"
+        tools:text="9" />
+
+    <Button
+        android:id="@+id/btn_csc_asp_balance_rear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/balance_btn_csc_asp_front_margin"
+        android:background="@drawable/csc_asp_btn_balance_rear_selector"
+        app:layout_constraintEnd_toEndOf="@+id/id_csc_asp_eq_balance"
+        app:layout_constraintStart_toStartOf="@+id/id_csc_asp_eq_balance"
+        app:layout_constraintTop_toBottomOf="@+id/id_csc_asp_eq_balance" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_rear_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/balance_tv_csc_asp_front_title_margin"
+        android:text="@string/balance_csc_asp_balance_rear_title"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/balance_tv_csc_asp_front_title_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_csc_asp_balance_rear"
+        app:layout_constraintEnd_toStartOf="@+id/tv_csc_asp_balance_rear_value"
+        app:layout_constraintTop_toTopOf="@id/btn_csc_asp_balance_rear" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_rear_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/balance_tv_csc_asp_balance_rear_value_marginEnd"
+        android:gravity="center"
+        android:minEms="1"
+        android:textColor="@color/tv_csc_asp_balance_right_value_color"
+        android:textSize="@dimen/balance_tv_csc_asp_front_title_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_csc_asp_balance_rear_title"
+        app:layout_constraintEnd_toStartOf="@+id/btn_csc_asp_balance_rear"
+        app:layout_constraintTop_toTopOf="@id/tv_csc_asp_balance_rear_title"
+        tools:text="9" />
+
+
+    <Button
+        android:id="@+id/btn_csc_asp_balance_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/balance_btn_csc_asp_front_margin"
+        android:background="@drawable/csc_asp_btn_balance_left_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/id_csc_asp_eq_balance"
+        app:layout_constraintEnd_toStartOf="@+id/id_csc_asp_eq_balance"
+        app:layout_constraintTop_toTopOf="@+id/id_csc_asp_eq_balance" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_left_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/balance_tv_csc_asp_front_title_margin"
+        android:layout_marginBottom="@dimen/balance_tv_csc_asp_front_title_margin_bottom"
+        android:text="@string/balance_csc_asp_balance_left_title"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/balance_tv_csc_asp_front_title_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/btn_csc_asp_balance_left"
+        app:layout_constraintEnd_toStartOf="@+id/tv_csc_asp_balance_left_value" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_left_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minEms="1"
+        android:textColor="@color/tv_csc_asp_balance_right_value_color"
+        android:textSize="@dimen/balance_tv_csc_asp_front_title_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_csc_asp_balance_left_title"
+        app:layout_constraintEnd_toEndOf="@+id/btn_csc_asp_balance_left"
+        app:layout_constraintTop_toTopOf="@id/tv_csc_asp_balance_left_title"
+        tools:text="9" />
+
+    <Button
+        android:id="@+id/btn_csc_asp_balance_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/balance_btn_csc_asp_front_margin"
+        android:background="@drawable/csc_asp_btn_balance_right_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/id_csc_asp_eq_balance"
+        app:layout_constraintStart_toEndOf="@+id/id_csc_asp_eq_balance"
+        app:layout_constraintTop_toTopOf="@+id/id_csc_asp_eq_balance" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_right_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/balance_tv_csc_asp_front_title_margin_bottom"
+        android:text="@string/balance_csc_asp_balance_right_title"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/balance_tv_csc_asp_front_title_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/btn_csc_asp_balance_right"
+        app:layout_constraintStart_toStartOf="@+id/btn_csc_asp_balance_right" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_balance_right_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/balance_tv_csc_asp_front_title_margin"
+        android:textColor="@color/tv_csc_asp_balance_right_value_color"
+        android:textSize="@dimen/balance_tv_csc_asp_front_title_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_csc_asp_balance_right_title"
+        app:layout_constraintStart_toEndOf="@+id/tv_csc_asp_balance_right_title"
+        app:layout_constraintTop_toTopOf="@id/tv_csc_asp_balance_right_title"
+        tools:text="9" />
+
+    <Button
+        android:id="@+id/btn_csc_asp_balance_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/balance_tv_csc_asp_title_layout_marginTop"
+        android:layout_marginEnd="@dimen/balance_tv_csc_asp_title_layout_marginStart"
+        android:background="@drawable/csc_asp_btn_balance_reset_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="dsp_frequency_layout_height">460dp</dimen>
+    <dimen name="dsp_frequency_layout_padding">5dp</dimen>
+    <dimen name="dsp_frequency_gain_tv_size">13sp</dimen>
+    <dimen name="dsp_frequency_bar_tv_size">12sp</dimen>
+    <dimen name="dsp_seekbar_subwoofer_width">520dp</dimen>
+    <dimen name="asp_reverb_text_size">16sp</dimen>
+    <dimen name="asp_reverb_group_padding" tools:ignore="MissingDefaultResource">15dp</dimen>
+    <dimen name="asp_reverb_style2_padding" tools:ignore="MissingDefaultResource">-564dp</dimen>
+    <dimen name="asp_reset_marginEnd" tools:ignore="MissingDefaultResource">9dp</dimen>
+    <dimen name="asp_mode_btn_port_padding" tools:ignore="MissingDefaultResource">12dp</dimen>
+</resources>

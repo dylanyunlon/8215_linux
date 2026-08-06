@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="nine_activity_main_rg_main_padding">@dimen/x30</dimen>
+    <dimen name="nine_activity_main_rg_main_marginLeft">@dimen/x40</dimen>
+    <dimen name="nine_activity_main_rg_main_marginBottom">@dimen/y40</dimen>
+    <dimen name="nine_activity_main_rg_main_marginTop">@dimen/y20</dimen>
+    <dimen name="nine_activity_main_rb_nine_dts_width">@dimen/x180</dimen>
+    <dimen name="nine_activity_main_rb_nine_dts_height">@dimen/y180</dimen>
+    <dimen name="nine_activity_main_rb_nine_eq_marginTop">@dimen/y52</dimen>
+    <dimen name="nine_main_radio_group_bg_radius">@dimen/x24</dimen>
+    <dimen name="nine_main_radio_bg_selector_bottom">@dimen/y80</dimen>
+    <dimen name="nine_main_radio_paddingBottom">16dp</dimen>
+    <dimen name="nine_dts_fragment_filter_marginTop">@dimen/y50</dimen>
+    <dimen name="nine_surround_fragment_filter_marginTop">@dimen/y50</dimen>
+    <dimen name="nine_surround_fragment_filter_marginEnd">@dimen/x40</dimen>
+    <dimen name="nine_surround_fragment_filter_marginBottom">@dimen/y40</dimen>
+    <dimen name="nine_surround_fragment_filter_tv_surround_reset_textSize">@dimen/x36</dimen>
+    <dimen name="nine_band_seekbar_tv_g_paddingVertical">0dp</dimen>
+
+    <dimen name="nine_dsp_fragment_balance_marginTop">@dimen/y50</dimen>
+    <dimen name="nine_dsp_fragment_balance_paddingStart">@dimen/x30</dimen>
+    <dimen name="nine_dsp_fragment_balance_balance_mode_co_marginTop">@dimen/y20</dimen>
+    <dimen name="nine_dsp_fragment_balance_id_eq_balance_width">@dimen/x580</dimen>
+    <dimen name="nine_dsp_fragment_balance_id_eq_balance_height">@dimen/y1000</dimen>
+    <dimen name="nine_dsp_fragment_balance_balance_left_marginEnd">12px</dimen>
+    <dimen name="nine_dsp_fragment_balance_balance_right_marginStart">12px</dimen>
+
+    <dimen name="nine_dsp_fragment_band_marginTop">@dimen/y20</dimen>
+    <dimen name="nine_dsp_fragment_band_paddingStart">@dimen/x20</dimen>
+    <dimen name="nine_dsp_fragment_band_paddingEnd">@dimen/x40</dimen>
+    <dimen name="nine_dsp_fragment_band_tv_eq_edit_exit_textSize">@dimen/x36</dimen>
+    <dimen name="nine_dsp_fragment_band_tv_eq_edit_apply_textSize">@dimen/x36</dimen>
+    <dimen name="nine_dsp_fragment_band_tv_eq_edit_reset_textSize">@dimen/x36</dimen>
+    <dimen name="nine_dsp_fragment_band_iv_surface_edit_bg_marginTop">@dimen/y88</dimen>
+    <dimen name="nine_dsp_fragment_band_ll_band_minWidth">@dimen/x1660</dimen>
+    <dimen name="nine_dsp_fragment_band_ll_band_edit_minWidth">@dimen/x1580</dimen>
+    <dimen name="nine_dsp_fragment_band_TextView_0_marginTop">90px</dimen>
+    <dimen name="nine_dsp_fragment_band_TextView_12_marginTop">92px</dimen>
+    <dimen name="nine_dsp_fragment_band_TextView_G_marginTop">@dimen/y20</dimen>
+    <dimen name="nine_dsp_fragment_band_TextView_Q_marginTop">12px</dimen>
+
+    <dimen name="nine_dsp_fragment_hlpf_TextView_marginStart">180px</dimen>
+
+    <dimen name="nine_dts_fragment_model_iv_theater_width">256dp</dimen>
+    <dimen name="nine_dts_fragment_model_iv_theater_height">320dp</dimen>
+    <dimen name="nine_dts_fragment_sound_focus_iv_sound_car_marginTop">@dimen/y192</dimen>
+    <dimen name="nine_dts_fragment_sound_focus_cl_sound_bar_marginTop">@dimen/y140</dimen>
+    <dimen name="nine_dts_fragment_bass_boost_cl_dts_bass_bar_marginTop">@dimen/y120</dimen>
+
+    <dimen name="nine_surround_fragment_gain_iv_gain_car_marginTop">73dp</dimen>
+    <dimen name="nine_surround_fragment_gain_cl_gain_bar_marginTop">54dp</dimen>
+    <dimen name="nine_surround_fragment_delay_cl_delay_bar_marginTop">100dp</dimen>
+
+    <dimen name="nine_dsp_fragment_dbb_iv_dbb_bg_marginTop">@dimen/y80</dimen>
+    <dimen name="nine_dsp_fragment_dbb_v_dbb_marginTop">@dimen/y115</dimen>
+
+</resources>

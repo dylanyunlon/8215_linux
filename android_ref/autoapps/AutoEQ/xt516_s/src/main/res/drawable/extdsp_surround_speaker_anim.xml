@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <!-- 第一帧是关闭状态 -->
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_off"
+        android:duration="0" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_00"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_01"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_02"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_03"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_04"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_05"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_06"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_07"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_08"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_09"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_10"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_11"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_12"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_13"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_14"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_15"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_16"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_17"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_18"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_19"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_20"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_21"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_22"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_23"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_24"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_25"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_26"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_27"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_28"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_29"
+        android:duration="200" />
+</animation-list>

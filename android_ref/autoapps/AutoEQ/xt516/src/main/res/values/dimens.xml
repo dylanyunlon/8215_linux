@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="extdsp_fragment_gain_text_size">0sp</dimen>
+    <dimen name="extdsp_fragment_bar_text_size">0sp</dimen>
+
+    <dimen name="dsp_freq_curve_width_1">2dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">2dp</dimen>
+    <dimen name="dsp_frequency_bar_width">4dp</dimen>
+
+
+    <dimen name="xt516_logo_layout_marginTop">20dp</dimen>
+</resources>

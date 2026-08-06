@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <include
+        layout="@layout/layout_dial_keyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/id_dial_record_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_loading"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_item_title_normal"
+            android:textSize="@dimen/sp_main_menu_title" />
+
+        <ListView
+            android:id="@+id/id_dial_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:fastScrollAlwaysVisible="true"
+            android:fastScrollEnabled="true"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="none"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

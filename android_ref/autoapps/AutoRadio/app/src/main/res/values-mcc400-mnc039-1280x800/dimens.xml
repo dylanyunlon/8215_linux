@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rds_toggle_margin_start">80dp</dimen>
+    <dimen name="rds_toggle_button_text_size">46sp</dimen>
+    <dimen name="ll_rds_loc_margin_top">16dp</dimen>
+    <dimen name="ll_rds_af_margin_top">25dp</dimen>
+    <dimen name="ll_rds_ta_margin_top">28dp</dimen>
+
+    <dimen name="round_knob_seek_bar_width">434dp</dimen>
+    <dimen name="round_knob_seek_bar_arc_width">12dp</dimen>
+    <integer name="round_knob_seek_bar_pic_transparent_distance">-4</integer>
+    <dimen name="round_knob_seek_bar_text_width">120dp</dimen>
+    <dimen name="round_knob_seek_bar_text_size">30sp</dimen>
+    <dimen name="round_knob_seek_bar_text_margin_bottom">30dp</dimen>
+
+    <dimen name="PresetViewFreqTextSize">60sp</dimen>
+    <dimen name="PresetViewIndexTextSize">36sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">36sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">28sp</dimen>
+    <dimen name="bottom_menu_padding">32dp</dimen>
+    <dimen name="preset_layout_padding">24dp</dimen>
+    <dimen name="preset_view_padding">7dp</dimen>
+    <dimen name="preset_view_padding_top">20dp</dimen>
+    <dimen name="preset_view_margin_bottom">20dp</dimen>
+    <dimen name="preset_viewpager_margin_top">20dp</dimen>
+    <dimen name="preset_viewpager_margin_bottom">0dp</dimen>
+
+    <dimen name="rds_pty_text_size">32sp</dimen>
+    <dimen name="rds_pty_title_text_size">36sp</dimen>
+    <dimen name="rds_rt_text_size">28sp</dimen>
+    <dimen name="rds_imgbtn_margin_end">65dp</dimen>
+
+    <dimen name="text_band_info_size">32sp</dimen>
+    <dimen name="radio_show_info_layout_marginStart">30dp</dimen>
+    <dimen name="radio_show_info_layout_marginEnd">10dp</dimen>
+    <dimen name="digital_frequency_layout_marginBottom">-26dp</dimen>
+    <dimen name="text_band_info_layout_marginBottom">9dp</dimen>
+    <dimen name="ll_bottom_margin_Bottom">25dp</dimen>
+    <dimen name="text_band_info_Start">-14dp</dimen>
+    <dimen name="ll_bottom_margin_Top">-100dp</dimen>
+    <dimen name="radio_show_info_img_margin_Top">10dp</dimen>
+
+    <dimen name="ll_rds_status_layout_marginEnd">16dp</dimen>
+    <dimen name="rds_pty_title_layout_marginStart">38dp</dimen>
+    <dimen name="PresetViewPaper_height">380dp</dimen>
+    <dimen name="id_round_knob_seekbar_fm_layout_marginTop">40dp</dimen>
+    <dimen name="checkbox_stereo_layout_marginStart">-12dp</dimen>
+</resources>

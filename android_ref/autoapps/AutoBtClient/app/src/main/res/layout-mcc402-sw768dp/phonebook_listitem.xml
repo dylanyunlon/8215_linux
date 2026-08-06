@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="292dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/contact" />
+
+    <LinearLayout
+        android:id="@+id/phonebook_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_phonebook_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxWidth="250dp"
+            android:singleLine="true"
+            android:text="16.华为消费者服务"
+            android:textColor="@color/color_blue_dark"
+            android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/item_phonebook_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxWidth="250dp"
+            android:singleLine="true"
+            android:text="shabi"
+            android:textColor="@color/color_white_light"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/btn_phonebook_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/bt_phonebook_path_phone"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

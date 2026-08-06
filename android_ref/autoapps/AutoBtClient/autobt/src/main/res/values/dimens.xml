@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--sp-->
+    <dimen name="sp_main_menu_title">36sp</dimen>
+    <dimen name="sp_music_title">34sp</dimen>
+    <dimen name="sp_music_subtitle">30sp</dimen>
+
+    <!--DP-->
+    <!--main-->
+    <dimen name="dp_main_padding_left_right">20dp</dimen>
+    <dimen name="dp_main_padding_top_bottom">15dp</dimen>
+    <dimen name="dp_menu_width">270dp</dimen>
+
+    <!--SettingItemView-->
+    <!--item的宽高-->
+    <dimen name="dp_item_width">654dp</dimen>
+    <dimen name="dp_item_min_height">125dp</dimen>
+    <dimen name="dp_item_max_height">185dp</dimen>
+    <!--item 左右间距-->
+    <dimen name="dp_item_padding_left">35dp</dimen>
+    <dimen name="dp_item_padding_right">35dp</dimen>
+    <!--seekbar item(声音、亮度item) 中seekbar据顶部的高度-->
+    <dimen name="dp_item_seekbar_txt_top">85dp</dimen>
+
+
+    <!--device adapter-->
+    <dimen name="dp_adapter_min_height">125dp</dimen>
+    <dimen name="dp_adapter_padding">30dp</dimen>
+
+    <dimen name="sp_device_adapter_title_size">36sp</dimen>
+    <dimen name="sp_device_adapter_state_size">22sp</dimen>
+
+    <!--contact adapter-->
+    <dimen name="sp_contact_adapter_name_size">28sp</dimen>
+    <dimen name="sp_contact_adapter_phone_size">36sp</dimen>
+    <!--record adapter-->
+    <dimen name="sp_record_adapter_name_size">20sp</dimen>
+    <dimen name="sp_record_adapter_phone_size">28sp</dimen>
+    <dimen name="dp_record_adapter_padding">35dp</dimen>
+
+    <!--contact-->
+    <dimen name="dp_contact_key_padding">5dp</dimen>
+    <!--dial-->
+    <dimen name="dp_keyboard_number_padding">22dp</dimen>
+
+    <!--call record-->
+    <dimen name="sp_call_record_btn_size">36sp</dimen>
+    <dimen name="dp_call_record_rb_padding">15dp</dimen>
+
+
+
+    <!--common-->
+    <dimen name="dp_4">4dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_15">15dp</dimen>
+    <dimen name="dp_17">17dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_25">25dp</dimen>
+    <dimen name="dp_30">30dp</dimen>
+    <dimen name="dp_35">35dp</dimen>
+    <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_135">135dp</dimen>
+    <dimen name="dp_580">580dp</dimen>
+    <dimen name="dp_830">830dp</dimen>
+</resources>

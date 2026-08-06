@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--WindowManager.LayoutParams.TYPE_DRAG = FIRST_SYSTEM_WINDOW+16-->
+    <integer name="call_view_window_type">2016</integer>
+    <!-- MATCH_PARENT=-1,WRAP_CONTENT=-2 -->
+    <integer name="call_view_window_width">-2</integer>
+    <integer name="call_view_window_height">-2</integer>
+    <!--WindowManager.LayoutParams.gravity-->
+    <!--TOP = 48,BOTTOM = 80,CENTER_HORIZONTAL = 1,CENTER_VERTICAL = 16-->
+    <integer name="call_view_window_gravity">17</integer>
+
+    <!--WindowManager.LayoutParams.TYPE_DRAG = FIRST_SYSTEM_WINDOW+16-->
+    <integer name="call_view_mini_window_type">2016</integer>
+    <!-- MATCH_PARENT=-1,WRAP_CONTENT=-2 -->
+    <integer name="call_view_mini_window_width">-2</integer>
+    <integer name="call_view_mini_window_height">-2</integer>
+    <!--WindowManager.LayoutParams.gravity=Gravity.CENTER_HORIZONTAL | Gravity.TOP-->
+    <!--TOP = 48,BOTTOM = 80,CENTER_HORIZONTAL = 1,CENTER_VERTICAL = 16-->
+    <integer name="call_view_mini_window_gravity">49</integer>
+
+    <!-- mini通话框 0： 不使用mini通话框 -->
+    <integer name="mini_call_view_type">1</integer>
+
+    <!--是否监听屏幕旋转，适用于横屏和竖屏dialog样式不一样的情况-->
+    <!--0：不监听；1：监听-->
+    <integer name="monitor_screen_orientation">0</integer>
+</resources>

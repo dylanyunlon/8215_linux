@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:id="@+id/tv_csc_asp_subwoofer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subwoofer_tv_csc_asp_subwoofer_title"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/subwoofer_tv_csc_asp_title_textSize"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_lpf_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subwoofer_tv_csc_asp_lpf_title"
+        android:textColor="#00EEFF"
+        android:textSize="@dimen/subwoofer_tv_csc_asp_lpf_title_textSize"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="@dimen/subwoofer_tv_csc_asp_lpf_title_marginTop"
+        app:layout_constraintBottom_toTopOf="@+id/iv_csc_asp_lpf_freq_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_csc_asp_subwoofer_title"/>
+
+    <TextView
+        android:id="@+id/tv_csc_asp_lpf_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/subwoofer_tv_csc_asp_lpf_freq_marginEnd"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/subwoofer_tv_csc_asp_lpf_title_textSize"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_csc_asp_lpf_title"
+        app:layout_constraintEnd_toStartOf="@+id/tv_csc_asp_lpf_freq_unit"
+        tools:text="55" />
+
+    <TextView
+        android:id="@+id/tv_csc_asp_lpf_freq_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/subwoofer_tv_csc_asp_lpf_freq_unit_layout_marginStart"
+        android:text="@string/subwoofer_tv_csc_asp_lpf_freq_unit"
+        android:textColor="#00EEFF"
+        android:textSize="@dimen/subwoofer_tv_csc_asp_lpf_title_textSize"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_csc_asp_lpf_freq"
+        app:layout_constraintStart_toEndOf="@+id/tv_csc_asp_lpf_title" />
+
+
+    <TextView
+        android:id="@+id/tv_csc_asp_lpf_slope_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/subwoofer_tv_csc_asp_lpf_slope_title_marginStart"
+        android:layout_marginBottom="@dimen/subwoofer_tv_csc_asp_lpf_slope_marginBottom"
+        android:text="@string/hlpf_slope_title"
+        android:textColor="#00EEFF"
+        android:textSize="@dimen/subwoofer_tv_csc_asp_lpf_title_textSize"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_csc_asp_lpf_freq_unit"
+        app:layout_constraintStart_toEndOf="@+id/tv_csc_asp_lpf_freq_unit" />
+
+
+    <TextView
+        android:id="@+id/tv_csc_asp_lpf_slope"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/subwoofer_tv_csc_asp_lpf_slope_marginStart"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/subwoofer_tv_csc_asp_lpf_title_textSize"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_csc_asp_lpf_freq_unit"
+        app:layout_constraintStart_toEndOf="@+id/tv_csc_asp_lpf_slope_title"
+        tools:text="-12" />
+
+
+    <TextView
+        android:id="@+id/tv_csc_asp_lpf_slope_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/subwoofer_tv_csc_asp_lpf_slope_unit_marginStart"
+        android:layout_marginBottom="@dimen/subwoofer_tv_csc_asp_lpf_slope_marginBottom"
+        android:text="@string/subwoofer_tv_csc_asp_lpf_slope_unit"
+        android:textColor="#00EEFF"
+        android:textSize="@dimen/subwoofer_tv_csc_asp_lpf_title_textSize"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tv_csc_asp_lpf_slope"
+        app:layout_constraintStart_toEndOf="@+id/tv_csc_asp_lpf_slope" />
+
+    <LinearLayout
+        android:id="@+id/ll_csc_asp_lpf_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/subwoofer_ll_csc_asp_lpf_switch_marginBottom"
+        android:background="@drawable/ll_csc_asp_lpf_switch_bg_selector"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_csc_asp_lpf_title"
+        app:layout_constraintEnd_toEndOf="@+id/iv_csc_asp_lpf_freq_bg">
+
+        <TextView
+            android:id="@+id/tv_csc_asp_text_lpf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subwoofer_tv_csc_asp_text_lpf"
+            android:textColor="@drawable/csc_asp_text_lpf_color_selector"
+            android:textSize="@dimen/subwoofer_tv_csc_asp_text_lpf_textSize"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_lpf_slope"
+            app:layout_constraintStart_toEndOf="@+id/tv_lpf_slope" />
+
+        <TextView
+            android:id="@+id/tv_csc_asp_text_lpf_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subwoofer_tv_csc_asp_text_lpf_on"
+            android:textColor="@drawable/csc_asp_text_lpf_on_color_selector"
+            android:textSize="@dimen/subwoofer_tv_csc_asp_text_lpf_textSize"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tv_lpf_slope"
+            app:layout_constraintStart_toEndOf="@+id/tv_lpf_slope" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_csc_asp_lpf_freq_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/subwoofer_iv_csc_asp_lpf_freq_bg_layout_marginTop"
+        android:background="@drawable/csc_asp_seekbar_thumb_bg"
+        app:layout_constraintTop_toBottomOf="@+id/tv_csc_asp_subwoofer_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_csc_asp_lpf_freq_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/csc_asp_seekbar_thumb_0"
+        app:layout_constraintEnd_toEndOf="@+id/iv_csc_asp_lpf_freq_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_csc_asp_lpf_freq_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_csc_asp_lpf_freq_bg" />
+
+    <RadioGroup
+        android:id="@+id/rg_csc_asp_lpf_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/subwoofer_rg_csc_asp_lpf_freq_layout_marginBottom"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_csc_asp_lpf_freq_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_csc_asp_lpf_freq_bg">
+
+        <RadioButton
+            android:id="@+id/rb_csc_asp_first_lpf_freq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/subwoofer_rb_csc_asp_first_lpf_freq_marginStart"
+            android:background="@drawable/rb_csc_asp_first_lpf_freq_bg_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/subwoofer_rb_csc_asp_first_lpf_freq"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subwoofer_rb_csc_asp_first_lpf_freq_text" />
+
+        <RadioButton
+            android:id="@+id/rb_csc_asp_second_lpf_freq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/subwoofer_rb_csc_asp_second_lpf_freq_marginStart"
+            android:background="@drawable/rb_csc_asp_first_lpf_freq_bg_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/subwoofer_rb_csc_asp_second_lpf_freq"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subwoofer_rb_csc_asp_first_lpf_freq_text" />
+
+        <RadioButton
+            android:id="@+id/rb_csc_asp_third_lpf_freq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/subwoofer_rb_csc_asp_third_lpf_freq_marginStart"
+            android:background="@drawable/rb_csc_asp_first_lpf_freq_bg_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/subwoofer_rb_csc_asp_third_lpf_freq"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subwoofer_rb_csc_asp_first_lpf_freq_text" />
+
+        <RadioButton
+            android:id="@+id/rb_csc_asp_fourth_lpf_freq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/subwoofer_rb_csc_asp_second_lpf_freq_marginStart"
+            android:background="@drawable/rb_csc_asp_first_lpf_freq_bg_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/subwoofer_rb_csc_asp_fourth_lpf_freq"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/subwoofer_rb_csc_asp_first_lpf_freq_text" />
+
+
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

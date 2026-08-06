@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:paddingHorizontal="20dp">
+
+    <TextView
+        android:id="@+id/tv_mute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/attenuate_mute"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/btn_link_lf_rf"
+        app:layout_constraintEnd_toEndOf="@+id/tv_invert" />
+
+    <TextView
+        android:id="@+id/tv_invert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/attenuate_invert"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/asb_lf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_link_line_lf_rf" />
+
+    <com.hcn.autoeq.view.FyDspAttenuateSeekBar
+        android:id="@+id/asb_lf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:tag="LF"
+        app:attenuate_seek_bar_top_name="@string/balance_field_lf"
+        app:layout_constraintCircle="@+id/btn_link_lf_rf"
+        app:layout_constraintCircleAngle="@integer/fydsp_attenuate_asb_lf_layout_constraintCircleAngle"
+        app:layout_constraintCircleRadius="@dimen/fydsp_attenuate_asb_lf_layout_constraintCircleRadius" />
+
+    <com.hcn.autoeq.view.FyDspAttenuateSeekBar
+        android:id="@+id/asb_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:tag="RF"
+        app:attenuate_seek_bar_top_name="@string/balance_field_rf"
+        app:layout_constraintCircle="@+id/btn_link_lf_rf"
+        app:layout_constraintCircleAngle="@integer/fydsp_attenuate_asb_rf_layout_constraintCircleAngle"
+        app:layout_constraintCircleRadius="@dimen/fydsp_attenuate_asb_lf_layout_constraintCircleRadius" />
+
+    <ImageView
+        android:id="@+id/iv_link_line_lf_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_attenuate_link_line"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_link_lf_rf"
+        app:layout_constraintEnd_toEndOf="@+id/btn_link_lf_rf"
+        app:layout_constraintStart_toStartOf="@+id/btn_link_lf_rf"
+        app:layout_constraintTop_toTopOf="@+id/btn_link_lf_rf" />
+
+    <ToggleButton
+        android:id="@+id/btn_link_lf_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fydsp_attenuate_btn_link_lf_rf_layout_marginStart"
+        android:layout_marginBottom="@dimen/fydsp_attenuate_btn_link_lf_rf_layout_marginBottom"
+        android:background="@drawable/fydsp_attenuate_link_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_link_lr_rr"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@+id/tv_invert" />
+
+    <com.hcn.autoeq.view.FyDspAttenuateSeekBar
+        android:id="@+id/asb_lr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:tag="LR"
+        app:attenuate_seek_bar_top_name="@string/balance_field_lr"
+        app:layout_constraintCircle="@+id/btn_link_lr_rr"
+        app:layout_constraintCircleAngle="@integer/fydsp_attenuate_asb_lf_layout_constraintCircleAngle"
+        app:layout_constraintCircleRadius="@dimen/fydsp_attenuate_asb_lf_layout_constraintCircleRadius" />
+
+    <com.hcn.autoeq.view.FyDspAttenuateSeekBar
+        android:id="@+id/asb_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:tag="RR"
+        app:attenuate_seek_bar_top_name="@string/balance_field_rr"
+        app:layout_constraintCircle="@+id/btn_link_lr_rr"
+        app:layout_constraintCircleAngle="@integer/fydsp_attenuate_asb_rf_layout_constraintCircleAngle"
+        app:layout_constraintCircleRadius="@dimen/fydsp_attenuate_asb_lf_layout_constraintCircleRadius" />
+
+    <ImageView
+        android:id="@+id/iv_link_line_lr_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_attenuate_link_line"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toEndOf="@+id/btn_link_lr_rr"
+        app:layout_constraintStart_toStartOf="@+id/btn_link_lr_rr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <ToggleButton
+        android:id="@+id/btn_link_lr_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_attenuate_link_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toBottomOf="@+id/btn_link_lf_rf"
+        app:layout_constraintEnd_toStartOf="@+id/btn_link_center_subwoofer"
+        app:layout_constraintStart_toEndOf="@+id/btn_link_lf_rf" />
+
+    <com.hcn.autoeq.view.FyDspAttenuateSeekBar
+        android:id="@+id/asb_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:tag="SUBWOOFER"
+        app:attenuate_seek_bar_top_name="@string/str_subwoofer"
+        app:layout_constraintCircle="@+id/btn_link_center_subwoofer"
+        app:layout_constraintCircleAngle="@integer/fydsp_attenuate_asb_lf_layout_constraintCircleAngle"
+        app:layout_constraintCircleRadius="@dimen/fydsp_attenuate_asb_lf_layout_constraintCircleRadius" />
+
+    <com.hcn.autoeq.view.FyDspAttenuateSeekBar
+        android:id="@+id/asb_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:tag="CENTER"
+        app:attenuate_seek_bar_top_name="@string/fydsp_attenuate_channel51_center"
+        app:layout_constraintCircle="@+id/btn_link_center_subwoofer"
+        app:layout_constraintCircleAngle="@integer/fydsp_attenuate_asb_rf_layout_constraintCircleAngle"
+        app:layout_constraintCircleRadius="@dimen/fydsp_attenuate_asb_lf_layout_constraintCircleRadius" />
+
+    <ImageView
+        android:id="@+id/iv_link_line_center_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_attenuate_link_line"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toEndOf="@+id/btn_link_center_subwoofer"
+        app:layout_constraintStart_toStartOf="@+id/btn_link_center_subwoofer"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <ToggleButton
+        android:id="@+id/btn_link_center_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="150dp"
+        android:background="@drawable/fydsp_attenuate_link_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toBottomOf="@+id/btn_link_lf_rf"
+        app:layout_constraintEnd_toEndOf="@+id/btn_reset_attenuate"
+        app:layout_constraintStart_toEndOf="@+id/btn_link_lr_rr" />
+
+    <Button
+        android:id="@+id/btn_reset_attenuate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_delay_reset_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/asb_center"
+        app:layout_constraintTop_toTopOf="@+id/asb_center" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_tab_rb_csc_asp_equalizer_chart">الطيف</string>
+    <string name="menu_tab_rb_csc_asp_equalizer">EQ</string>
+    <string name="menu_tab_rb_csc_asp_q_value">قيمة Q</string>
+    <string name="menu_tab_rb_csc_asp_subwoofer">مضخم صوت</string>
+    <string name="menu_tab_rb_csc_asp_balance">التوازن</string>
+
+    <string name="equalizersurface_q_value">:Q</string>
+    <string name="equalizersurface_fc_value">:FC</string>
+
+    <string name="balance_csc_asp_balance_title">التوازن</string>
+    <string name="balance_csc_asp_balance_front_title">الجبهة :</string>
+    <string name="balance_csc_asp_balance_rear_title">خلفي:</string>
+    <string name="balance_csc_asp_balance_left_title">اليسار :</string>
+    <string name="balance_csc_asp_balance_right_title">صح :</string>
+
+    <string name="subwoofer_tv_csc_asp_subwoofer_title">مضخم صوت</string>
+    <string name="tab_btn_csc_asp_reverb_mode">وضع المشهد</string>
+    <string name="tab_btn_csc_asp_volume">جهارة قبالة</string>
+    <string name="tab_btn_csc_asp_user_reverb_mode">الوضع المخصص 1</string>
+    <string name="tab_rb_csc_asp_volume_off">جهارة قبالة</string>
+    <string name="tab_rb_csc_asp_volume_low">جهارة منخفضة</string>
+    <string name="tab_rb_csc_asp_volume_middle">منتصف الجهارة</string>
+    <string name="tab_rb_csc_asp_volume_high">جهارة عالية</string>
+    <string name="tab_rb_csc_asp_band_user0">الوضع المخصص 1</string>
+    <string name="tab_rb_csc_asp_band_user1">الوضع المخصص 2</string>
+
+    <string name="q_value_tv_csc_asp_q_value">قيمة Q</string>
+    <string name="q_value_tv_q_low">باس س : Q</string>
+    <string name="q_value_tv_q_middle">Q : الأوسط</string>
+    <string name="q_value_tv_q_high">التريبل : Q </string>
+    <string name="reset_dialog_content">ما إذا كان سيتم استعادة تأثير الصوت المخصص% d إلى القيمة الافتراضية</string>
+</resources>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="@dimen/x1660"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/nine_dsp_fragment_band_seekbar_paddingTop"
+    android:paddingBottom="@dimen/nine_dsp_fragment_band_seekbar_paddingBottom">
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="0"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="1"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="2"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="3"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="4"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="5"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="6"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="7"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="8"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="9"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="10"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="11"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="12"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+
+    <com.hcn.autoeq.view.NineBandSeekBar
+        android:layout_width="@dimen/x54"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/x26"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="13"
+        app:nine_band_seek_bar_enable_gvalue="0"
+        app:nine_band_seek_bar_enable_qvalue="0" />
+</LinearLayout>

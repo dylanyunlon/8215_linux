@@ -1,0 +1,20 @@
+#if customer need set to 1 and add new property bt_name
+bt_name_customer = 0
+
+#set to yes
+bt_autoconnect_default = 1
+
+#set to no
+bt_autoanswer_default = 0
+
+#Russian client
+bt_name_client = IncarBT
+
+#if bt_name_customer == 0 then use this prefix and mac
+#bt_name_prefix = HCN
+
+＃default bt name from goc
+#bt_name_default = GocAndroid
+
+#default bt code from goc
+#bt_pin_default = 1234

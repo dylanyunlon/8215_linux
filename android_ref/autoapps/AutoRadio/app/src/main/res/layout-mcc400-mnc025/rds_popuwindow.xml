@@ -1,0 +1,354 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rds_backgroud">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="@dimen/rds_window_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_rds_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/tv_rds_title_margin_top"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/rds_title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/tv_rds_title_textSize" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/ll_rds_ta_margin_top"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvTA"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|end"
+                android:text="@string/rds_ta_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/tv_rds_title_textSize" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <ToggleButton
+                    android:id="@+id/tglTA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/selector_rds_btn_toggle"
+                    android:checked="false"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn="" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/ll_rds_af_margin_top"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvAF"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center|end"
+                android:text="@string/rds_af_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/tv_rds_title_textSize" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <ToggleButton
+                    android:id="@+id/tglAF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/selector_rds_btn_toggle"
+                    android:checked="false"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn="" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvCT"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center|end"
+                android:text="@string/rds_ct_title"
+                android:textColor="@color/white"
+                android:textSize="28sp" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <ToggleButton
+                    android:id="@+id/tglCT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/selector_rds_btn_toggle"
+                    android:checked="false"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn="" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/dismis_imgbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/ll_rds_back_btn_margin_top"
+            android:contentDescription="Exit RDS Setting Window"
+            android:background="@drawable/selector_rds_back_btn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="@dimen/rds_window_height"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/tv_rds_title_margin_top"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_pty_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/rds_pty_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/tv_rds_title_textSize" />
+
+            <TextView
+                android:id="@+id/tv_pty"
+                style="@style/hcn_rds_pty_title" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/ll_rds_ta_space"/>
+        <ScrollView
+            android:id="@+id/scrollView_ptys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/id_pty_radiogroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/id_pty_none"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_news"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_affairs"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_info"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_sport"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_educate"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_drama"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_culture"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_science"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_varied"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_popm"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_rockm"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_easym"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_lightm"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_classics"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_otherm"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_weather"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_finance"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_children"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_social"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_religion"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_phone"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_travel"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_leisure"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_jazz"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_country"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_nation"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_oldies"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_folk"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_document"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_test"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+                <RadioButton
+                    android:id="@+id/id_pty_alarm"
+                    style="@style/hcn_rds_pty"
+                    android:background="@drawable/selector_rds_pty" />
+
+            </RadioGroup>
+            <!-- /LinearLayout-->
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>

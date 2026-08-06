@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth</string>
+    <string name="str_handsfree_device_connected">Zařízení handsfree je připojeno</string>
+    <string name="str_a2dp_device_connected">Hudební zařízení je připojeno</string>
+    <string name="str_hid_device_connected">Zařízení HID je připojeno</string>
+    <string name="str_income_call_status">Příchozí hovor</string>
+    <string name="str_out_call_status">Odchozí hovor</string>
+    <string name="str_bt_call_active">Volání aktivní</string>
+    <string name="str_bt_call_held">Call Held</string>
+    <string name="str_bt_call_waiting">Čekání hovoru</string>
+    <string name="str_bt_call_abnormal">Abnormální hovor</string>
+    <string name="str_bt_call_multiparty">Vícestranný hovor</string>
+    <string name="str_bt_call_accept_terminate">Ukončit a přijmout</string>
+    <string name="str_bt_call_accept_held">Držet a přijmout</string>
+    <string name="str_bt_call_swap">Vyměnit hovor</string>
+    <string name="str_bt_call_merge">Sloučit hovor</string>
+    <string name="str_calling_phone_number">10086</string>
+    
+    <string name="unkown">Neznámý</string>
+    
+    <string name="time_text">00:00:00</string>
+   
+</resources>

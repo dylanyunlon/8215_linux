@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/rg_asp_band_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_csc_asp_band_user0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                style="@style/csc_asp_tab_pop_button_item_style"
+                android:layout_width="wrap_content"
+                android:background="@drawable/csc_asp_band_mode_top_n"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioButton
+                android:id="@+id/rb_csc_asp_band_user0"
+                style="@style/csc_asp_tab_pop_button_item_style"
+                android:layout_width="wrap_content"
+                android:background="@drawable/csc_asp_band_volume_top_selector"
+                android:paddingEnd="@dimen/tab_rb_csc_asp_band_paddingEnd"
+                android:text="@string/tab_rb_csc_asp_band_user0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/rb_csc_asp_icon_user0_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/csc_asp_user_mode_icon_reset"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_csc_asp_band_user1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                style="@style/csc_asp_tab_pop_button_item_style"
+                android:layout_width="wrap_content"
+                android:background="@drawable/csc_asp_band_mode_bottom_n"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RadioButton
+                android:id="@+id/rb_csc_asp_band_user1"
+                style="@style/csc_asp_tab_pop_button_item_style"
+                android:layout_width="wrap_content"
+                android:background="@drawable/csc_asp_band_volume_bottom_selector"
+                android:paddingEnd="@dimen/tab_rb_csc_asp_band_paddingEnd"
+                android:text="@string/tab_rb_csc_asp_band_user1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/rb_csc_asp_icon_user1_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/csc_asp_user_mode_icon_reset"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RadioGroup>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

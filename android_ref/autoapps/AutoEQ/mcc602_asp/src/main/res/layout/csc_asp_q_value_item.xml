@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/q_item_paddingHorizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_csc_center_fre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textSize="@dimen/q_item_tv_csc_center_fre_textSize"
+        android:textColor="@color/csc_asp_radio_text_color_select_n_second"
+        android:layout_marginBottom="@dimen/q_item_tv_csc_center_fre_layout_marginBottom"
+        android:text="20" />
+
+
+    <TextView
+        android:id="@+id/tv_csc_q_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/csc_asp_btn_q"
+        android:gravity="center"
+        android:textColor="@color/csc_asp_radio_text_color_select_n"
+        android:textSize="@dimen/q_item_tv_csc_center_q_value_textSize" />
+</LinearLayout>

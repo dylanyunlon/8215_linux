@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">بلوتوث</string>
+    <string name="str_handsfree_device_connected">تماس بلوتوث متصل است</string>
+    <string name="str_a2dp_device_connected">موسیقی بلوتوث متصل است</string>
+    <string name="str_hid_device_connected">دستگاه ورودی بلوتوث متصل است</string>
+    <string name="str_income_call_status">صدا زدن</string>
+    <string name="str_out_call_status">صدا زدن</string>
+    <string name="str_bt_call_active">صدا زدن</string>
+    <string name="str_bt_call_held">حفظ</string>
+    <string name="str_bt_call_waiting">انتظار تماس</string>
+    <string name="str_bt_call_abnormal">تماس غیر عادی</string>
+    <string name="str_bt_call_multiparty">کنفرانس تلفنی</string>
+    <string name="str_bt_call_accept_terminate">پایان دهید و پاسخ دهید</string>
+    <string name="str_bt_call_accept_held">نگه دارید و پاسخ دهید</string>
+    <string name="str_bt_call_swap">تعویض تماس</string>
+    <string name="str_bt_call_merge">ادغام تماس</string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">ناشناس</string>
+    <string name="time_text">00:00:00</string>
+    
+</resources>

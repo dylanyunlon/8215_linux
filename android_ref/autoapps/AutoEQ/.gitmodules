@@ -1,0 +1,8 @@
+[submodule "app-language"]
+	path = app-language
+	url = http://192.168.0.223:8081/autoapps/languages/AutoEQ
+    branch = COMMON_app-language
+[submodule "app-overlay"]
+	path = app-overlay
+	url = http://192.168.0.223:8081/autoapps/languages/AutoEQ
+	branch = COMMON_app-overlay

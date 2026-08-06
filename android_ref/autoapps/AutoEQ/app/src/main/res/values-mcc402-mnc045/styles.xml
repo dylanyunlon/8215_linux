@@ -1,0 +1,40 @@
+<resources>
+
+    <style name="asp_mode_btn_port_1">
+        <item name="android:textSize">@dimen/asp_reverb_text_size</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:layout_width">@dimen/asp_reverb_width</item>
+        <item name="android:layout_height">@dimen/asp_reverb_height</item>
+        <item name="android:layout_marginStart">@dimen/asp_mode_btn_port_padding</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingStart">@dimen/asp_reverb_paddingStart</item>
+        <item name="android:paddingEnd">@dimen/asp_reverb_paddingStart</item>
+        <item name="android:paddingBottom">@dimen/asp_reverb_bottom</item>
+        <item name="android:gravity">center_horizontal|bottom</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="asp_mode_btn_port_2">
+        <item name="android:textSize">@dimen/asp_reverb_text_size</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:layout_width">@dimen/asp_reverb_width</item>
+        <item name="android:layout_height">@dimen/asp_reverb_height</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_marginTop">@dimen/asp_reverb_layout_marginTop</item>
+        <item name="android:layout_marginStart">@dimen/asp_mode_btn_port_padding</item>
+        <item name="android:paddingStart">@dimen/asp_reverb_paddingStart</item>
+        <item name="android:paddingEnd">@dimen/asp_reverb_paddingStart</item>
+        <item name="android:paddingBottom">@dimen/asp_reverb_bottom</item>
+        <item name="android:gravity">center_horizontal|bottom</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+</resources>

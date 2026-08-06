@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_dbb_bg"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:layout_height="@dimen/nine_dsp_fragment_band_nine_eq_surface_bg_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_iv_dbb_bg_marginTop"
+        android:background="@drawable/nine_dbb_edit_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/v_dbb"
+        app:layout_constraintEnd_toEndOf="@+id/v_dbb"
+        app:layout_constraintStart_toStartOf="@+id/v_dbb"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.NineDspDbbView
+        android:id="@+id/v_dbb"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_v_dbb_marginTop"
+        android:layout_marginStart="@dimen/nine_dsp_fragment_dbb_v_dbb_marginStart"
+        android:background="@drawable/nine_dbb_view_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_TextView_15_marginTop"
+        android:layout_marginEnd="@dimen/x10"
+        android:text="15"
+        app:layout_constraintEnd_toStartOf="@+id/v_dbb"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_bg" />
+
+    <TextView
+        style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_TextView_10_marginTop"
+        android:layout_marginEnd="@dimen/x10"
+        android:text="10"
+        app:layout_constraintEnd_toStartOf="@+id/v_dbb"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_bg" />
+
+    <TextView
+        style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_TextView_5_marginTop"
+        android:layout_marginEnd="@dimen/x10"
+        android:text="5"
+        app:layout_constraintEnd_toStartOf="@+id/v_dbb"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_bg" />
+
+    <TextView
+        style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_TextView_0_marginTop"
+        android:layout_marginEnd="@dimen/x10"
+        android:text="0"
+        app:layout_constraintEnd_toStartOf="@+id/v_dbb"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_bg" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y10"
+        app:layout_constraintEnd_toEndOf="@+id/v_dbb"
+        app:layout_constraintStart_toStartOf="@+id/v_dbb"
+        app:layout_constraintTop_toBottomOf="@+id/v_dbb">
+
+        <TextView
+            style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_dbb_TextView_20_marginStart"
+            android:text="20HZ"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_dbb_TextView_60_marginStart"
+            android:text="60HZ"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_dbb_TextView_125_marginStart"
+            android:text="125HZ"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_dbb_TextView_200_marginStart"
+            android:text="200HZ"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_dbb_TextView_250_marginStart"
+            android:text="250HZ"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_dbb_TextView_300_marginStart"
+            android:text="300HZ"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            style="@style/nine_dbb_scale_vertical_horizontal_text_style"
+            android:layout_marginEnd="@dimen/nine_dsp_fragment_dbb_TextView_400_marginEnd"
+            android:text="400HZ"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_dbb_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_dbb_rg_hlpf_output_mode_marginBottom"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/nine_rb_dbb_mode_fl_fr"
+            style="@style/nine_filter_radio_button_style"
+            android:text="@string/nine_btn_filter_channel_front" />
+
+        <RadioButton
+            android:id="@+id/nine_rb_dbb_mode_rl_rr"
+            style="@style/nine_filter_radio_button_style"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/nine_btn_filter_channel_rear" />
+
+        <RadioButton
+            android:id="@+id/nine_rb_dbb_mode_center"
+            style="@style/nine_filter_radio_button_style"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/nine_tv_channel_center" />
+
+        <RadioButton
+            android:id="@+id/nine_rb_dbb_mode_subwoofer"
+            style="@style/nine_filter_radio_button_style"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/str_subwoofer" />
+    </RadioGroup>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cc_filter_center"
+        android:layout_width="@dimen/nine_dsp_fragment_dbb_cc_filter_center_width"
+        android:layout_height="@dimen/nine_dsp_fragment_dbb_cc_filter_center_height"
+        android:layout_marginStart="@dimen/nine_dsp_fragment_dbb_cc_filter_center_marginStart"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_dbb_cc_filter_center_Bottom"
+        android:background="@drawable/nine_filter_freq_show_bg"
+        android:paddingHorizontal="@dimen/nine_dsp_fragment_dbb_cc_filter_center_paddingHorizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rg_dbb_mode">
+
+        <TextView
+            android:id="@+id/tv_bass_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_tv_bass_center_marginTop"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/nine_tv_filter_freq_center"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/nine_dsp_fragment_dbb_tv_bass_center_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_nine_dbb_freq_delay"
+            android:layout_width="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_width"
+            android:layout_height="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_height"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_marginTop"
+            android:background="@drawable/nine_dsp_filter_reduce_selector"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bass_center" />
+
+        <TextView
+            android:id="@+id/tv_freq_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/nine_dsp_fragment_dbb_tv_freq_center_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_nine_dbb_freq_delay"
+            app:layout_constraintBottom_toBottomOf="@id/iv_nine_dbb_freq_delay"/>
+
+        <ImageView
+            android:id="@+id/iv_nine_dbb_freq_plus"
+            android:layout_width="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_width"
+            android:layout_height="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_height"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_marginTop"
+            android:scaleType="centerInside"
+            android:src="@drawable/nine_dsp_filter_plus_selector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bass_center" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/iv_filter_bass_car"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_car_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_car_height"
+        android:scaleType="centerInside"
+        android:src="@drawable/nine_filter_car_model"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cc_filter_bass"
+        app:layout_constraintStart_toEndOf="@+id/cc_filter_center" />
+
+    <ImageView
+        android:id="@+id/iv_filter_bass_front_l"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintStart_toStartOf="@+id/iv_filter_bass_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_filter_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_filter_bass_rear_l"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_rear_l_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintStart_toStartOf="@+id/iv_filter_bass_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_filter_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_filter_bass_forefront"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_forefront_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintEnd_toEndOf="@+id/iv_filter_bass_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_filter_bass_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_filter_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_filter_bass_front_r"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintEnd_toEndOf="@+id/iv_filter_bass_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_filter_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_filter_bass_rear_r"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_rear_l_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintEnd_toEndOf="@+id/iv_filter_bass_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_filter_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_filter_bass_rear"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_rear_marginBottom"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_filter_bass_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_filter_bass_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_filter_bass_car" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cc_filter_bass"
+        android:layout_width="@dimen/nine_dsp_fragment_dbb_cc_filter_center_width"
+        android:layout_height="@dimen/nine_dsp_fragment_dbb_cc_filter_center_height"
+        android:layout_marginEnd="@dimen/nine_dsp_fragment_dbb_cc_filter_center_marginEnd"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_dbb_cc_filter_center_Bottom"
+        android:background="@drawable/nine_filter_freq_show_bg"
+        android:paddingHorizontal="@dimen/nine_dsp_fragment_dbb_cc_filter_center_paddingHorizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tv_gain_bass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_tv_bass_center_marginTop"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/nine_btn_filter_bass_gain"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/nine_dsp_fragment_dbb_tv_bass_center_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_nine_dbb_bass_delay"
+            android:layout_width="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_width"
+            android:layout_height="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_height"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_marginTop"
+            android:scaleType="centerInside"
+            android:src="@drawable/nine_dsp_filter_reduce_selector"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_gain_bass" />
+
+        <TextView
+            android:id="@+id/tv_freq_bass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/nine_dsp_fragment_dbb_tv_freq_center_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_nine_dbb_bass_delay"
+            app:layout_constraintBottom_toBottomOf="@id/iv_nine_dbb_bass_delay"
+            />
+
+        <ImageView
+            android:id="@+id/iv_nine_dbb_bass_plus"
+            android:layout_width="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_width"
+            android:layout_height="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_height"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_iv_nine_dbb_freq_delay_marginTop"
+            android:scaleType="centerInside"
+            android:src="@drawable/nine_dsp_filter_plus_selector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_gain_bass" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

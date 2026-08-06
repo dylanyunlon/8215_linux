@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="csc_asp_indicator_seek_bar_width">634dp</dimen>
+    <dimen name="csc_asp_indicator_seek_bar_height">30dp</dimen>
+    <dimen name="csc_asp_indicator_seek_tv_size">12sp</dimen>
+    <dimen name="csc_asp_tv_freq_asp_layout_marginTop">30dp</dimen>
+
+    <!-- activity_main -->
+    <dimen name="csc_asp_rb_band_paddingTop">3dp</dimen>
+    <dimen name="csc_asp_rb_band_paddingBottom">15dp</dimen>
+    <dimen name="csc_asp_main_radiobutton_text_size">18sp</dimen>
+
+    <!-- Equalizer fragment-->
+    <dimen name="equalizer_csc_asp_tab_view_layout_marginTop">58dp</dimen>
+    <dimen name="equalizer_csc_asp_equalizer_chart_bg_layout_marginTop">28dp</dimen>
+    <dimen name="equalizer_ll_text_group_layout_height">740dp</dimen>
+    <dimen name="equalizer_ll_text_group_layout_height1">680dp</dimen>
+    <dimen name="equalizer_ll_text_group_layout_marginEnd">10dp</dimen>
+    <dimen name="equalizer_ll_text_group_layout_marginBottom">18dp</dimen>
+    <dimen name="equalizer_ll_text_group_text">20sp</dimen>
+    <dimen name="equalizer_hsv_csc_asp_band_padding">10dp</dimen>
+    <dimen name="equalizer_csc_asp_es_freq_layout_height">720dp</dimen>
+    <dimen name="equalizer_ll_csc_asp_band_layout_marginTop">10dp</dimen>
+    <dimen name="equalizer_q_value_layout_marginBottom">10dp</dimen>
+    <dimen name="equalizer_fc_value_layout_marginBottom">10dp</dimen>
+    <dimen name="equalizer_csc_asp_top_tab_layout_width">750dp</dimen>
+    <dimen name="equalizer_csc_asp_top_tab_layout_marginTop">48dp</dimen>
+    <dimen name="equalizer_hsv_csc_asp_band_paddingHorizontal">0dp</dimen>
+    <dimen name="equalizer_hsv_csc_asp_band_layout_marginTop">10dp</dimen>
+
+    <!-- q_value fragment-->
+    <dimen name="iv_csc_asp_q_value_bg_layout_marginTop">20dp</dimen>
+    <dimen name="q_value_tv_csc_asp_q_value_textSize">29sp</dimen>
+    <dimen name="q_value_tv_csc_asp_q_value_layout_marginTop">10dp</dimen>
+    <dimen name="q_value_caqv_q_layout_width">695dp</dimen>
+    <dimen name="q_value_caqv_q_layout_height">460dp</dimen>
+    <dimen name="q_value_caqv_q_layout_marginTop">12dp</dimen>
+    <dimen name="q_value_btn_q_low_layout_width">53dp</dimen>
+    <dimen name="q_value_btn_q_low_layout_height">33dp</dimen>
+    <dimen name="q_value_btn_q_low_layout_marginBottom">50dp</dimen>
+    <dimen name="q_value_btn_q_low_layout_marginStart">45dp</dimen>
+    <dimen name="q_value_btn_q_middle_layout_marginHorizontal">100dp</dimen>
+    <dimen name="tv_q_layout_marginEnd">10dp</dimen>
+    <dimen name="tv_q_textSize">21sp</dimen>
+    <dimen name="btn_q_textSize">16sp</dimen>
+
+    
+    <!-- csc asp subwoofer fragment -->
+    <dimen name="subwoofer_tv_csc_asp_title_marginStart">72dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_title_marginTop">24dp</dimen>
+    <dimen name="subwoofer_ll_csc_asp_lpf_switch_marginBottom">5dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_title_textSize">29sp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_title_textSize">25sp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_freq_unit_layout_marginStart">120dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_freq_marginStart">80dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_freq_marginEnd">5dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_title_marginTop">25dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_slope_title_marginStart">78dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_slope_marginStart">70dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_slope_unit_marginStart">10dp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_lpf_slope_marginBottom">5dp</dimen>
+    <dimen name="subwoofer_rb_csc_asp_first_lpf_freq_text">22sp</dimen>
+    <dimen name="subwoofer_tv_csc_asp_text_lpf_textSize">20sp</dimen>
+    <dimen name="subwoofer_iv_csc_asp_lpf_freq_bg_layout_marginTop">170dp</dimen>
+    <dimen name="subwoofer_rg_csc_asp_lpf_freq_layout_marginBottom">34dp</dimen>
+    <dimen name="subwoofer_rb_csc_asp_first_lpf_freq_marginStart">74dp</dimen>
+    <dimen name="subwoofer_rb_csc_asp_second_lpf_freq_marginStart">29dp</dimen>
+    <dimen name="subwoofer_rb_csc_asp_third_lpf_freq_marginStart">132dp</dimen>
+
+    <!-- csc asp balance fragment-->
+    <dimen name="balance_id_csc_asp_width">370dp</dimen>
+    <dimen name="balance_id_csc_asp_height">370dp</dimen>
+    <dimen name="balance_tv_csc_asp_title_layout_marginStart">75dp</dimen>
+    <dimen name="balance_tv_csc_asp_title_layout_marginTop">25dp</dimen>
+    <dimen name="balance_btn_csc_asp_front_margin">35dp</dimen>
+    <dimen name="balance_tv_csc_asp_title_textSize">29sp</dimen>
+    <dimen name="balance_tv_csc_asp_front_title_textSize">22sp</dimen>
+    <dimen name="balance_tv_csc_asp_front_title_margin">4dp</dimen>
+    <dimen name="balance_tv_csc_asp_front_title_margin_bottom">10dp</dimen>
+    <dimen name="balance_tv_csc_asp_balance_rear_value_marginEnd">10dp</dimen>
+
+    <!--csc asp tab -->
+    <dimen name="tab_csc_asp_tab_text_textSize">21sp</dimen>
+    <dimen name="tab_csc_asp_tab_pop_button_item_textSize">18sp</dimen>
+    <dimen name="tab_rb_csc_asp_band_paddingEnd">45dp</dimen>
+    <dimen name="tab_rg_hcn_asp_band_top_tab_paddingHorizontal">16dp</dimen>
+    <dimen name="tab_btn_csc_asp_volume_marginEnd">55dp</dimen>
+    <dimen name="tab_btn_csc_asp_reverb_mode_marginHorizontal">30dp</dimen>
+    <dimen name="tab_btn_csc_asp_user_reverb_mode_marginStart">60dp</dimen>
+    <dimen name="tab_gvp_asp_band_reverb_layout_width">166dp</dimen>
+    <dimen name="tab_gvp_asp_band_reverb_layout_height">166dp</dimen>
+    <integer name="tab_band_user_reverb_mode_x">-68</integer>
+    <integer name="tab_band_user_reverb_mode_y">8</integer>
+    <integer name="tab_btn_csc_asp_volume_x">-22</integer>
+    <integer name="tab_btn_csc_asp_volume_y">8</integer>
+    <dimen name="tab_pop_button_item_textSize">18sp</dimen>
+
+    
+    <!-- gallery -->
+    <dimen name="gallery_csc_asp_item_btn_name_textSize">24sp</dimen>
+    <dimen name="gallery_csc_asp_item_btn_name_layout_marginBottom">23dp</dimen>
+    <dimen name="csc_asp_ll_band_reverb_paddingHorizontal">0dp</dimen>
+
+    <!-- EqualizerSurface -->
+    <dimen name="csc_asp_freq_curve_width_1">3dp</dimen>
+    <dimen name="csc_asp_freq_curve_width_2">0dp</dimen>
+    <dimen name="csc_asp_bar_width">0sp</dimen>
+    <dimen name="csc_asp_bar_text_size">0sp</dimen>
+    <dimen name="csc_asp_gain_text_size">0sp</dimen>
+    <dimen name="csc_asp_heq_attr_bar_width">0sp</dimen>
+    <integer name="csc_asp_seekBar_parent_layout_padding_left">0</integer>
+    <integer name="csc_asp_seekBar_parent_layout_padding_right">0</integer>
+    <dimen name="csc_asp_seekbar_margin">0dp</dimen>
+    <dimen name="csc_asp_seekbar_padding">0dp</dimen>
+    <dimen name="equalizer_csc_asp_es_freq_padding_top">33dp</dimen>
+    <dimen name="equalizer_csc_asp_es_freq_padding_bottom">33dp</dimen>
+
+    <!-- QValue seekbar-->
+    <dimen name="q_seekbar_tv_q_value_min_textSize">20sp</dimen>
+    <dimen name="q_seekbar_csc_asp_q_value_bar_layout_width">285dp</dimen>
+    <dimen name="q_seekbar_csc_asp_q_value_bar_layout_height">49dp</dimen>
+
+    <!-- QValue item-->
+    <dimen name="q_item_paddingHorizontal">8dp</dimen>
+    <dimen name="q_item_tv_csc_center_fre_textSize">11sp</dimen>
+    <dimen name="q_item_tv_csc_center_q_value_textSize">13sp</dimen>
+    <dimen name="q_item_tv_csc_center_fre_layout_marginBottom">15dp</dimen>
+
+    <!-- reset dialog-->
+    <dimen name="reset_dialog_content_textSize">18sp</dimen>
+    <dimen name="reset_dialog_content_maxWidth">300dp</dimen>
+</resources>

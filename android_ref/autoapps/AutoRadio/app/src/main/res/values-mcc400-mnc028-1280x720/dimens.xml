@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="PresetViewFreqTextSize">35sp</dimen>
+    <dimen name="PresetViewIndexTextSize">24sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">30sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">25sp</dimen>
+    <dimen name="band_info_text_size">32sp</dimen>
+    <dimen name="preset_viewpager_height">118dp</dimen>
+
+    <dimen name="digit_freq_text_size">100sp</dimen>
+    <dimen name="digit_freq_middle_text_size">85sp</dimen>
+    <dimen name="digit_freq_small_text_size">50sp</dimen>
+    <dimen name="band_info_btn_text_size">30sp</dimen>
+    <dimen name="keyboard_input_text_size">35sp</dimen>
+    <dimen name="rds_ps_text_size">20sp</dimen>
+    <dimen name="rds_rt_info_text_size">18sp</dimen>
+    <dimen name="radio_rds_info_margin_top">20dp</dimen>
+    <dimen name="digital_frequency_layout_width">260dp</dimen>
+    <dimen name="radio_status_icon_layout_width">550dp</dimen>
+    <dimen name="btn_seek_up_layout_marginEnd">60dp</dimen>
+    <dimen name="radio_status_icon_layout_marginStart">60dp</dimen>
+</resources>

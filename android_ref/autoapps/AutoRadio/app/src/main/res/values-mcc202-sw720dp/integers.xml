@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="AUTO_STROE_CENTER_POINT_X">400</integer>
+    <integer name="AUTO_STROE_CENTER_POINT_Y">200</integer>
+    <integer name="AUTO_STROE_DRAGVIEW_W">202</integer>
+    <integer name="AUTO_STROE_DRAGVIEW_H">88</integer>
+    <integer name="CALIBRATE_OFFSET_X">0</integer>
+    <integer name="CALIBRATE_OFFSET_Y">40</integer>
+
+    <integer name="ChinaFMBeginPosFullScreen">50</integer>
+    <integer name="ChinaAMBeginPosFullScreen">50</integer>
+    <integer name="EuropeFMBeginPosFullScreen">50</integer>
+    <integer name="EuropeAMBeginPosFullScreen">50</integer>
+    <integer name="JapanFMBeginPosFullScreen">50</integer>
+    <integer name="JapanAMBeginPosFullScreen">50</integer>
+    <integer name="LatinFMBeginPosFullScreen">50</integer>
+    <integer name="LatinAMBeginPosFullScreen">50</integer>
+    <integer name="USAFMBeginPosFullScreen">50</integer>
+    <integer name="USAAMBeginPosFullScreen">50</integer>
+    <integer name="OIRTFMBeginPosFullScreen">50</integer>
+    <integer name="OIRTAMBeginPosFullScreen">50</integer>
+    <integer name="Latin2FMBeginPosFullScreen">50</integer>
+    <integer name="Latin2AMBeginPosFullScreen">50</integer>
+    <!-- For MultiWindowMode HalfScreen -->
+    <integer name="ChinaFMBeginPosHalfScreen">50</integer>
+    <integer name="ChinaAMBeginPosHalfScreen">50</integer>
+    <integer name="EuropeFMBeginPosHalfScreen">50</integer>
+    <integer name="EuropeAMBeginPosHalfScreen">50</integer>
+    <integer name="JapanFMBeginPosHalfScreen">50</integer>
+    <integer name="JapanAMBeginPosHalfScreen">50</integer>
+    <integer name="LatinFMBeginPosHalfScreen">50</integer>
+    <integer name="LatinAMBeginPosHalfScreen">50</integer>
+    <integer name="USAFMBeginPosHalfScreen">50</integer>
+    <integer name="USAAMBeginPosHalfScreen">50</integer>
+    <integer name="OIRTFMBeginPosHalfScreen">50</integer>
+    <integer name="OIRTAMBeginPosHalfScreen">50</integer>
+    <integer name="Latin2FMBeginPosHalfScreen">50</integer>
+    <integer name="Latin2AMBeginPosHalfScreen">50</integer>
+</resources>

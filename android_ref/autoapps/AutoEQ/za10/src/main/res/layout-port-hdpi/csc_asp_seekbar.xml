@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginEnd="1dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/csc_asp_bass_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.hcn.autoeq.view.SeekBarRotator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <SeekBar
+                android:id="@+id/csc_asp_indicator_seek_bar"
+                android:layout_width="@dimen/csc_asp_indicator_seek_bar_width"
+                android:layout_height="@dimen/csc_asp_indicator_seek_bar_height"
+                android:background="@null"
+                android:maxHeight="@dimen/csc_asp_indicator_seek_bar_height"
+                android:paddingStart="@dimen/csc_asp_seekbar_padding"
+                android:paddingEnd="@dimen/csc_asp_seekbar_padding"
+                android:progressDrawable="@drawable/csc_asp_seekbar_selector"
+                android:splitTrack="false"
+                android:thumb="@drawable/csc_asp_band_seek_bar_thumb_n" />
+        </com.hcn.autoeq.view.SeekBarRotator>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_freq_asp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="@dimen/csc_asp_tv_freq_asp_layout_marginTop"
+        android:background="@drawable/csc_asp_btn_freq"
+        android:gravity="center"
+        android:maxLines="1"
+        tools:text="20"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/csc_asp_indicator_seek_tv_size" />
+</LinearLayout>

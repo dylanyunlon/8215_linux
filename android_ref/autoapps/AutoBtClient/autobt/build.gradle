@@ -1,0 +1,62 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.autochips.bluetooth'
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.autochips.bluetooth"
+        minSdk 28
+        targetSdk 31
+        versionCode 1
+        versionName "1.1"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        T5 {
+            storeFile file('../security/platform_t507.jks')
+            storePassword 'hcn2000'
+            keyAlias 't513'
+            keyPassword 'hcn2000'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false//ȡ����������ȻBUG����������
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.T5
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.T5
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = rootProject.getName() +".apk"
+            }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs',includes: ['*.aar','*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.hcn.libs:skin-support:1.0.2@aar'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/BottomMenu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="30dp"
+    android:gravity="center">
+
+
+    <ImageView
+        android:id="@+id/butt_eq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_eq" />
+
+
+    <ImageView
+        android:id="@+id/butt_band"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bottom_button_marin_start"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_band" />
+
+
+    <ImageView
+        android:id="@+id/btn_preset_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bottom_button_marin_start"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_bottom_prev" />
+
+
+    <ImageView
+        android:id="@+id/butt_asps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bottom_button_marin_start"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_scan" />
+
+
+    <ImageView
+        android:id="@+id/btn_preset_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bottom_button_marin_start"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_bottom_next" />
+
+
+    <ImageView
+        android:id="@+id/butt_locdx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bottom_button_marin_start"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_loc" />
+
+
+    <ImageView
+        android:id="@+id/butt_mute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bottom_button_marin_start"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_mute" />
+
+</LinearLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_radiobutton_text_size">32sp</dimen>
+
+    <dimen name="balance_mode_marginStart">80dip</dimen>
+    <dimen name="balance_mode_marginTop">75dip</dimen>
+    <dimen name="eq_balance_marginEnd">160dip</dimen>
+    <dimen name="balance_direct_padding">20dip</dimen>
+    <dimen name="balance_mode_text_size">26sp</dimen>
+
+    <dimen name="dsp_tab_height">65dp</dimen>
+    <dimen name="dsp_tab_text_size">26sp</dimen>
+    <dimen name="dsp_tab_eq_width">130dp</dimen>
+    <dimen name="dsp_tab_surround_width">168dp</dimen>
+    <dimen name="dsp_tab_subwoofer_width">250dp</dimen>
+    <dimen name="dsp_tab_surround_tv_size">32sp</dimen>
+    <dimen name="dsp_source_tv_size">28sp</dimen>
+    <dimen name="dsp_seekbar_subwoofer_width">836dp</dimen>
+    <dimen name="dsp_tv_subwoofer_size">32sp</dimen>
+    <dimen name="dsp_frequency_layout_height">430dp</dimen>
+    <dimen name="dsp_frequency_layout_padding">15dp</dimen>
+    <dimen name="dsp_frequency_bar_width">7dp</dimen>
+    <dimen name="dsp_frequency_gain_tv_size">18sp</dimen>
+    <dimen name="dsp_frequency_bar_tv_size">15sp</dimen>
+
+    <dimen name="asp_reverb_width">84dip</dimen>
+    <dimen name="asp_reverb_height">72dip</dimen>
+    <dimen name="asp_reverb_top">8dip</dimen>
+    <dimen name="asp_reverb_bottom">10dip</dimen>
+    <dimen name="asp_source_text_size">24sp</dimen>
+    <dimen name="asp_balance_width">266dip</dimen>
+    <dimen name="asp_balance_height">266dip</dimen>
+    <dimen name="indicator_seek_bar_width">284dp</dimen>
+    <dimen name="indicator_seek_bar_height">18dp</dimen>
+    <dimen name="indicator_seek_tv_size">20sp</dimen>
+</resources>

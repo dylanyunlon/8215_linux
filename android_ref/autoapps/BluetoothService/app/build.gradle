@@ -1,0 +1,76 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    signingConfigs {
+        //调试时或者有单独更新APK时候使用，发版本集成到系统，不需要签名,由Android.mk签名
+        MT8163 {//MT8321
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../signature/platform_8163.jks')
+            storePassword 'hcnrd123'
+        }
+        UIS8581 {
+            keyAlias 'hcnrd'
+            keyPassword 'hcnrd123'
+            storeFile file('../signature/platform_8581.jks')
+            storePassword 'hcnrd123'
+        }
+    }
+    namespace 'com.hcn.bluetoothservice'
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.hcn.bluetoothservice"
+        minSdk 28
+        targetSdk 31
+        versionCode 2
+        versionName "1.1"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            lintOptions {
+                checkReleaseBuilds false
+                abortOnError false
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.MT8163
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = "BluetoothService.apk"
+            }
+    }
+}
+
+dependencies {
+    implementation 'com.hcn.libs:skin-support-android:1.0.1@aar'
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
+    implementation "androidx.media:media:1.4.0-alpha01"
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        Set<File> fileSet = options.bootstrapClasspath.getFiles()
+        List<File> newFileList =  new ArrayList<>();
+        //"libs/framework.jar" 为相对位置
+        newFileList.add(new File("libs/framework.jar"))
+        newFileList.addAll(fileSet)
+        options.bootstrapClasspath = files(newFileList.toArray())
+    }
+}

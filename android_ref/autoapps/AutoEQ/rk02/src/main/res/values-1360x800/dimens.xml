@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="xt540_asp_reset_marginStart">56dp</dimen>
+    <dimen name="xt540_internal_surround_tv_bassboot_marginEnd">640dp</dimen>
+    <dimen name="xt540_internal_surround_tv_surround_marginEnd">239dp</dimen>
+    <dimen name="balance_mode_marginStart">214dp</dimen>
+    <dimen name="balance_front_layout_marginTop">121dp</dimen>
+    <dimen name="eq_balance_marginEnd">846dp</dimen>
+    <dimen name="eq_balance_marginTop">184dp</dimen>
+    <dimen name="xt540_asp_reset_margintop">38dp</dimen>
+    <dimen name="xt540_layout_asp_band_seekbar_marginTop">80dp</dimen>
+    <integer name="asp_reverb_height">480</integer>
+
+    <dimen name="layout_asp_band_seekbar_margin">52dp</dimen>
+    <dimen name="layout_asp_band_seekbar_padding">32dp</dimen>
+
+</resources>

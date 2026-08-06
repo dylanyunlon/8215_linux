@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--预存频点列表-->
+    <dimen name="PresetViewFreqTextSize">35sp</dimen>
+    <dimen name="PresetViewIndexTextSize">30sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">30sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">25sp</dimen>
+    <dimen name="preset_viewpager_height">118dp</dimen>
+    <dimen name="preset_layout_padding">40dp</dimen>
+    <dimen name="preset_view_padding">12dp</dimen>
+    <dimen name="preset_view_margin">8dp</dimen>
+    <dimen name="preset_layout_child_margin_bottom">12dp</dimen>
+    <dimen name="preset_viewpager_margin_start">100dp</dimen>
+    <dimen name="preset_viewpager_margin_end">100dp</dimen>
+    <dimen name="preset_viewpager_margin_bottom">10dp</dimen>
+    <dimen name="preset_viewpager_padding_bottom">10dp</dimen>
+    <dimen name="preset_viewpager_padding_top">20dp</dimen>
+
+    <!--收藏列表-->
+    <dimen name="btn_preset_list_title_text_size">22sp</dimen>
+    <dimen name="collect_list_item_height">72dp</dimen>
+    <dimen name="btn_collect_list_margin_start">55dp</dimen>
+
+    <!--中间频点显示区域-->
+    <dimen name="digit_freq_text_size">100sp</dimen>
+    <dimen name="digit_freq_middle_text_size">70sp</dimen>
+    <dimen name="digit_freq_small_text_size">50sp</dimen>
+    <dimen name="band_info_btn_text_size">30sp</dimen>
+    <dimen name="band_info_text_size">40sp</dimen>
+    <dimen name="unit_text_size">30sp</dimen>
+    <dimen name="band_info_margin_start">81dp</dimen>
+    <dimen name="band_info_margin_end">50dp</dimen>
+    <dimen name="band_info_margin_bottom">70dp</dimen>
+
+    <!--RDS按钮和状态icon显示区域-->
+    <dimen name="btn_band_margin_start">50dp</dimen>
+    <dimen name="btn_auto_test_width">50dp</dimen>
+
+    <!--RDS信息显示区域-->
+    <dimen name="rds_ps_text_size">20sp</dimen>
+    <dimen name="rds_rt_info_text_size">18sp</dimen>
+    <dimen name="radio_rds_info_margin_top">20dp</dimen>
+    <dimen name="ps_margin_end">0dp</dimen>
+    <dimen name="rds_scrollView_ptys_layout_height">318dp</dimen>
+
+    <!--底部按钮显示区域-->
+    <dimen name="bottom_menu_padding">72dp</dimen>
+    <dimen name="bottom_menu_margin_top">0dp</dimen>
+    <dimen name="bottom_menu_margin">28dp</dimen>
+    <dimen name="bottom_btn_text_size">25sp</dimen>
+
+    <!--键盘输入字体大小-->
+    <dimen name="keyboard_input_text_size">35sp</dimen>
+</resources>

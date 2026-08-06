@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/nine_filter_line_bg_color"/>
+            <corners android:radius="@dimen/x12"/>
+            <size
+                android:height="@dimen/nine_dsp_fragment_band_nine_eq_surface_bg_height"
+                android:width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"/>
+        </shape>
+    </item>
+    <item
+        android:height="@dimen/y2"
+        android:width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:top="@dimen/nine_dsp_fragment_band_nine_dbb_edit_bg_line_top1">
+        <bitmap android:src="@drawable/nine_dbb_bg_line"/>
+    </item>
+    <item
+        android:height="@dimen/y2"
+        android:width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:top="@dimen/nine_dsp_fragment_band_nine_dbb_edit_bg_line_top2">
+        <bitmap android:src="@drawable/nine_dbb_bg_line"/>
+    </item>
+    <item
+        android:height="@dimen/y2"
+        android:width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:top="@dimen/nine_dsp_fragment_band_nine_dbb_edit_bg_line_top3">
+        <bitmap android:src="@drawable/nine_dbb_bg_line"/>
+    </item>
+    <item
+        android:height="@dimen/y2"
+        android:width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:top="@dimen/nine_dsp_fragment_band_nine_dbb_edit_bg_line_top4">
+        <bitmap android:src="@drawable/nine_dbb_bg_line"/>
+    </item>
+</layer-list>

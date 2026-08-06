@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_seekbar_subwoofer_width">1010dp</dimen>
+</resources>

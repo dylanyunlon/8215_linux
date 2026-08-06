@@ -1,0 +1,100 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.AutoEQ" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">#00000000</item>
+        <item name="android:defaultFocusHighlightEnabled">false</item>
+    </style>
+
+    <style name="EqStart" parent="Theme.AutoEQ">
+        <item name="android:windowBackground">@drawable/start_bg</item>
+        <!-- extdsp 模式选择下拉框所需要的样式 -->
+        <item name="android:dropDownListViewStyle">@style/extdsp_band_mode_style</item>
+    </style>
+    <!-- Customize your theme here. -->
+    <style name="RadioButtonStyle">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/radio_button_selector</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:textSize">@dimen/main_radiobutton_text_size</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/main_radiobutton_paddingStart</item>
+    </style>
+
+    <style name="BalanceModeStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:background">@drawable/balance_mode_selector</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="asp_mode_btn">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:layout_width">@dimen/asp_reverb_width</item>
+        <item name="android:layout_height">@dimen/asp_reverb_height</item>
+        <item name="android:layout_marginStart">6dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:marqueeRepeatLimit">1</item>
+        <item name="android:focusable">true</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingBottom">@dimen/asp_reverb_bottom</item>
+        <item name="android:gravity">center_horizontal|bottom</item>
+    </style>
+
+    <style name="asp_mode_btn_port_1">
+        <item name="android:textSize">@dimen/asp_reverb_text_size</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:layout_width">@dimen/asp_reverb_width</item>
+        <item name="android:layout_height">@dimen/asp_reverb_height</item>
+        <item name="android:layout_marginStart">@dimen/asp_mode_btn_port_padding</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingStart">@dimen/asp_reverb_paddingStart</item>
+        <item name="android:paddingEnd">@dimen/asp_reverb_paddingStart</item>
+        <item name="android:paddingBottom">@dimen/asp_reverb_bottom</item>
+        <item name="android:gravity">center_horizontal|bottom</item>
+    </style>
+
+    <style name="asp_mode_btn_port_2">
+        <item name="android:textSize">@dimen/asp_reverb_text_size</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:layout_width">@dimen/asp_reverb_width</item>
+        <item name="android:layout_height">@dimen/asp_reverb_height</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_marginTop">@dimen/asp_reverb_layout_marginTop</item>
+        <item name="android:layout_marginStart">@dimen/asp_mode_btn_port_padding</item>
+        <item name="android:paddingStart">@dimen/asp_reverb_paddingStart</item>
+        <item name="android:paddingEnd">@dimen/asp_reverb_paddingStart</item>
+        <item name="android:paddingBottom">@dimen/asp_reverb_bottom</item>
+        <item name="android:gravity">center_horizontal|bottom</item>
+    </style>
+
+    <style name="dsp_tab_btn">
+        <item name="android:textSize">@dimen/dsp_tab_text_size</item>
+        <item name="android:background">#00000000</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:layout_height">@dimen/dsp_tab_height</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

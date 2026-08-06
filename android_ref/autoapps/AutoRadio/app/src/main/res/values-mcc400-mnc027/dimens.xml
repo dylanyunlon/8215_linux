@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="PresetViewFreqTextSize">24sp</dimen>
+    <dimen name="PresetViewIndexTextSize">16sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">30sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">16sp</dimen>
+    <dimen name="band_info_text_size">34sp</dimen>
+    <dimen name="preset_viewpager_height">230dp</dimen>
+
+    <dimen name="digit_freq_text_size">128sp</dimen>
+    <dimen name="bottom_menu_padding">108dp</dimen>
+    <dimen name="bottom_menu_margin_top">0dp</dimen>
+    <dimen name="preset_layout_padding">40dp</dimen>
+    <dimen name="preset_view_padding">12dp</dimen>
+    <dimen name="preset_layout_child_margin_bottom">12dp</dimen>
+    <item name="ll_china_seekbar_fm_space_layout_weight" format="float" type="dimen" tools:ignore="MissingDefaultResource">1</item>
+    <item name="id_china_seekbar_fm_layout_weight" format="float" type="dimen" tools:ignore="MissingDefaultResource">9</item>
+</resources>

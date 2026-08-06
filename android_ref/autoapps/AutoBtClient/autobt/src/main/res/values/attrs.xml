@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ItemStyle">
+        <attr name="item_title" format="string|reference"></attr>
+        <attr name="item_subtitle" format="string|reference"></attr>
+        <attr name="item_type">
+            <enum name="normal" value="0" />
+            <enum name="choose" value="1" />
+            <enum name="goview" value="2" />
+            <enum name="expand" value="3" />
+        </attr>
+        <attr name="item_state" format="boolean"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="CircleSeekBar">
+        <attr name="circle_max_process" format="integer" />
+        <attr name="circle_cur_process" format="integer" />
+        <attr name="circle_reached_color" format="color" />
+        <attr name="circle_reached_width" format="dimension" />
+        <attr name="circle_reached_has_corner_round" format="boolean"/>
+        <attr name="circle_unreached_color" format="color" />
+        <attr name="circle_unreached_width" format="dimension" />
+        <attr name="circle_pointer_color" format="color" />
+        <attr name="circle_pointer_radius" format="dimension" />
+        <attr name="circle_has_pointer_shadow" format="boolean" />
+        <attr name="circle_has_wheel_shadow" format="boolean" />
+        <attr name="circle_pointer_shadow_radius" format="dimension" />
+        <attr name="circle_shadow_radius" format="dimension" />
+        <attr name="circle_has_cache" format="boolean" />
+        <attr name="circle_can_touch" format="boolean" />
+        <attr name="circle_scroll_only_one_circle" format="boolean" />
+    </declare-styleable>
+</resources>

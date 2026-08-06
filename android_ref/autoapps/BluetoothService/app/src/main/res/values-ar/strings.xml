@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">بلوتوث</string>
+    <string name="str_handsfree_device_connected">جهاز الصوت متصل</string>
+    <string name="str_a2dp_device_connected">جهاز الموسيقى متصل</string>
+    <string name="str_hid_device_connected">جهاز HID متصل</string>
+    <string name="str_income_call_status">مكالمة واردة</string>
+    <string name="str_out_call_status">مكالمة صادرة</string>
+    <string name="str_bt_call_active">المكالمة نشطة</string>
+    <string name="str_bt_call_held">تعليق المكالمة</string>
+    <string name="str_bt_call_waiting">انتظار المكالمة</string>
+    <string name="str_bt_call_abnormal">مكالمة غير طبيعية</string>
+    <string name="str_bt_call_multiparty">مكالمة متعددة الأطراف</string>
+    <string name="str_bt_call_accept_terminate">الإنهاء والموافقة</string>
+    <string name="str_bt_call_accept_held">إغلاق وقبول</string>
+    <string name="str_bt_call_swap">تبديل المكالمة</string>
+    <string name="str_bt_call_merge">دمج مكالمة</string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">غير معروف</string>
+    <string name="time_text">00:00:00</string>
+    </resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="AUTO_STROE_CENTER_POINT_X">400</integer>
+    <integer name="AUTO_STROE_CENTER_POINT_Y">200</integer>
+
+    <integer name="ChinaFMBeginPosFullScreen">40</integer>
+    <integer name="ChinaAMBeginPosFullScreen">40</integer>
+    <integer name="EuropeFMBeginPosFullScreen">40</integer>
+    <integer name="EuropeAMBeginPosFullScreen">40</integer>
+    <integer name="JapanFMBeginPosFullScreen">40</integer>
+    <integer name="JapanAMBeginPosFullScreen">40</integer>
+    <integer name="LatinFMBeginPosFullScreen">40</integer>
+    <integer name="LatinAMBeginPosFullScreen">40</integer>
+    <integer name="USAFMBeginPosFullScreen">40</integer>
+    <integer name="USAAMBeginPosFullScreen">40</integer>
+    <integer name="OIRTFMBeginPosFullScreen">40</integer>
+    <integer name="OIRTAMBeginPosFullScreen">40</integer>
+    <integer name="Latin2FMBeginPosFullScreen">40</integer>
+    <integer name="Latin2AMBeginPosFullScreen">40</integer>
+    <!-- For MultiWindowMode HalfScreen -->
+    <integer name="ChinaFMBeginPosHalfScreen">28</integer>
+    <integer name="ChinaAMBeginPosHalfScreen">28</integer>
+    <integer name="EuropeFMBeginPosHalfScreen">28</integer>
+    <integer name="EuropeAMBeginPosHalfScreen">28</integer>
+    <integer name="JapanFMBeginPosHalfScreen">28</integer>
+    <integer name="JapanAMBeginPosHalfScreen">28</integer>
+    <integer name="LatinFMBeginPosHalfScreen">28</integer>
+    <integer name="LatinAMBeginPosHalfScreen">28</integer>
+    <integer name="USAFMBeginPosHalfScreen">28</integer>
+    <integer name="USAAMBeginPosHalfScreen">28</integer>
+    <integer name="OIRTFMBeginPosHalfScreen">28</integer>
+    <integer name="OIRTAMBeginPosHalfScreen">28</integer>
+    <integer name="Latin2FMBeginPosHalfScreen">28</integer>
+    <integer name="Latin2AMBeginPosHalfScreen">28</integer>
+</resources>

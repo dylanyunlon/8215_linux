@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ToggleButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textSize="@dimen/x28"
+    android:textColor="@color/nine_text_color_n"
+    android:id="@+id/btn_in_grid_item"
+    android:background="@drawable/nine_filter_grid_btn_bg_selector"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textOn=""
+    android:textOff=""
+    android:minWidth="@dimen/x0"
+    android:minHeight="@dimen/y0"
+    android:text=""/>

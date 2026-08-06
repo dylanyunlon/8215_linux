@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">藍牙</string>
+    <string name="str_handsfree_device_connected">免持通話已連接</string>
+    <string name="str_a2dp_device_connected">藍牙音乐已連接</string>
+    <string name="str_hid_device_connected">藍牙輸入設備已連接</string>
+    <string name="str_income_call_status">來電話</string>
+    <string name="str_out_call_status">正在撥打</string>
+    <string name="str_bt_call_active">通話中</string>
+    <string name="str_bt_call_held">保持</string>
+    <string name="str_bt_call_waiting">通話等待</string>
+    <string name="str_bt_call_abnormal">異常通話</string>
+    <string name="str_bt_call_multiparty">電話會議</string>
+    <string name="str_bt_call_accept_terminate">結束并接聽</string>
+    <string name="str_bt_call_accept_held">保持并接聽</string>
+    <string name="str_bt_call_swap">切換通話</string>
+    <string name="str_bt_call_merge">合併通話</string>
+    <string name="str_calling_phone_number">10086</string>
+       
+    <string name="unkown">未知</string>
+    <string name="time_text">00:00:00</string>
+    <string name="str_letter_hicar_tips">HiCar正在運行，不允許連接藍牙</string>
+</resources>

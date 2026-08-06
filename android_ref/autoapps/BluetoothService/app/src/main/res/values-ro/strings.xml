@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth</string>
+    <string name="str_handsfree_device_connected">Dispozitivul handsfree este conectat</string>
+    <string name="str_a2dp_device_connected">Dispozitivul de redare a muzicii este conectat</string>
+    <string name="str_hid_device_connected">Dispozitivul HID este conectat</string>
+    <string name="str_income_call_status">Apel primit</string>
+    <string name="str_out_call_status">Apel efectuat</string>
+    <string name="str_bt_call_active">Apel activ</string>
+    <string name="str_bt_call_held">Apel retinut</string>
+    <string name="str_bt_call_waiting">Apel in asteptare</string>
+    <string name="str_bt_call_abnormal">Apel anormal</string>
+    <string name="str_bt_call_multiparty">Apel cu mai multe persoane</string>
+    <string name="str_bt_call_accept_terminate">Terminati si acceptati</string>
+    <string name="str_bt_call_accept_held">Retinut si acceptat</string>
+    <string name="str_bt_call_swap">Comutati apelul</string>
+    <string name="str_bt_call_merge">Imbinati apelurile</string>
+    
+</resources>

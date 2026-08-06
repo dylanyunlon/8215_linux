@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/extdsp_band_seekbar_layout_width"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:background="@drawable/extdsp_main_background">
+
+    <TextView
+        android:id="@+id/tv_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/extdsp_band_seekbar_tv_freq_layout_height"
+        android:layout_gravity="center_horizontal"
+        android:text=""
+        style="@style/extdsp_scroll_title_style"
+        android:textSize="@dimen/extdsp_band_seekbar_tv_freq_textSize"
+        android:gravity="center"
+        tools:text="100Hz"/>
+
+    <com.hcn.autoeq.view.SeekBarRotator
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <SeekBar
+            android:id="@+id/sb_band"
+            android:layout_width="@dimen/extdsp_band_seekbar_sb_band_layout_width"
+            android:layout_height="@dimen/extdsp_band_seekbar_sb_band_layout_height"
+            android:background="@null"
+            android:maxHeight="@dimen/extdsp_band_seekbar_sb_band_layout_height"
+            android:progressDrawable="@drawable/extdsp_band_seek_bar_bg"
+            android:splitTrack="false"
+            android:thumb="@drawable/extdsp_band_seek_bar_thumb1"
+            android:thumbOffset="0dp" />
+    </com.hcn.autoeq.view.SeekBarRotator>
+
+    <TextView
+        android:id="@+id/tv_gain"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:text="0"
+        android:layout_marginTop="@dimen/extdsp_band_seekbar_tv_gain_layout_marginTop"/>
+
+    <TextView
+        android:id="@+id/tv_q_value"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:text="1"
+        android:layout_marginTop="@dimen/extdsp_band_seekbar_tv_q_value_layout_marginTop"/>
+</LinearLayout>

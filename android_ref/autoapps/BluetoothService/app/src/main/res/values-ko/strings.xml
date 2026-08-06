@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">블루투스 서비스</string>
+    <string name="str_handsfree_device_connected">핸즈프리 장치가 연결됨</string>
+    <string name="str_a2dp_device_connected">음악 장치가 연결되었습니다</string>
+    <string name="str_hid_device_connected">HID 장치가 연결되어 있습니다</string>
+    <string name="str_income_call_status">발신번호</string>
+    <string name="str_out_call_status">발신 콜</string>
+    <string name="str_bt_call_active">통화 중</string>
+    <string name="str_bt_call_held">통화 보류</string>
+    <string name="str_bt_call_waiting">통화 대기</string>
+    <string name="str_bt_call_abnormal">비정상 호출</string>
+    <string name="str_bt_call_multiparty">화상회의</string>
+    <string name="str_bt_call_accept_terminate">종료 및 수락</string>
+    <string name="str_bt_call_accept_held">보류 및 수락</string>
+    <string name="str_bt_call_swap">통화 스왑</string>
+    <string name="str_bt_call_merge">통화 병합</string>
+    <string name="str_calling_phone_number">10086</string>
+
+    <string name="unkown">알 수 없음</string>
+    <string name="time_text">00:00:00</string>
+
+
+    <!--protocol中用到的String-->
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the A2DP profile. -->
+    <string name="bluetooth_profile_a2dp">오디오 소스</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the A2DP profile. -->
+    <string name="bluetooth_profile_a2dp_sink">오디오 수신기</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the PBAP profile. -->
+    <string name="bluetooth_profile_pbap">프로필 공유</string>
+    <string name="bluetooth_profile_headset_client">모바일 클라이언트</string>
+    <string name="bluetooth_profile_pan_NAP">네트워크 액세스 포인트</string>
+
+    <!-- Message for the error dialog when BT pairing fails generically. -->
+    <string name="bluetooth_pairing_error_message">페어링 과정에 문제가 발생했습니다.</string>
+    <string name="bluetooth_pairing_pin_error_message">PIN 또는 암호가 잘못되어 페어링에 문제가 발생했습니다.</string>
+
+    <!-- Message for the error dialog when BT pairing fails because the other device is down. -->
+    <string name="bluetooth_pairing_device_down_error_message">페어링을 연결할 수 없습니다.</string>
+    <!-- Message for the error dialog when BT pairing fails because the other device rejected the pairing. -->
+    <string name="bluetooth_pairing_rejected_error_message">페어링이 거절되었습니다.</string>
+    <string name="bluetooth_unpair_device_message">장치 연결 해제, 휴대폰에서 이 기기 연결을 해제하고 블루투스 장치를 다시 검색해 주세요!</string>
+</resources>

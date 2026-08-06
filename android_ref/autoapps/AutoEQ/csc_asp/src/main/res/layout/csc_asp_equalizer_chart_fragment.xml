@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/csc_asp_tab_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/equalizer_csc_asp_tab_view_layout_marginTop"
+        android:background="@drawable/csc_asp_main_top_bg"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/csc_asp_equalizer_chart_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/equalizer_csc_asp_equalizer_chart_bg_layout_marginTop"
+        android:background="@drawable/csc_asp_equalizer_seekbar_bg"
+        app:layout_constraintEnd_toEndOf="@+id/csc_asp_tab_view"
+        app:layout_constraintStart_toStartOf="@+id/csc_asp_tab_view"
+        app:layout_constraintTop_toBottomOf="@+id/csc_asp_tab_view" />
+
+    <LinearLayout
+        android:id="@+id/ll_text_group"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/equalizer_ll_text_group_layout_height"
+        android:layout_marginEnd="@dimen/equalizer_ll_text_group_layout_marginEnd"
+        android:layout_marginBottom="@dimen/equalizer_ll_text_group_layout_marginBottom"
+        android:gravity="end"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/csc_asp_equalizer_chart_bg"
+        app:layout_constraintEnd_toStartOf="@+id/csc_asp_equalizer_chart_bg"
+        app:layout_constraintTop_toTopOf="@+id/csc_asp_equalizer_chart_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="+15"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/equalizer_ll_text_group_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="+10"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/equalizer_ll_text_group_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="+5"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/equalizer_ll_text_group_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/equalizer_ll_text_group_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-5"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/equalizer_ll_text_group_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-10"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/equalizer_ll_text_group_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-15"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/equalizer_ll_text_group_text" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/hsv_csc_asp_band"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/equalizer_hsv_csc_asp_band_padding"
+        android:layout_marginStart="@dimen/equalizer_hsv_csc_asp_band_marginStart"
+        android:layout_marginTop="@dimen/equalizer_hsv_csc_asp_band_marginTop"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="@id/csc_asp_equalizer_chart_bg"
+        app:layout_constraintStart_toStartOf="@id/csc_asp_equalizer_chart_bg"
+        app:layout_constraintTop_toTopOf="@id/csc_asp_equalizer_chart_bg">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/equalizer_csc_asp_es_freq_layout_height">
+
+                <!-- 此处控件高度要写明，不然不显示 -->
+                <com.auto.hequalizer.EqualizerSurface
+                    android:id="@+id/csc_asp_es_freq"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/equalizer_csc_asp_es_freq_layout_height"
+                    android:background="#00000000"
+                    app:background_color="#00000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.hcn.autoeq.view.SparkView
+                    android:id="@+id/sv_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/equalizer_csc_asp_es_freq_layout_height"
+                    app:layout_constraintEnd_toEndOf="@+id/csc_asp_es_freq"
+                    app:layout_constraintStart_toStartOf="@+id/csc_asp_es_freq"
+                    app:layout_constraintTop_toTopOf="@+id/csc_asp_es_freq" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_csc_asp_band"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/equalizer_ll_csc_asp_band_layout_marginTop"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hsv_csc_asp_band">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/equalizer_q_value_layout_marginBottom"
+        android:gravity="center"
+        android:text="@string/equalizersurface_q_value"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/equalizer_ll_text_group_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ll_text_group"
+        app:layout_constraintTop_toBottomOf="@+id/csc_asp_equalizer_chart_bg" />
+
+    <com.hcn.autoeq.view.CustomAspTopTabView
+        android:id="@+id/first_csc_asp_top_tab"
+        android:layout_width="@dimen/equalizer_csc_asp_top_tab_layout_width"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/equalizer_csc_asp_top_tab_layout_marginTop"
+        android:background="#00000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

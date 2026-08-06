@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="1280dp"
+        android:layout_height="@dimen/x720"
+        android:paddingTop="@dimen/x75"
+        android:background="@color/background"
+        android:orientation="horizontal">
+
+        <!--三方通话服务保持-->
+        <LinearLayout
+            android:id="@+id/call_held_layout"
+            android:layout_width="@dimen/x386"
+            android:layout_height="@dimen/x215"
+            android:layout_marginStart="@dimen/x10"
+            android:layout_marginTop="@dimen/x75"
+            android:background="@drawable/dialog_bg"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="@dimen/x215"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x110"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bt_call_held_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/str_calling_phone_number"
+                    android:textColor="@color/color_bt_call_status"
+                    android:textSize="@dimen/x32" />
+
+                <TextView
+                    android:id="@+id/bt_call_held_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/x25"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/color_bt_call_status"
+                    android:textSize="@dimen/x18" />
+
+                <TextView
+                    android:id="@+id/bt_call_held_state_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/x25"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/str_bt_call_held"
+                    android:textColor="@color/color_bt_call_status"
+                    android:textSize="@dimen/x32" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--居中单显-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--图像，号码，时间，状态-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x254"
+                android:layout_marginTop="@dimen/x85"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/bt_calling_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/x310"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/skpad_contacts" />
+
+                <LinearLayout
+                    android:layout_width="@dimen/x410"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/bt_calling_phone_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/y5"
+                        android:layout_weight="1"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:text="@string/unkown"
+                        android:textColor="@color/color_bt_call_status"
+                        android:textSize="@dimen/x42" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/bt_calling_time_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/time_text"
+                            android:textColor="@color/color_bt_call_status"
+                            android:textSize="@dimen/x42"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/bt_calling_status_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_toEndOf="@+id/bt_calling_time_text"
+                            android:gravity="center"
+                            android:text="@string/str_out_call_status"
+                            android:textColor="@color/color_bt_call_status"
+                            android:textSize="@dimen/x42" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--按键控制和键盘-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!--键盘-->
+                <LinearLayout
+                    android:id="@+id/calling_softkeypad"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#AA000000"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/x35"
+                        android:layout_marginEnd="@dimen/x200"
+                        android:background="@android:color/black"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/calling_input_et"
+                            android:layout_width="@dimen/x646"
+                            android:layout_height="@dimen/x82"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@android:color/white"
+                            android:singleLine="true"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/x42" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/x10"
+                            android:orientation="vertical">
+
+                            <TableLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layoutDirection="ltr"
+                                android:orientation="horizontal">
+
+                                <TableRow
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <Button
+                                        android:id="@+id/btn_calling_one"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:background="@drawable/skpad_one" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_two"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/skpad_two" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_three"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/skpad_three" />
+                                </TableRow>
+
+                                <TableRow
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/x5">
+
+                                    <Button
+                                        android:id="@+id/btn_calling_four"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:background="@drawable/skpad_four" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_five"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/skpad_five" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_six"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/skpad_six" />
+                                </TableRow>
+
+                                <TableRow
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/x5">
+
+                                    <Button
+                                        android:id="@+id/btn_calling_seven"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:background="@drawable/skpad_seven" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_eight"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/skpad_eight" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_nine"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/skpad_nine" />
+                                </TableRow>
+
+                                <TableRow
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/x5">
+
+                                    <Button
+                                        android:id="@+id/btn_calling_asterisk"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:background="@drawable/skpad_star" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_zero"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/skpad_zero" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_pound"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/skpad_sharp" />
+                                </TableRow>
+
+                                <TableRow
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/x5">
+
+                                    <Button
+                                        android:id="@+id/btn_calling_hungup"
+                                        android:layout_width="@dimen/x424"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_span="2"
+                                        android:background="@drawable/selector_keybraod_hangup_full" />
+
+                                    <Button
+                                        android:id="@+id/btn_calling_hidkeybroad"
+                                        android:layout_width="@dimen/x200"
+                                        android:layout_height="@dimen/x82"
+                                        android:layout_marginLeft="@dimen/x23"
+                                        android:background="@drawable/selector_keybroad_hide" />
+                                </TableRow>
+                            </TableLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--控制按键-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/x425"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_hangup"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:background="@drawable/skpad_hangup" />
+
+                    <Button
+                        android:id="@+id/btn_held"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x60"
+                        android:background="@drawable/bg_call_held_btn"
+                        android:enabled="false"
+                        android:alpha="0.3"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_swap"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x60"
+                        android:background="@drawable/bg_call_swap_btn"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_voiceswitch_car"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x60"
+                        android:background="@drawable/skpad_bt"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_voiceswitch_phone"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x60"
+                        android:background="@drawable/skpad_phone"
+                        android:visibility="gone" />
+
+                    <!--单通话接听按钮，只在单通来电显示-->
+                    <Button
+                        android:id="@+id/btn_answer"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x153"
+                        android:background="@drawable/call"
+                        android:visibility="gone" />
+
+                    <!--三方通话接听按钮，只在来电时显示-->
+                    <Button
+                        android:id="@+id/btn_accept_held"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x153"
+                        android:background="@drawable/call"
+                        android:visibility="gone" />
+
+                    <!--未使用的按钮-->
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/x60"
+                        android:visibility="gone">
+
+                        <Button
+                            android:id="@+id/btn_accept_terminate"
+                            android:layout_width="@dimen/x93"
+                            android:layout_height="@dimen/x93"
+                            android:background="@drawable/bg_call_accepted_terminate_btn"
+                            android:visibility="gone" />
+
+
+                        <Button
+                            android:id="@+id/btn_merge"
+                            android:layout_width="@dimen/x93"
+                            android:layout_height="@dimen/x93"
+                            android:background="@drawable/bg_call_merge_btn"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/btn_disable_mic"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x60"
+                        android:background="@drawable/skpad_mic_disable"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_softkeypad"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x60"
+                        android:background="@drawable/skpad_keybroad"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_add"
+                        android:layout_width="@dimen/x93"
+                        android:layout_height="@dimen/x93"
+                        android:layout_marginStart="@dimen/x60"
+                        android:background="@drawable/bg_call_add_btn"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!--不需要的号码显示-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y10"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/bt_calling_phone_number"
+                android:layout_width="@dimen/x150"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/str_calling_phone_number"
+                android:textColor="@color/color_bt_call_status"
+                android:textSize="@dimen/y23"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/bt_calling_state_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/str_out_call_status"
+                android:textColor="@color/color_bt_call_status"
+                android:textSize="@dimen/y20"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

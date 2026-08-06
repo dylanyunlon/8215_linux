@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="xt540_layout_asp_band_seekbar_marginTop">45dp</dimen>
+    <dimen name="eq_balance_marginTop">100dp</dimen>
+
+</resources>

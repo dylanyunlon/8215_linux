@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@drawable/extdsp_main_background">
+
+    <ImageView
+        android:id="@+id/iv_dbb_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_car"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/dbb_car_layout_Start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_lf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_lf_n"
+        android:layout_marginStart="@dimen/dbb_speaker_layout_Start"
+        android:layout_marginBottom="@dimen/dbb_speaker_layout_Bottom"
+        app:layout_constraintBottom_toTopOf="@+id/iv_dbb_speaker_rr"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_rf_n"
+        android:layout_marginStart="@dimen/dbb_speaker_layout_Start2"
+        app:layout_constraintStart_toEndOf="@+id/iv_dbb_speaker_lf"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_speaker_lf" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_lr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_lr_n"
+        app:layout_constraintBottom_toTopOf="@+id/iv_dbb_speaker_subwoofer"
+        app:layout_constraintStart_toStartOf="@+id/iv_dbb_speaker_lf" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_rr_n"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dbb_speaker_rf"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_speaker_lr" />
+
+    <ImageView
+        android:id="@+id/iv_dbb_speaker_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_speaker_subwoofer_n"
+        android:layout_marginBottom="@dimen/iv_dbb_speaker_subwoofer_layout_Bottom"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dbb_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dbb_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_dbb_car" />
+
+    <RadioGroup
+        android:id="@+id/rg_dbb_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/dbb_rg_dbb_mode_layout_Start"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dbb_car"
+        app:layout_constraintStart_toEndOf="@+id/iv_dbb_speaker_rr"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_car">
+
+        <RadioButton
+            android:id="@+id/rb_dbb_mode_fl_fr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dbb_rg_dbb_mode_layout_Top"
+            android:background="@drawable/extdsp_dbb_mode_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/dbb_fl_fr"
+            android:textColor="@drawable/radio_text_selector"
+            android:textSize="@dimen/extdsp_fragment_dbb_rb_dbb_mode_fl_fr_textSize" />
+
+        <RadioButton
+            android:id="@+id/rb_dbb_mode_rl_rr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/extdsp_fragment_dbb_rb_dbb_mode_rl_rr_layout_marginTop"
+            android:background="@drawable/extdsp_dbb_mode_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/dbb_rl_rr"
+            android:textColor="@drawable/radio_text_selector"
+            android:textSize="@dimen/extdsp_fragment_dbb_rb_dbb_mode_fl_fr_textSize" />
+
+        <RadioButton
+            android:id="@+id/rb_dbb_mode_subwoofer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/extdsp_fragment_dbb_rb_dbb_mode_rl_rr_layout_marginTop"
+            android:background="@drawable/extdsp_dbb_mode_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/str_subwoofer"
+            android:textColor="@drawable/radio_text_selector"
+            android:textSize="@dimen/extdsp_fragment_dbb_rb_dbb_mode_fl_fr_textSize" />
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/iv_dbb_touch_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_dbb_touch_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/dbb_iv_dbb_touch_bg_layout_End"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.ExtDspDbbView
+        android:id="@+id/v_dbb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/extdsp_fragment_dbb_v_dbb_layout_marginStart"
+        android:layout_marginBottom="@dimen/extdsp_fragment_dbb_v_dbb_layout_marginBottom"
+        android:background="@drawable/extdsp_dbb_touch_fg"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dbb_touch_bg"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dbb_touch_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_dbb_touch_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_dbb_touch_bg" />
+
+    <Button
+        android:id="@+id/btn_reset_dbb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/extdsp_fragment_dbb_btn_reset_dbb_layout_marginEnd"
+        android:layout_marginTop="@dimen/dbb_btn_reset_dbb_layout_Top"
+        android:background="@drawable/extdsp_band_reset_selector"
+        app:layout_constraintTop_toBottomOf="@+id/iv_dbb_touch_bg"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

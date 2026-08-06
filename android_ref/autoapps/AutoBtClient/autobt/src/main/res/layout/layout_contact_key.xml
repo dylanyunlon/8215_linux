@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingLeft="@dimen/dp_25"
+    android:orientation="vertical">
+
+    <!--abcde-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_contacts_key_a"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_a"
+            android:background="@drawable/selector_contact_key_a" />
+
+        <Button
+            android:id="@+id/id_contacts_key_b"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_b"
+            android:background="@drawable/selector_contact_key_b" />
+
+        <Button
+            android:id="@+id/id_contacts_key_c"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_c"
+            android:background="@drawable/selector_contact_key_c" />
+
+        <Button
+            android:id="@+id/id_contacts_key_d"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_d"
+            android:background="@drawable/selector_contact_key_d" />
+
+        <Button
+            android:id="@+id/id_contacts_key_e"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_e"
+            android:background="@drawable/selector_contact_key_e" />
+
+    </LinearLayout>
+
+    <!--fghij-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_contact_key_padding"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_contacts_key_f"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_f"
+            android:background="@drawable/selector_contact_key_f" />
+
+        <Button
+            android:id="@+id/id_contacts_key_g"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_g"
+            android:background="@drawable/selector_contact_key_g" />
+
+        <Button
+            android:id="@+id/id_contacts_key_h"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_h"
+            android:background="@drawable/selector_contact_key_h" />
+
+        <Button
+            android:id="@+id/id_contacts_key_i"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_i"
+            android:background="@drawable/selector_contact_key_i" />
+
+        <Button
+            android:id="@+id/id_contacts_key_j"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_j"
+            android:background="@drawable/selector_contact_key_j" />
+
+    </LinearLayout>
+
+    <!--klmno-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_contact_key_padding"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_contacts_key_k"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_k"
+            android:background="@drawable/selector_contact_key_k" />
+
+        <Button
+            android:id="@+id/id_contacts_key_l"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_l"
+            android:background="@drawable/selector_contact_key_l" />
+
+        <Button
+            android:id="@+id/id_contacts_key_m"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_m"
+            android:background="@drawable/selector_contact_key_m" />
+
+        <Button
+            android:id="@+id/id_contacts_key_n"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_n"
+            android:background="@drawable/selector_contact_key_n" />
+
+        <Button
+            android:id="@+id/id_contacts_key_o"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_o"
+            android:background="@drawable/selector_contact_key_o" />
+
+    </LinearLayout>
+
+    <!--pqrst-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_contact_key_padding"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_contacts_key_p"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_p"
+            android:background="@drawable/selector_contact_key_p" />
+
+        <Button
+            android:id="@+id/id_contacts_key_q"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_q"
+            android:background="@drawable/selector_contact_key_q" />
+
+        <Button
+            android:id="@+id/id_contacts_key_r"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_r"
+            android:background="@drawable/selector_contact_key_r" />
+
+        <Button
+            android:id="@+id/id_contacts_key_s"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_s"
+            android:background="@drawable/selector_contact_key_s" />
+
+        <Button
+            android:id="@+id/id_contacts_key_t"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_t"
+            android:background="@drawable/selector_contact_key_t" />
+
+    </LinearLayout>
+
+    <!--uvwxy-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_contact_key_padding"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_contacts_key_u"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_u"
+            android:background="@drawable/selector_contact_key_u" />
+
+        <Button
+            android:id="@+id/id_contacts_key_v"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_v"
+            android:background="@drawable/selector_contact_key_v" />
+
+        <Button
+            android:id="@+id/id_contacts_key_w"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_w"
+            android:background="@drawable/selector_contact_key_w" />
+
+        <Button
+            android:id="@+id/id_contacts_key_x"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_x"
+            android:background="@drawable/selector_contact_key_x" />
+
+        <Button
+            android:id="@+id/id_contacts_key_y"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_y"
+            android:background="@drawable/selector_contact_key_y" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_contact_key_padding"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_contacts_key_z"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_z"
+            android:background="@drawable/selector_contact_key_z" />
+
+        <Button
+            android:id="@+id/id_contacts_key_shape"
+            style="@style/Style_Contacts_Key"
+            android:tag="@string/txt_sharp"
+            android:background="@drawable/selector_contact_key_shape" />
+
+    </LinearLayout>
+
+</LinearLayout>

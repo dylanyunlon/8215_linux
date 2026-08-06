@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_fydsp_attenuate_seekbar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:background="@drawable/fydsp_main_background">
+
+    <com.hcn.autoeq.view.MarqueeTextView
+        android:id="@+id/tv_attenuate_top_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_attenuate_title_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/sbr_attenuate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="测试文字测试文字测试文字" />
+
+    <com.hcn.autoeq.view.SeekBarRotator
+        android:id="@+id/sbr_attenuate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/fydsp_seekbar_rotator_margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_attenuate_top_text">
+
+        <SeekBar
+            android:id="@+id/sb_attenuate"
+            android:layout_width="@dimen/fydsp_attenuate_seekbar_height"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fydsp_seekbar_margin"
+            android:background="@null"
+            android:maxHeight="@dimen/fydsp_attenuate_seekbar_width"
+            android:minHeight="@dimen/fydsp_attenuate_seekbar_width"
+            android:paddingStart="@dimen/fydsp_seekbar_padding"
+            android:paddingEnd="@dimen/fydsp_seekbar_padding"
+            android:progressDrawable="@drawable/fydsp_attenuate_seek_bar_bg"
+            android:splitTrack="false"
+            android:thumb="@drawable/fydsp_attenuate_seek_bar_thumb"
+            android:thumbOffset="@dimen/fydsp_seekbar_thumb_offset" />
+    </com.hcn.autoeq.view.SeekBarRotator>
+
+    <!-- 左边文字 -->
+    <TextView
+        android:id="@+id/tv_left_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="0"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_left_6"
+        app:layout_constraintTop_toTopOf="@+id/sbr_attenuate" />
+
+    <TextView
+        android:id="@+id/tv_left_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-3"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_left_3"
+        app:layout_constraintEnd_toEndOf="@+id/tv_left_6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_left_1" />
+
+    <TextView
+        android:id="@+id/tv_left_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-6"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_left_4"
+        app:layout_constraintEnd_toEndOf="@+id/tv_left_6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_left_2" />
+
+    <TextView
+        android:id="@+id/tv_left_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-9"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_left_5"
+        app:layout_constraintEnd_toEndOf="@+id/tv_left_6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_left_3" />
+
+    <TextView
+        android:id="@+id/tv_left_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-12"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_left_6"
+        app:layout_constraintEnd_toEndOf="@+id/tv_left_6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_left_4" />
+
+    <TextView
+        android:id="@+id/tv_left_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fydsp_attenuate_tv_right_layout_margin"
+        android:layout_marginBottom="4dp"
+        android:text="-15"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sbr_attenuate"
+        app:layout_constraintEnd_toStartOf="@+id/sbr_attenuate" />
+
+    <!-- 右边文字 -->
+    <TextView
+        android:id="@+id/tv_right_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="0"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_right_6"
+        app:layout_constraintTop_toTopOf="@+id/sbr_attenuate" />
+
+    <TextView
+        android:id="@+id/tv_right_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-3"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_right_3"
+        app:layout_constraintStart_toStartOf="@+id/tv_right_6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_right_1" />
+
+    <TextView
+        android:id="@+id/tv_right_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-6"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_right_4"
+        app:layout_constraintStart_toStartOf="@+id/tv_right_6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_right_2" />
+
+    <TextView
+        android:id="@+id/tv_right_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-9"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_right_5"
+        app:layout_constraintStart_toStartOf="@+id/tv_right_6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_right_3" />
+
+    <TextView
+        android:id="@+id/tv_right_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-12"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_right_6"
+        app:layout_constraintStart_toStartOf="@+id/tv_right_6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_right_4" />
+
+    <TextView
+        android:id="@+id/tv_right_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fydsp_attenuate_tv_right_layout_margin"
+        android:layout_marginBottom="4dp"
+        android:text="-15"
+        android:textColor="#9EC3E3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sbr_attenuate"
+        app:layout_constraintStart_toEndOf="@+id/sbr_attenuate" />
+
+    <CheckBox
+        android:id="@+id/cb_mute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fydsp_attenuate_cb_mute_layout_marginTop"
+        android:background="@android:color/transparent"
+        android:button="@drawable/fydsp_attenuate_checkbox_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sbr_attenuate" />
+
+    <CheckBox
+        android:id="@+id/cb_invert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fydsp_attenuate_cb_invert_layout_marginTop"
+        android:background="@android:color/transparent"
+        android:button="@drawable/fydsp_attenuate_checkbox_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_mute" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

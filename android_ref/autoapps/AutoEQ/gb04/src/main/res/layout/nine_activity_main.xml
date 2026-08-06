@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:id="@+id/main_layout"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RadioGroup
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/rg_main"
+        android:background="@drawable/nine_main_radio_group_bg"
+        android:padding="@dimen/nine_activity_main_rg_main_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/nine_activity_main_rg_main_marginLeft"
+        android:layout_marginBottom="@dimen/nine_activity_main_rg_main_marginBottom"
+        android:layout_marginTop="@dimen/nine_activity_main_rg_main_marginTop">
+        <RadioButton
+            android:id="@+id/rb_nine_dts"
+            android:background="@drawable/nine_main_radio_bg_selector1"
+            android:paddingBottom="@dimen/nine_main_radio_paddingBottom"
+            android:text="@string/nine_radio_dts"
+            android:visibility="gone"
+            style="@style/nine_radio_button_style"/>
+        <RadioButton
+            android:id="@+id/rb_nine_eq"
+            android:tag="nine_dsp_band_fragment"
+            android:background="@drawable/nine_main_radio_bg_selector2"
+            android:paddingBottom="@dimen/nine_main_radio_paddingBottom"
+            android:text="@string/nine_btn_radio_eq"
+            style="@style/nine_radio_button_style"/>
+        <RadioButton
+            android:id="@+id/rb_nine_model"
+            android:background="@drawable/nine_main_radio_bg_selector3"
+            android:paddingBottom="@dimen/nine_main_radio_paddingBottom"
+            android:layout_marginTop="@dimen/nine_activity_main_rb_nine_eq_marginTop"
+            android:text="@string/nine_btn_radio_balance"
+            style="@style/nine_radio_button_style"/>
+        <RadioButton
+            android:id="@+id/rb_nine_surround"
+            android:background="@drawable/nine_main_radio_bg_selector4"
+            android:paddingBottom="@dimen/nine_main_radio_paddingBottom"
+            android:layout_marginTop="@dimen/nine_activity_main_rb_nine_eq_marginTop"
+            android:text="@string/main_tab_title_surround"
+            style="@style/nine_radio_button_style"/>
+        <RadioButton
+            android:id="@+id/rb_nine_filter"
+            android:background="@drawable/nine_main_radio_bg_selector5"
+            android:paddingBottom="@dimen/nine_main_radio_paddingBottom"
+            android:layout_marginTop="@dimen/nine_activity_main_rb_nine_eq_marginTop"
+            android:text="@string/nine_btn_radio_filter"
+            style="@style/nine_radio_button_style"/>
+    </RadioGroup>
+
+    <FrameLayout
+        android:layout_width="@dimen/x0"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <FrameLayout
+            android:id="@+id/eq_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <!-- for debug tv-->
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:text=""
+            android:visibility="gone"/>
+    </FrameLayout>
+
+</LinearLayout>

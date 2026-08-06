@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/device_item"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/y45"
+    android:layout_marginStart="@dimen/x5"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/y1">
+
+    <LinearLayout
+        android:id="@+id/device_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/x3"
+        android:paddingBottom="@dimen/y1">
+
+        <TextView
+            android:id="@+id/item_remote_device_name"
+            android:layout_width="@dimen/x290"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_blue_dark"
+            android:textSize="@dimen/x21" />
+
+        <TextView
+            android:id="@+id/item_remote_connect_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_blue_dark"
+            android:textSize="@dimen/x26"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/item_remote_device_macaddr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/x26"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/device_select"
+            android:layout_width="@dimen/x48"
+            android:layout_height="@dimen/x48"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/x8"
+            android:background="@drawable/set_rb_off" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_config_profile"
+        android:layout_width="@dimen/x48"
+        android:layout_height="@dimen/x48"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/x10"
+        android:layout_marginEnd="@dimen/x20"
+        android:background="@drawable/more" />
+
+</LinearLayout>

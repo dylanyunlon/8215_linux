@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_freq_curve_width_1">0dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">0dp</dimen>
+    <dimen name="asp_reverb_width">146dip</dimen>
+    <dimen name="asp_reverb_height">74dip</dimen>
+    <dimen name="asp_reverb_bottom">7dip</dimen>
+    <dimen name="balance_mode_marginStart">340dip</dimen>
+    <dimen name="eq_balance_marginEnd">317dip</dimen>
+    <dimen name="extdsp_main_rb_extdsp_band_textSize">30sp</dimen>
+    <dimen name="main_radiobutton_text_size">44sp</dimen>
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--TOP = 48,BOTTOM = 80,CENTER_HORIZONTAL = 1,CENTER_VERTICAL = 16-->
+    <integer name="call_view_window_gravity">17</integer>
+    <integer name="call_view_window_type">2001</integer>
+    <!--WindowManager.LayoutParams.TYPE_DRAG = FIRST_SYSTEM_WINDOW+16-->
+    <integer name="call_view_mini_window_type">2014</integer>
+    <!-- MATCH_PARENT=-1,WRAP_CONTENT=-2 -->
+    <integer name="call_view_window_width">-1</integer>
+    <integer name="call_view_window_height">-1</integer>
+
+    <!-- MATCH_PARENT=-1,WRAP_CONTENT=-2 -->
+    <integer name="call_view_mini_window_width">-1</integer>
+    <integer name="call_view_mini_window_height">-1</integer>
+    <!--WindowManager.LayoutParams.gravity=Gravity.CENTER_HORIZONTAL | Gravity.TOP-->
+    <!--TOP = 48,BOTTOM = 80,CENTER_HORIZONTAL = 1,CENTER_VERTICAL = 16-->
+    <integer name="call_view_mini_window_gravity">48</integer>
+</resources>

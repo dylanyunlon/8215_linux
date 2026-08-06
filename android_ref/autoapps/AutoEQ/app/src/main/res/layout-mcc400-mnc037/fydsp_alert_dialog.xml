@@ -1,0 +1,72 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:background="@drawable/fydsp_main_background">
+
+    <ImageView
+        android:id="@+id/iv_alert_dialog_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_alert_dialog_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/fydsp_alert_dialog_title_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/tv_content"
+        app:layout_constraintEnd_toEndOf="@+id/iv_alert_dialog_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_alert_dialog_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_alert_dialog_bg"
+        tools:text="这是标题" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="@dimen/fydsp_alert_dialog_content_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/btn_ok"
+        app:layout_constraintEnd_toEndOf="@+id/iv_alert_dialog_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_alert_dialog_bg"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:text="这是内容" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_alert_dialog_btn_ok_selector"
+        android:text="@android:string/ok"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_alert_dialog_btn_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_alert_dialog_bg"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
+        app:layout_constraintStart_toStartOf="@+id/iv_alert_dialog_bg"
+        app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_alert_dialog_btn_cancel_selector"
+        android:text="@android:string/cancel"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_alert_dialog_btn_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_ok"
+        app:layout_constraintEnd_toEndOf="@+id/iv_alert_dialog_bg"
+        app:layout_constraintStart_toEndOf="@+id/btn_ok"
+        app:layout_constraintTop_toTopOf="@+id/btn_ok" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

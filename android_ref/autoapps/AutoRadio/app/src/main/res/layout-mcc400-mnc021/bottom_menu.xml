@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/BottomMenu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:paddingStart="@dimen/bottom_menu_padding"
+    android:paddingEnd="@dimen/bottom_menu_padding"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/butt_band"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_band" />
+
+    <ImageView
+        android:id="@+id/btn_preset_up"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_bottom_prev" />
+
+    <ImageView
+        android:id="@+id/btn_preset_down"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_bottom_next" />
+
+    <ImageView
+        android:id="@+id/butt_asps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_scan" />
+
+    <ImageView
+        android:id="@+id/butt_eq"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_eq" />
+
+    <ImageView
+        android:id="@+id/butt_setting"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_setting" />
+
+</LinearLayout>

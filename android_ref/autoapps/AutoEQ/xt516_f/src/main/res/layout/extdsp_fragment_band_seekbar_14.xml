@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="0"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_num0" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="1"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_num1" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="2"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_80" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="3"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_100" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="4"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_125" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="5"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_200" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="6"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_400" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="7"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_600" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="8"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_800" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="9"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_num9" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="10"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_num10" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num11"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="11"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_num11" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num12"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="12"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_num12" />
+
+    <com.hcn.autoeq.view.ExtDspBandSeekBar
+        android:id="@+id/band_num13"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:tag="13"
+        app:band_seek_bar_enable_qvalue="1"
+        app:band_seek_bar_height="@dimen/extdsp_band_seekbar_height"
+        app:band_seek_bar_top_name="@string/band_num13" />
+</LinearLayout>

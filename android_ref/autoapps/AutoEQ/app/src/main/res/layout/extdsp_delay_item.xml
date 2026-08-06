@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_extdsp_delay_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- 注意：此控件的自定义属性值已经在 java 代码中写死 -->
+    <com.hcn.autoeq.view.RoundKnobSeekBar
+        android:id="@+id/rksb_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_round_knob_seek_bar_bg"
+        app:arc_open_angle="94"
+        app:arc_width="@dimen/extdsp_round_knob_seek_bar_arc_width"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:pic_transparent_distance="@integer/extdsp_round_knob_seek_bar_pic_transparent_distance" />
+
+    <ImageView
+        android:id="@+id/iv_thumb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_round_knob_seek_bar_thumb"
+        app:layout_constraintBottom_toBottomOf="@+id/rksb_main"
+        app:layout_constraintEnd_toEndOf="@+id/rksb_main"
+        app:layout_constraintStart_toStartOf="@+id/rksb_main"
+        app:layout_constraintTop_toTopOf="@+id/rksb_main" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extdsp_tv_time_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/rksb_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="20 ms" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extdsp_tv_time_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time"
+        tools:text="680 cm" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

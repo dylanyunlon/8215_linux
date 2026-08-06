@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="radio_text_color_select_p">#2CE2FD</color>
+    <color name="radio_text_color_select_n">@android:color/white</color>
+    <color name="ext_dsp_dbb_view_freq_curve_color">#2CE2FD</color>
+    <color name="color_black">#2F3133</color>
+    <color name="color_gridlines">#2F3133</color>
+    <color name="shell_Color">@color/color_black</color>
+</resources>

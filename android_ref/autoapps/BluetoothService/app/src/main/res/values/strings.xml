@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">BluetoothService</string>
+    <string name="str_handsfree_device_connected">Handsfree device is connected</string>
+    <string name="str_a2dp_device_connected">Music device is connected</string>
+    <string name="str_hid_device_connected">HID device is connected</string>
+    <string name="str_income_call_status">Incoming Call</string>
+    <string name="str_out_call_status">Outgoing Call</string>
+    <string name="str_bt_call_active">Call Active</string>
+    <string name="str_bt_call_held">Call Held</string>
+    <string name="str_bt_call_waiting">Call Waiting</string>
+    <string name="str_bt_call_abnormal">Abnormal Call</string>
+    <string name="str_bt_call_multiparty">Multiparty Call</string>
+    <string name="str_bt_call_accept_terminate">Terminate And Accept</string>
+    <string name="str_bt_call_accept_held">Held And Accept</string>
+    <string name="str_bt_call_swap">Swap Call</string>
+    <string name="str_bt_call_merge">Merge Call</string>
+    <string name="str_calling_phone_number">10086</string>
+
+    <string name="unkown">UnKnown</string>
+    <string name="time_text">00:00:00</string>
+    <string name="str_letter_hicar_tips">HiCar is running,bluetooth operation is not allowed.</string>
+
+    <!--protocol中用到的String-->
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the A2DP profile. -->
+    <string name="bluetooth_profile_a2dp">Audio source</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the A2DP profile. -->
+    <string name="bluetooth_profile_a2dp_sink">Audio receiver</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the PBAP profile. -->
+    <string name="bluetooth_profile_pbap">Contact sharing</string>
+    <string name="bluetooth_profile_headset_client">Phone client</string>
+    <string name="bluetooth_profile_pan_NAP">Network Access Point</string>
+
+    <!-- Message for the error dialog when BT pairing fails generically. -->
+    <string name="bluetooth_pairing_error_message">There was a problem pairing with </string>
+    <string name="bluetooth_pairing_pin_error_message">There was a problem pairing with because the PIN or Passkey is incorrect.</string>
+
+    <!-- Message for the error dialog when BT pairing fails because the other device is down. -->
+    <string name="bluetooth_pairing_device_down_error_message">Cannot establish communication with </string>
+    <!-- Message for the error dialog when BT pairing fails because the other device rejected the pairing. -->
+    <string name="bluetooth_pairing_rejected_error_message">Pairing rejected by .</string>
+    <string name="bluetooth_unpair_device_message">Unpair Device , Please Unpair this machine in Phone and scan Bluetooth Device again!</string>
+</resources>

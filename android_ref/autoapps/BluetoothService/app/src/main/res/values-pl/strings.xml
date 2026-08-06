@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Usługa Bluetooth</string>
+  <string name="str_handsfree_device_connected">Urządzenie głośnomówiące jest podłączone</string>
+  <string name="str_a2dp_device_connected">Urządzenie muzyczne jest podłączone</string>
+  <string name="str_hid_device_connected">Urządzenie HID jest podłączone</string>
+  <string name="str_income_call_status">Połączenie przychodzące</string>
+  <string name="str_out_call_status">Połączenie wychodzące</string>
+  <string name="str_bt_call_active">Aktywna rozmowa</string>
+  <string name="str_bt_call_held">Rozmowa wstrzymana</string>
+  <string name="str_bt_call_waiting">Rozmowa oczekująca</string>
+  <string name="str_bt_call_abnormal">Nietypowe połączenie</string>
+  <string name="str_bt_call_multiparty">Połączenie wielostronne</string>
+  <string name="str_bt_call_accept_terminate">Zakończ i zaakceptuj</string>
+  <string name="str_bt_call_accept_held">Trzymaj i akceptuj</string>
+  <string name="str_bt_call_swap">Zamień rozmowę</string>
+  <string name="str_bt_call_merge">Scal Połączenie</string>
+  <string name="str_calling_phone_number">10086</string>
+  <string name="unkown">Nieznany</string>
+  <string name="time_text">00:00:00</string>
+  <string name="str_letter_hicar_tips">HiCar jest uruchomiony, działanie Bluetooth jest niedozwolone.</string>
+  <string name="bluetooth_profile_a2dp">Źródło dźwięku</string>
+  <string name="bluetooth_profile_a2dp_sink">Odbiornik audio</string>
+  <string name="bluetooth_profile_pbap">Udostępnianie kontaktów</string>
+  <string name="bluetooth_profile_headset_client">Klient telefoniczny</string>
+  <string name="bluetooth_profile_pan_NAP">Punkt dostępu do sieci</string>
+  <string name="bluetooth_pairing_error_message">Wystąpił problem z parowaniem z</string>
+  <string name="bluetooth_pairing_pin_error_message">Wystąpił problem z parowaniem, ponieważ kod PIN lub klucz dostępu jest nieprawidłowy.</string>
+  <string name="bluetooth_pairing_device_down_error_message">Nie można nawiązać komunikacji z</string>
+  <string name="bluetooth_pairing_rejected_error_message">Parowanie odrzucone przez </string>
+  <string name="bluetooth_unpair_device_message">Rozparuj urządzenie, rozparuj urządzenie w telefonie i ponownie przeskanuj urządzenia Bluetooth!</string>
+</resources>

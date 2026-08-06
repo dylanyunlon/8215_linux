@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extdsp_ll_band_minWidth">1820dp</dimen>
+
+    <dimen name="extdsp_hlpf_rsb_width">1553dp</dimen>
+    <dimen name="extdsp_hlpf_rsb_height">212dp</dimen>
+    <dimen name="extdsp_sp_reverb_layout_marginStart">32dp</dimen>
+    <dimen name="extdsp_btn_reset_band_layout_marginEnd">32dp</dimen>
+</resources>

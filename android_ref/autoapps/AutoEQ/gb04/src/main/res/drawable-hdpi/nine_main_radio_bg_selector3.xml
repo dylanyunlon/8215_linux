@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:state_checked="false">
+        <layer-list>
+            <item>
+                <!-- 背景图 -->
+                <bitmap android:gravity="center" android:src="@drawable/nine_main_radio_bg_p" />
+            </item>
+            <item android:bottom="@dimen/nine_main_radio_bg_selector_bottom">
+                <bitmap android:gravity="center|bottom" android:src="@drawable/icon_nine_main_model_p" />
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_checked="true">
+        <layer-list>
+            <item>
+                <!-- 背景图 -->
+                <bitmap android:gravity="center" android:src="@drawable/nine_main_radio_bg_p" />
+            </item>
+            <item android:bottom="@dimen/nine_main_radio_bg_selector_bottom">
+                <bitmap android:gravity="center|bottom" android:src="@drawable/icon_nine_main_model_s" />
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_checked="false" android:state_pressed="false" android:state_selected="false">
+        <layer-list>
+            <item>
+                <!-- 背景图 -->
+                <bitmap android:gravity="center" android:src="@drawable/nine_main_radio_bg_n" />
+            </item>
+            <item android:bottom="@dimen/nine_main_radio_bg_selector_bottom">
+                <bitmap android:gravity="center|bottom" android:src="@drawable/icon_nine_main_model_n" />
+            </item>
+        </layer-list>
+    </item>
+</selector>

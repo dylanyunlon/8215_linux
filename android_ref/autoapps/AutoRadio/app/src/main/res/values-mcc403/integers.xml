@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="AUTO_STROE_CENTER_POINT_X">512</integer>
+    <integer name="AUTO_STROE_CENTER_POINT_Y">210</integer>
+    <!-- For FullScreen -->
+    <integer name="ChinaFMBeginPosFullScreen">0</integer>
+    <integer name="ChinaAMBeginPosFullScreen">0</integer>
+    <integer name="EuropeFMBeginPosFullScreen">0</integer>
+    <integer name="EuropeAMBeginPosFullScreen">0</integer>
+    <integer name="JapanFMBeginPosFullScreen">0</integer>
+    <integer name="JapanAMBeginPosFullScreen">0</integer>
+    <integer name="LatinFMBeginPosFullScreen">0</integer>
+    <integer name="LatinAMBeginPosFullScreen">0</integer>
+    <integer name="USAFMBeginPosFullScreen">0</integer>
+    <integer name="USAAMBeginPosFullScreen">0</integer>
+    <integer name="OIRTFMBeginPosFullScreen">0</integer>
+    <integer name="OIRTAMBeginPosFullScreen">0</integer>
+    <integer name="Latin2FMBeginPosFullScreen">0</integer>
+    <integer name="Latin2AMBeginPosFullScreen">0</integer>
+    <!-- For MultiWindowMode HalfScreen -->
+    <integer name="ChinaFMBeginPosHalfScreen">0</integer>
+    <integer name="ChinaAMBeginPosHalfScreen">0</integer>
+    <integer name="EuropeFMBeginPosHalfScreen">0</integer>
+    <integer name="EuropeAMBeginPosHalfScreen">0</integer>
+    <integer name="JapanFMBeginPosHalfScreen">0</integer>
+    <integer name="JapanAMBeginPosHalfScreen">0</integer>
+    <integer name="LatinFMBeginPosHalfScreen">0</integer>
+    <integer name="LatinAMBeginPosHalfScreen">0</integer>
+    <integer name="USAFMBeginPosHalfScreen">0</integer>
+    <integer name="USAAMBeginPosHalfScreen">0</integer>
+    <integer name="OIRTFMBeginPosHalfScreen">0</integer>
+    <integer name="OIRTAMBeginPosHalfScreen">0</integer>
+    <integer name="Latin2FMBeginPosHalfScreen">0</integer>
+    <integer name="Latin2AMBeginPosHalfScreen">0</integer>
+    <!-- For MultiWindowMode TwoThirdsScreen -->
+    <integer name="ChinaFMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="ChinaAMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="EuropeFMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="EuropeAMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="JapanFMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="JapanAMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="LatinFMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="LatinAMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="USAFMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="USAAMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="OIRTFMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="OIRTAMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="Latin2FMBeginPosTwoThirdsScreen">0</integer>
+    <integer name="Latin2AMBeginPosTwoThirdsScreen">0</integer>
+    <!--FMDragControl-->
+    <integer name="CALIBRATE_OFFSET_X">10</integer>
+    <integer name="CALIBRATE_OFFSET_Y">10</integer>
+    <!--Gravity.CENTER-->
+    <integer name="dragview_text_gravity">17</integer>
+</resources>

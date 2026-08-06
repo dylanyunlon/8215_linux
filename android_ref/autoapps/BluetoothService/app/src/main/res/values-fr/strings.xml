@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth</string>
+    <string name="str_handsfree_device_connected">L\'appareil mains libres est connecté</string>
+    <string name="str_a2dp_device_connected">L\'appareil de musique est connecté</string>
+    <string name="str_hid_device_connected">Le périphérique HID est connecté</string>
+    <string name="str_income_call_status">Appel entrant</string>
+    <string name="str_out_call_status">Appel sortant</string>
+    <string name="str_bt_call_active">Appel actif</string>
+    <string name="str_bt_call_held">Appel en attente</string>
+    <string name="str_bt_call_waiting">Appel en attente</string>
+    <string name="str_bt_call_abnormal">Appel anormal</string>
+    <string name="str_bt_call_multiparty">Appel à plusieurs</string>
+    <string name="str_bt_call_accept_terminate">Terminer et accepter</string>
+    <string name="str_bt_call_accept_held">Tenu et accepté</string>
+    <string name="str_bt_call_swap">Échange d\'appel</string>
+    <string name="str_bt_call_merge">Fusionner l\'appel</string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">Inconnue</string>
+    <string name="time_text">00:00:00</string>
+
+</resources>

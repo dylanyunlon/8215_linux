@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_mute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/extdsp_attenuate_tv_mute_paddingTop"
+        android:layout_marginBottom="@dimen/extdsp_attenuate_tv_mute_layout_marginBottom"
+        android:text="@string/attenuate_mute"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toEndOf="@+id/tv_invert" />
+
+    <TextView
+        android:id="@+id/tv_invert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/extdsp_attenuate_tv_invert_paddingTop"
+        android:layout_marginBottom="@dimen/extdsp_attenuate_tv_invert_layout_marginBottom"
+        android:text="@string/attenuate_invert"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/asb_lf"
+        app:layout_constraintEnd_toStartOf="@+id/asb_lf" />
+
+    <View
+        android:id="@+id/asb_lr_axis_line"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <ImageView
+        android:id="@+id/extdsp_link_line_lr_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_attenuate_link_line"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintStart_toStartOf="@+id/asb_lr_axis_line"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <View
+        android:id="@+id/asb_rr_axis_line"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintStart_toEndOf="@+id/extdsp_link_line_lr_rr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <View
+        android:id="@+id/asb_rf_axis_line"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toStartOf="@+id/asb_lr_axis_line"
+        app:layout_constraintStart_toEndOf="@+id/extdsp_link_line_lf_rf"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <View
+        android:id="@+id/asb_lf_axis_line"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toStartOf="@+id/extdsp_link_line_lf_rf"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <ImageView
+        android:id="@+id/extdsp_link_line_lf_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_attenuate_link_line"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toStartOf="@+id/asb_rf_axis_line"
+        app:layout_constraintStart_toEndOf="@+id/asb_lf_axis_line"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <View
+        android:id="@+id/asb_subwoofer_axis_line"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/asb_rr_axis_line"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <com.hcn.autoeq.view.ExtDspAttenuateSeekBar
+        android:id="@+id/asb_lf"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_fragment_attenuate_asb_lf_layout_marginTop"
+        android:tag="LF"
+        app:attenuate_seek_bar_top_name="@string/balance_field_lf"
+        app:layout_constraintEnd_toEndOf="@+id/asb_lf_axis_line"
+        app:layout_constraintStart_toStartOf="@+id/asb_lf_axis_line"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.ExtDspAttenuateSeekBar
+        android:id="@+id/asb_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_fragment_attenuate_asb_lf_layout_marginTop"
+        android:tag="RF"
+        app:attenuate_seek_bar_top_name="@string/balance_field_rf"
+        app:layout_constraintEnd_toEndOf="@+id/asb_rf_axis_line"
+        app:layout_constraintStart_toStartOf="@+id/asb_rf_axis_line"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/btn_link_lf_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_attenuate_link_selector"
+        android:layout_marginTop="@dimen/extdsp_fragment_attenuate_btn_link_lf_rf_layout_marginTop"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toEndOf="@+id/extdsp_link_line_lf_rf"
+        app:layout_constraintStart_toStartOf="@+id/extdsp_link_line_lf_rf"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+
+    <com.hcn.autoeq.view.ExtDspAttenuateSeekBar
+        android:id="@+id/asb_lr"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_fragment_attenuate_asb_lf_layout_marginTop"
+        android:tag="LR"
+        app:attenuate_seek_bar_top_name="@string/balance_field_lr"
+        app:layout_constraintEnd_toEndOf="@+id/asb_lr_axis_line"
+        app:layout_constraintStart_toStartOf="@+id/asb_lr_axis_line"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.ExtDspAttenuateSeekBar
+        android:id="@+id/asb_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_fragment_attenuate_asb_lf_layout_marginTop"
+        android:tag="RR"
+        app:attenuate_seek_bar_top_name="@string/balance_field_rr"
+        app:layout_constraintEnd_toEndOf="@+id/asb_rr_axis_line"
+        app:layout_constraintStart_toStartOf="@+id/asb_rr_axis_line" />
+
+    <ToggleButton
+        android:id="@+id/btn_link_lr_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_attenuate_link_selector"
+        android:layout_marginTop="@dimen/extdsp_fragment_attenuate_btn_link_lf_rf_layout_marginTop"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toEndOf="@+id/extdsp_link_line_lr_rr"
+        app:layout_constraintStart_toStartOf="@+id/extdsp_link_line_lr_rr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+    <com.hcn.autoeq.view.ExtDspAttenuateSeekBar
+        android:id="@+id/asb_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_fragment_attenuate_asb_lf_layout_marginTop"
+        android:tag="SUBWOOFER"
+        app:attenuate_seek_bar_top_name="@string/str_subwoofer"
+        app:layout_constraintEnd_toEndOf="@+id/asb_subwoofer_axis_line"
+        app:layout_constraintStart_toEndOf="@+id/asb_subwoofer_axis_line"
+        app:layout_constraintTop_toTopOf="parent" />
+    <com.hcn.autoeq.view.ExtDspAttenuateSeekBar
+        android:id="@+id/asb_centcer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/extdsp_fragment_attenuate_asb_lf_layout_marginTop"
+        android:gravity="center_horizontal"
+        android:tag="CENTER"
+        android:visibility="gone"
+        app:attenuate_seek_bar_top_name="@string/str_center"
+        app:layout_constraintEnd_toEndOf="@+id/asb_center_axis_line"
+        app:layout_constraintStart_toStartOf="@+id/asb_center_axis_line"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:id="@+id/asb_center_axis_line"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/tv_invert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/asb_subwoofer_axis_line"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mute" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

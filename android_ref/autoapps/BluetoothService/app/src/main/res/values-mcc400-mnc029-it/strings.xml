@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Servizi Bluetooth</string>
+    <string name="str_handsfree_device_connected">Il dispositivo vivavoce è collegato</string>
+    <string name="str_a2dp_device_connected">Music device is connected</string>
+    <string name="str_hid_device_connected">Il dispositivo HID è collegato</string>
+    <string name="str_income_call_status">Chiamata in arrivo</string>
+    <string name="str_out_call_status">Chiamata in uscita</string>
+    <string name="str_bt_call_active">Chiamata in corso</string>
+    <string name="str_bt_call_held">Chiamata trattenuta</string>
+    <string name="str_bt_call_waiting">Chiamata in attesa</string>
+    <string name="str_bt_call_abnormal">Chiamata anomala</string>
+    <string name="str_bt_call_multiparty">Chiamata con più partecipanti</string>
+    <string name="str_bt_call_accept_terminate">Termina e accetta</string>
+    <string name="str_bt_call_accept_held">Trattieni e accetta</string>
+    <string name="str_bt_call_swap">Scambia chiamata</string>
+    <string name="str_bt_call_merge">Unisci chiamata</string>
+    <string name="str_calling_phone_number">10086</string>
+  
+    <string name="unkown">Sconosciuto</string>
+    <string name="time_text">0:00:00</string>
+    <string name="str_letter_hicar_tips">HiCar è in esecuzione, il funzionamento Bluetooth non è consentito.</string>
+
+    <!--protocol中用到的String-->
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the A2DP profile. -->
+    <string name="bluetooth_profile_a2dp">Sorgente Audio</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the A2DP profile. -->
+    <string name="bluetooth_profile_a2dp_sink">Ricevitore audio</string>
+    <!-- Bluetooth settings.  The user-visible string that is used whenever referring to the PBAP profile. -->
+    <string name="bluetooth_profile_pbap">Condivisione dei contatti</string>
+    <string name="bluetooth_profile_headset_client">Cliente telefonico</string>
+    <string name="bluetooth_profile_pan_NAP">Punto di accesso alla rete</string>
+
+    <!-- Message for the error dialog when BT pairing fails generically. -->
+    <string name="bluetooth_pairing_error_message">There was a problem pairing with </string>
+    <string name="bluetooth_pairing_pin_error_message">Si è verificato un problema durante l\'accoppiamento perché il PIN o la passkey non sono corretti.</string>
+
+    <!-- Message for the error dialog when BT pairing fails because the other device is down. -->
+    <string name="bluetooth_pairing_device_down_error_message">Impossibile stabilire la comunicazione con </string>
+    <!-- Message for the error dialog when BT pairing fails because the other device rejected the pairing. -->
+    <string name="bluetooth_pairing_rejected_error_message">Associazione rifiutata da .</string>
+    <string name="bluetooth_unpair_device_message">Disaccoppia il dispositivo, disaccoppiare dal telefono ed esegui nuovamente la scansione del dispositivo Bluetooth!</string>
+
+</resources>

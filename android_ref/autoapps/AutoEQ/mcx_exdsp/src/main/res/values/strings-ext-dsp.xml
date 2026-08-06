@@ -1,0 +1,116 @@
+<resources>
+    <!-- Band -->
+    <string name="band_num0" translatable="false">32</string>
+    <string name="band_num1" translatable="false">64</string>
+    <string name="band_num2" translatable="false">125</string>
+    <string name="band_num3" translatable="false">250</string>
+    <string name="band_num4" translatable="false">500</string>
+    <string name="band_num5" translatable="false">600</string>
+    <string name="band_num6" translatable="false">700</string>
+    <string name="band_num7" translatable="false">800</string>
+    <string name="band_num8" translatable="false">900</string>
+    <string name="band_num9" translatable="false">1K</string>
+    <string name="band_num10" translatable="false">2K</string>
+    <string name="band_num11" translatable="false">4K</string>
+    <string name="band_num12" translatable="false">8K</string>
+    <string name="band_num13" translatable="false">16K</string>
+    <string name="band_16" translatable="false">16</string>
+    <string name="band_20" translatable="false">20</string>
+    <string name="band_25" translatable="false">25</string>
+    <string name="band_30" translatable="false">30</string>
+    <string name="band_35" translatable="false">35</string>
+    <string name="band_40" translatable="false">40</string>
+    <string name="band_50" translatable="false">50</string>
+    <string name="band_60" translatable="false">60</string>
+    <string name="band_70" translatable="false">70</string>
+    <string name="band_75" translatable="false">75</string>
+    <string name="band_80" translatable="false">80</string>
+    <string name="band_95" translatable="false">95</string>
+    <string name="band_100" translatable="false">100</string>
+    <string name="band_110" translatable="false">110</string>
+    <string name="band_125" translatable="false">125</string>
+    <string name="band_150" translatable="false">150</string>
+    <string name="band_175" translatable="false">175</string>
+    <string name="band_200" translatable="false">200</string>
+    <string name="band_235" translatable="false">235</string>
+    <string name="band_250" translatable="false">250</string>
+    <string name="band_275" translatable="false">275</string>
+    <string name="band_300" translatable="false">300</string>
+    <string name="band_315" translatable="false">315</string>
+    <string name="band_375" translatable="false">375</string>
+    <string name="band_400" translatable="false">400</string>
+    <string name="band_435" translatable="false">435</string>
+    <string name="band_500" translatable="false">500</string>
+    <string name="band_600" translatable="false">600</string>
+    <string name="band_700" translatable="false">700</string>
+    <string name="band_800" translatable="false">800</string>
+    <string name="band_860" translatable="false">860</string>
+    <string name="band_920" translatable="false">920</string>
+    <string name="band_1000" translatable="false">1K</string>
+    <string name="band_1100" translatable="false">1.1K</string>
+    <string name="band_1200" translatable="false">1.2K</string>
+    <string name="band_1300" translatable="false">1.3K</string>
+    <string name="band_1500" translatable="false">1.5K</string>
+    <string name="band_1700" translatable="false">1.7K</string>
+    <string name="band_2000" translatable="false">2K</string>
+    <string name="band_2400" translatable="false">2.4K</string>
+    <string name="band_2800" translatable="false">2.8K</string>
+    <string name="band_3000" translatable="false">3K</string>
+    <string name="band_3200" translatable="false">3.2K</string>
+    <string name="band_3800" translatable="false">3.8K</string>
+    <string name="band_4000" translatable="false">4K</string>
+    <string name="band_4400" translatable="false">4.4K</string>
+    <string name="band_5000" translatable="false">5K</string>
+    <string name="band_6000" translatable="false">6K</string>
+    <string name="band_7000" translatable="false">7K</string>
+    <string name="band_8000" translatable="false">8K</string>
+    <string name="band_9000" translatable="false">9K</string>
+    <string name="band_9500" translatable="false">9.5K</string>
+    <string name="band_10000" translatable="false">10K</string>
+    <string name="band_11000" translatable="false">11K</string>
+    <string name="band_12000" translatable="false">12K</string>
+    <string name="band_12500" translatable="false">12.5K</string>
+    <string name="band_13000" translatable="false">13K</string>
+    <string name="band_14000" translatable="false">14K</string>
+    <string name="band_15000" translatable="false">15K</string>
+    <string name="band_16000" translatable="false">16K</string>
+    <string name="band_17000" translatable="false">17K</string>
+    <string name="band_18000" translatable="false">18K</string>
+    <!--User Band-->
+    <string name="band_user0">USER1</string>
+    <string name="band_user1">USER2</string>
+    <string name="band_user2">USER3</string>
+    <!--Balance-->
+    <string name="balance_field_lf">Left Front</string>
+    <string name="balance_field_lr">Left Rear</string>
+    <string name="balance_field_rf">Right Front</string>
+    <string name="balance_field_rr">Right Rear</string>
+    <!-- Subwoofer -->
+    <string name="str_subwoofer">Subwoofer</string>
+    <!--Field-->
+    <string name="sound_field_ms" translatable="false">ms</string>
+    <string name="sound_field_cm" translatable="false">cm</string>
+    <!-- attenuate -->
+    <string name="attenuate_mute">Mute:</string>
+    <string name="attenuate_invert">Invert:</string>
+    <!-- hlpf -->
+    <string name="hlpf_freq_hz">%d Hz</string>
+    <string name="hlpf_freq_khz">%d KHz</string>
+    <string name="hlpf_hpf">HPF</string>
+    <string name="hlpf_lpf">LPF</string>
+    <string name="hlpf_freq_title">Freq</string>
+    <string name="hlpf_slope_title">Slope</string>
+    <!-- dbb -->
+    <string name="dbb_fl_fr">FL/FR</string>
+    <string name="dbb_rl_rr">RL/RR</string>
+
+    <!-- extdsp main bottom -->
+    <string name="extdsp_main_tab_band">EQ</string>
+    <string name="extdsp_main_tab_balance">balance</string>
+    <string name="extdsp_main_tab_attenuate">attenuate</string>
+    <string name="extdsp_main_tab_filter">filter</string>
+    <string name="extdsp_main_tab_delay">delay</string>
+
+    <string name="extdsp_band_reverb_mode_title">Scene mode</string>
+    <string name="extdsp_band_reset_title">Default</string>
+</resources>

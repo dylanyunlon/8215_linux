@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- direction 方向： 横向：0   垂直：1-->
+    <integer name="side_bar_direction">1</integer>
+    <integer name="side_bar_text_size">20</integer>
+
+    <integer name="bt_phonebook_phonebook_listview_numColumns">1</integer>
+</resources>

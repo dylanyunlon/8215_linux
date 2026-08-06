@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_delay_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_car"
+        app:layout_constraintBottom_toTopOf="@+id/btn_reset_delay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_delay_speaker_lf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_speaker_lf_n"
+        app:layout_constraintBottom_toTopOf="@+id/iv_delay_speaker_lr"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car" />
+
+    <ImageView
+        android:id="@+id/iv_delay_speaker_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_speaker_rf_n"
+        app:layout_constraintBottom_toTopOf="@+id/iv_delay_speaker_rr"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car" />
+
+    <ImageView
+        android:id="@+id/iv_delay_speaker_lr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_speaker_lr_n"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_delay_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toBottomOf="@+id/iv_delay_speaker_lf" />
+
+    <ImageView
+        android:id="@+id/iv_delay_speaker_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_speaker_rr_n"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_delay_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toBottomOf="@+id/iv_delay_speaker_rf" />
+
+    <ImageView
+        android:id="@+id/iv_delay_speaker_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/extdsp_delay_speaker_center_n"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car" />
+
+
+    <ImageView
+        android:id="@+id/iv_delay_speaker_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/extdsp_delay_speaker_subwoofer_n"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_delay_car" />
+
+
+    <com.hcn.autoeq.view.ExtDspDelayView2
+        android:id="@+id/rksb_lf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="LF"
+        app:layout_constraintBottom_toTopOf="@+id/rksb_lr"
+        app:layout_constraintEnd_toStartOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.ExtDspDelayView2
+        android:id="@+id/rksb_rf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="RF"
+        app:layout_constraintBottom_toBottomOf="@+id/rksb_lf"
+        app:layout_constraintStart_toEndOf="@+id/iv_delay_car"
+        app:layout_constraintTop_toTopOf="@+id/rksb_lf" />
+
+    <com.hcn.autoeq.view.ExtDspDelayView2
+        android:id="@+id/rksb_lr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="LR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rksb_lf"
+        app:layout_constraintStart_toStartOf="@+id/rksb_lf"
+        app:layout_constraintTop_toBottomOf="@+id/rksb_lf" />
+
+    <com.hcn.autoeq.view.ExtDspDelayView2
+        android:id="@+id/rksb_rr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="RR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rksb_rf"
+        app:layout_constraintStart_toStartOf="@+id/rksb_rf"
+        app:layout_constraintTop_toBottomOf="@+id/rksb_rf" />
+
+    <com.hcn.autoeq.view.ExtDspDelayView2
+        android:id="@+id/rksb_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="CENTER"
+        app:layout_constraintBottom_toTopOf="@+id/iv_delay_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_speaker_center"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_speaker_center" />
+
+    <com.hcn.autoeq.view.ExtDspDelayView2
+        android:id="@+id/rksb_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="SUBWOOFER"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_speaker_subwoofer"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_speaker_subwoofer"
+        app:layout_constraintTop_toBottomOf="@+id/iv_delay_car" />
+
+
+    <Button
+        android:id="@+id/btn_reset_delay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_band_reset_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_delay_car" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

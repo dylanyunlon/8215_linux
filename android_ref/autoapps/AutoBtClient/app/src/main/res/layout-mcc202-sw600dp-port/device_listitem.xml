@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/device_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/x24">
+
+    <TextView
+        android:id="@+id/item_remote_device_name"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/y60"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        tools:text="test" />
+
+    <ImageView
+        android:id="@+id/device_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/x10"
+        android:layout_marginEnd="@dimen/x20"
+        android:background="@drawable/set_rb_off" />
+
+    <Button
+        android:id="@+id/btn_config_profile"
+        android:layout_width="@dimen/x37"
+        android:layout_height="@dimen/x41"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/x20"
+        android:layout_marginEnd="@dimen/x20"
+        android:background="@drawable/more" />
+
+
+</LinearLayout>

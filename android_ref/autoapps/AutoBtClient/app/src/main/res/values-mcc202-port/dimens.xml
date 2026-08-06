@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="phonebook_listview_paddingStart" tools:ignore="MissingDefaultResource">15dp</dimen>
+    <dimen name="phonebook_listview_paddingEnd" tools:ignore="MissingDefaultResource">12dp</dimen>
+    <dimen name="phonebook_listview_paddingTop" tools:ignore="MissingDefaultResource">10dp</dimen>
+
+    <dimen name="history_listview_paddingStart" tools:ignore="MissingDefaultResource">15dp</dimen>
+    <dimen name="history_listview_paddingEnd" tools:ignore="MissingDefaultResource">12dp</dimen>
+    <dimen name="history_listview_paddingTop" tools:ignore="MissingDefaultResource">10dp</dimen>
+</resources>

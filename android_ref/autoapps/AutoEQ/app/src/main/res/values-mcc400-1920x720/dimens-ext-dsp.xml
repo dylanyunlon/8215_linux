@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extdsp_ll_band_minWidth">1820dp</dimen>
+
+    <dimen name="extdsp_hlpf_rsb_width">1553dp</dimen>
+    <dimen name="extdsp_hlpf_rsb_height">212dp</dimen>
+</resources>

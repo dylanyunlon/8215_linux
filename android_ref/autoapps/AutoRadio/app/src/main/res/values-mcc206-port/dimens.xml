@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="PresetViewFreqTextSize">18sp</dimen>
+    <dimen name="PresetViewIndexTextSize">20sp</dimen>
+    <dimen name="band_info_text_size">18sp</dimen>
+    <dimen name="preset_viewpager_height">150dp</dimen>
+    <dimen name="bottom_menu_margin">10dp</dimen>
+    <dimen name="band_info_margin_end">5dp</dimen>
+</resources>

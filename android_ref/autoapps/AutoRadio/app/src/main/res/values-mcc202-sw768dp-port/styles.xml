@@ -1,0 +1,113 @@
+<resources>
+
+    <style name="hcn_radio_icon_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:enabled">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@drawable/text_color_selector</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="hcn_radio_num_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="hcn_radio_num_style_textview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">60sp</item>
+    </style>
+
+    <style name="hcn_radio_dot_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.5</item>
+    </style>
+
+    <style name="hcn_rds_icon_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:focusable">false</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="hcn_rds_aftapty_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:enabled">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@drawable/text_color_selector</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="hcn_eq_mode_btn">
+        <item name="android:textSize">26.0sp</item>
+
+        <item name="android:layout_width">349dip</item>
+        <item name="android:layout_height">64dip</item>
+        <item name="android:singleLine">true</item>
+
+        <item name="android:button">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="hcn_rds_pty">
+        <item name="android:textSize">26.0sp</item>
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">5dp</item>
+
+        <item name="android:button">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+
+    </style>
+
+    <style name="hcn_rds_pty_title">
+        <item name="android:textSize">26.0sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="PopupAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    </style>
+
+    <style name="hcn_preset_view_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center|bottom</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:text">@string/defaultfreq</item>
+        <item name="android:textColor">@drawable/text_color_preset</item>
+        <item name="android:textSize">@dimen/PresetViewFreqTextSize</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:layout_marginStart">@dimen/preset_view_padding</item>
+        <item name="android:layout_marginEnd">@dimen/preset_view_padding</item>
+        <item name="android:background">@drawable/preset_xml_selector</item>
+    </style>
+</resources>

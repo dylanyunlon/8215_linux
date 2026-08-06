@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="@drawable/preset_divider"
+    android:orientation="vertical"
+    android:showDividers="beginning|middle">
+
+    <com.hcn.autoradio.view.FMPresetView
+        android:id="@+id/preset_01"
+        style="@style/hcn_preset_view_style" />
+
+    <com.hcn.autoradio.view.FMPresetView
+        android:id="@+id/preset_02"
+        style="@style/hcn_preset_view_style" />
+
+    <com.hcn.autoradio.view.FMPresetView
+        android:id="@+id/preset_03"
+        style="@style/hcn_preset_view_style" />
+
+    <com.hcn.autoradio.view.FMPresetView
+        android:id="@+id/preset_04"
+        style="@style/hcn_preset_view_style" />
+
+    <com.hcn.autoradio.view.FMPresetView
+        android:id="@+id/preset_05"
+        style="@style/hcn_preset_view_style" />
+
+    <com.hcn.autoradio.view.FMPresetView
+        android:id="@+id/preset_06"
+        style="@style/hcn_preset_view_style" />
+</LinearLayout>

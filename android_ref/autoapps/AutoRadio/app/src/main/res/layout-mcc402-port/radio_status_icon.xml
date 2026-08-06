@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkbox_rds_af"
+                    style="@style/hcn_rds_aftapty_style"
+                    android:background="@drawable/checkbox_xml_rds_af" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_rds_af_ani"
+                    style="@style/hcn_rds_aftapty_style"
+                    android:background="@drawable/selector_rds_icon_af_ani"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkbox_rds_tp"
+                    style="@style/hcn_rds_aftapty_style"
+                    android:background="@drawable/checkbox_xml_rds_tp" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_rds_tp_ani"
+                    style="@style/hcn_rds_aftapty_style"
+                    android:background="@drawable/selector_rds_icon_tp_ani"
+                    android:visibility="gone" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/checkbox_rds_ta"
+                    style="@style/hcn_rds_aftapty_style"
+                    android:background="@drawable/checkbox_xml_rds_ta" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_rds_ta_ani"
+                    style="@style/hcn_rds_aftapty_style"
+                    android:background="@drawable/selector_rds_icon_ta_ani"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/checkbox_pxx"
+                style="@style/hcn_radio_icon_style"
+                android:background="@drawable/radio_icon_p00" />
+
+            <CheckBox
+                android:id="@+id/checkbox_locdx"
+                style="@style/hcn_radio_icon_style"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_xml_locdx" />
+
+            <CheckBox
+                android:id="@+id/checkbox_stereo"
+                style="@style/hcn_radio_icon_style"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_xml_stereo" />
+
+            <CheckBox
+                android:id="@+id/checkbox_scan"
+                style="@style/hcn_radio_icon_style"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_xml_scan" />
+
+            <CheckBox
+                android:id="@+id/checkbox_as"
+                style="@style/hcn_radio_icon_style"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_xml_as" />
+
+            <CheckBox
+                android:id="@+id/checkbox_ps"
+                style="@style/hcn_radio_icon_style"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/checkbox_xml_ps" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/rds_pty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/rds_pty_def"
+        android:textColor="@color/main_text_color"
+        android:textSize="25sp" />
+
+</RelativeLayout>

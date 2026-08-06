@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_main_viewPager_layout_height">965px</dimen>
+    <!--拨号界面-->
+    <dimen name="bt_call_layout_marginStart">105px</dimen>
+    <dimen name="bt_call_layout_marginTop">65px</dimen>
+    <dimen name="bt_call_btn_call_one_layout_width">250px</dimen>
+    <dimen name="bt_call_btn_call_one_layout_height">198px</dimen>
+    <dimen name="bt_call_btn_call_one_layout_marginEnd">4px</dimen>
+    <dimen name="bt_call_btn_call_one_layout_marginBottom">8px</dimen>
+    <dimen name="bt_call_dialpad_bg_layout_width">882px</dimen>
+    <dimen name="bt_call_dialpad_bg_layout_height">814px</dimen>
+    <dimen name="bt_call_dialpad_bg_paddingTop">12px</dimen>
+    <dimen name="bt_call_dialpad_bg_paddingBottom">21px</dimen>
+    <dimen name="bt_call_dialpad_bg_paddingStart">15px</dimen>
+    <dimen name="bt_call_text_call_info_layout_height">164px</dimen>
+    <dimen name="bt_call_text_call_info_textSize">50sp</dimen>
+    <dimen name="bt_call_btn_del_num_layout_width">90px</dimen>
+    <dimen name="bt_call_btn_del_num_layout_height">90px</dimen>
+    <dimen name="bt_call_text_call_info_layout_marginStart">95px</dimen>
+    <dimen name="bt_call_btn_del_num_layout_marginEnd">40px</dimen>
+    <dimen name="bt_call_listview_calls_layout_height">384px</dimen>
+    <dimen name="bt_call_btn_call_layout_width">156px</dimen>
+    <dimen name="bt_call_btn_call_layout_marginTop">20px</dimen>
+
+    <dimen name="dial_listitem_dial_name_layout_width">420px</dimen>
+    <dimen name="dial_listitem_dial_name_layout_height">94px</dimen>
+    <dimen name="dial_listitem_dial_name_textSize">30sp</dimen>
+    <!--电话本界面-->
+    <dimen name="bt_phonebook_layout_marginStart">69px</dimen>
+    <dimen name="bt_phonebook_search_edittext_layout_width">1544px</dimen>
+    <dimen name="bt_phonebook_search_edittext_textSize">32sp</dimen>
+    <dimen name="bt_phonebook_bt_phonebook_syn_layout_width">238px</dimen>
+    <dimen name="bt_phonebook_bt_phonebook_syn_layout_height">144px</dimen>
+    <dimen name="bt_phonebook_phonebook_listview_layout_height">688px</dimen>
+    <dimen name="bt_phonebook_phonebook_listview_verticalSpacing">46px</dimen>
+    <dimen name="bt_phonebook_phonebook_listview_layout_marginTop">10px</dimen>
+    <dimen name="bt_phonebook_phonebook_listview_layout_marginStart">0px</dimen>
+    <dimen name="bt_phonebook_phonebook_sidebar_layout_marginTop">10px</dimen>
+
+    <dimen name="phonebook_listitem_contact_layout_width">128px</dimen>
+    <dimen name="phonebook_listitem_phonebook_item_layout_marginStart">10px</dimen>
+    <dimen name="phonebook_listitem_phonebook_item_paddingBottom">12px</dimen>
+    <dimen name="phonebook_listitem_item_phonebook_name_layout_width">310px</dimen>
+    <dimen name="phonebook_listitem_item_phonebook_number_textSize">26sp</dimen>
+    <dimen name="phonebook_listitem_item_phonebook_number_layout_marginTop">10px</dimen>
+
+    <!--通话记录界面-->
+    <dimen name="bt_callhistory_btn_received_layout_marginStart">21px</dimen>
+    <dimen name="bt_pairedhistory_layout_marginStart">83px</dimen>
+    <dimen name="bt_pairedhistory_layout_marginTop">32px</dimen>
+    <dimen name="bt_pairedhistory_top_frame_bg_layout_width">874px</dimen>
+    <dimen name="bt_pairedhistory_top_frame_bg_layout_height">144px</dimen>
+    <dimen name="bt_pairedhistory_top_frame_bg_layout_marginTop">9px</dimen>
+    <dimen name="bt_pairedhistory_top_frame_bg_paddingBottom">14px</dimen>
+    <dimen name="bt_pairedhistory_btn_scan_bt_layout_width">212px</dimen>
+    <dimen name="bt_pairedhistory_btn_scan_bt_layout_height">144px</dimen>
+    <dimen name="bt_pairedhistory_bt_device_textSize">32sp</dimen>
+    <dimen name="bt_pairedhistory_bt_device_layout_marginStart">58px</dimen>
+    <dimen name="bt_pairedhistory_btn_connect_bt_layout_marginStart">8px</dimen>
+    <dimen name="bt_pairedhistory_btn_connect_bt_layout_marginEnd">0px</dimen>
+    <dimen name="bt_pairedhistory_set_device_bg_layout_width">874px</dimen>
+    <dimen name="bt_pairedhistory_set_device_bg_layout_height">734px</dimen>
+    <dimen name="bt_pairedhistory_set_device_bg_layout_marginTop">9px</dimen>
+    <dimen name="bt_pairedhistory_paired_devices_title_layout_height">119px</dimen>
+    <dimen name="bt_pairedhistory_paired_devices_title_layout_marginStart">58px</dimen>
+    <dimen name="bt_pairedhistory_paired_devices_title_layout_marginEnd">25px</dimen>
+    <dimen name="bt_pairedhistory_paired_devices_title_textSize">32sp</dimen>
+    <dimen name="bt_pairedhistory_bluetooth_paired_devices_layout_height">570px</dimen>
+    <!--设备搜索界面-->
+    <dimen name="device_listitem_layout_height">93px</dimen>
+    <dimen name="device_listitem_paddingStart">58px</dimen>
+    <dimen name="device_listitem_paddingEnd">25px</dimen>
+    <dimen name="device_listitem_item_remote_device_name_textSize">30sp</dimen>
+    <dimen name="device_listitem_device_select_layout_width">93px</dimen>
+    <dimen name="device_listitem_device_select_layout_height">93px</dimen>
+
+    <dimen name="layout_zx_bt_setting_setting_layout_layout_marginStart">60px</dimen>
+    <dimen name="layout_zx_bt_setting_name_layout_height">128px</dimen>
+    <dimen name="layout_zx_bt_setting_name_paddingStart">83px</dimen>
+    <dimen name="layout_zx_bt_setting_name_paddingEnd">50px</dimen>
+    <dimen name="layout_zx_bt_setting_tv_edit_name_textSize">32sp</dimen>
+    <dimen name="layout_zx_bt_setting_tv_edit_name_layout_marginStart">20px</dimen>
+    <dimen name="layout_zx_bt_setting_switch_autoanswer_layout_width">195px</dimen>
+    <dimen name="layout_zx_bt_setting_switch_autoanswer_layout_height">105px</dimen>
+    <dimen name="layout_zx_bt_setting_network_tips_layout_width">80px</dimen>
+    <dimen name="layout_zx_bt_setting_network_tips_layout_height">80px</dimen>
+
+    <dimen name="activity_bluetooth_net_info_title_layout_marginStart">47px</dimen>
+    <dimen name="activity_bluetooth_net_info_item_layout_marginStart">90px</dimen>
+    <dimen name="activity_bluetooth_net_info_textView1_layout_marginStart">12px</dimen>
+    <dimen name="activity_bluetooth_net_info_textView2_layout_marginStart">1px</dimen>
+    
+    <dimen name="bt_calling_status_layout_marginTop">25px</dimen>
+    <dimen name="bt_calling_status_layout_marginBottom">20px</dimen>
+    <dimen name="bt_calling_status_layout_marginStart">30px</dimen>
+    <dimen name="bt_calling_status_bt_calling_status_tv_textSize">34sp</dimen>
+    <dimen name="bt_calling_status_bt_calling_image_layout_width">240px</dimen>
+    <dimen name="bt_calling_status_bt_calling_image_layout_marginTop">60px</dimen>
+    <dimen name="bt_calling_status_info1_layout_marginTop">340px</dimen>
+    <dimen name="bt_calling_status_bt_calling_phone_name_textSize">30sp</dimen>
+    <dimen name="bt_calling_status_info2_layout_marginTop">380px</dimen>
+    <dimen name="bt_calling_status_info3_layout_marginTop">420px</dimen>
+    <dimen name="bt_calling_status_button_layout_marginTop">470px</dimen>
+    <dimen name="bt_calling_status_btn_voiceswitch_car_layout_width">156px</dimen>
+    <dimen name="bt_calling_status_btn_voiceswitch_car_layout_marginStart">20px</dimen>
+    <dimen name="bt_calling_status_btn_held_layout_width">140px</dimen>
+    <dimen name="bt_calling_status_btn_held_layout_marginStart">20px</dimen>
+    <dimen name="bt_calling_status_btn_held_layout_marginTop">0px</dimen>
+    <dimen name="bt_calling_status_btn_calling_one_layout_width">216px</dimen>
+    <dimen name="bt_calling_status_btn_calling_one_layout_height">118px</dimen>
+    <dimen name="bt_calling_status_btn_calling_one_layout_margin">5px</dimen>
+    <dimen name="bt_calling_status_calling_input_et_layout_width">570px</dimen>
+    <dimen name="bt_calling_status_calling_input_et_layout_height">170px</dimen>
+    <dimen name="bt_calling_status_calling_input_et_paddingStart">10px</dimen>
+    <dimen name="bt_calling_status_calling_input_et_textSize">50sp</dimen>
+    <dimen name="bt_calling_status_right_layout_height">651px</dimen>
+    <!--蓝牙音乐界面-->
+    <dimen name="bt_music_top_layout_marginTop">170px</dimen>
+    <dimen name="bt_music_poster_layout_marginStart">180px</dimen>
+    <dimen name="bt_music_poster_layout_width">605px</dimen>
+    <dimen name="bt_music_poster_layout_height">436px</dimen>
+    <dimen name="bt_music_info_layout_marginStart">145px</dimen>
+    <dimen name="bt_music_iv_music_layout_width">50px</dimen>
+    <dimen name="bt_music_tv_music_title_layout_width">760px</dimen>
+    <dimen name="bt_music_tv_music_title_layout_marginStart">66px</dimen>
+    <dimen name="bt_music_tv_music_title_textSize">40sp</dimen>
+    <dimen name="bt_music_artist_layout_marginTop">72px</dimen>
+    <dimen name="bt_music_tv_music_play_time_layout_marginEnd">18px</dimen>
+    <dimen name="bt_music_tv_music_play_time_textSize">26sp</dimen>
+    <dimen name="bt_music_tv_music_playing_progress_layout_width">1621px</dimen>
+    <dimen name="bt_music_tv_music_playing_progress_minHeight">48px</dimen>
+    <dimen name="bt_music_music_bottom_layout_height">160px</dimen>
+    <dimen name="bt_music_music_bottom_layout_marginTop">100px</dimen>
+    <dimen name="bt_music_btn_music_prev_layout_width">160px</dimen>
+    <dimen name="bt_music_btn_music_prev_layout_height">160px</dimen>
+    <dimen name="bt_music_btn_music_pause_layout_marginStart">174px</dimen>
+</resources>

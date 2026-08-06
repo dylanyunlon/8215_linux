@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_seekbar_subwoofer_width">1010dp</dimen>
+    <dimen name="dsp_frequency_layout_height">340dp</dimen>
+    <dimen name="asp_reverb_width">108dp</dimen>
+    <dimen name="asp_reverb_height">92dp</dimen>
+    <dimen name="asp_balance_width">320dp</dimen>
+    <dimen name="asp_balance_height">330dp</dimen>
+    <dimen name="balance_mode_marginStart">380dp</dimen>
+    <dimen name="balance_mode_marginTop">50dp</dimen>
+    <dimen name="eq_balance_marginEnd">330dip</dimen>
+    <dimen name="dsp_frequency_layout_padding">5dp</dimen>
+</resources>

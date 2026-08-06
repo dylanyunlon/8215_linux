@@ -1,0 +1,13 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <GridView
+        android:id="@+id/grid_view_in_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="2"
+        android:background="@drawable/nine_eq_3d_btn_bg"
+        android:scrollbars="none"/>
+</LinearLayout>

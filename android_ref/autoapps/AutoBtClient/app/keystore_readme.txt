@@ -1,0 +1,2 @@
+alias:platform
+password:hcn2000

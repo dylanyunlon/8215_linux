@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layoutDirection="ltr"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:id="@+id/tv_csc_asp_q_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/q_value_tv_csc_asp_q_value_layout_marginTop"
+        android:text="@string/q_value_tv_csc_asp_q_value"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/q_value_tv_csc_asp_q_value_textSize"
+        app:layout_constraintBottom_toTopOf="@id/iv_csc_asp_q_value_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_csc_asp_q_value_bg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <ImageView
+        android:id="@+id/iv_csc_asp_q_value_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/iv_csc_asp_q_value_bg_layout_marginTop"
+        android:background="@drawable/csc_asp_seekbar_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_csc_asp_q_value" />
+
+
+    <com.hcn.autoeq.view.CscAspQValueView
+        android:id="@+id/caqv_q"
+        android:layout_width="@dimen/q_value_caqv_q_layout_width"
+        android:layout_height="@dimen/q_value_caqv_q_layout_height"
+        android:layout_marginTop="@dimen/q_value_caqv_q_layout_marginTop"
+        app:layout_constraintEnd_toEndOf="@id/iv_csc_asp_q_value_bg"
+        app:layout_constraintStart_toStartOf="@id/iv_csc_asp_q_value_bg"
+        app:layout_constraintTop_toTopOf="@id/iv_csc_asp_q_value_bg" />
+
+
+    <Button
+        android:id="@+id/btn_q_low"
+        android:layout_width="@dimen/q_value_btn_q_low_layout_width"
+        android:layout_height="@dimen/q_value_btn_q_low_layout_height"
+        android:layout_marginStart="@dimen/q_value_btn_q_low_layout_marginStart"
+        android:layout_marginBottom="@dimen/q_value_btn_q_low_layout_marginBottom"
+        android:background="@drawable/csc_asp_btn_q_value"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/btn_q_textSize"
+        app:layout_constraintBottom_toBottomOf="@id/iv_csc_asp_q_value_bg"
+        app:layout_constraintStart_toStartOf="@id/iv_csc_asp_q_value_bg" />
+
+    <TextView
+        android:id="@+id/tv_q_low"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/tv_q_layout_marginEnd"
+        android:text="@string/q_value_tv_q_low"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/tv_q_textSize"
+        app:layout_constraintBottom_toBottomOf="@id/btn_q_low"
+        app:layout_constraintEnd_toStartOf="@id/btn_q_low"
+        app:layout_constraintTop_toTopOf="@+id/btn_q_low" />
+
+    <Button
+        android:id="@+id/btn_q_middle"
+        android:layout_width="@dimen/q_value_btn_q_low_layout_width"
+        android:layout_height="@dimen/q_value_btn_q_low_layout_height"
+        android:layout_marginStart="@dimen/q_value_btn_q_middle_layout_marginStart"
+        android:background="@drawable/csc_asp_btn_q_value"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/btn_q_textSize"
+        app:layout_constraintBottom_toBottomOf="@id/btn_q_low"
+        app:layout_constraintStart_toStartOf="@id/iv_csc_asp_q_value_bg"
+        app:layout_constraintEnd_toEndOf="@id/iv_csc_asp_q_value_bg"/>
+
+    <TextView
+        android:id="@+id/tv_q_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/tv_q_layout_marginEnd"
+        android:text="@string/q_value_tv_q_middle"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/tv_q_textSize"
+        app:layout_constraintBottom_toBottomOf="@id/btn_q_middle"
+        app:layout_constraintEnd_toStartOf="@id/btn_q_middle"
+        app:layout_constraintTop_toTopOf="@+id/btn_q_middle" />
+
+    <Button
+        android:id="@+id/btn_q_high"
+        android:layout_width="@dimen/q_value_btn_q_low_layout_width"
+        android:layout_height="@dimen/q_value_btn_q_low_layout_height"
+        android:layout_marginEnd="@dimen/q_value_btn_q_high_layout_marginEnd"
+        android:background="@drawable/csc_asp_btn_q_value"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/btn_q_textSize"
+        app:layout_constraintBottom_toBottomOf="@id/btn_q_middle"
+        app:layout_constraintEnd_toEndOf="@id/iv_csc_asp_q_value_bg"
+        />
+
+    <TextView
+        android:id="@+id/tv_q_high"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/tv_q_layout_marginEnd"
+        android:text="@string/q_value_tv_q_high"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/tv_q_textSize"
+        app:layout_constraintBottom_toBottomOf="@id/btn_q_high"
+        app:layout_constraintEnd_toStartOf="@id/btn_q_high"
+        app:layout_constraintTop_toTopOf="@+id/btn_q_high" />
+</androidx.constraintlayout.widget.ConstraintLayout>

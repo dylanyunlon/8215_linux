@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--RCA view  -->
+    <color name="bgColor">#5048D1CC</color>
+    <color name="lineColor">#ff9400D3</color>
+    <integer name="circleCount">4</integer>
+    <color name="redColor">#FF0000</color>
+    <color name="warnColor">#FF7d40</color>
+    <color name="greenColor">#00FF00</color>
+    <color name="blueColor">#00BFFF</color>
+    <color name="pupleColor">#9370DB</color>
+    <color name="grayColor">#d1e0fd</color>
+    <color name="bgColor1">#6f87a3</color>
+    <color name="bgColor2">#222945</color>
+    <color name="bgColor3">#4c6987</color>
+    <color name="color_w">#ffffff</color>
+</resources>	
+	

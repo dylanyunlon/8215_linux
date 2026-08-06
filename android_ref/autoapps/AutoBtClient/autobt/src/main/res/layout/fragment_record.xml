@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/id_call_record_all_calls"
+            android:layout_width="217dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_call_record_btn"
+            android:button="@null"
+            android:gravity="center"
+            android:checked="true"
+            android:text="@string/txt_call_record_all_calls"
+            android:textColor="@color/colors_menu_title"
+            android:textSize="@dimen/sp_call_record_btn_size" />
+
+        <RadioButton
+            android:id="@+id/id_call_record_unanswered_calls"
+            android:layout_width="217dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_call_record_btn"
+            android:button="@null"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp_call_record_rb_padding"
+            android:text="@string/txt_call_record_unanswered_calls"
+            android:textColor="@color/colors_menu_title"
+            android:textSize="@dimen/sp_call_record_btn_size" />
+
+    </RadioGroup>
+
+    <RelativeLayout
+        android:layout_marginLeft="@dimen/dp_call_record_rb_padding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/id_call_record_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_loading"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:textColor="@color/color_item_title_normal"
+            android:textSize="@dimen/sp_main_menu_title" />
+
+        <ListView
+            android:id="@+id/id_call_record_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:fastScrollAlwaysVisible="true"
+            android:fastScrollEnabled="true"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="none"
+            />
+
+    </RelativeLayout>
+</LinearLayout>

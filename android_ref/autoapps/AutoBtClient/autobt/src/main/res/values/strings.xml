@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">BT Phone</string>
+    <string name="app_name_music">BT Music</string>
+
+    <!--menu-->
+    <string name="txt_main_title_settings">BT settings</string>
+    <string name="txt_main_title_dial">Dial Panel</string>
+    <string name="txt_main_title_call">Call record</string>
+    <string name="txt_main_title_contacts">Contacts</string>
+
+    <!--settings-->
+    <string name="txt_settings_bt">BT</string>
+    <string name="txt_settings_search_list">Search list</string>
+    <string name="txt_settings_paired_list">BT paired list</string>
+    <string name="txt_settings_auto_connect">Auto Connect</string>
+    <string name="txt_settings_auto_answer">Auto Answer</string>
+    <string name="txt_settings_device_name">Device Name</string>
+    <string name="txt_settings_unconnect_tips">The current bluetooth is unconnected,please turn on bluetooth in your phone and connect</string>
+
+    <!--record-->
+    <string name="txt_call_record_all_calls">All Calls</string>
+    <string name="txt_call_record_unanswered_calls">Unanswered\n Calls</string>
+
+    <!--music-->
+    <string name="txt_music_bt_setting">BT settings</string>
+    <string name="txt_music_deft_title">Music</string>
+    <string name="txt_music_deft_title_unknown">unknow</string>
+
+
+    <!--common-->
+    <string name="txt_bt_state_bounded">Bonded</string>
+    <string name="txt_bt_state_bound_none">Bond none</string>
+    <string name="txt_bt_state_connected">Connected</string>
+    <string name="txt_bt_state_disconnected">Disconnected</string>
+    <string name="txt_delete">delete</string>
+    <string name="txt_loading">Loading...</string>
+    <string name="txt_loading_not_call">No call records</string>
+    <string name="txt_loading_not_contact">No contacts</string>
+    <string name="txt_loading_not_record">empty call records</string>
+    <string name="txt_description_contact">contact icon</string>
+    <string name="txt_a">A</string>
+    <string name="txt_b">B</string>
+    <string name="txt_c">C</string>
+    <string name="txt_d">D</string>
+    <string name="txt_e">E</string>
+    <string name="txt_f">F</string>
+    <string name="txt_g">G</string>
+    <string name="txt_h">H</string>
+    <string name="txt_i">I</string>
+    <string name="txt_j">J</string>
+    <string name="txt_k">K</string>
+    <string name="txt_l">L</string>
+    <string name="txt_m">M</string>
+    <string name="txt_n">N</string>
+    <string name="txt_o">O</string>
+    <string name="txt_p">P</string>
+    <string name="txt_q">Q</string>
+    <string name="txt_r">R</string>
+    <string name="txt_s">S</string>
+    <string name="txt_t">T</string>
+    <string name="txt_u">U</string>
+    <string name="txt_v">V</string>
+    <string name="txt_w">W</string>
+    <string name="txt_x">X</string>
+    <string name="txt_y">Y</string>
+    <string name="txt_z">Z</string>
+    <string name="txt_sharp">#</string>
+
+
+
+</resources>

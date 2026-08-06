@@ -1,0 +1,124 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.AutoEQ" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">#00000000</item>
+        <item name="android:defaultFocusHighlightEnabled">false</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="EqStart" parent="Theme.AutoEQ">
+        <!-- extdsp 模式选择下拉框所需要的样式 -->
+        <item name="android:windowBackground">@drawable/nine_start_bg_top</item>
+        <item name="android:dropDownListViewStyle">@style/extdsp_band_mode_style</item>
+    </style>
+
+    <style name="extdsp_band_mode_style" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <style name="nine_dbb_scale_vertical_horizontal_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/y35</item>
+        <item name="android:textColor">@color/nine_text_color_3</item>
+        <item name="android:textSize">@dimen/x24</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="nine_eq_loudness_button_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/nine_dsp_fragment_band_nine_eq_loudness_button_style_height</item>
+        <item name="android:background">@drawable/nine_eq_spinner_item_bg_selector</item>
+        <item name="android:textColor">@color/nine_text_color_n</item>
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center|start</item>
+    </style>
+
+    <style name="nine_filter_radio_button_style">
+        <item name="android:layout_width">@dimen/nine_dsp_fragment_dbb_nine_filter_radio_button_style_width</item>
+        <item name="android:layout_height">@dimen/nine_dsp_fragment_dbb_nine_filter_radio_button_style_height</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/nine_model_btn_bg_selector</item>
+        <item name="android:textColor">@drawable/nine_dsp_text_selector</item>
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!-- balance -->
+    <style name="nine_dsp_balance_mode_style">
+        <item name="android:layout_width">@dimen/x360</item>
+        <item name="android:layout_height">@dimen/y106</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:background">@drawable/nine_model_btn_bg_selector</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@drawable/nine_dsp_balance_text_selector</item>
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="nine_dts_bar_radio_button_style">
+        <item name="android:layout_width">@dimen/x0</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/nine_dts_bar_radio_bg_selector</item>
+        <item name="android:textColor">@drawable/nine_dsp_text_selector</item>
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:paddingHorizontal">@dimen/x50</item>
+    </style>
+
+    <style name="nine_filter_bar_radio_button_style">
+        <item name="android:layout_width">@dimen/x360</item>
+        <item name="android:layout_height">@dimen/y88</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/nine_dts_bar_radio_bg_selector</item>
+        <item name="android:textColor">@drawable/nine_dsp_text_selector</item>
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="nine_dts_situation_radio_button_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/y0</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/nine_main_radio_bg_selector5</item>
+        <item name="android:textColor">#99FFFFFF</item>
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="nine_radio_button_style">
+        <item name="android:layout_width">@dimen/nine_activity_main_rb_nine_dts_width</item>
+        <item name="android:layout_height">@dimen/nine_activity_main_rb_nine_dts_height</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@drawable/nine_dsp_main_text_selector</item>
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center|bottom</item>
+    </style>
+</resources>

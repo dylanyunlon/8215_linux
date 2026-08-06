@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="ltr">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/radio_show_info_layout_marginStart"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/checkbox_loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/checkbox_xml_locdx"
+            android:button="@null" />
+
+        <ImageView
+            android:id="@+id/text_band_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_band_info_layout_marginBottom"
+            android:layout_gravity="bottom"
+            android:src="@drawable/radio_fm1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/digital_frequency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/number_A"
+            style="@style/hcn_radio_num_style"
+            android:src="@drawable/radio_num_1" />
+
+        <ImageView
+            android:id="@+id/number_B"
+            style="@style/hcn_radio_num_style"
+            android:src="@drawable/radio_num_0" />
+
+        <ImageView
+            android:id="@+id/number_C"
+            style="@style/hcn_radio_num_style"
+            android:src="@drawable/radio_num_8" />
+
+        <ImageView
+            android:id="@+id/number_D"
+            style="@style/hcn_radio_dot_style"
+            android:src="@drawable/radio_num_point" />
+
+        <ImageView
+            android:id="@+id/number_E"
+            style="@style/hcn_radio_num_style"
+            android:src="@drawable/radio_num_0" />
+
+        <ImageView
+            android:id="@+id/number_F"
+            style="@style/hcn_radio_num_style"
+            android:src="@drawable/radio_num_0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/radio_show_info_layout_marginEnd"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/checkbox_stereo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:focusable="false"
+            android:layout_marginStart="@dimen/checkbox_stereo_layout_marginStart"
+            android:background="@drawable/checkbox_xml_stereo"
+            android:button="@null" />
+
+        <ImageView
+            android:id="@+id/radio_info_hz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_band_info_layout_marginBottom"
+            android:layout_gravity="bottom"
+            android:src="@drawable/radio_mhz" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

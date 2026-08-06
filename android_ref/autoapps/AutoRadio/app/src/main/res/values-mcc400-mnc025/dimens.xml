@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="PresetViewFreqTextSize">27sp</dimen>
+    <dimen name="PresetViewIndexTextSize">20sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">25sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">13sp</dimen>
+    <dimen name="band_info_text_size">29sp</dimen>
+    <dimen name="preset_viewpager_height">190dp</dimen>
+    <dimen name="bottom_menu_padding">120dp</dimen>
+    <dimen name="preset_layout_padding">34dp</dimen>
+    <dimen name="preset_view_padding">10dp</dimen>
+    <dimen name="band_info_margin_start">70dp</dimen>
+
+    <dimen name="rds_window_height">420dp</dimen>
+    <dimen name="tv_rds_title_margin_top">17dp</dimen>
+    <dimen name="ll_rds_ta_margin_top">10dp</dimen>
+    <dimen name="ll_rds_ta_space">10dp</dimen>
+    <dimen name="ll_rds_af_margin_top">2dp</dimen>
+    <dimen name="ll_rds_back_btn_margin_top">130dp</dimen>
+    <dimen name="ll_rds_space_height">3dp</dimen>
+    <dimen name="ll_rds_pty_padding_start">138dp</dimen>
+
+    <dimen name="ll_radio_preset_info_width">340dp</dimen>
+
+    <dimen name="ll_radio_preset_info_marginStart">50dp</dimen>
+    <dimen name="ll_radio_preset_info_paddingTop">48dp</dimen>
+    <dimen name="ll_radio_preset_info_paddingBottom">18dp</dimen>
+
+    <dimen name="ll_radio_main_layout_marginTop">30dp</dimen>
+    <dimen name="auto_test_layout_height">42dp</dimen>
+    <dimen name="rds_rt_info_layout_marginStart">17dp</dimen>
+    <dimen name="radio_show_info_img_layout_marginTop">-20dp</dimen>
+    <dimen name="ll_china_seekbar_fm_layout_marginTop">15dp</dimen>
+    <dimen name="ll_china_seekbar_fm_layout_marginBottom">17dp</dimen>
+    <dimen name="bottom_menu_layout_marginBottom">21dp</dimen>
+    <dimen name="ImageView_layout_width">210dp</dimen>
+    <dimen name="freq_name_textSize">62sp</dimen>
+    <dimen name="rds_pty_layout_marginStart">5dp</dimen>
+    <dimen name="rds_pty_textSize">21sp</dimen>
+    <dimen name="tv_rds_title_textSize">27sp</dimen>
+    <dimen name="hcn_preset_view_style_layout_width">315dp</dimen>
+    <dimen name="hcn_preset_view_style_paddingStart">75dp</dimen>
+    <dimen name="hcn_preset_view_style_layout_marginEnd">8dp</dimen>
+    <dimen name="hcn_rds_pty_title_textSize">25sp</dimen>
+    <dimen name="hcn_rds_pty_textSize">25sp</dimen>
+    <dimen name="hcn_eq_mode_btn_textSize">22sp</dimen>
+    <dimen name="hcn_eq_mode_layout_width">285dp</dimen>
+    <dimen name="hcn_eq_mode_layout_height">54dp</dimen>
+    <dimen name="hcn_radio_num_style_textview_textSize">104sp</dimen>
+    <dimen name="hcn_radio_icon_style_layout_marginStart">8dp</dimen>
+    <dimen name="ll_radio_status_icon_layout_marginTop">14dp</dimen>
+    <dimen name="radio_info_hz_layout_marginStart">40dp</dimen>
+    <dimen name="rds_ps_textSize">17sp</dimen>
+    <dimen name="rds_rt_info_textSize">15sp</dimen>
+    <dimen name="id_china_seekbar_fm_layout_width">500dp</dimen>
+    <dimen name="hcn_rds_aftapty_style_layout_marginStart">1dp</dimen>
+    <dimen name="hcn_rds_aftapty_style_layout_width">45dp</dimen>
+    <dimen name="ImageView_layout_weight">4</dimen>
+    <dimen name="digital_frequency_layout_height">40dp</dimen>
+    <dimen name="text_band_info_layout_width">50dp</dimen>
+    <dimen name="radio_info_hz_layout_height">45dp</dimen>
+    <dimen name="digital_frequency_space_layout_weight">4</dimen>
+    <dimen name="rds_imgbtn_layout_marginEnd">15dp</dimen>
+    <dimen name="hcn_radio_num_style_layout_width">25dp</dimen>
+    <dimen name="hcn_rds_pty_layout_width">340dp</dimen>
+    <dimen name="hcn_rds_pty_layout_height">71dp</dimen>
+</resources>

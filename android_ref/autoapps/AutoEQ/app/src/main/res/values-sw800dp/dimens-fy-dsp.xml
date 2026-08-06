@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="fydsp_fragment_band_mode_btn_band_mode_custom_size">168dp</dimen>
+    <dimen name="fydsp_band_seekbar_height">244dp</dimen>
+    <dimen name="fydsp_tv_gain_margin_bottom">92dp</dimen>
+    <dimen name="fydsp_fragment_delay_btn_sample_marginTop">60dp</dimen>
+    <dimen name="fydsp_fragment_delay_btn_sample_marginStart">82dp</dimen>
+</resources>

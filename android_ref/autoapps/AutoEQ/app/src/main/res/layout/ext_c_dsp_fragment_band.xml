@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/extdsp_band_user_paddingStart"
+    android:paddingEnd="@dimen/extdsp_band_user_paddingStart"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/tv_gain_max"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_gain_margin_bottom"
+        app:layout_constraintBottom_toTopOf="@+id/tv_gain_center"
+        app:layout_constraintEnd_toEndOf="@+id/tv_q_title"
+        tools:text="7" />
+
+    <TextView
+        android:id="@+id/tv_gain_center"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_gain_margin_bottom"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/tv_gain_min"
+        app:layout_constraintEnd_toEndOf="@+id/tv_q_title" />
+
+    <TextView
+        android:id="@+id/tv_gain_min"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_gain_min_margin_bottom"
+        app:layout_constraintBottom_toTopOf="@+id/tv_g_title"
+        app:layout_constraintEnd_toEndOf="@+id/tv_q_title"
+        tools:text="-7" />
+
+    <TextView
+        android:id="@+id/tv_g_title"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_g_title_margin_bottom"
+        android:text="G:"
+        app:layout_constraintBottom_toTopOf="@+id/tv_q_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_q_title" />
+
+    <TextView
+        android:id="@+id/tv_q_title"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_q_title_margin_bottom"
+        android:text="Q:"
+        app:layout_constraintBottom_toBottomOf="@+id/hsv_band"
+        app:layout_constraintEnd_toStartOf="@+id/sp_reverb" />
+
+    <HorizontalScrollView
+        android:id="@+id/hsv_band"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_reset_band"
+        app:layout_constraintEnd_toEndOf="@+id/btn_reset_band"
+        app:layout_constraintStart_toEndOf="@+id/tv_gain_min"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/ll_band"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:minWidth="@dimen/extdsp_ll_band_minWidth"
+            android:orientation="vertical">
+            <!-- 此处控件高度要写明，不然不显示 -->
+            <com.auto.hequalizer.EqualizerSurface
+                android:id="@+id/es_freq"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/extdsp_es_freq_layout_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/extdsp_fragment_band_es_freq_layout_marginTop"
+                android:background="@color/extdsp_fragment_background"
+                app:background_color="@color/extdsp_fragment_background_color"
+                app:bar_color="@color/extdsp_fragment_bar_color"
+                app:bar_text_color="@color/extdsp_fragment_bar_text_color"
+                app:bar_text_shadow_color="@color/extdsp_fragment_bar_text_shadow_color"
+                app:bar_text_size="@dimen/extdsp_fragment_bar_text_size"
+                app:bar_width="@dimen/dsp_frequency_bar_width"
+                app:freq_curve_bg_shader_color_1="@color/extdsp_fragment_band_freq_curve_color_1"
+                app:freq_curve_bg_shader_color_2="@color/extdsp_fragment_band_freq_curve_color_2"
+                app:freq_curve_bg_shader_color_3="@color/extdsp_fragment_band_freq_curve_color_3"
+                app:freq_curve_bg_shader_color_4="@color/extdsp_fragment_band_freq_curve_color_4"
+                app:freq_curve_bg_shader_color_5="@color/extdsp_fragment_band_freq_curve_color_5"
+                app:freq_curve_color_1="@color/extdsp_fragment_freq_curve_color_1"
+                app:freq_curve_color_2="@color/extdsp_fragment_freq_curve_color_2"
+                app:freq_curve_width_1="@dimen/dsp_freq_curve_width_1"
+                app:freq_curve_width_2="@dimen/dsp_freq_curve_width_2"
+                app:gain_text_color="@color/extdsp_fragment_gain_text_color"
+                app:gain_text_size="@dimen/extdsp_fragment_gain_text_size"
+                app:heq_bar_knob_color="@color/extdsp_fragment_heq_bar_knob_color" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <com.hcn.autoeq.view.CustomSpinner
+        android:id="@+id/sp_reverb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/extdsp_sp_reverb_layout_marginStart"
+        android:background="@drawable/extdsp_band_mode_closed_selector"
+        android:dropDownSelector="@android:color/transparent"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:popupBackground="@drawable/extdsp_band_mode_opened_bg"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_reset_band"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/rg_band_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/extdsp_fragment_band_rg_band_user_layout_marginBottom"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_reset_band">
+
+        <RadioButton
+            android:id="@+id/rb_extdsp_band_user0"
+            style="@style/extdsp_radio_band_user_style"
+            android:text="@string/band_user0" />
+
+        <RadioButton
+            android:id="@+id/rb_extdsp_band_user1"
+            style="@style/extdsp_radio_band_user_style"
+            android:text="@string/band_user1" />
+
+        <RadioButton
+            android:id="@+id/rb_extdsp_band_user2"
+            style="@style/extdsp_radio_band_user_style"
+            android:text="@string/band_user2" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_reset_band"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/extdsp_btn_reset_band_layout_marginEnd"
+        android:background="@drawable/extdsp_band_reset_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/rg_band_user"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.InternalDspAspFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <SeekBar
+        android:id="@+id/dsp_seekbar_subwoofer"
+        android:layout_width="@dimen/dsp_seekbar_subwoofer_width"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:max="10"
+        android:padding="0dp"
+        android:splitTrack="false"
+
+        android:thumbOffset="@dimen/xt540_dsp_seekbar_subwoofer_thumboffset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dsp_tv_subwoofer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/xt540_dsp_tv_subwoofer_marginStart"
+        android:layout_marginBottom="@dimen/xt540_dsp_tv_subwoofer_marginBottom"
+        android:maxLines="1"
+        android:text="@string/dsp_second_page_subwoofer"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dsp_tv_subwoofer_size"
+        app:layout_constraintBottom_toTopOf="@+id/dsp_seekbar_subwoofer"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints,NotSibling" />
+
+
+    <TextView
+        android:id="@+id/dsp_tv_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xt540_dsp_tv_off_marginTop"
+        android:maxLines="1"
+        android:text="@string/dsp_subwoofer_off"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dsp_tv_subwoofer_size"
+        app:layout_constraintStart_toStartOf="@+id/dsp_seekbar_subwoofer"
+        app:layout_constraintTop_toBottomOf="@+id/dsp_seekbar_subwoofer" />
+
+    <TextView
+        android:id="@+id/dsp_tv_low"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/dsp_subwoofer_low"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dsp_tv_subwoofer_size"
+        app:layout_constraintEnd_toStartOf="@+id/dsp_tv_medium"
+        app:layout_constraintStart_toEndOf="@id/dsp_tv_off"
+        app:layout_constraintTop_toTopOf="@id/dsp_tv_off" />
+
+    <TextView
+        android:id="@+id/dsp_tv_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/dsp_subwoofer_medium"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dsp_tv_subwoofer_size"
+        app:layout_constraintEnd_toStartOf="@+id/dsp_tv_strongest"
+        app:layout_constraintStart_toEndOf="@+id/dsp_tv_low"
+        app:layout_constraintTop_toTopOf="@id/dsp_tv_off" />
+
+    <TextView
+        android:id="@+id/dsp_tv_strongest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/dsp_subwoofer_strongest"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dsp_tv_subwoofer_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dsp_tv_medium"
+        app:layout_constraintTop_toTopOf="@id/dsp_tv_off"
+        tools:ignore="MissingConstraints,NotSibling" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

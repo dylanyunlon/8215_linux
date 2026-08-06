@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_extdsp_fragment_filter"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:background="@drawable/extdsp_main_background">
+
+    <RadioGroup
+        android:id="@+id/rg_extdsp_hlpf_main"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/extdsp_fragment_filter_rg_extdsp_hlpf_main_layout_marginStart"
+        android:layout_marginEnd="@dimen/extdsp_fragment_filter_rg_extdsp_hlpf_main_layout_marginStart"
+        android:layout_marginVertical="@dimen/extdsp_fragment_filter_rg_extdsp_hlpf_main_layout_marginVertical"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_hlpf"
+            style="@style/extdsp_filter_radio_button_style"
+            android:drawableStart="@drawable/extdsp_hlpf_selector" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_dbb"
+            style="@style/extdsp_filter_radio_button_style"
+            android:drawableStart="@drawable/extdsp_dbb_selector" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_surround"
+            style="@style/extdsp_filter_radio_button_style"
+            android:drawableStart="@drawable/extdsp_surround_selector" />
+
+    </RadioGroup>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/extdsp_filter_split_line" />
+
+    <FrameLayout
+        android:id="@+id/filter_frame"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6" />
+</LinearLayout>

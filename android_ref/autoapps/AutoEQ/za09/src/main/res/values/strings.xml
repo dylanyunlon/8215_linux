@@ -1,0 +1,73 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">DSP</string>
+    <string name="app_sound_source">Sound:</string>
+    <string name="app_sound_all">All</string>
+    <string name="app_sound_music">Music</string>
+    <string name="app_sound_off">OFF</string>
+    <!-- Main Tab used-->
+    <string name="main_tab_title_dsp" tools:ignore="MissingTranslation">DSP</string>
+    <string name="main_tab_title_surround" tools:ignore="MissingTranslation">Surround</string>
+    <string name="main_tab_title_asp" tools:ignore="MissingTranslation">ASP</string>
+    <string name="main_tab_title_balance" tools:ignore="MissingTranslation">Balance</string>
+
+    <!-- DSP fragment used-->
+    <string name="dsp_tab_title_eq">EQ</string>
+    <string name="dsp_tab_title_surround">Surround</string>
+    <string name="dsp_tab_title_subwoofer">Subwoofer</string>
+    <string name="dsp_second_page_subwoofer">Subwoofer:</string>
+
+
+    <string name="dsp_subwoofer_off">Off</string>
+    <string name="dsp_subwoofer_low">Low</string>
+    <string name="dsp_subwoofer_medium">Medium</string>
+    <string name="dsp_subwoofer_strongest">Strongest</string>
+    <string name="dsp_second_page_surround">Surround</string>
+    <string name="dsp_second_page_loudness">Loudness</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <!-- ASP fragment used-->
+    <string name="reverb_custom" translatable="false">Custom</string>
+    <string name="reverb_user" translatable="false">User</string>
+    <string name="reverb_standard" translatable="false">Standard</string>
+    <string name="reverb_jazz" translatable="false">Jazz</string>
+    <string name="reverb_pop" translatable="false">Pop</string>
+    <string name="reverb_classiz" translatable="false">Classic</string>
+    <string name="reverb_rock" translatable="false">Rock</string>
+    <string name="reverb_news" translatable="false">News</string>
+    <string name="reverb_city" translatable="false">City</string>
+    <string name="reverb_electronic" translatable="false">electronic</string>
+    <string name="reverb_movie" translatable="false">Movie</string>
+    <string name="reverb_techno" translatable="false">Techno</string>
+    <string name="band_freq_num0" translatable="false">30Hz</string>
+    <string name="band_freq_num1" translatable="false">75Hz</string>
+    <string name="band_freq_num2" translatable="false">125Hz</string>
+    <string name="band_freq_num3" translatable="false">250Hz</string>
+    <string name="band_freq_num4" translatable="false">500Hz</string>
+    <string name="band_freq_num5" translatable="false">1KHz</string>
+    <string name="band_freq_num6" translatable="false">2KHz</string>
+    <string name="band_freq_num7" translatable="false">4KHz</string>
+    <string name="band_freq_num8" translatable="false">6KHz</string>
+    <string name="band_freq_num9" translatable="false">8KHz</string>
+    <string name="band_freq_num10" translatable="false">14KHz</string>
+    <string name="band_freq_num11" translatable="false">18KHz</string>
+
+    <!-- ASP fragment used-->
+    <string name="balance_model_full">Full vehicle mode</string>
+    <string name="balance_model_master">Front left mode</string>
+    <string name="balance_model_copilot">Front right mode</string>
+    <string name="balance_model_user">Passenger mode</string>
+
+    <!-- Surround fragment used-->
+    <string name="surround_check_surround">Surround</string>
+    <string name="surround_check_bassboot">Bassboot</string>
+
+    <string name="dsp_band_range_1">UltraBass</string>
+    <string name="dsp_band_range_2">Bass</string>
+    <string name="dsp_band_range_3">MediumBass</string>
+    <string name="dsp_band_range_4">Mediant</string>
+    <string name="dsp_band_range_5">MiddleTreble</string>
+    <string name="dsp_band_range_6">Treble</string>
+    <string name="dsp_band_range_7">UltraTreble</string>
+
+    <string name="auto_launcher_app_name">Car Home</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 背景图 -->
+    <item
+        android:id="@android:id/background"
+        android:drawable="@drawable/extdsp_band_seek_bar_n" />
+
+    <!-- 当前进度背景图 -->
+    <item
+        android:id="@android:id/progress"
+        android:drawable="@drawable/extdsp_band_seek_bar_p" />
+
+</layer-list>

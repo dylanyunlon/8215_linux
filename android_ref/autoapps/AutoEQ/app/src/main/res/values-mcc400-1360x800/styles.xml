@@ -1,0 +1,15 @@
+<resources>
+    <style name="BalanceModeStyle">
+        <item name="android:layout_width">323dp</item>
+        <item name="android:layout_height">77dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:background">@drawable/balance_mode_selector</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+</resources>

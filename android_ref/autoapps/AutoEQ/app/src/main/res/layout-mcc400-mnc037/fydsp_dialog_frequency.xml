@@ -1,0 +1,144 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/fydsp_freq_dialog_bg"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/tv_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_freq_value_bg"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="5"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_keyboard_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="20" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/hlpf_freq_title"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_value"
+        app:layout_constraintStart_toStartOf="@+id/tv_value"
+        app:layout_constraintTop_toTopOf="@+id/tv_value" />
+
+    <Button
+        android:id="@+id/btn_keyboard_1"
+        style="@style/fydsp_keyboard_style"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fydsp_btn_key1_selector"
+        app:layout_constraintBottom_toTopOf="@id/btn_keyboard_4"
+        app:layout_constraintEnd_toStartOf="@+id/btn_keyboard_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_value" />
+
+    <Button
+        android:id="@+id/btn_keyboard_2"
+        style="@style/fydsp_keyboard_style"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/fydsp_btn_key2_selector"
+        app:layout_constraintBottom_toBottomOf="@id/btn_keyboard_1"
+        app:layout_constraintEnd_toStartOf="@+id/btn_keyboard_3"
+        app:layout_constraintStart_toEndOf="@+id/btn_keyboard_1"
+        app:layout_constraintTop_toTopOf="@+id/btn_keyboard_1" />
+
+    <Button
+        android:id="@+id/btn_keyboard_3"
+        style="@style/fydsp_keyboard_style"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/fydsp_btn_key3_selector"
+        app:layout_constraintBottom_toBottomOf="@id/btn_keyboard_1"
+        app:layout_constraintEnd_toStartOf="@+id/btn_keyboard_backspace"
+        app:layout_constraintStart_toEndOf="@+id/btn_keyboard_2"
+        app:layout_constraintTop_toTopOf="@+id/btn_keyboard_1" />
+
+    <Button
+        android:id="@+id/btn_keyboard_backspace"
+        style="@style/fydsp_keyboard_style"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/fydsp_btn_key_backspace_selector"
+        app:layout_constraintBottom_toTopOf="@id/btn_keyboard_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_keyboard_3"
+        app:layout_constraintTop_toBottomOf="@id/btn_keyboard_1" />
+
+    <Button
+        android:id="@+id/btn_keyboard_4"
+        style="@style/fydsp_keyboard_style"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fydsp_btn_key4_selector"
+        app:layout_constraintBottom_toTopOf="@id/btn_keyboard_7"
+        app:layout_constraintStart_toStartOf="@+id/btn_keyboard_1"
+        app:layout_constraintTop_toBottomOf="@id/btn_keyboard_1" />
+
+    <Button
+        android:id="@+id/btn_keyboard_5"
+        style="@style/fydsp_keyboard_style"
+        android:background="@drawable/fydsp_btn_key5_selector"
+        app:layout_constraintBottom_toBottomOf="@id/btn_keyboard_4"
+        app:layout_constraintStart_toStartOf="@+id/btn_keyboard_2"
+        app:layout_constraintTop_toTopOf="@id/btn_keyboard_4" />
+
+    <Button
+        android:id="@+id/btn_keyboard_6"
+        style="@style/fydsp_keyboard_style"
+        android:background="@drawable/fydsp_btn_key6_selector"
+        app:layout_constraintBottom_toBottomOf="@id/btn_keyboard_4"
+        app:layout_constraintStart_toStartOf="@+id/btn_keyboard_3"
+        app:layout_constraintTop_toTopOf="@id/btn_keyboard_4" />
+
+    <Button
+        android:id="@+id/btn_keyboard_0"
+        style="@style/fydsp_keyboard_style"
+        android:background="@drawable/fydsp_btn_key0_selector"
+        app:layout_constraintBottom_toBottomOf="@id/btn_keyboard_4"
+        app:layout_constraintStart_toStartOf="@+id/btn_keyboard_backspace"
+        app:layout_constraintTop_toTopOf="@id/btn_keyboard_4" />
+
+    <Button
+        android:id="@+id/btn_keyboard_7"
+        style="@style/fydsp_keyboard_style"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fydsp_btn_key7_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/btn_keyboard_4"
+        app:layout_constraintTop_toBottomOf="@id/btn_keyboard_4" />
+
+    <Button
+        android:id="@+id/btn_keyboard_8"
+        style="@style/fydsp_keyboard_style"
+        android:background="@drawable/fydsp_btn_key8_selector"
+        app:layout_constraintBottom_toBottomOf="@id/btn_keyboard_7"
+        app:layout_constraintStart_toStartOf="@+id/btn_keyboard_5"
+        app:layout_constraintTop_toTopOf="@+id/btn_keyboard_7" />
+
+    <Button
+        android:id="@+id/btn_keyboard_9"
+        style="@style/fydsp_keyboard_style"
+        android:background="@drawable/fydsp_btn_key9_selector"
+        app:layout_constraintBottom_toBottomOf="@id/btn_keyboard_7"
+        app:layout_constraintStart_toStartOf="@+id/btn_keyboard_6"
+        app:layout_constraintTop_toTopOf="@+id/btn_keyboard_7" />
+
+    <Button
+        android:id="@+id/btn_keyboard_ok"
+        style="@style/fydsp_keyboard_style"
+        android:background="@drawable/fydsp_btn_key_ok_selector"
+        app:layout_constraintBottom_toBottomOf="@id/btn_keyboard_7"
+        app:layout_constraintStart_toStartOf="@+id/btn_keyboard_backspace"
+        app:layout_constraintTop_toTopOf="@+id/btn_keyboard_7" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

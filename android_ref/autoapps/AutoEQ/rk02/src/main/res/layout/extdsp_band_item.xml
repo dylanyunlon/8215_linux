@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    android:gravity="start">
+
+    <ImageView
+        android:id="@+id/tv_band_mode_select"
+        android:layout_marginStart="5dp"
+        android:layout_width="@dimen/tv_band_mode_select_layout_width"
+        android:layout_height="@dimen/tv_band_mode_select_layout_width"
+
+        android:layout_gravity="center" />
+
+    <com.hcn.autoeq.view.MarqueeTextView
+        android:id="@+id/tv_band_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingEnd="@dimen/tv_band_mode_select_layout_width_paddingEnd"
+        android:marqueeRepeatLimit="1"
+        android:minHeight="@dimen/tv_band_mode_select_layout_width"
+
+        android:singleLine="true"
+        android:textColor="@drawable/extdsp_radio_text_selector"
+        android:textSize="@dimen/extdsp_band_user_textSize" />
+</LinearLayout>

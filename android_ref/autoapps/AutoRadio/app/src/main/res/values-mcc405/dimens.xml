@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="PresetViewFreqTextSize">30sp</dimen>
+    <dimen name="PresetViewIndexTextSize">28sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">26sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">24sp</dimen>
+    <dimen name="band_info_text_size">30sp</dimen>
+    <dimen name="band_info_btn_text_size">30sp</dimen>
+    <dimen name="keyboard_input_text_size">35sp</dimen>
+    <dimen name="rds_ps_text_size">30sp</dimen>
+    <dimen name="rds_rt_info_text_size">20sp</dimen>
+    <dimen name="ps_margin_end">40dp</dimen>
+    <dimen name="btn_auto_test_width">50dp</dimen>
+    <dimen name="btn_band_margin_start">50dp</dimen>
+    <dimen name="digit_freq_text_size">80sp</dimen>
+    <dimen name="digit_freq_middle_text_size">45sp</dimen>
+    <dimen name="digit_freq_small_text_size">40sp</dimen>
+</resources>

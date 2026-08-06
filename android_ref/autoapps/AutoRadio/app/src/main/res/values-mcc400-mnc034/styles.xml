@@ -1,0 +1,14 @@
+<resources>
+
+    <style name="hcn_rds_pty">
+        <item name="android:textSize">26.0sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">120dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+</resources>

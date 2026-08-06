@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rightMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    tools:ignore="MissingDefaultResource">
+
+
+    <RadioGroup
+        android:id="@+id/band_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/band_info_am1"
+            style="@style/band_info_btn_style_am"
+            />
+        <RadioButton
+            android:id="@+id/band_info_fm1"
+            style="@style/band_info_btn_style_fm1"
+            />
+
+        <RadioButton
+            android:id="@+id/band_info_fm2"
+            style="@style/band_info_btn_style_fm2"/>
+
+        <RadioButton
+            android:id="@+id/band_info_fm3"
+            style="@style/band_info_btn_style_fm3"/>
+
+    </RadioGroup>
+
+
+
+</LinearLayout>
+

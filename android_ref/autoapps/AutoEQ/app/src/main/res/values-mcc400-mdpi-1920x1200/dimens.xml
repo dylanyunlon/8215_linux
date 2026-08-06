@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_radiobutton_text_size">40sp</dimen>
+    <dimen name="dsp_seekbar_subwoofer_width">1210dp</dimen>
+
+    <dimen name="balance_mode_marginStart">434dip</dimen>
+    <dimen name="balance_mode_marginTop">244dip</dimen>
+    <dimen name="eq_balance_marginEnd">464dip</dimen>
+
+    <dimen name="asp_reverb_width">120dp</dimen>
+    <dimen name="asp_reverb_height">101dp</dimen>
+    <dimen name="dsp_tab_surround_tv_size">32sp</dimen>
+    <dimen name="dsp_source_tv_size">24sp</dimen>
+    <dimen name="indicator_seek_bar_width">447dp</dimen>
+    <dimen name="indicator_seek_bar_height">18dp</dimen>
+    <dimen name="indicator_seek_tv_size">20sp</dimen>
+</resources>

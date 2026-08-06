@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_front"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_bass_top_bg"
+        android:layout_width="@dimen/x320"
+        android:layout_height="@dimen/x480"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rl_freq"
+        android:layout_marginBottom="@dimen/x10"
+        android:visibility="gone"
+        android:src="@drawable/nine_bass_top_bg"/>
+
+    <TextView
+        android:id="@+id/tv_top2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:textColor="@color/nine_text_color_8"
+        android:textSize="@dimen/x24"
+        app:layout_constraintEnd_toEndOf="@+id/sbr_band"
+        app:layout_constraintStart_toStartOf="@+id/sbr_band"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_scale"
+        android:layout_width="@dimen/x30"
+        android:layout_height="@dimen/nine_dts_subwoofer_seekbar_height"
+        android:layout_marginTop="@dimen/y15"
+        android:paddingVertical="@dimen/y12"
+        android:scaleType="fitXY"
+        android:src="@drawable/nine_seek_bar_scale_small"
+        app:layout_constraintEnd_toStartOf="@+id/sbr_band"
+        app:layout_constraintTop_toBottomOf="@+id/tv_top2" />
+
+    <TextView
+        android:id="@+id/tv_scale_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x2"
+        android:text="100"
+        android:textColor="@color/nine_text_color_3"
+        android:textSize="@dimen/x20"
+        app:layout_constraintEnd_toStartOf="@+id/iv_scale"
+        app:layout_constraintTop_toTopOf="@+id/iv_scale" />
+
+    <TextView
+        android:id="@+id/tv_scale_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x2"
+        android:text="50"
+        android:textColor="@color/nine_text_color_3"
+        android:textSize="@dimen/x20"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_scale"
+        app:layout_constraintEnd_toStartOf="@+id/iv_scale"
+        app:layout_constraintTop_toTopOf="@+id/iv_scale" />
+
+    <TextView
+        android:id="@+id/tv_scale_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x2"
+        android:text="0"
+        android:textColor="@color/nine_text_color_3"
+        android:textSize="@dimen/x20"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_scale"
+        app:layout_constraintEnd_toStartOf="@+id/iv_scale" />
+
+    <com.hcn_library.view.SeekBarRotator
+        android:id="@+id/sbr_band"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_marginEnd="@dimen/x60"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_top2">
+
+        <SeekBar
+            android:id="@+id/sb_nine"
+            android:layout_width="@dimen/nine_dts_subwoofer_seekbar_height"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/x0"
+            android:background="@null"
+            android:maxHeight="@dimen/y28"
+            android:minHeight="@dimen/y28"
+            android:paddingStart="@dimen/y12"
+            android:paddingEnd="@dimen/y12"
+            android:progressDrawable="@drawable/nine_progress_bg_selector"
+            android:splitTrack="false"
+            android:thumb="@drawable/nine_seek_bar_thumb"
+            android:thumbOffset="@dimen/x12" />
+    </com.hcn_library.view.SeekBarRotator>
+
+    <TextView
+        android:id="@+id/tv_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="位置"
+        android:textColor="@color/nine_text_color_9"
+        android:textSize="@dimen/x24"
+        android:layout_marginTop="@dimen/y10"
+        app:layout_constraintEnd_toEndOf="@+id/sbr_band"
+        app:layout_constraintStart_toStartOf="@+id/sbr_band"
+        app:layout_constraintTop_toBottomOf="@+id/sbr_band" />
+
+    <ImageView
+        android:id="@+id/iv_top"
+        android:layout_width="@dimen/x80"
+        android:layout_height="@dimen/y80"
+        android:layout_marginTop="@dimen/y80"
+        android:background="@drawable/nine_dsp_dts_freq_arrow_up_selector"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="@+id/tv_down"
+        app:layout_constraintStart_toStartOf="@+id/tv_down"
+        app:layout_constraintTop_toBottomOf="@+id/tv_down" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/iv_top"
+        app:layout_constraintStart_toStartOf="@+id/iv_top"
+        app:layout_constraintTop_toTopOf="@id/iv_top"
+        app:layout_constraintBottom_toBottomOf="@id/iv_down"/>
+
+
+    <ImageView
+        android:id="@+id/iv_down"
+        android:layout_width="@dimen/x80"
+        android:layout_height="@dimen/y80"
+        android:layout_marginTop="@dimen/y25"
+        android:background="@drawable/nine_dsp_dts_freq_arrow_down_selector"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="@+id/rv_freq"
+        app:layout_constraintStart_toStartOf="@+id/rv_freq"
+        app:layout_constraintTop_toBottomOf="@+id/iv_top" />
+
+    <RelativeLayout
+        android:id="@+id/rl_freq"
+        android:visibility="gone"
+        android:layout_width="@dimen/x320"
+        android:layout_height="264px"
+        android:layout_marginTop="@dimen/x5"
+        android:paddingHorizontal="@dimen/x30"
+        android:paddingBottom="@dimen/y20"
+        android:background="@drawable/nine_dsp_freq_group_bg_gb02"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_down">
+
+        <TextView
+            android:id="@+id/tv_freq_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hlpf_freq_title"
+            android:textColor="@color/nine_text_color_9"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y20"
+            android:textSize="@dimen/x24" />
+        <Button
+            android:id="@+id/feqButton40"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x78"
+            android:layout_marginTop="@dimen/x68"
+            android:text="40Hz"
+            android:textAllCaps="false"
+            android:textColor="@color/nine_text_color_8"
+            android:elevation="0dp"
+            android:background="@drawable/nine_dts_freq_btn_bg_selector"
+            android:textSize="@dimen/x28" />
+
+        <Button
+            android:id="@+id/freqButton63"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x78"
+            android:layout_marginTop="@dimen/x68"
+            android:background="@drawable/nine_dts_freq_btn_bg_selector"
+            android:layout_alignParentEnd="true"
+            android:text="63Hz"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:textColor="@color/nine_text_color_8"
+            android:textSize="@dimen/x28" />
+
+        <Button
+            android:id="@+id/freqButton80"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x78"
+            android:layout_marginTop="@dimen/x163"
+            android:background="@drawable/nine_dts_freq_btn_bg_selector"
+            android:text="80Hz"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:textColor="@color/nine_text_color_8"
+            android:textSize="@dimen/x28" />
+
+        <Button
+            android:id="@+id/freqButton125"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x78"
+            android:layout_marginTop="@dimen/x163"
+            android:background="@drawable/nine_dts_freq_btn_bg_selector"
+            android:layout_alignParentEnd="true"
+            android:text="125Hz"
+            android:textAllCaps="false"
+            android:textStyle="normal"
+            android:textColor="@color/nine_text_color_8"
+            android:textSize="@dimen/x28" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

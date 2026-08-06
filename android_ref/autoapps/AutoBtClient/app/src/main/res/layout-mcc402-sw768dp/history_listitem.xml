@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="325dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/contact" />
+
+    <LinearLayout
+        android:id="@+id/history_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_history_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:ellipsize="end"
+            android:maxWidth="250dp"
+            android:singleLine="true"
+            android:textColor="@color/color_blue_dark"
+            android:textSize="24dp"
+            tools:text="26.测试测试测试测试测试"/>
+
+        <TextView
+            android:id="@+id/item_history_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxWidth="250dp"
+            android:singleLine="true"
+            android:textColor="@color/color_white_light"
+            android:textSize="20dp"
+            tools:text="26.测试测试测试测试测试测试"/>
+
+        <TextView
+            android:id="@+id/item_history_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_blue_dark"
+            android:textSize="20dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/btn_call_history_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:src="@drawable/contact"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

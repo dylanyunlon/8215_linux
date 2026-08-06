@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_radiobutton_text_size">32sp</dimen>
+
+    <dimen name="balance_mode_marginStart">809dp</dimen>
+    <dimen name="balance_mode_marginTop">30dp</dimen>
+    <dimen name="balance_mode_paddingTop">28dp</dimen>
+    <dimen name="eq_balance_marginEnd">260dp</dimen>
+    <dimen name="eq_balance_marginTop">100dp</dimen>
+    <dimen name="balance_direct_padding">20dp</dimen>
+    <dimen name="balance_mode_text_size">29sp</dimen>
+
+    <dimen name="dsp_tab_height">60dp</dimen>
+    <dimen name="dsp_tab_text_size">26sp</dimen>
+    <dimen name="dsp_tab_eq_width">130dp</dimen>
+    <dimen name="dsp_tab_surround_width">170dp</dimen>
+    <dimen name="dsp_tab_subwoofer_width">242dp</dimen>
+    <dimen name="dsp_tab_surround_tv_size">32sp</dimen>
+    <dimen name="dsp_source_tv_size">26sp</dimen>
+    <dimen name="dsp_seekbar_subwoofer_width">834dp</dimen>
+    <dimen name="dsp_tv_subwoofer_size">29sp</dimen>
+    <dimen name="dsp_frequency_layout_height">430dp</dimen>
+    <dimen name="dsp_frequency_layout_padding">20dp</dimen>
+    <dimen name="dsp_frequency_layout_paddingStart">10dp</dimen>
+    <dimen name="dsp_frequency_layout_paddingEnd">10dp</dimen>
+    <dimen name="dsp_frequency_layout_paddingTop">10dp</dimen>
+    <dimen name="dsp_frequency_bar_width">5dp</dimen>
+    <dimen name="dsp_freq_curve_width_1">4dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">3dp</dimen>
+    <dimen name="extdsp_fragment_bar_text_size">0sp</dimen>
+    <dimen name="extdsp_fragment_gain_text_size">0sp</dimen>
+    <dimen name="dsp_frequency_gain_tv_size">15sp</dimen>
+    <dimen name="dsp_frequency_bar_tv_size">15sp</dimen>
+
+    <dimen name="asp_reverb_width">87dp</dimen>
+    <dimen name="asp_reverb_height">73dp</dimen>
+    <dimen name="asp_reverb_top">10dp</dimen>
+    <dimen name="asp_reverb_paddingStart">5dp</dimen>
+    <dimen name="asp_reverb_bottom">8dp</dimen>
+    <dimen name="asp_reverb_text_size">20sp</dimen>
+    <dimen name="asp_source_text_size">24sp</dimen>
+    <dimen name="asp_balance_width">246dp</dimen>
+    <dimen name="asp_balance_height">246dp</dimen>
+    <dimen name="indicator_seek_bar_width">284dp</dimen>
+    <dimen name="indicator_seek_bar_height">15dp</dimen>
+    <dimen name="indicator_seek_tv_size">16sp</dimen>
+
+    <dimen name="equalizerSurface_alpha">1.0dp</dimen>
+    <dimen name="asp_reverb_layout_marginTop">100dp</dimen>
+
+    <integer name="band_user_reverb_mode_x">80</integer>
+    <integer name="band_user_reverb_mode_y">10</integer>
+
+
+    <dimen name="xt540_dsp_power_check_marginStart">31dp</dimen>
+    <dimen name="xt540_dsp_power_check_marginTop">30dp</dimen>
+    <dimen name="xt540_dsp_source_text_marginStart">24dp</dimen>
+    <dimen name="xt540_dsp_source_select_marginStart">18dp</dimen>
+    <dimen name="xt540_dsp_tv_surround_marginEnd">60dp</dimen>
+    <dimen name="xt540_dsp_ck_loudness_marginTop">20dp</dimen>
+    <dimen name="xt540_dsp_tv_loudness_marginEnd">60dp</dimen>
+    <dimen name="xt540_layout_constraintHorizontal_bias">0.5</dimen>
+
+    <dimen name="xt540_internal_surround_tv_surround_marginEnd">60dp</dimen>
+    <dimen name="xt540_internal_surround_ck_bassboot_marginTop">40dp</dimen>
+    <dimen name="xt540_internal_surround_tv_bassboot_marginEnd">60dp</dimen>
+
+    <dimen name="xt540_dsp_tv_subwoofer_marginStart">147dp</dimen>
+    <dimen name="xt540_dsp_tv_subwoofer_marginBottom">40dp</dimen>
+
+    <dimen name="xt540_asp_reverb_group_marginStart">26dp</dimen>
+    <dimen name="xt540_asp_reverb_group_marginTop">18dp</dimen>
+    <dimen name="xt540_asp_reverb_group_textSize">17sp</dimen>
+    <dimen name="xt540_asp_reverb_group_item_marginStart">24dp</dimen>
+    <dimen name="xt540_dsp_reverb_user_marginStart">10dp</dimen>
+    <dimen name="xt540_dsp_reverb_user_marginEnd">27dp</dimen>
+    <dimen name="xt540_asp_reset_marginStart">56dp</dimen>
+    <dimen name="dsp_dsp_reset_layout_marginStart">32dp</dimen>
+
+    <dimen name="xt540_asp_band_seekbar_paddingStart">15dp</dimen>
+    <dimen name="xt540_asp_band_seekbar_paddingTop">10dp</dimen>
+    <dimen name="xt540_asp_band_seekbar_paddingBottom">10dp</dimen>
+    <dimen name="xt540_layout_asp_band_seekbar_marginTop">15dp</dimen>
+
+    <dimen name="xt540_dsp_seekbar_subwoofer_thumboffset">5dp</dimen>
+    <dimen name="xt540_dsp_tv_off_marginTop">20dp</dimen>
+    <dimen name="xt540_dsp_tab_group_marginEnd">36dp</dimen>
+
+    <dimen name="extdsp_main_rb_extdsp_band_textSize">16sp</dimen>
+    <dimen name="extdsp_fragment_hlpf_tv_hpf_title_textSize">15sp</dimen>
+
+    <dimen name="extdspdbbview_v_dbb">23dp</dimen>
+    <dimen name="za09_balance_fragment_btn_text_size">28sp</dimen>
+    <dimen name="za09_activity_main_rg_main_height">85dp</dimen>
+    <dimen name="za09_activity_main_rg_btn_height">80dp</dimen>
+    <dimen name="balance_fragment_eq_balance_width">400dp</dimen>
+    <dimen name="balance_fragment_eq_balance_height">400dp</dimen>
+</resources>

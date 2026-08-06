@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/nine_scrollview_bar_color_moving" />
+    <corners android:radius="@dimen/x3" />
+    <size
+        android:width="@dimen/x660"
+        android:height="@dimen/y6" />
+</shape>

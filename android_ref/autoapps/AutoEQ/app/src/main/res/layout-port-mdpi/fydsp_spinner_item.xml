@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <com.hcn.autoeq.view.MarqueeTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:marqueeRepeatLimit="1"
+        android:minHeight="@dimen/fydsp_filter_tv_title_minHeight"
+        android:singleLine="true"
+        android:textColor="@drawable/fydsp_radio_text_selector"
+        android:textSize="@dimen/fydsp_textSize" />
+</LinearLayout>

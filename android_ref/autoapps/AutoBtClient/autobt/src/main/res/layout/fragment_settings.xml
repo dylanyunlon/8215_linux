@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ScrollView
+        android:layout_width="@dimen/dp_item_width"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+
+        <com.autochips.bluetooth.view.HSettingItemLayout
+            android:id="@+id/id_item_settings_content"
+            android:layout_width="@dimen/dp_item_width"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.autochips.bluetooth.view.HSettingsItemView
+                android:id="@+id/id_item_settings_bt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_item_min_height"
+                app:item_title="@string/txt_settings_bt"
+                app:item_type="choose" />
+
+            <com.autochips.bluetooth.view.HSettingsItemView
+                android:id="@+id/id_item_settings_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_item_min_height"
+                app:item_title="@string/txt_settings_search_list"
+                app:item_type="expand" />
+
+            <com.autochips.bluetooth.view.HSettingsItemView
+                android:id="@+id/id_item_settings_paired"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_item_min_height"
+                app:item_title="@string/txt_settings_paired_list"
+                app:item_type="expand" />
+
+            <com.autochips.bluetooth.view.HSettingsItemView
+                android:id="@+id/id_item_settings_auto_connect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_item_min_height"
+                app:item_title="@string/txt_settings_auto_connect"
+                app:item_type="choose" />
+
+            <com.autochips.bluetooth.view.HSettingsItemView
+                android:id="@+id/id_item_settings_auto_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_item_min_height"
+                app:item_title="@string/txt_settings_auto_answer"
+                app:item_type="choose" />
+
+            <com.autochips.bluetooth.view.HSettingsItemView
+                android:id="@+id/id_item_settings_device_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_item_min_height"
+                app:item_subtitle="@string/txt_settings_device_name"
+                app:item_title="@string/txt_settings_device_name"
+                app:item_type="normal" />
+
+        </com.autochips.bluetooth.view.HSettingItemLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/id_settings_right_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/id_settings_right_content_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_item_min_height"
+            android:text="@string/txt_settings_search_list"
+            android:gravity="center"
+            android:textSize="@dimen/sp_main_menu_title"
+            android:background="@drawable/ic_item_bg_small_n"
+            android:textColor="@color/color_main_menu_title_normal" />
+
+        <ImageView
+            android:id="@+id/id_settings_right_content_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_progressbar_circle"
+            android:layout_marginEnd="5dp"
+            android:visibility="gone"
+            android:layout_marginTop="35dp"
+            />
+
+        <ListView
+            android:id="@+id/id_settings_right_content_lv"
+            android:divider="@null"
+            android:layout_below="@id/id_settings_right_content_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+</LinearLayout>

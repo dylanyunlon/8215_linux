@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/eq_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6" />
+
+    <RadioGroup
+        android:id="@+id/rg_main"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_dsp"
+            style="@style/RadioButtonStyle"
+            android:drawableStart="@drawable/dsp_icon_selector"
+            android:text="@string/main_tab_title_dsp" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_asp"
+            style="@style/RadioButtonStyle"
+            android:drawableStart="@drawable/asp_icon_selector"
+            android:text="@string/main_tab_title_asp" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_surround"
+            style="@style/RadioButtonStyle"
+            android:drawableStart="@drawable/internal_dsp_surround_icon_selector"
+            android:text="@string/main_tab_title_surround" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_balance"
+            style="@style/RadioButtonStyle"
+            android:drawableStart="@drawable/balance_icon_selector"
+            android:text="@string/main_tab_title_balance" />
+    </RadioGroup>
+
+</LinearLayout>

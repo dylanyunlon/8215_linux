@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/eq_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6" />
+
+    <RadioGroup
+        android:id="@+id/rg_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/fydsp_main_footer_bg"
+        android:orientation="horizontal">
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_fydsp_band"
+            style="@style/fydsp_radio_button_style"
+            android:drawableStart="@drawable/fydsp_band_selector" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_fydsp_balance"
+            style="@style/fydsp_radio_button_style"
+            android:drawableStart="@drawable/fydsp_balance_selector" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_fydsp_surround"
+            style="@style/fydsp_radio_button_style"
+            android:drawableStart="@drawable/fydsp_surround_selector" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_fydsp_attenuate"
+            style="@style/fydsp_radio_button_style"
+            android:drawableStart="@drawable/fydsp_balance_attenuate_selector" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_fydsp_filter"
+            style="@style/fydsp_radio_button_style"
+            android:drawableStart="@drawable/fydsp_filter_selector" />
+    </RadioGroup>
+
+</LinearLayout>

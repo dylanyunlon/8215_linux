@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TODO:used to ASP CHIP -->
+    <declare-styleable name="AspBalanceView">
+        <attr name="thumb" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="CustomAspSeekBarBar">
+        <attr name="seekbar_freq_text" format="string" />
+        <attr name="seekbar_freq_text_size" format="integer" />
+        <attr name="seekbar_freq_text_color" format="color" />
+        <attr name="seekbar_min_text" format="string" />
+        <attr name="seekbar_min_text_size" format="integer" />
+        <attr name="seekbar_min_text_color" format="color" />
+        <attr name="seekbar_max_text" format="string" />
+        <attr name="seekbar_max_text_size" format="integer" />
+        <attr name="seekbar_max_text_color" format="color" />
+        <attr name="seekbar_band_tag" format="integer" />
+    </declare-styleable>
+
+</resources>
+

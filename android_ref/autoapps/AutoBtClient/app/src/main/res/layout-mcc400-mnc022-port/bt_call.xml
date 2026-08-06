@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/bt_call_layout_marginStart"
+        android:layout_marginEnd="@dimen/bt_call_layout_marginStart"
+        android:layout_marginTop="@dimen/bt_call_layout_marginTop"
+        android:layout_marginBottom="@dimen/bt_call_layout_marginTop"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="@dimen/bt_call_dialpad_bg_layout_width"
+            android:layout_height="@dimen/bt_call_dialpad_bg_layout_height"
+            android:background="@drawable/set_device_bg"
+            android:paddingTop="@dimen/bt_call_dialpad_bg_paddingTop"
+            android:paddingBottom="@dimen/bt_call_dialpad_bg_paddingBottom"
+            android:paddingStart="@dimen/bt_call_dialpad_bg_paddingStart"
+            android:paddingEnd="@dimen/bt_call_dialpad_bg_paddingStart"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/text_call_info"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/bt_call_text_call_info_layout_height"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/bt_call_text_call_info_textSize"
+                    android:layout_marginStart="@dimen/bt_call_text_call_info_layout_marginStart"/>
+
+                <Button
+                    android:id="@+id/btn_del_num"
+                    android:layout_width="@dimen/bt_call_btn_del_num_layout_width"
+                    android:layout_height="@dimen/bt_call_btn_del_num_layout_height"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/backspace"
+                    android:layout_marginEnd="@dimen/bt_call_btn_del_num_layout_marginEnd"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/line"/>
+
+            <ListView
+                android:id="@+id/listview_calls"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bt_call_listview_calls_layout_height"
+                android:divider="@drawable/line" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/bt_call_num_layout_marginStart"
+            android:layout_marginEnd="@dimen/bt_call_num_layout_marginStart"
+            android:layout_marginTop="@dimen/bt_call_layout_marginTop"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:visibility="visible">
+
+                <TableLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/bt_call_layout_marginTop"
+                    android:layoutDirection="ltr">
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <Button
+                            android:id="@+id/btn_call_one"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:layout_marginEnd="@dimen/bt_call_btn_call_one_layout_marginEnd"
+                            android:background="@drawable/dp_one" />
+
+                        <Button
+                            android:id="@+id/btn_call_two"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:layout_marginEnd="@dimen/bt_call_btn_call_one_layout_marginEnd"
+                            android:background="@drawable/dp_two" />
+
+                        <Button
+                            android:id="@+id/btn_call_three"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:background="@drawable/dp_three" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/bt_call_btn_call_one_layout_marginTop">
+
+                        <Button
+                            android:id="@+id/btn_call_four"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:layout_marginEnd="@dimen/bt_call_btn_call_one_layout_marginEnd"
+                            android:background="@drawable/dp_four" />
+
+                        <Button
+                            android:id="@+id/btn_call_five"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:layout_marginEnd="@dimen/bt_call_btn_call_one_layout_marginEnd"
+                            android:background="@drawable/dp_five" />
+
+                        <Button
+                            android:id="@+id/btn_call_six"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:background="@drawable/dp_six" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/bt_call_btn_call_one_layout_marginTop">
+
+                        <Button
+                            android:id="@+id/btn_call_seven"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:layout_marginEnd="@dimen/bt_call_btn_call_one_layout_marginEnd"
+                            android:background="@drawable/dp_seven" />
+
+                        <Button
+                            android:id="@+id/btn_call_eight"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:layout_marginEnd="@dimen/bt_call_btn_call_one_layout_marginEnd"
+                            android:background="@drawable/dp_eight" />
+
+                        <Button
+                            android:id="@+id/btn_call_nine"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:background="@drawable/dp_nine" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/bt_call_btn_call_one_layout_marginTop">
+
+                        <Button
+                            android:id="@+id/btn_call_pound"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:layout_marginEnd="@dimen/bt_call_btn_call_one_layout_marginEnd"
+                            android:background="@drawable/dp_sharp" />
+
+                        <Button
+                            android:id="@+id/btn_call_zero"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:layout_marginEnd="@dimen/bt_call_btn_call_one_layout_marginEnd"
+                            android:background="@drawable/dp_zero" />
+
+                        <Button
+                            android:id="@+id/btn_call_asterisk"
+                            android:layout_width="@dimen/bt_call_btn_call_one_layout_width"
+                            android:layout_height="@dimen/bt_call_btn_call_one_layout_height"
+                            android:background="@drawable/dp_star" />
+                    </TableRow>
+                </TableLayout>
+
+            </RelativeLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btn_call"
+                android:layout_width="@dimen/bt_call_btn_call_layout_width"
+                android:layout_height="@dimen/bt_call_btn_call_layout_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/bt_call_btn_call_layout_marginTop"
+                android:background="@drawable/call" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

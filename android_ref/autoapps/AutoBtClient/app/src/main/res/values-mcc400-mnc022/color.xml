@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_green_dark">#37CCE4</color>
+    <color name="bluetooth_net_text_color">#B3FFFFFF</color>
+
+    <color name="tel_search_txt_color_uix">#B3FFFFFF</color>
+    <color name="txt_color_choose">#80FFFFFF</color>
+    <color name="color_blue_dark">#B3FFFFFF</color>
+</resources>

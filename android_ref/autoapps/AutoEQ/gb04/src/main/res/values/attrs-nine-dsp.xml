@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="nine_seek_bar_attr">
+        <attr name="nine_band_seek_bar_show_scale_text" format="boolean" />
+        <attr name="nine_band_seek_bar_enable_freq" format="string" />
+        <attr name="nine_band_seek_bar_enable_gvalue" format="string" />
+        <attr name="nine_band_seek_bar_enable_qvalue" format="string" />
+        <attr name="nine_seek_bar_top_name_one" format="string" />
+        <attr name="nine_seek_bar_top_name_two" format="string" />
+        <attr name="nine_seek_bar_down_name" format="string" />
+        <attr name="nine_seek_bar_height" format="integer|reference" />
+        <attr name="gradient_colors" format="reference" />
+        <attr name="gradient_unable_colors" format="reference" />
+    </declare-styleable>
+</resources>

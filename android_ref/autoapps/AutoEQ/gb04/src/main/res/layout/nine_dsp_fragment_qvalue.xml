@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/nine_q_value_seek_bar_bg"
+    android:gravity="center"
+    android:minWidth="@dimen/x384"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/x163"
+    android:paddingVertical="@dimen/y24">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Q:"
+        android:textColor="@color/nine_text_color_8"
+        android:textSize="@dimen/x38"/>
+
+    <com.hcn_library.view.SeekBarRotator
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y20">
+
+        <SeekBar
+            android:id="@+id/sb_qvalue"
+            android:layout_width="@dimen/y400"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/x0"
+            android:background="@null"
+            android:maxHeight="@dimen/y28"
+            android:minHeight="@dimen/y28"
+            android:progressDrawable="@drawable/nine_progress_bg_selector"
+            android:splitTrack="false"
+            android:thumb="@drawable/nine_seek_bar_thumb"
+            android:thumbOffset="@dimen/x12" />
+    </com.hcn_library.view.SeekBarRotator>
+
+    <TextView
+        android:id="@+id/tv_q_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y20"
+        android:text="位置"
+        android:textColor="@color/nine_text_color_9"
+        android:textSize="@dimen/x32" />
+</LinearLayout>

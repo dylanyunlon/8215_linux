@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/id_dial_keyboard_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/dp_40"
+        android:textSize="@dimen/sp_main_menu_title"
+        android:singleLine="true"
+        android:inputType="none"
+        android:background="@drawable/bt_dial_input" />
+
+    <!--123-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_35"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_dial_keyboard1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number1"
+            android:tag="1" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_keyboard_number_padding"
+            android:layout_marginRight="@dimen/dp_keyboard_number_padding"
+            android:background="@drawable/selector_bg_number2"
+            android:tag="2" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number3"
+            android:tag="3" />
+    </LinearLayout>
+    <!--456-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_dial_keyboard4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number4"
+            android:tag="4" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_keyboard_number_padding"
+            android:layout_marginRight="@dimen/dp_keyboard_number_padding"
+            android:background="@drawable/selector_bg_number5"
+            android:tag="5" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number6"
+            android:tag="6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_dial_keyboard7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number7"
+            android:tag="7" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_keyboard_number_padding"
+            android:layout_marginRight="@dimen/dp_keyboard_number_padding"
+            android:background="@drawable/selector_bg_number8"
+            android:tag="8" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number9"
+            android:tag="9" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_dial_keyboard_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number_star"
+            android:tag="10" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_keyboard_number_padding"
+            android:layout_marginRight="@dimen/dp_keyboard_number_padding"
+            android:background="@drawable/selector_bg_number0"
+            android:tag="0" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard_sharp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number_sharp"
+            android:tag="11" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/id_dial_keyboard_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_bg_number_call"
+            android:tag="12" />
+
+        <Button
+            android:id="@+id/id_dial_keyboard_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_keyboard_number_padding"
+            android:background="@drawable/selector_bg_number_delete"
+            android:tag="13" />
+    </LinearLayout>
+</LinearLayout>

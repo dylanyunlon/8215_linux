@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="625dp"
+        android:layout_height="251dp"
+        android:background="@drawable/bg_dialog"
+        android:gravity="center"
+        android:text="@string/txt_settings_unconnect_tips"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp_30" />
+
+</LinearLayout>

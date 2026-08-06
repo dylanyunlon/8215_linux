@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <dimen name="x5">5px</dimen>
+    <dimen name="x10">10px</dimen>
+    <dimen name="x18">18px</dimen>
+    <dimen name="x20">20px</dimen>
+    <dimen name="x23">23px</dimen>
+    <dimen name="x25">25px</dimen>
+    <dimen name="x32">32px</dimen>
+    <dimen name="x35">35px</dimen>
+    <dimen name="x42">42px</dimen>
+    <dimen name="x48">48px</dimen>
+    <dimen name="x50">50px</dimen>
+    <dimen name="x60">60px</dimen>
+    <dimen name="x75">75px</dimen>
+    <dimen name="x80">80px</dimen>
+    <dimen name="x82">82px</dimen>
+    <dimen name="x84">84px</dimen>
+    <dimen name="x85">85px</dimen>
+    <dimen name="x88">88px</dimen>
+    <dimen name="x93">93px</dimen>
+    <dimen name="x103">103px</dimen>
+    <dimen name="x110">110px</dimen>
+    <dimen name="x153">153px</dimen>
+    <dimen name="x200">200px</dimen>
+    <dimen name="x215">215px</dimen>
+    <dimen name="x260">260px</dimen>
+    <dimen name="x309">309px</dimen>
+    <dimen name="x310">310px</dimen>
+    <dimen name="x350">350px</dimen>
+    <dimen name="x386">386px</dimen>
+    <dimen name="x254">254px</dimen>
+    <dimen name="x410">410px</dimen>
+    <dimen name="x424">424px</dimen>
+    <dimen name="x425">425px</dimen>
+    <dimen name="x430">430px</dimen>
+    <dimen name="x525">525px</dimen>
+    <dimen name="x646">646px</dimen>
+    <dimen name="x720">720px</dimen>
+
+</resources>

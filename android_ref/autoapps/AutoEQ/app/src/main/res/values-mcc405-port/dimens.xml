@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_frequency_layout_padding">10dp</dimen>
+    <dimen name="dsp_frequency_gain_tv_size">12sp</dimen>
+    <dimen name="dsp_frequency_bar_tv_size">12sp</dimen>
+</resources>

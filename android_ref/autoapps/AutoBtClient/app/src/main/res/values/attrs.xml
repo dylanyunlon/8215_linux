@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SideBar">
+        <!--选中颜色-->
+        <attr name="selectColor" format="color" />
+
+        <!--文字大小-->
+        <attr name="textSize" format="dimension" />
+
+        <!--字体背景颜色/Drawable-->
+        <attr name="textBgColor" format="reference|color" />
+
+        <!--Bitmap宽度-->
+        <attr name="textBgWidth" format="dimension" />
+
+        <!--Bitmap高度-->
+        <attr name="textBgHeight" format="dimension" />
+    </declare-styleable>
+</resources>

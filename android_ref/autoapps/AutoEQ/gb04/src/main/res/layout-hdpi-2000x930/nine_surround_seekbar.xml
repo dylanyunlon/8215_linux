@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_front"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_top2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:textColor="@color/nine_text_color_8"
+        android:textSize="@dimen/x24"
+        app:layout_constraintEnd_toEndOf="@+id/sbr_band"
+        app:layout_constraintStart_toStartOf="@+id/sbr_band"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_scale"
+        android:layout_width="@dimen/x30"
+        android:layout_height="@dimen/y328"
+        android:layout_marginTop="@dimen/y5"
+        android:paddingVertical="@dimen/y12"
+        android:scaleType="fitXY"
+        android:src="@drawable/nine_seek_bar_scale_big"
+        app:layout_constraintBottom_toTopOf="@+id/tv_down"
+        app:layout_constraintEnd_toStartOf="@+id/sbr_band"
+        app:layout_constraintTop_toBottomOf="@+id/tv_top2" />
+
+    <TextView
+        android:id="@+id/tv_scale_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x2"
+        android:text="0"
+        android:textColor="@color/nine_text_color_3"
+        android:textSize="@dimen/x20"
+        app:layout_constraintEnd_toStartOf="@+id/iv_scale"
+        app:layout_constraintTop_toTopOf="@+id/iv_scale" />
+
+    <TextView
+        android:id="@+id/tv_scale_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x2"
+        android:text="-5"
+        android:textColor="@color/nine_text_color_3"
+        android:textSize="@dimen/x20"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_scale"
+        app:layout_constraintEnd_toStartOf="@+id/iv_scale"
+        app:layout_constraintTop_toTopOf="@+id/iv_scale"
+        app:layout_constraintVertical_bias="0.3333" />
+
+    <TextView
+        android:id="@+id/tv_scale_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x2"
+        android:text="-10"
+        android:textColor="@color/nine_text_color_3"
+        android:textSize="@dimen/x20"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_scale"
+        app:layout_constraintEnd_toStartOf="@+id/iv_scale"
+        app:layout_constraintTop_toTopOf="@+id/iv_scale"
+        app:layout_constraintVertical_bias="0.6667" />
+
+    <TextView
+        android:id="@+id/tv_scale_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/x2"
+        android:text="-15"
+        android:textColor="@color/nine_text_color_3"
+        android:textSize="@dimen/x20"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_scale"
+        app:layout_constraintEnd_toStartOf="@+id/iv_scale" />
+
+
+    <com.hcn_library.view.SeekBarRotator
+        android:id="@+id/sbr_band"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y5"
+        app:layout_constraintBottom_toTopOf="@+id/tv_down"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_top2">
+
+        <SeekBar
+            android:id="@+id/sb_nine"
+            android:layout_width="@dimen/y328"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:maxHeight="@dimen/y28"
+            android:minHeight="@dimen/y28"
+            android:paddingStart="@dimen/y12"
+            android:paddingEnd="@dimen/y12"
+            android:progressDrawable="@drawable/nine_progress_bg_selector"
+            android:splitTrack="false"
+            android:thumb="@drawable/nine_seek_bar_thumb"
+            android:thumbOffset="@dimen/y12" />
+    </com.hcn_library.view.SeekBarRotator>
+
+    <TextView
+        android:id="@+id/tv_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="位置"
+        android:textColor="@color/nine_text_color_9"
+        android:textSize="@dimen/x24"
+        android:layout_marginTop="@dimen/y6"
+        app:layout_constraintEnd_toEndOf="@+id/sbr_band"
+        app:layout_constraintStart_toStartOf="@+id/sbr_band"
+        app:layout_constraintTop_toBottomOf="@+id/sbr_band" />
+
+    <CheckBox
+        android:id="@+id/cb_mute"
+        android:layout_width="@dimen/x116"
+        android:layout_height="@dimen/x78"
+        android:layout_marginTop="@dimen/y24"
+        android:background="@drawable/nine_surround_btn_bg_selector"
+        android:button="@null"
+        android:drawableStart="@drawable/nine_surround_icon_sound_selector"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/x38"
+        android:paddingVertical="@dimen/y19"
+        app:layout_constraintEnd_toEndOf="@+id/sbr_band"
+        app:layout_constraintStart_toStartOf="@+id/sbr_band"
+        app:layout_constraintTop_toBottomOf="@+id/tv_down" />
+
+    <CheckBox
+        android:id="@+id/cb_invert"
+        android:layout_width="@dimen/x116"
+        android:layout_height="@dimen/y78"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/nine_surround_btn_bg_selector"
+        android:button="@null"
+        android:drawableStart="@drawable/nine_surround_icon_reverse_selector"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/x38"
+        android:paddingVertical="@dimen/y19"
+        app:layout_constraintEnd_toEndOf="@+id/sbr_band"
+        app:layout_constraintStart_toStartOf="@+id/sbr_band"
+        app:layout_constraintTop_toBottomOf="@+id/cb_mute" />
+</androidx.constraintlayout.widget.ConstraintLayout>

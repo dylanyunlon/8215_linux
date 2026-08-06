@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/nine_dsp_fragment_band_marginTop"
+    android:layout_marginBottom="@dimen/nine_dsp_fragment_band_marginBottom"
+    android:paddingStart="@dimen/nine_dsp_fragment_band_paddingStart"
+    android:paddingEnd="@dimen/nine_dsp_fragment_band_paddingEnd"
+    android:paddingBottom="@dimen/nine_dsp_fragment_band_paddingBottom">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_nine_eq_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/btn_eq"
+            android:layout_width="@dimen/x240"
+            android:layout_height="@dimen/y88"
+            android:background="@drawable/nine_eq_expand_item_bg_arrow_down"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/x30"
+            android:text="@string/nine_tv_standard"
+            android:textAllCaps="false"
+            android:textColor="@drawable/nine_band_button_text_selector"
+            android:textSize="@dimen/x32"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_edit"
+            android:layout_width="@dimen/x180"
+            android:layout_height="@dimen/y88"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_band_iv_edit_margin"
+            android:background="@drawable/nine_eq_edit_btn_bg_selector"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_eq"
+            app:layout_constraintStart_toEndOf="@+id/btn_eq"
+            app:layout_constraintTop_toTopOf="@+id/btn_eq" />
+
+        <LinearLayout
+            android:id="@+id/ll_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/nine_dsp_fragment_band_iv_edit_margin"
+            android:minWidth="@dimen/x288"
+            android:background="@drawable/nine_eq_3d_btn_bg"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/x18"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_loudness"
+            app:layout_constraintEnd_toStartOf="@+id/btn_loudness"
+            app:layout_constraintTop_toTopOf="@+id/btn_loudness">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/x16"
+                android:text="@string/nine_tv_3d_surround"
+                android:textColor="@color/nine_text_color_n"
+                android:textSize="@dimen/x32" />
+
+            <ToggleButton
+                android:id="@+id/btn_surround"
+                android:layout_width="@dimen/x100"
+                android:layout_height="@dimen/y52"
+                android:background="@drawable/nine_switch_on_off_bg_selector"
+                android:minWidth="@dimen/x0"
+                android:minHeight="@dimen/y0"
+                android:text=""
+                android:textOff=""
+                android:textOn="" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_loudness"
+            android:layout_width="@dimen/x0"
+            android:layout_height="@dimen/y88"
+            android:background="@drawable/nine_loudness_expand_item_bg_selector"
+            android:gravity="start|center"
+            android:minWidth="@dimen/x240"
+            android:paddingStart="@dimen/x30"
+            android:paddingEnd="@dimen/x68"
+            android:textAllCaps="false"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x32"
+            android:clickable="true"
+            app:layout_constraintEnd_toEndOf="@+id/ll_loudness_pop"
+            app:layout_constraintStart_toStartOf="@+id/ll_loudness_pop"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_loudness_pop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/nine_eq_loudness_window_bg"
+            android:minWidth="@dimen/x240"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/y88"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_loudness_off"
+                style="@style/nine_eq_loudness_button_style"
+                android:paddingStart="@dimen/x30"
+                android:text="@string/nine_tv_loudness_close" />
+
+            <TextView
+                android:id="@+id/tv_loudness_low"
+                style="@style/nine_eq_loudness_button_style"
+                android:paddingStart="@dimen/x30"
+                android:text="@string/nine_tv_loudness_low" />
+
+            <TextView
+                android:id="@+id/tv_loudness_medium"
+                style="@style/nine_eq_loudness_button_style"
+                android:paddingStart="@dimen/x30"
+                android:text="@string/nine_tv_loudness_medium" />
+
+            <TextView
+                android:id="@+id/tv_loudness_high"
+                style="@style/nine_eq_loudness_button_style"
+                android:paddingStart="@dimen/x30"
+                android:text="@string/nine_tv_loudness_high" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_drawer_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y10"
+            android:gravity="center"
+            android:src="@drawable/icon_nine_eq_drawer_up"
+            app:layout_constraintBottom_toTopOf="@+id/hsv_band"
+            app:layout_constraintEnd_toEndOf="@+id/hsv_band"
+            app:layout_constraintStart_toStartOf="@+id/hsv_band" />
+
+        <ImageView
+            android:id="@+id/iv_surface_bg"
+            android:layout_width="@dimen/x0"
+            android:layout_height="@dimen/nine_dsp_fragment_band_nine_eq_surface_bg_height"
+            android:background="@drawable/nine_eq_surface_bg"
+            app:layout_constraintEnd_toEndOf="@+id/hsv_band"
+            app:layout_constraintStart_toStartOf="@+id/hsv_band"
+            app:layout_constraintTop_toTopOf="@+id/hsv_band" />
+        <com.hcn.autoeq.view.NineCustomHorizontalScrollView
+            android:id="@+id/hsv_band"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false"
+            android:paddingBottom="@dimen/y20"
+            android:scrollbarStyle="outsideOverlay"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:scrollbarThumbHorizontal="@drawable/nine_band_scrollview_bar">
+
+            <LinearLayout
+                android:id="@+id/ll_band"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/nine_dsp_fragment_band_ll_band_minWidth"
+                android:orientation="vertical">
+
+                <com.auto.hequalizer.EqualizerSurface
+                    android:id="@+id/es_freq"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/nine_dsp_fragment_band_nine_eq_surface_bg_height"
+                    android:layout_gravity="center_horizontal"
+                    android:alpha="1"
+                    android:background="@color/color_transparent" />
+            </LinearLayout>
+        </com.hcn.autoeq.view.NineCustomHorizontalScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_nine_eq_edit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/nine_eq_edit_main_bg"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_eq_edit_exit"
+            android:layout_width="@dimen/x180"
+            android:layout_height="@dimen/y88"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_band_iv_surface_edit_bg_marginStart"
+            android:layout_marginTop="@dimen/y30"
+            android:background="@drawable/nine_dts_btn_bg_selector"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/nine_btn_exit"
+            android:textColor="@color/nine_text_color_2"
+            android:textSize="@dimen/nine_dsp_fragment_band_tv_eq_edit_exit_textSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_drawer_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y10"
+            android:gravity="center"
+            android:src="@drawable/icon_nine_eq_drawer_down"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_eq_edit_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y40"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/nine_text_color_1"
+            android:textSize="@dimen/x38"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_drawer_down" />
+
+        <TextView
+            android:id="@+id/tv_eq_edit_apply"
+            android:layout_width="@dimen/x180"
+            android:layout_height="@dimen/y88"
+            android:layout_marginTop="@dimen/y30"
+            android:layout_marginEnd="@dimen/x20"
+            android:background="@drawable/nine_dts_btn_bg_selector"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/nine_btn_apply"
+            android:textColor="@color/nine_text_color_2"
+            android:textSize="@dimen/nine_dsp_fragment_band_tv_eq_edit_apply_textSize"
+            app:layout_constraintEnd_toStartOf="@+id/tv_eq_edit_reset"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_eq_edit_reset"
+            android:layout_width="@dimen/x180"
+            android:layout_height="@dimen/y88"
+            android:layout_marginTop="@dimen/y30"
+            android:layout_marginEnd="@dimen/nine_dsp_fragment_band_iv_surface_edit_bg_marginEnd"
+            android:background="@drawable/nine_dts_btn_bg_selector"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/nine_btn_reset"
+            android:textColor="@color/nine_text_color_2"
+            android:textSize="@dimen/nine_dsp_fragment_band_tv_eq_edit_reset_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_surface_edit_bg"
+            android:layout_width="@dimen/x0"
+            android:layout_height="@dimen/nine_dsp_fragment_band_nine_eq_surface_bg_height"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_band_iv_surface_edit_bg_marginStart"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_band_iv_surface_edit_bg_marginTop"
+            android:layout_marginEnd="@dimen/nine_dsp_fragment_band_iv_surface_edit_bg_marginEnd"
+            android:gravity="center"
+            android:src="@drawable/nine_eq_surface_bg_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_eq_edit_exit" />
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_band_edit"
+            android:layout_width="@dimen/x0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_band_iv_surface_edit_bg_marginStart"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_band_iv_surface_edit_bg_marginTop"
+            android:layout_marginEnd="@dimen/nine_dsp_fragment_band_iv_surface_edit_bg_marginEnd"
+            android:fadeScrollbars="false"
+            android:scrollbarStyle="outsideOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:scrollbarThumbHorizontal="@drawable/nine_band_scrollview_bar"
+            app:layout_constraintTop_toBottomOf="@+id/tv_eq_edit_reset">
+
+            <LinearLayout
+                android:id="@+id/ll_band_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/nine_dsp_fragment_band_ll_band_edit_minWidth"
+                android:orientation="vertical">
+
+                <com.auto.hequalizer.EqualizerSurface
+                    android:id="@+id/es_freq_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/nine_dsp_fragment_band_nine_eq_surface_bg_height"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/color_transparent" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_band_ll_marginTop"
+            android:layout_marginEnd="@dimen/x5"
+            android:orientation="vertical"
+            android:gravity="end"
+            app:layout_constraintEnd_toStartOf="@+id/hsv_band_edit"
+            app:layout_constraintTop_toTopOf="@+id/hsv_band_edit">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y35"
+                android:gravity="end|center_vertical"
+                android:text="12"
+                android:textColor="@color/nine_text_color_3"
+                android:textSize="@dimen/x24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y35"
+                android:layout_marginStart="@dimen/x30"
+                android:layout_marginTop="@dimen/nine_dsp_fragment_band_TextView_0_marginTop"
+                android:gravity="end|center_vertical"
+                android:text="0"
+                android:textColor="@color/nine_text_color_3"
+                android:textSize="@dimen/x24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x30"
+                android:layout_marginTop="@dimen/nine_dsp_fragment_band_TextView_12_marginTop"
+                android:gravity="end|center_vertical"
+                android:text="-12"
+                android:textColor="@color/nine_text_color_3"
+                android:textSize="@dimen/x24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x30"
+                android:layout_marginTop="@dimen/nine_dsp_fragment_band_TextView_G_marginTop"
+                android:gravity="end|center_vertical"
+                android:paddingHorizontal="@dimen/y5"
+                android:text="G:"
+                android:textColor="@color/nine_text_color_13"
+                android:textSize="@dimen/x24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x30"
+                android:layout_marginTop="@dimen/nine_dsp_fragment_band_TextView_Q_marginTop"
+                android:gravity="end|center_vertical"
+                android:paddingHorizontal="@dimen/y5"
+                android:text="Q:"
+                android:textColor="@color/nine_text_color_13"
+                android:textSize="@dimen/x24" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/edit_touch_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y143"
+        android:layout_marginStart="@dimen/x220"
+        android:layout_marginEnd="@dimen/x420"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

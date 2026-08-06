@@ -1,0 +1,118 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofm="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/radio_main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/radio_main_bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_radio_status_icon"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.6"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/rds_imgbtn"
+            style="@style/hcn_rds_icon_style"
+            android:layout_weight="1"
+            android:src="@drawable/rds_styles_selector" />
+
+        <include
+            layout="@layout/radio_status_icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5" />
+
+        <Button
+            android:id="@+id/auto_test"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/radio_rds_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/rds_ps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/main_text_color"
+            android:textSize="20.0sp" />
+
+        <TextView
+            android:id="@+id/rds_rt_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="5"
+            android:gravity="center_vertical"
+            android:textColor="@color/main_text_color"
+            android:textSize="18.0sp" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/radio_show_info_img"
+        layout="@layout/radio_show_info_img"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
+
+    <LinearLayout
+        android:id="@+id/ll_china_seekbar_fm"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.8"
+        android:gravity="center"
+        android:background="@drawable/radio_scroll_background">
+
+        <com.hcn.autoradio.view.FMSeekBarView
+            android:id="@+id/id_china_seekbar_fm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/radio_scroll_fm_china"
+            autofm:scroll_begin="50"
+            autofm:scroll_end="974"
+            autofm:scroll_item="@drawable/radio_scroll_thumb"
+            autofm:scroll_uid="8"
+            autofm:thumb_offset_y="-10" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5.2"
+        android:orientation="vertical">
+
+        <com.hcn.autoradio.view.ViewPager
+            android:id="@+id/PresetViewPaper"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3.5">
+
+        </com.hcn.autoradio.view.ViewPager>
+
+        <include layout="@layout/screen_segment"/>
+
+        <include
+            layout="@layout/bottom_menu"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.7" />
+    </LinearLayout>
+
+</LinearLayout>

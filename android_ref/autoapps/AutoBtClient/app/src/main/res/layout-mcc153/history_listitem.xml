@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!-- 
+    <ImageView
+        android:id="@+id/history_backimage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:gravity="center"
+        android:src="@drawable/bt_history_highlight"
+        android:visibility="invisible" />
+ -->
+
+    <ImageView
+        android:layout_width="@dimen/x72"
+        android:layout_height="@dimen/x72"
+        android:layout_marginEnd="@dimen/x3"
+        android:src="@drawable/contact" />
+
+    <LinearLayout
+        android:id="@+id/history_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/x5"
+        android:paddingBottom="0dp">
+
+        <TextView
+            android:id="@+id/item_history_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x5"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/textview_color"
+            android:textSize="@dimen/x23" />
+
+        <TextView
+            android:id="@+id/item_history_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x5"
+            android:layout_marginTop="@dimen/y5"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/textview_color"
+            android:textSize="@dimen/x20" />
+
+        <TextView
+            android:id="@+id/item_history_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/textview_color"
+            android:textSize="@dimen/x20"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/btn_call_history_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x3"
+            android:src="@drawable/contact"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

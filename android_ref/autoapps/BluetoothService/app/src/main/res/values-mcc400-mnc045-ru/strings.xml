@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Bluetooth</string>
+  <string name="str_handsfree_device_connected">Bluetooth-звонок подключен</string>
+  <string name="str_a2dp_device_connected">Bluetooth музыка подключена</string>
+  <string name="str_hid_device_connected">Устройство ввода Bluetooth подключено</string>
+  <string name="str_income_call_status">Входящий звонок</string>
+  <string name="str_out_call_status">Набор</string>
+  <string name="str_bt_call_active">Вызов</string>
+  <string name="str_bt_call_held">Удержание</string>
+  <string name="str_bt_call_waiting">Ожидание вызова</string>
+  <string name="str_bt_call_abnormal">Пропущенный звонок</string>
+  <string name="str_bt_call_multiparty">Конференц-связь</string>
+  <string name="str_bt_call_accept_terminate">Завершить и ответить</string>
+  <string name="str_bt_call_accept_held">Завершить и принять</string>
+  <string name="str_bt_call_swap">Переключить вызов</string>
+  <string name="str_bt_call_merge">Консолидированный звонок</string>
+  <string name="str_calling_phone_number">10086</string>
+  <string name="unkown">Неизвестный</string>
+  <string name="time_text">00:00:00</string>
+  <string name="str_letter_hicar_tips">HiCar работает, работа по Bluetooth невозможна.</string>
+  <string name="bluetooth_profile_a2dp">Источник звука</string>
+  <string name="bluetooth_profile_a2dp_sink">Аудио приемник</string>
+  <string name="bluetooth_profile_pbap">Доступ к контактам</string>
+  <string name="bluetooth_profile_headset_client">Тел. клиент</string>
+  <string name="bluetooth_profile_pan_NAP">Точка доступа к сети</string>
+  <string name="bluetooth_pairing_error_message">Возникла проблема с подключением к </string>
+  <string name="bluetooth_pairing_pin_error_message">Возникла проблема с подключением к из-за неправильного ввода PIN-кода или пароля.</string>
+  <string name="bluetooth_pairing_device_down_error_message">Не удается установить связь с</string>
+  <string name="bluetooth_pairing_rejected_error_message">Сопряжение отклонено.</string>
+  <string name="bluetooth_unpair_device_message">Отключите устройство. Отключите это устройство от телефона и снова выполните сканирование Bluetooth-устройства!</string>
+</resources>

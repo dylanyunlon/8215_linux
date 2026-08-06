@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TODO: Update blank fragment layout -->
+    <CheckBox
+        android:id="@+id/dsp_power_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="10dp"
+        android:button="@drawable/dsp_power_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dsp_source_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/app_sound_source"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dsp_source_tv_size"
+        app:layout_constraintBottom_toBottomOf="@+id/dsp_power_check"
+        app:layout_constraintStart_toEndOf="@+id/dsp_power_check"
+        app:layout_constraintTop_toTopOf="@+id/dsp_power_check" />
+
+    <TextView
+        android:id="@+id/dsp_source_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_sound_music"
+        android:textColor="@color/dsp_source_select"
+        android:textSize="@dimen/dsp_source_tv_size"
+        app:layout_constraintBottom_toBottomOf="@+id/dsp_power_check"
+        app:layout_constraintStart_toEndOf="@+id/dsp_source_text"
+        app:layout_constraintTop_toTopOf="@+id/dsp_power_check" />
+
+    <RadioGroup
+        android:id="@+id/dsp_tab_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/dsp_tab_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/dsp_power_check"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dsp_power_check">
+
+        <RadioButton
+            android:id="@+id/dsp_tab_eq"
+            style="@style/dsp_tab_btn"
+            android:layout_width="@dimen/dsp_tab_eq_width"
+            android:text="@string/dsp_tab_title_eq"
+            android:textColor="@drawable/tab_text_selector" />
+
+        <RadioButton
+            android:id="@+id/dsp_tab_surround"
+            style="@style/dsp_tab_btn"
+            android:layout_width="@dimen/dsp_tab_surround_width"
+            android:text="@string/dsp_tab_title_surround"
+            android:textColor="@drawable/tab_text_selector" />
+
+        <RadioButton
+            android:id="@+id/dsp_tab_subwoofer"
+            style="@style/dsp_tab_btn"
+            android:layout_width="@dimen/dsp_tab_subwoofer_width"
+            android:text="@string/dsp_tab_title_subwoofer"
+            android:textColor="@drawable/tab_text_selector" />
+    </RadioGroup>
+
+    <include
+        android:id="@+id/layout_equalizer"
+        layout="@layout/dsp_asp_equalizer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dsp_tab_group" />
+
+    <include
+        android:id="@+id/layout_surround"
+        layout="@layout/dsp_asp_surround"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dsp_power_check" />
+
+    <include
+        android:id="@+id/layout_subwoofer"
+        layout="@layout/dsp_asp_subwoofer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dsp_power_check" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

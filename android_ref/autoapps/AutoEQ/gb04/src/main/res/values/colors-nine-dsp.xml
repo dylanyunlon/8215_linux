@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--gb04-->
+    <color name="transparent_color">#00000000</color>
+    <color name="nine_main_radio_group_bg_color">#0D192C5D</color>
+    <color name="nine_main_radio_group_bg_eq_color">#80CEDBE6</color>
+    <color name="nine_dts_radio_group_bg_color">#FFFFFF</color>
+    <color name="nine_dsp_seek_bar_group_bg_color">#80FFFFFF</color>
+    <color name="nine_dts_btn_bg_color">#FAFCFC</color>
+    <color name="nine_dts_btn_bg_color_p">#B2FAFCFC</color>
+    <color name="nine_text_color">#66FFFFFF</color>
+    <color name="nine_text_color_1">#E6192C5D</color>
+    <color name="nine_text_color_2">#99192C5D</color>
+    <color name="nine_text_color_3">#99192C5D</color>
+    <color name="nine_text_color_5">#CC192C5D</color>
+    <color name="nine_text_color_6">#FFFFFF</color>
+    <color name="nine_text_color_7">#28375E</color>
+    <color name="nine_text_color_8">#CC192C5D</color>
+    <color name="nine_text_color_9">#CC192C5D</color>
+    <color name="nine_text_color_10">#CC192C5D</color>
+    <color name="nine_text_color_11">#192C5D</color>
+    <color name="nine_text_color_12">#E6FFFFFF</color>
+    <color name="nine_text_color_13">#99192C5D</color>
+    <color name="nine_text_color_n">#CC192C5D</color>
+    <color name="nine_text_color_p">#FFFFFF</color>
+    <color name="nine_text_color_p_2">#FFFFFF</color>
+    <color name="nine_main_radio_button_bg_color">#66FFFFFF</color>
+    <color name="nine_main_radio_icon_color">#E6FFFFFF</color>
+    <color name="nine_seek_bar_text_color_01">#cc192C5D</color>
+    <color name="nine_seek_bar_text_color_02">#cc192C5D</color>
+    <color name="nine_seek_bar_scale_text_color_01">#99192C5D</color>
+    <color name="nine_seek_bar_icon_color">#cc192C5D</color>
+    <color name="nine_filter_line_bg_color">#66FFFFFF</color>
+    <color name="nine_eq_line_bg_color_edit">#80FAFCFC</color>
+    <color name="nine_curve_line_color">#009CFF</color>
+    <color name="nine_icon_color_white">#66FFFFFF</color>
+    <color name="nine_eq_loudness_item_bg_color">#99FFFFFF</color>
+    <color name="nine_eq_loudness_bg">#66FAFCFC</color>
+    <color name="nine_eq_edit_text">#66192C5D</color>
+    <color name="color_transparent">#00000000</color>
+    <color name="nine_seek_bar_bg_color">#1a192C5D</color>
+    <color name="nine_red_color">#FF0000</color>
+    <color name="nine_debug_line_color">#90005D</color>
+    <color name="nine_scrollview_bar_color">#1aFFFFFF</color>
+    <color name="nine_scrollview_bar_color_moving">#3aFFFFFF</color>
+    <array name="nine_gradient_colors">
+        <item>#56A5FF</item>
+        <item>#8AA1E0</item>
+        <item>#FFBA82</item>
+    </array>
+    <array name="gradient_unable_colors">
+        <item>#4D56A5FF</item>
+        <item>#4D8AA1E0</item>
+        <item>#4DFFBA82</item>
+    </array>
+</resources>

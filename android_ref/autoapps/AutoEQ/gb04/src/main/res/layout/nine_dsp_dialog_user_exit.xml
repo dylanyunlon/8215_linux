@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/nine_eq_dialog_bg"
+    android:paddingHorizontal="@dimen/x48"
+    android:paddingTop="@dimen/y120"
+    android:paddingBottom="@dimen/y60">
+
+    <TextView
+        android:id="@+id/tv_nine_text_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="是否更新「用户1」的音效参数？"
+        android:textColor="@color/nine_text_color_5"
+        android:textSize="@dimen/x38"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_nine_band_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x20"
+        android:layout_marginTop="@dimen/y108"
+        android:background="@drawable/nine_eq_dialog_btn_bg_selector"
+        android:gravity="center"
+        android:maxLines="1"
+        android:minWidth="@dimen/x348"
+        android:minHeight="@dimen/y106"
+        android:paddingHorizontal="@dimen/x30"
+        android:paddingVertical="@dimen/y32"
+        android:text="@string/nine_dialog_button_ok"
+        android:textColor="@drawable/nine_exit_dialog_btn_color_selector"
+        android:textSize="@dimen/x32"
+        app:layout_constraintEnd_toStartOf="@+id/tv_nine_band_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nine_text_content" />
+
+    <TextView
+        android:id="@+id/tv_nine_band_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x48"
+        android:layout_marginTop="@dimen/y108"
+        android:layout_marginEnd="@dimen/x20"
+        android:background="@drawable/nine_eq_dialog_btn_bg_selector"
+        android:gravity="center"
+        android:maxLines="1"
+        android:minWidth="@dimen/x348"
+        android:minHeight="@dimen/y106"
+        android:paddingHorizontal="@dimen/x30"
+        android:paddingVertical="@dimen/y32"
+        android:text="@string/nine_dialog_button_cancel"
+        android:textColor="@drawable/nine_exit_dialog_btn_color_selector"
+        android:textSize="@dimen/x32"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_nine_band_ok"
+        app:layout_constraintTop_toBottomOf="@+id/tv_nine_text_content" />
+</androidx.constraintlayout.widget.ConstraintLayout>

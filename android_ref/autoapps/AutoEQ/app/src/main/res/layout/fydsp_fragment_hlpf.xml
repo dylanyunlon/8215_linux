@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.hcn.autoeq.view.rca.RCALineViewBG
+        android:id="@+id/rca_line_bg"
+        android:layout_width="@dimen/fydsp_filter_rca_line_bg_layout_width"
+        android:layout_height="@dimen/fydsp_filter_rca_line_bg_layout_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.rca.RCALineView
+        android:id="@+id/rca_line"
+        android:layout_width="@dimen/fydsp_filter_rca_line_layout_width"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rca_line_bg"
+        app:layout_constraintEnd_toEndOf="@+id/rca_line_bg"
+        app:layout_constraintStart_toStartOf="@+id/rca_line_bg"
+        app:layout_constraintTop_toTopOf="@+id/rca_line_bg" />
+
+    <ImageView
+        android:id="@+id/iv_hpf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_hlpf_hpf_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_lpf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rca_line_bg" />
+
+    <TextView
+        android:id="@+id/tv_hpf_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/hlpf_hpf"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_hpf"
+        app:layout_constraintTop_toTopOf="@+id/iv_hpf" />
+
+    <TextView
+        android:id="@+id/tv_hpf_freq_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hlpf_freq_title"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/sp_hpf_freq"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_hpf"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hpf_title" />
+
+    <com.hcn.autoeq.view.CustomSpinner
+        android:id="@+id/sp_hpf_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_hlpf_slope_closed_selector"
+        android:dropDownVerticalOffset="0dp"
+        android:dropDownSelector="@android:color/transparent"
+        android:gravity="center"
+        android:popupBackground="@drawable/fydsp_hlpf_slope_opened_bg"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@+id/tv_hpf_slope_title"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_hpf"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hpf_freq_title" />
+
+    <TextView
+        android:id="@+id/tv_hpf_slope_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hlpf_slope_title"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/sp_hpf_slope"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_hpf"
+        app:layout_constraintTop_toBottomOf="@+id/sp_hpf_freq" />
+
+    <com.hcn.autoeq.view.CustomSpinner
+        android:id="@+id/sp_hpf_slope"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_hlpf_slope_closed_selector"
+        android:dropDownVerticalOffset="0dp"
+        android:dropDownSelector="@android:color/transparent"
+        android:gravity="center"
+        android:popupBackground="@drawable/fydsp_hlpf_slope_opened_bg"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_hpf"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_hpf"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hpf_slope_title" />
+
+    <ImageView
+        android:id="@+id/iv_lpf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_hlpf_hpf_bg"
+        app:layout_constraintEnd_toStartOf="@+id/iv_hlpf_car"
+        app:layout_constraintStart_toEndOf="@+id/iv_hpf"
+        app:layout_constraintTop_toTopOf="@+id/iv_hpf" />
+
+    <TextView
+        android:id="@+id/tv_lpf_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hlpf_lpf"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_hpf_title"
+        app:layout_constraintEnd_toEndOf="@+id/iv_lpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_lpf"
+        app:layout_constraintTop_toTopOf="@+id/tv_hpf_title" />
+
+    <TextView
+        android:id="@+id/tv_lpf_freq_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hlpf_freq_title"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_hpf_freq_title"
+        app:layout_constraintEnd_toEndOf="@+id/iv_lpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_lpf"
+        app:layout_constraintTop_toTopOf="@+id/tv_hpf_freq_title" />
+
+    <com.hcn.autoeq.view.CustomSpinner
+        android:id="@+id/sp_lpf_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_hlpf_slope_closed_selector"
+        android:dropDownSelector="@android:color/transparent"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:popupBackground="@drawable/fydsp_hlpf_slope_opened_bg"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/sp_hpf_freq"
+        app:layout_constraintEnd_toEndOf="@+id/iv_lpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_lpf"
+        app:layout_constraintTop_toTopOf="@+id/sp_hpf_freq" />
+
+    <TextView
+        android:id="@+id/tv_lpf_slope_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hlpf_slope_title"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_hpf_slope_title"
+        app:layout_constraintEnd_toEndOf="@+id/iv_lpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_lpf"
+        app:layout_constraintTop_toTopOf="@+id/tv_hpf_slope_title" />
+
+    <com.hcn.autoeq.view.CustomSpinner
+        android:id="@+id/sp_lpf_slope"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_hlpf_slope_closed_selector"
+        android:dropDownSelector="@android:color/transparent"
+        android:gravity="center"
+        android:overlapAnchor="false"
+        android:popupBackground="@drawable/fydsp_hlpf_slope_opened_bg"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/sp_hpf_slope"
+        app:layout_constraintEnd_toEndOf="@+id/iv_lpf"
+        app:layout_constraintStart_toStartOf="@+id/iv_lpf"
+        app:layout_constraintTop_toTopOf="@+id/sp_hpf_slope" />
+
+    <ImageView
+        android:id="@+id/iv_hlpf_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_hlpf_car"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_lpf"
+        app:layout_constraintEnd_toStartOf="@+id/btn_reset_hlpf"
+        app:layout_constraintStart_toEndOf="@+id/iv_lpf"
+        app:layout_constraintTop_toTopOf="@+id/iv_lpf" />
+
+    <RadioGroup
+        android:id="@+id/rg_hlpf_speaker_way2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_hlpf_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car">
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way2_f"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_way2_f_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_way2_f_selector"
+            android:button="@null"
+            android:tag="WAY2_F"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way2_r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_way2_r_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_way2_r_selector"
+            android:button="@null"
+            android:tag="WAY2_R"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_way2_f"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way2_subwoofer_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_way2_subwoofer_center_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_way2_subwoofer_center_selector"
+            android:button="@null"
+            android:tag="WAY2_SUBWOOFER_CENTER"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_way2_r"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_hlpf_speaker_way3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_hlpf_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car">
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way3_f"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_way3_f_center_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_way3_f_selector"
+            android:button="@null"
+            android:tag="WAY3_F"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way3_r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fydsp_hlpf_speaker_way3_r_selector"
+            android:button="@null"
+            android:tag="WAY3_R"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_way3_f"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way3_subwoofer_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fydsp_hlpf_speaker_way3_subwoofer_center_selector"
+            android:button="@null"
+            android:tag="WAY3_SUBWOOFER_CENTER"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_way3_r"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_hlpf_speaker_channel51"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_hlpf_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car">
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_channel51_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_channel51_center_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_channel51_center_selector"
+            android:button="@null"
+            android:tag="CHANNEL51_CENTER"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_channel51_f"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fydsp_hlpf_speaker_channel51_f_selector"
+            android:button="@null"
+            android:tag="CHANNEL51_F"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_channel51_center"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_channel51_r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_channel51_r_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_channel51_r_selector"
+            android:button="@null"
+            android:tag="CHANNEL51_R"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_channel51_f"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_channel51_subwoofer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_channel51_subwoofer_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_channel51_subwoofer_selector"
+            android:button="@null"
+            android:tag="CHANNEL51_SUBWOOFER"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_channel51_r"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_hlpf_speaker_way6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_hlpf_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car">
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way6_f"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_way6_f_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_way6_f_selector"
+            android:button="@null"
+            android:tag="WAY6_F"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way6_r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_way6_r_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_way2_r_selector"
+            android:button="@null"
+            android:tag="WAY6_R"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_way6_f"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/btn_hlpf_speaker_way6_subwoofer_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fydsp_filter_btn_hlpf_speaker_way6_subwoofer_center_layout_marginStart"
+            android:background="@drawable/fydsp_hlpf_speaker_way2_subwoofer_center_selector"
+            android:button="@null"
+            android:tag="WAY6_SUBWOOFER_CENTER"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_hlpf_speaker_way6_r"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_hlpf_output_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btn_reset_hlpf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hpf">
+
+        <RadioButton
+            android:id="@+id/rb_hlpf_output_mode_way2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fydsp_band_user_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:maxWidth="@dimen/fydsp_filter_rg_hlpf_output_mode_maxWidth"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:tag="WAY2"
+            android:text="@string/fydsp_hlpf_output_mode_way2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/fydsp_textSize"
+            tools:text="a test strings" />
+
+        <RadioButton
+            android:id="@+id/rb_hlpf_output_mode_way3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fydsp_band_user_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:maxWidth="@dimen/fydsp_filter_rg_hlpf_output_mode_maxWidth"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:tag="WAY3"
+            android:text="@string/fydsp_hlpf_output_mode_way3"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/fydsp_textSize"
+            tools:text="test strings" />
+
+        <RadioButton
+            android:id="@+id/rb_hlpf_output_mode_channel51"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fydsp_band_user_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:maxWidth="@dimen/fydsp_filter_rg_hlpf_output_mode_maxWidth"
+            android:paddingHorizontal="16dp"
+            android:singleLine="true"
+            android:tag="CHANNEL51"
+            android:text="@string/fydsp_hlpf_output_mode_channel51"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/fydsp_textSize"
+            tools:text="test strings" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_reset_hlpf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_surround_reset_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

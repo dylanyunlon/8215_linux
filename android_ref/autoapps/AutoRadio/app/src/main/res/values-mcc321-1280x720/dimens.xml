@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="PresetViewFreqTextSize">39sp</dimen>
+    <dimen name="PresetViewIndexTextSize">36sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">42sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">36sp</dimen>
+    <dimen name="band_info_text_size">48sp</dimen>
+    <dimen name="preset_viewpager_height">138dp</dimen>
+    <dimen name="PresetViewPagerMarginHorizontal">22dp</dimen>
+    <dimen name="radio_show_info_img_marginTop">60dp</dimen>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="dsp_frequency_layout_height">510dp</dimen>
+    <dimen name="dsp_frequency_layout_padding">8dp</dimen>
+    <dimen name="dsp_frequency_gain_tv_size">13sp</dimen>
+    <dimen name="dsp_frequency_bar_tv_size">12sp</dimen>
+    <dimen name="dsp_seekbar_subwoofer_width">680dp</dimen>
+    <dimen name="asp_reverb_text_size">22sp</dimen>
+    <dimen name="asp_reverb_group_padding" tools:ignore="MissingDefaultResource">0dp</dimen>
+    <dimen name="asp_reverb_style2_padding" tools:ignore="MissingDefaultResource">-714dp</dimen>
+    <dimen name="asp_reset_marginEnd" tools:ignore="MissingDefaultResource">43dp</dimen>
+    <dimen name="asp_mode_btn_port_padding" tools:ignore="MissingDefaultResource">43dp</dimen>
+
+    <dimen name="main_radiobutton_text_size">32sp</dimen>
+    <dimen name="balance_mode_marginStart">140dip</dimen>
+    <dimen name="balance_mode_marginTop">60dip</dimen>
+    <dimen name="eq_balance_marginEnd">160dip</dimen>
+    <dimen name="balance_direct_padding">20dip</dimen>
+    <dimen name="balance_mode_text_size">26sp</dimen>
+
+    <dimen name="dsp_tab_height">80dp</dimen>
+    <dimen name="dsp_tab_text_size">30sp</dimen>
+    <dimen name="dsp_tab_eq_width">220dp</dimen>
+    <dimen name="dsp_tab_surround_width">220dp</dimen>
+    <dimen name="dsp_tab_subwoofer_width">295dp</dimen>
+    <dimen name="dsp_tab_surround_tv_size">32sp</dimen>
+    <dimen name="dsp_source_tv_size">36sp</dimen>
+    <dimen name="dsp_tv_subwoofer_size">26sp</dimen>
+    <dimen name="dsp_frequency_bar_width">5dp</dimen>
+    <dimen name="dsp_freq_curve_width_1">4dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">0dp</dimen>
+
+    <dimen name="asp_reverb_width">108dp</dimen>
+    <dimen name="asp_reverb_height">90dp</dimen>
+    <dimen name="asp_reverb_top">10dip</dimen>
+    <dimen name="asp_reverb_paddingStart">5dp</dimen>
+    <dimen name="asp_reverb_bottom">12dp</dimen>
+    <dimen name="asp_source_text_size">24sp</dimen>
+    <dimen name="asp_balance_width">328dp</dimen>
+    <dimen name="asp_balance_height">328dp</dimen>
+    <dimen name="indicator_seek_bar_width">372dp</dimen>
+    <dimen name="indicator_seek_bar_height">15dp</dimen>
+    <dimen name="indicator_seek_tv_size">24sp</dimen>
+
+    <dimen name="equalizerSurface_alpha">1.0dp</dimen>
+    <dimen name="asp_reverb_layout_marginTop">130dp</dimen>
+
+    <integer name="band_user_reverb_mode_x">80</integer>
+    <integer name="band_user_reverb_mode_y">10</integer>
+
+    <dimen name="dsp_tv_g_title_layout_marginTop">3dp</dimen>
+
+    <dimen name="ll_dsp_band_range_bg_layout_marginTop">6dp</dimen>
+    <dimen name="frequencyResponse_layout_marginTop">20dp</dimen>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_extdsp_fragment_filter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/rg_extdsp_hlpf_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/extdsp_filter_rg_extdsp_hlpf_main_paddingHorizontal"
+        android:layout_marginVertical="20dp"
+        android:orientation="horizontal">
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_hlpf"
+            android:layout_height="wrap_content"
+            style="@style/extdsp_filter_radio_button_style"
+            android:drawableStart="@drawable/extdsp_hlpf_selector" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_dbb"
+            android:layout_height="wrap_content"
+            style="@style/extdsp_filter_radio_button_style"
+            android:drawableStart="@drawable/extdsp_dbb_selector" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_surround"
+            android:layout_height="wrap_content"
+            style="@style/extdsp_filter_radio_button_style"
+            android:drawableStart="@drawable/extdsp_surround_selector" />
+
+    </RadioGroup>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/extdsp_filter_split_line" />
+
+    <FrameLayout
+        android:id="@+id/filter_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10" />
+</LinearLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/color_transparent"/>
+    <size
+        android:height="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_height"
+        android:width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"/>
+</shape>

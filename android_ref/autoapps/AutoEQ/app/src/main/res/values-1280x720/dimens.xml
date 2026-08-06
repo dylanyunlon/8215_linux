@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extdsp_attenuate_tv_attenuate_top_text_maxWith">150dp</dimen>
+    <dimen name="extdsp_iv_hlpf_speaker_subwoofer_layoutWidth">120dp</dimen>
+    <dimen name="extdsp_iv_hlpf_speaker_subwoofer_layoutHeight">120dp</dimen>
+    <dimen name="extdsp_rb_hlpf_mode_fl_fr_layoutWidth">165dp</dimen>
+    <dimen name="extdsp_rb_hlpf_mode_fl_fr_layoutHeight">55dp</dimen>
+    <dimen name="extdsp_rb_hlpf_mode_fl_fr_layout_marginTop">20dp</dimen>
+    <dimen name="extdsp_rb_hlpf_mode_rl_rr_layout_marginTop">80dp</dimen>
+    <dimen name="extdsp_rb_hlpf_mode_subwoofer_layout_marginStart">430dp</dimen>
+    <dimen name="extdsp_rb_hlpf_mode_subwoofer_layout_marginTop">-190dp</dimen>
+    <dimen name="extdsp_btn_reset_hlpf_layout_marginTop">280dp</dimen>
+    <dimen name="extdsp_iv_hpf_layout_marginTop">20dp</dimen>
+    <dimen name="extdsp_rg_hlpf_output_mode_marginTop">35dp</dimen>
+
+    <dimen name="extdsp_iv_delay_car_layoutWidth">346dp</dimen>
+    <dimen name="extdsp_iv_delay_car_layoutHeight">346dp</dimen>
+    <dimen name="extdsp_iv_delay_speaker_center_layout_marginTop">40dp</dimen>
+    <dimen name="extdsp_btn_reset_delay_layout_marginTop">30dp</dimen>
+    <dimen name="extdsp_es_freq_layout_height">125dp</dimen>
+    <dimen name="extdsp_hsv_band_layout_marginBottom">0dp</dimen>
+    <dimen name="extdsp_tv_q_title_margin_bottom">0dp</dimen>
+    <dimen name="extdsp_tv_g_title_margin_bottom">0dp</dimen>
+    <dimen name="extdsp_seekbar_rotator_margin_top">0dp</dimen>
+    <dimen name="extdsp_tv_gain_min_margin_bottom">5dp</dimen>
+    <dimen name="extdsp_tv_gain_margin_bottom">60dp</dimen>
+</resources>

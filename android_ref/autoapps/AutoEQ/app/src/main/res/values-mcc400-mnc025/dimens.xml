@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_freq_curve_width_1">2dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">2dp</dimen>
+    <dimen name="dsp_frequency_bar_width">4dp</dimen>
+    <dimen name="asp_balance_width">213dip</dimen>
+    <dimen name="asp_balance_height">213dip</dimen>
+    <dimen name="balance_direct_padding">20dip</dimen>
+    <dimen name="eq_balance_marginEnd">160dip</dimen>
+    <dimen name="dsp_tab_eq_width">135dp</dimen>
+    <dimen name="dsp_tab_surround_width">165dp</dimen>
+    <dimen name="dsp_tab_subwoofer_width">235dp</dimen>
+    <dimen name="dsp_tab_height">60dp</dimen>
+</resources>

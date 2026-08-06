@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bt_connect_color">#3ADF5E</color>
+    <color name="tel_search_txt_color_uix">#00F6F8</color>
+    <color name="dial_tv_color">#038387</color>
+    <color name="bluetooth_net_text_color">#FFFFFF</color>
+    <color name="bluetooth_close_text_color">#ffffff</color>
+    <color name="calling_status_text_color">#FFFFFF</color>
+    <color name="callhistory_download_text">#FFFFFF</color>
+    <!--Dual UI-->
+    <color name="background">#404040</color>
+    <color name="color_text_n">#999999</color>
+    <color name="color_text_p">#00A2E9</color>
+
+    <color name="color_blue_light">#019695</color>
+    <color name="color_blue_dark">#FFFFFF</color>
+    <color name="color_white_light">#99FFFFFF</color>
+
+    <color name="color_green_dark">#3ADF5E</color>
+
+    <color name="color_title_black">#000608</color>
+</resources>

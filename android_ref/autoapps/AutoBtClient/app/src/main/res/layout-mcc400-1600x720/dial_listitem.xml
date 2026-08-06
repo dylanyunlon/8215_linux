@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingStart="@dimen/bt_call_text_call_info_layout_marginStart"
+    android:paddingEnd="10dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/dial_name"
+        android:layout_width="@dimen/dial_listitem_dial_name_layout_width"
+        android:layout_height="@dimen/dial_listitem_dial_name_layout_height"
+        android:singleLine="true"
+        android:textColor="@color/color_blue_dark"
+        android:textSize="@dimen/dial_listitem_dial_name_textSize"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/dial_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/color_blue_dark"
+        android:singleLine="true"
+        android:textSize="@dimen/dial_listitem_dial_name_textSize"
+        android:layout_gravity="center_vertical"/>
+
+</LinearLayout>

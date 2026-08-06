@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="str_income_call_status">Incoming Call</string>
+    <string name="str_out_call_status">Calling...</string>
+    <string name="str_bt_call_held">Keep talking</string>
+
+
+    <string name="str_bt_call_active">""</string>
+    <string name="str_bt_call_waiting">Incoming Call</string>
+
+    <string name="unkown">UnKnown</string>
+    <string name="time_text">00:00</string>
+
+</resources>

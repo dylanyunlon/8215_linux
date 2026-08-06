@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="tab_band_user_reverb_mode_x">-18</integer>
+    <integer name="tab_band_user_reverb_mode_y">8</integer>
+    <integer name="tab_btn_csc_asp_volume_x">-68</integer>
+    <integer name="tab_btn_csc_asp_volume_y">8</integer>
+</resources>

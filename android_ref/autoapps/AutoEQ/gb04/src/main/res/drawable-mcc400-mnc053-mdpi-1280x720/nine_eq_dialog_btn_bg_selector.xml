@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_pressed="true"
+        android:drawable="@drawable/nine_dts_bar_tab_bg"/>
+    <item
+        android:state_selected="true"
+        android:drawable="@drawable/nine_dts_bar_tab_bg"/>
+    <item
+        android:state_checked="true"
+        android:drawable="@drawable/nine_dts_bar_tab_bg"/>
+    <item android:drawable="@drawable/nine_eq_dialog_btn_bg_n"/>
+</selector>

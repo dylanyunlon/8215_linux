@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/BottomMenu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/butt_band"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:src="@drawable/butt_xml_band"
+        android:textColor="@drawable/text_color_selector" />
+
+    <ImageView
+        android:id="@+id/butt_scan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:src="@drawable/butt_xml_scan"
+        android:textColor="@drawable/text_color_selector" />
+
+    <ImageView
+        android:id="@+id/butt_asps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:src="@drawable/butt_xml_asps"
+        android:textColor="@drawable/text_color_selector" />
+
+    <ImageView
+        android:id="@+id/butt_locdx"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:src="@drawable/butt_xml_loc"
+        android:textColor="@drawable/text_color_selector" />
+
+</LinearLayout>

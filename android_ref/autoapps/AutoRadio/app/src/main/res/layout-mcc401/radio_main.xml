@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofm="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/radio_main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/radio_main_bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <com.hcn.autoradio.view.VerticalViewPager
+            android:id="@+id/PresetViewPaper"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_weight="2"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:layout_weight="5"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_radio_status_icon"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="bottom">
+                <ImageView
+                    android:id="@+id/rds_imgbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/rds_styles_selector"/>
+
+                <include
+                    layout="@layout/radio_status_icon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"/>
+
+                <Button
+                    android:id="@+id/auto_test"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="0.3"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/radio_rds_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/rds_ps"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/pty_text_color"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    android:id="@+id/rds_rt_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="4"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/pty_text_color"
+                    android:textSize="25sp"/>
+            </LinearLayout>
+            <com.hcn.autoradio.view.FMSeekBarView
+                android:id="@+id/id_china_seekbar_fm"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:layout_gravity="center_horizontal"
+                android:paddingEnd="10dp"
+                android:background="@drawable/radio_scroll_background"
+                android:src="@drawable/radio_scroll_fm_china"
+                autofm:scroll_item="@drawable/radio_scroll_thumb"
+                autofm:scroll_uid="8"/>
+            <include
+                layout="@layout/radio_show_info_txt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+    <include
+        android:id="@+id/bottom_layout"
+        layout="@layout/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

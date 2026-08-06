@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="arrays_device_states">
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>""</item>
+        <item>@string/txt_bt_state_bound_none</item>
+        <item>@string/txt_bt_state_bounded</item>
+        <item>@string/txt_bt_state_disconnected</item>
+        <item>@string/txt_bt_state_connected</item>
+    </string-array>
+
+
+    <string-array name="arrays_contacts_labels">
+        <item>@string/txt_a</item>
+        <item>@string/txt_b</item>
+        <item>@string/txt_c</item>
+        <item>@string/txt_d</item>
+        <item>@string/txt_e</item>
+        <item>@string/txt_f</item>
+        <item>@string/txt_g</item>
+        <item>@string/txt_h</item>
+        <item>@string/txt_i</item>
+        <item>@string/txt_j</item>
+        <item>@string/txt_k</item>
+        <item>@string/txt_l</item>
+        <item>@string/txt_m</item>
+        <item>@string/txt_n</item>
+        <item>@string/txt_o</item>
+        <item>@string/txt_p</item>
+        <item>@string/txt_q</item>
+        <item>@string/txt_r</item>
+        <item>@string/txt_s</item>
+        <item>@string/txt_t</item>
+        <item>@string/txt_u</item>
+        <item>@string/txt_v</item>
+        <item>@string/txt_w</item>
+        <item>@string/txt_x</item>
+        <item>@string/txt_y</item>
+        <item>@string/txt_z</item>
+        <item>@string/txt_sharp</item>
+    </string-array>
+</resources>

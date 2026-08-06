@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout_setting"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rds_backgroud">
+
+    <LinearLayout
+        android:id="@+id/ll_setting_loc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/ll_rds_loc_margin_top"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/setting_tvLOC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/LOC_TEXT"
+            android:textColor="@color/white"
+            android:textSize="@dimen/rds_toggle_button_text_size" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
+            <ToggleButton
+                android:id="@+id/setting_tglLOC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/rds_toggle_margin_start"
+                android:layout_gravity="center"
+                android:background="@drawable/selector_rds_btn_toggle"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn="" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_setting_af"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/ll_rds_af_margin_top"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/setting_tvAF"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/AF"
+            android:textColor="@color/white"
+            android:textSize="@dimen/rds_toggle_button_text_size" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
+            <ToggleButton
+                android:id="@+id/setting_tglAF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/rds_toggle_margin_start"
+                android:background="@drawable/selector_rds_btn_toggle"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn="" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_setting_ta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/ll_rds_ta_margin_top"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/setting_tvTA"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/TA"
+            android:textColor="@color/white"
+            android:textSize="@dimen/rds_toggle_button_text_size" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
+            <ToggleButton
+                android:id="@+id/setting_tglTA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/rds_toggle_margin_start"
+                android:background="@drawable/selector_rds_btn_toggle"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn="" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/device_item"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginStart="5dp"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="bottom"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/device_item_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingStart="3dp"
+        android:paddingBottom="1dp">
+
+        <TextView
+            android:id="@+id/item_remote_device_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_blue_dark"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/item_remote_connect_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_blue_dark"
+            android:textSize="26sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/item_remote_device_macaddr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="26sp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/device_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/set_rb_off" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_config_profile"
+        android:layout_width="@dimen/x43"
+        android:layout_height="@dimen/x49"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/more" />
+
+</LinearLayout>

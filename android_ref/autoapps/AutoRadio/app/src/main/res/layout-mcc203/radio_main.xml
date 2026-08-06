@@ -1,0 +1,123 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofm="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/radio_main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/black"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_bg" />
+
+    <com.hcn.autoradio.view.FMSeekBarView
+        android:id="@+id/id_china_seekbar_fm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/radio_scroll_fm_china"
+        autofm:scroll_begin="50"
+        autofm:scroll_end="974"
+        autofm:scroll_item="@drawable/radio_scroll_thumb"
+        autofm:scroll_uid="8" />
+
+    <include
+        android:id="@+id/radio_show_info_txt"
+        layout="@layout/radio_show_info_txt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="2.5" />
+
+    <LinearLayout
+        android:id="@+id/ll_radio_status_icon"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <include
+            layout="@layout/radio_status_icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/auto_test"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/radio_rds_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/rds_ps"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/main_text_color"
+            android:textSize="20.0sp" />
+
+        <TextView
+            android:id="@+id/rds_rt_info"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_weight="5"
+            android:gravity="center_vertical"
+            android:textColor="@color/main_text_color"
+            android:textSize="18.0sp" />
+
+        <ImageView
+            android:id="@+id/rds_imgbtn"
+            style="@style/hcn_rds_icon_style"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/rds_styles_selector" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/center_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/screen_segment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp" />
+
+        <com.hcn.autoradio.view.ViewPager
+            android:id="@+id/PresetViewPaper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/preset_viewpager_margin_start"
+            android:layout_marginEnd="@dimen/preset_viewpager_margin_end" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/divider" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_layout"
+        layout="@layout/bottom_menu" />
+</LinearLayout>

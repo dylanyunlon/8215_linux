@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/nine_filter_fragment_filter_marginStart"
+    android:layout_marginEnd="@dimen/nine_filter_fragment_filter_marginEnd"
+    android:layout_marginTop="@dimen/nine_filter_fragment_filter_marginTop"
+    android:layout_marginBottom="@dimen/nine_filter_fragment_filter_marginBottom">
+
+    <RadioGroup
+        android:id="@+id/rg_filter"
+        android:layout_width="@dimen/x720"
+        android:layout_height="@dimen/y88"
+        android:background="@drawable/nine_dsp_bar_basic_bg"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/rb_hlpf"
+            style="@style/nine_filter_bar_radio_button_style"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
+            android:nextFocusRight="@id/rb_filter_bass_boost"
+            android:text="@string/nine_btn_filter_bar_hl_frequency" />
+
+        <RadioButton
+            android:id="@+id/rb_filter_bass_boost"
+            style="@style/nine_filter_bar_radio_button_style"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:nextFocusLeft="@id/rb_hlpf"
+            android:scrollHorizontally="true"
+            android:text="@string/nine_btn_dts_bar_bass_boost" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_hlpf"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y88"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/x32"
+        android:textColor="@color/nine_text_color_10"
+        android:text="@string/nine_btn_filter_bar_hl_frequency"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_filter_reset"
+        android:layout_width="@dimen/x180"
+        android:layout_height="@dimen/y88"
+        android:background="@drawable/nine_dts_btn_bg_selector"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="@string/nine_btn_reset"
+        android:textColor="@color/nine_text_color_n"
+        android:textSize="@dimen/nine_surround_fragment_filter_tv_surround_reset_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/rg_filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginRight="@dimen/x40" />
+
+    <FrameLayout
+        android:id="@+id/filter_filter_frame"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_filter"
+        app:layout_constraintVertical_weight="1" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autoeq="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_advance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/fydsp_band_mode_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text="@string/fydsp_balance_or_delay_advanced"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/balance_mode_main"
+        style="@style/fydsp_balance_mode_style"
+        android:text="@string/balance_model_master"
+        android:textSize="@dimen/fydsp_balance_mode_text_size"
+        android:visibility="invisible"
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toStartOf="@+id/id_eq_balance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_advance" />
+
+    <Button
+        android:id="@+id/balance_mode_co"
+        style="@style/fydsp_balance_mode_style"
+        android:text="@string/balance_model_copilot"
+        android:textSize="@dimen/fydsp_balance_mode_text_size"
+        android:visibility="invisible"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/balance_mode_main"
+        app:layout_constraintStart_toStartOf="@+id/balance_mode_main"
+        app:layout_constraintTop_toBottomOf="@+id/balance_mode_main" />
+
+    <Button
+        android:id="@+id/balance_mode_rear"
+        style="@style/fydsp_balance_mode_style"
+        android:text="@string/balance_model_user"
+        android:textSize="@dimen/fydsp_balance_mode_text_size"
+        android:visibility="invisible"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/balance_mode_main"
+        app:layout_constraintStart_toStartOf="@+id/balance_mode_main"
+        app:layout_constraintTop_toBottomOf="@+id/balance_mode_co" />
+
+    <Button
+        android:id="@+id/balance_mode_whole"
+        style="@style/fydsp_balance_mode_style"
+        android:text="@string/balance_model_full"
+        android:textSize="@dimen/fydsp_balance_mode_text_size"
+        android:visibility="invisible"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/balance_mode_main"
+        app:layout_constraintStart_toStartOf="@+id/balance_mode_main"
+        app:layout_constraintTop_toBottomOf="@+id/balance_mode_rear" />
+
+    <Button
+        android:id="@+id/balance_mode_left"
+        style="@style/fydsp_balance_mode_style"
+        android:text="@string/fydsp_balance_mode_left"
+        android:textSize="@dimen/fydsp_balance_mode_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/balance_mode_center"
+        app:layout_constraintEnd_toStartOf="@+id/id_eq_balance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/balance_mode_center"
+        style="@style/fydsp_balance_mode_style"
+        android:text="@string/fydsp_balance_mode_center"
+        android:textSize="@dimen/fydsp_balance_mode_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/balance_mode_right"
+        app:layout_constraintEnd_toEndOf="@+id/balance_mode_left"
+        app:layout_constraintStart_toStartOf="@+id/balance_mode_left"
+        app:layout_constraintTop_toBottomOf="@+id/balance_mode_left" />
+
+    <Button
+        android:id="@+id/balance_mode_right"
+        style="@style/fydsp_balance_mode_style"
+        android:text="@string/fydsp_balance_mode_right"
+        android:textSize="@dimen/fydsp_balance_mode_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/balance_mode_left"
+        app:layout_constraintStart_toStartOf="@+id/balance_mode_left"
+        app:layout_constraintTop_toBottomOf="@+id/balance_mode_center" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_balance_car_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/balance_mode_main"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.BalanceView
+        android:id="@+id/id_eq_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_balance_car"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/balance_mode_main"
+        app:layout_constraintTop_toTopOf="parent"
+        autoeq:thumb="@drawable/fydsp_balance_thumb_p" />
+
+    <Button
+        android:id="@+id/balance_front"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/fydsp_balance_direct_padding"
+        android:background="@drawable/fydsp_balance_up_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/id_eq_balance"
+        app:layout_constraintEnd_toEndOf="@+id/id_eq_balance"
+        app:layout_constraintStart_toStartOf="@+id/id_eq_balance" />
+
+    <Button
+        android:id="@+id/balance_rear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fydsp_balance_direct_padding"
+        android:background="@drawable/fydsp_balance_down_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/id_eq_balance"
+        app:layout_constraintStart_toStartOf="@+id/id_eq_balance"
+        app:layout_constraintTop_toBottomOf="@+id/id_eq_balance" />
+
+    <Button
+        android:id="@+id/balance_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/fydsp_balance_direct_padding"
+        android:background="@drawable/fydsp_balance_left_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/id_eq_balance"
+        app:layout_constraintEnd_toStartOf="@+id/id_eq_balance"
+        app:layout_constraintTop_toTopOf="@+id/id_eq_balance" />
+
+    <Button
+        android:id="@+id/balance_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/fydsp_balance_direct_padding"
+        android:background="@drawable/fydsp_balance_right_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/id_eq_balance"
+        app:layout_constraintStart_toEndOf="@+id/id_eq_balance"
+        app:layout_constraintTop_toTopOf="@+id/id_eq_balance" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

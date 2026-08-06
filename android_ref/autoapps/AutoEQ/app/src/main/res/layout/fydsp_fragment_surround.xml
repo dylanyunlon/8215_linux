@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_loudness_enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/dsp_second_page_loudness"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintEnd_toStartOf="@+id/sp_loudness"
+        app:layout_constraintStart_toStartOf="@+id/iv_bass_boost_bg_ch12"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.CustomSpinner
+        android:id="@+id/sp_loudness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_hlpf_slope_closed_selector"
+        android:dropDownVerticalOffset="0dp"
+        android:dropDownSelector="@android:color/transparent"
+        android:gravity="center"
+        android:popupBackground="@drawable/fydsp_hlpf_slope_opened_bg"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_loudness_enable"
+        app:layout_constraintStart_toEndOf="@+id/tv_loudness_enable"
+        app:layout_constraintTop_toTopOf="@+id/tv_loudness_enable" />
+
+    <ImageView
+        android:id="@+id/iv_surround_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_surround_car"
+        app:layout_constraintEnd_toStartOf="@+id/btn_reset_surround"
+        app:layout_constraintStart_toEndOf="@+id/sp_loudness"
+        app:layout_constraintTop_toTopOf="@+id/sp_loudness" />
+
+    <ImageView
+        android:id="@+id/iv_speaker_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_surround_speaker_anim_way6"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_surround_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_surround_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_surround_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_surround_car" />
+
+    <!-- ch1/ch2 -->
+    <TextView
+        android:id="@+id/tv_gain_title_ch12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/fydsp_bassboost_title_ch12"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/iv_bass_boost_bg_ch12"
+        app:layout_constraintStart_toStartOf="@+id/iv_bass_boost_bg_ch12" />
+
+    <ImageView
+        android:id="@+id/iv_bass_boost_bg_ch12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_bass_boost_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_bass_boost_bg_ch34"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_surround_car" />
+
+    <com.hcn.autoeq.view.FyDspSeekBar
+        android:id="@+id/fdsb_gain_ch12"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/fdsb_freq_ch12"
+        app:layout_constraintEnd_toEndOf="@+id/fdsb_freq_ch12"
+        app:layout_constraintTop_toTopOf="@+id/iv_bass_boost_bg_ch12" />
+
+    <com.hcn.autoeq.view.FyDspSeekBar
+        android:id="@+id/fdsb_freq_ch12"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_bass_boost_bg_ch12"
+        app:layout_constraintEnd_toEndOf="@+id/iv_bass_boost_bg_ch12"
+        app:layout_constraintStart_toStartOf="@+id/iv_bass_boost_bg_ch12"
+        app:layout_constraintTop_toBottomOf="@+id/fdsb_gain_ch12" />
+
+    <!-- ch3/ch4 -->
+    <TextView
+        android:id="@+id/tv_gain_title_ch34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/fydsp_bassboost_title_ch34"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/fydsp_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/iv_bass_boost_bg_ch34"
+        app:layout_constraintEnd_toEndOf="@+id/iv_bass_boost_bg_ch34" />
+
+    <ImageView
+        android:id="@+id/iv_bass_boost_bg_ch34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_bass_boost_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_bass_boost_bg_ch12"
+        app:layout_constraintTop_toBottomOf="@+id/iv_surround_car" />
+
+    <com.hcn.autoeq.view.FyDspSeekBar
+        android:id="@+id/fdsb_gain_ch34"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/fdsb_freq_ch34"
+        app:layout_constraintEnd_toEndOf="@+id/fdsb_freq_ch34"
+        app:layout_constraintTop_toTopOf="@+id/iv_bass_boost_bg_ch34" />
+
+    <com.hcn.autoeq.view.FyDspSeekBar
+        android:id="@+id/fdsb_freq_ch34"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_bass_boost_bg_ch34"
+        app:layout_constraintEnd_toEndOf="@+id/iv_bass_boost_bg_ch34"
+        app:layout_constraintStart_toStartOf="@+id/iv_bass_boost_bg_ch34"
+        app:layout_constraintTop_toBottomOf="@+id/fdsb_gain_ch34" />
+
+    <Button
+        android:id="@+id/btn_reset_surround"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fydsp_surround_reset_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_bass_boost_bg_ch34"
+        app:layout_constraintTop_toTopOf="@+id/sp_loudness" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

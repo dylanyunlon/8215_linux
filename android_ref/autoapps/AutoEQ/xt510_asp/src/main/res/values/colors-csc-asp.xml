@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="csc_asp_radio_text_color_select_p">#07A1DC</color>
+    <color name="csc_asp_radio_text_color_select_n">@android:color/white</color>
+
+
+    <!-- balance -->
+    <color name="tv_csc_asp_balance_right_value_color">#07A1DC</color>
+    <color name="csc_asp_tab_text_selector_p">#00EEFF</color>
+    <color name="csc_asp_tab_text_selector_n">@android:color/white</color>
+
+    <!-- subwoofer -->
+    <color name="tv_csc_asp_text_lpf_on_color_on">#07A1DC</color>
+    <color name="tv_csc_asp_text_lpf_on_color_off">#435672</color>
+
+
+    <!-- EqualizerSurface -->
+    <color name="csc_asp_fragment_background_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_bar_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_bar_text_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_bar_text_shadow_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_band_freq_curve_color_1">#BCCC8B</color>
+    <color name="csc_asp_fragment_band_freq_curve_color_2">#64C4AD</color>
+    <color name="csc_asp_fragment_band_freq_curve_color_3">#1E96D5</color>
+    <color name="csc_asp_fragment_band_freq_curve_color_4">#5D55DA</color>
+    <color name="csc_asp_fragment_band_freq_curve_color_5">#6513A7</color>
+    <color name="csc_asp_fragment_freq_curve_color_1">@android:color/white</color>
+    <color name="csc_asp_fragment_freq_curve_color_2">@android:color/white</color>
+    <color name="csc_asp_fragment_heq_bar_knob_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_gain_text_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_gridlines_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_bar_gain_text_shadow_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_bar_gain_text_color">@android:color/transparent</color>
+    <color name="csc_asp_fragment_heq_attr_bar_color">@android:color/transparent</color>
+
+
+    <!-- CscAspQValueView -->
+    <color name="csc_asp_q_value_view_linear_color_1">#CC6513A7</color>
+    <color name="csc_asp_q_value_view_linear_color_2">#CC5D55DA</color>
+    <color name="csc_asp_q_value_view_linear_color_3">#CC1E96D5</color>
+    <color name="csc_asp_q_value_view_linear_color_4">#CC64C4AD</color>
+    <color name="csc_asp_q_value_view_linear_color_5">#CCBCCC8B</color>
+
+
+</resources>

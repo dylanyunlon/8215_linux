@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="eq_bg_color">@android:color/transparent</color>
+    <color name="bar_color">@android:color/transparent</color>
+    <color name="bg_shader_color_1">#4B0E0E</color>
+    <color name="bg_shader_color_2">#EE4B0E0E</color>
+    <color name="bg_shader_color_3">#DD4B0E0E</color>
+    <color name="bg_shader_color_4">#804B0E0E</color>
+    <color name="bg_shader_color_5">#204B0E0E</color>
+    <color name="freq_curve_color_1">#B20001</color>
+    <color name="freq_curve_color_2">#B20001</color>
+    <color name="bar_knob_color">#FF6363</color>
+
+    <color name="tab_text_color_select_p">#B20001</color>
+    <color name="dsp_source_select">#B20001</color>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btn_preset_list_title_text_size">26sp</dimen>
+    <dimen name="collect_list_item_height">92dp</dimen>
+    <dimen name="btn_collect_list_margin_start">80dp</dimen>
+    <dimen name="digit_freq_text_size">100sp</dimen>
+    <dimen name="digit_freq_middle_text_size">60sp</dimen>
+    <dimen name="digit_freq_small_text_size">50sp</dimen>
+</resources>

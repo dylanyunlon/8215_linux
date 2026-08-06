@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="side_bar_text_size">28</integer>
+
+    <integer name="bt_phonebook_phonebook_listview_numColumns">4</integer>
+</resources>

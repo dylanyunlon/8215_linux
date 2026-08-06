@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/btn_surround_enable_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/extdsp_attenuate_title_layout_marginStart"
+        android:text="@string/dsp_second_page_surround"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extdsp_attenuate_title_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_surround_enable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_surround_enable" />
+
+    <ToggleButton
+        android:id="@+id/btn_surround_enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_surround_enable_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@+id/iv_surround_car"
+        app:layout_constraintStart_toEndOf="@+id/btn_surround_enable_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btn_loudness_enable_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/extdsp_attenuate_title_layout_marginStart"
+        android:text="@string/dsp_second_page_loudness"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extdsp_attenuate_title_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_loudness_enable"
+        app:layout_constraintStart_toEndOf="@+id/btn_surround_enable"
+        app:layout_constraintTop_toTopOf="@+id/btn_loudness_enable" />
+
+    <ToggleButton
+        android:id="@+id/btn_loudness_enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_surround_enable_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text=""
+        android:textColor="@android:color/white"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@+id/iv_surround_car"
+        app:layout_constraintStart_toEndOf="@+id/btn_loudness_enable_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_surround_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_surround_car"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_surround_enable" />
+
+    <ImageView
+        android:id="@+id/iv_speaker_anim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_surround_speaker_anim"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_surround_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_surround_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_surround_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_surround_car" />
+
+    <ImageView
+        android:id="@+id/iv_loudness_speaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_loudness_speaker"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_surround_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_surround_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_surround_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_surround_car" />
+</androidx.constraintlayout.widget.ConstraintLayout>

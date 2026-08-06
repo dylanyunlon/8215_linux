@@ -1,0 +1,193 @@
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofm="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/radio_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/radio_main_bg"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <!--mcc400-mnc023 对应 8581 sa82-->
+
+    <LinearLayout
+        android:id="@+id/ll_radio_main"
+        android:layout_width="@dimen/ll_radio_main_width"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/ll_radio_main_padding_top"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_radio_status_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ll_radio_status_icon_margin_top"
+            android:gravity="center_vertical">
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@android:color/transparent" />
+
+            <ImageView
+                android:id="@+id/text_band_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_band_info_layout_margin_top"
+                android:layout_marginStart="@dimen/text_band_info_margin_start"
+                android:layout_gravity="center_vertical|start"
+                android:src="@drawable/radio_fm1" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:layout_marginStart="@dimen/text_band_info_margin_start"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5" />
+
+                <LinearLayout
+                    android:id="@+id/digital_frequency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/number_A"
+                        style="@style/hcn_radio_num_style"
+                        android:src="@drawable/radio_num_1" />
+
+                    <ImageView
+                        android:id="@+id/number_B"
+                        style="@style/hcn_radio_num_style"
+                        android:src="@drawable/radio_num_0" />
+
+                    <ImageView
+                        android:id="@+id/number_C"
+                        style="@style/hcn_radio_num_style"
+                        android:src="@drawable/radio_num_8" />
+
+                    <ImageView
+                        android:id="@+id/number_D"
+                        style="@style/hcn_radio_dot_style"
+                        android:src="@drawable/radio_num_point" />
+
+                    <ImageView
+                        android:id="@+id/number_E"
+                        style="@style/hcn_radio_num_style"
+                        android:src="@drawable/radio_num_0" />
+
+                    <ImageView
+                        android:id="@+id/number_F"
+                        style="@style/hcn_radio_num_style"
+                        android:src="@drawable/radio_num_0" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5">
+                    <ImageView
+                        android:id="@+id/radio_info_hz"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/preset_unit_margin_start"
+                        android:src="@drawable/radio_khz" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/rds_imgbtn"
+                style="@style/hcn_rds_icon_style"
+                android:src="@drawable/rds_styles_selector" />
+
+            <Button
+                android:id="@+id/auto_test"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <include
+            layout="@layout/radio_status_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center" />
+
+        <include
+            android:id="@+id/radio_show_info_img"
+            layout="@layout/radio_show_info_img"
+            android:layout_marginTop="@dimen/radio_show_info_img_margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.hcn.autoradio.view.FMSeekBarView
+            android:id="@+id/id_china_seekbar_fm"
+            android:layout_width="836dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/radio_scroll_fm_china"
+            android:layout_gravity="center"
+            autofm:scroll_item="@drawable/radio_scroll_thumb"
+            autofm:scroll_uid="8"
+            autofm:thumb_offset_y="0" />
+
+        <LinearLayout
+            android:id="@+id/radio_rds_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rds_ps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/main_text_color"
+                android:textSize="20.0sp" />
+
+            <TextView
+                android:id="@+id/rds_rt_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:textColor="@color/main_text_color"
+                android:textSize="18.0sp" />
+        </LinearLayout>
+
+        <include
+            layout="@layout/bottom_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <!--<include layout="@layout/screen_segment"/>-->
+        <com.hcn.autoradio.view.VerticalViewPager
+            android:id="@+id/PresetViewPaper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/preset_viewpager_padding_top"
+            android:paddingBottom="@dimen/preset_viewpager_padding_bottom" />
+
+    </LinearLayout>
+
+</FrameLayout>

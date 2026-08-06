@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/dsp_frequency_layout_padding"
+    android:paddingTop="@dimen/dsp_frequency_layout_padding"
+    android:paddingEnd="@dimen/dsp_frequency_layout_padding">
+
+    <!-- TODO: Update blank fragment layout -->
+    <com.auto.hequalizer.EqualizerSurface
+        android:id="@+id/frequencyResponse"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dsp_frequency_layout_height"
+        android:layout_marginTop="@dimen/frequencyResponse_layout_marginTop"
+        android:background="@android:color/transparent"
+        app:bar_color="@color/bar_color"
+        app:bar_gain_text_color="@android:color/transparent"
+        app:bar_gain_text_shadow_color="@color/silver"
+        app:bar_text_color="@android:color/white"
+        app:bar_text_shadow_color="@color/silver"
+        app:bar_text_size="@dimen/dsp_frequency_bar_tv_size"
+        app:bar_width="@dimen/dsp_frequency_bar_width"
+        app:freq_curve_bg_shader_color_1="@color/bg_shader_color_1"
+        app:freq_curve_bg_shader_color_2="@color/bg_shader_color_2"
+        app:freq_curve_bg_shader_color_3="@color/bg_shader_color_3"
+        app:freq_curve_bg_shader_color_4="@color/bg_shader_color_4"
+        app:freq_curve_bg_shader_color_5="@color/bg_shader_color_5"
+        app:freq_curve_color_1="@color/freq_curve_color_1"
+        app:freq_curve_color_2="@color/freq_curve_color_2"
+        app:freq_curve_width_1="@dimen/dsp_freq_curve_width_1"
+        app:freq_curve_width_2="@dimen/dsp_freq_curve_width_2"
+        app:gain_text_color="@android:color/white"
+        app:gain_text_size="@dimen/dsp_frequency_gain_tv_size"
+        app:heq_bar_knob_color="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.hcn.autoeq.view.SparkView
+        android:id="@+id/sv_main"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dsp_frequency_layout_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_dsp_band_range_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ll_dsp_band_range_bg_layout_marginTop"
+        android:background="@drawable/dsp_band_range_bg"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_freq_title"
+        app:layout_constraintTop_toBottomOf="@+id/frequencyResponse">
+
+        <TextView
+            style="@style/DspBandRageTextStyle"
+            android:layout_width="@dimen/dsp_band_range_1_width"
+            android:text="@string/dsp_band_range_1" />
+
+        <TextView
+            style="@style/DspBandRageTextStyle"
+            android:layout_width="@dimen/dsp_band_range_2_width"
+            android:text="@string/dsp_band_range_2" />
+
+        <TextView
+            style="@style/DspBandRageTextStyle"
+            android:layout_width="@dimen/dsp_band_range_3_width"
+            android:text="@string/dsp_band_range_3" />
+
+        <TextView
+            style="@style/DspBandRageTextStyle"
+            android:layout_width="@dimen/dsp_band_range_4_width"
+            android:text="@string/dsp_band_range_4" />
+
+        <TextView
+            style="@style/DspBandRageTextStyle"
+            android:layout_width="@dimen/dsp_band_range_5_width"
+            android:text="@string/dsp_band_range_5" />
+
+        <TextView
+            style="@style/DspBandRageTextStyle"
+            android:layout_width="@dimen/dsp_band_range_6_width"
+            android:text="@string/dsp_band_range_6" />
+
+        <TextView
+            style="@style/DspBandRageTextStyle"
+            android:layout_width="@dimen/dsp_band_range_7_width"
+            android:text="@string/dsp_band_range_7" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_freq_title"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:text="F:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ll_band" />
+
+    <TextView
+        android:id="@+id/tv_g_title"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dsp_tv_g_title_layout_marginTop"
+        android:text="G:"
+        app:layout_constraintStart_toStartOf="@+id/tv_freq_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_freq_title" />
+
+    <LinearLayout
+        android:id="@+id/ll_band"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:minWidth="@dimen/extdsp_ll_band_minWidth"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_freq_title"
+        app:layout_constraintTop_toBottomOf="@+id/ll_dsp_band_range_bg" />
+</androidx.constraintlayout.widget.ConstraintLayout>

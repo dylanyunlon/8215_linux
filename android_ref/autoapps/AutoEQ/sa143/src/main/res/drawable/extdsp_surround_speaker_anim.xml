@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    <!-- 第一帧是关闭状态 -->
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_off"
+        android:duration="0" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_00"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_01"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_02"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_03"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_04"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_05"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_06"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_07"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_08"
+        android:duration="200" />
+    <item
+        android:drawable="@drawable/extdsp_surround_speaker_animation_09"
+        android:duration="200" />
+
+</animation-list>

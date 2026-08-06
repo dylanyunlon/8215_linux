@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="nine_activity_main_rg_main_padding">20dp</dimen>
+    <dimen name="nine_activity_main_rg_main_marginLeft">30dp</dimen>
+    <dimen name="nine_activity_main_rg_main_marginBottom">40dp</dimen>
+    <dimen name="nine_activity_main_rg_main_marginTop">30dp</dimen>
+    <dimen name="nine_activity_main_rb_nine_dts_width">110dp</dimen>
+    <dimen name="nine_activity_main_rb_nine_dts_height">110dp</dimen>
+    <dimen name="nine_activity_main_rb_nine_eq_marginTop">31dp</dimen>
+    <dimen name="nine_main_radio_group_bg_radius">16dp</dimen>
+    <dimen name="nine_main_radio_bg_selector_bottom">52dp</dimen>
+    <dimen name="nine_main_radio_paddingBottom">16dp</dimen>
+    <dimen name="nine_dts_fragment_filter_marginTop">50dp</dimen>
+    <dimen name="nine_surround_fragment_filter_marginTop">50dp</dimen>
+    <dimen name="nine_surround_fragment_filter_marginEnd">30dp</dimen>
+    <dimen name="nine_surround_fragment_filter_marginBottom">30dp</dimen>
+    <dimen name="nine_surround_fragment_filter_tv_surround_reset_textSize">20sp</dimen>
+    <dimen name="nine_band_seekbar_tv_g_paddingVertical">0dp</dimen>
+
+    <dimen name="nine_dsp_fragment_balance_marginTop">@dimen/y80</dimen>
+    <dimen name="nine_dsp_fragment_balance_paddingStart">@dimen/x32</dimen>
+    <dimen name="nine_dsp_fragment_balance_balance_mode_co_marginTop">@dimen/y32</dimen>
+    <dimen name="nine_dsp_fragment_balance_id_eq_balance_width">320dp</dimen>
+    <dimen name="nine_dsp_fragment_balance_id_eq_balance_height">551dp</dimen>
+    <dimen name="nine_dsp_fragment_balance_id_eq_balance_marginTop">30dp</dimen>
+    <dimen name="nine_dsp_fragment_balance_balance_left_marginEnd">44px</dimen>
+    <dimen name="nine_dsp_fragment_balance_balance_right_marginStart">44px</dimen>
+
+    <dimen name="nine_dsp_fragment_band_marginTop">@dimen/y50</dimen>
+    <dimen name="nine_dsp_fragment_band_paddingBottom">@dimen/y70</dimen>
+    <dimen name="nine_dsp_fragment_band_paddingStart">@dimen/x32</dimen>
+    <dimen name="nine_dsp_fragment_band_paddingEnd">@dimen/x45</dimen>
+    <dimen name="nine_dsp_fragment_band_tv_eq_edit_exit_textSize">@dimen/x32</dimen>
+    <dimen name="nine_dsp_fragment_band_tv_eq_edit_apply_textSize">@dimen/x32</dimen>
+    <dimen name="nine_dsp_fragment_band_tv_eq_edit_reset_textSize">@dimen/x32</dimen>
+    <dimen name="nine_dsp_fragment_band_iv_surface_edit_bg_marginTop">@dimen/y50</dimen>
+    <dimen name="nine_dsp_fragment_band_ll_band_minWidth">@dimen/x1660</dimen>
+    <dimen name="nine_dsp_fragment_band_ll_band_edit_minWidth">@dimen/x1580</dimen>
+    <dimen name="nine_dsp_fragment_band_TextView_0_marginTop">88px</dimen>
+    <dimen name="nine_dsp_fragment_band_TextView_12_marginTop">90px</dimen>
+    <dimen name="nine_dsp_fragment_band_TextView_G_marginTop">@dimen/y25</dimen>
+    <dimen name="nine_dsp_fragment_band_TextView_Q_marginTop">12px</dimen>
+    <dimen name="nine_dsp_fragment_band_nine_eq_surface_bg_width">1140dp</dimen>
+
+    <dimen name="nine_dsp_fragment_hlpf_TextView_marginStart">220px</dimen>
+    <dimen name="nine_dsp_fragment_hlpf_iv_seekbar_bg_width">1060dp</dimen>
+
+    <dimen name="nine_dts_fragment_model_iv_theater_width">256dp</dimen>
+    <dimen name="nine_dts_fragment_model_iv_theater_height">320dp</dimen>
+    <dimen name="nine_dts_fragment_sound_focus_iv_sound_car_marginTop">@dimen/y192</dimen>
+    <dimen name="nine_dts_fragment_sound_focus_cl_sound_bar_marginTop">@dimen/y140</dimen>
+    <dimen name="nine_dts_fragment_bass_boost_cl_dts_bass_bar_marginTop">@dimen/y120</dimen>
+    <dimen name="nine_dts_fragment_surround_iv_dts_surround_car_marginStart">60dp</dimen>
+
+    <dimen name="nine_surround_fragment_gain_iv_gain_car_marginTop">63dp</dimen>
+    <dimen name="nine_surround_fragment_gain_iv_gain_car_marginStart">35dp</dimen>
+    <dimen name="nine_surround_fragment_gain_cl_gain_bar_marginTop">44dp</dimen>
+    <dimen name="nine_surround_fragment_delay_cl_delay_bar_marginTop">90dp</dimen>
+
+    <dimen name="nine_dsp_fragment_dbb_iv_dbb_bg_marginTop">@dimen/y50</dimen>
+    <dimen name="nine_dsp_fragment_dbb_v_dbb_marginTop">@dimen/y80</dimen>
+
+    <dimen name="nine_filter_fragment_filter_marginTop">@dimen/y80</dimen>
+    <dimen name="nine_filter_fragment_filter_marginBottom">@dimen/y78</dimen>
+
+</resources>

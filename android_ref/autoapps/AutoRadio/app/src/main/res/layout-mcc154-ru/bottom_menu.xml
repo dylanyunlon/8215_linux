@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/BottomMenu"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center">
+
+    <ImageView
+        android:id="@+id/butt_band"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/radio_band_n"
+        android:background="@drawable/btn_bottom_bg"
+        android:textColor="@drawable/text_color_selector"/>
+
+    <ImageView
+        android:id="@+id/butt_scan_ru"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/radio_scan_n"
+        android:background="@drawable/btn_bottom_bg"
+        android:textColor="@drawable/text_color_selector"/>
+
+    <ImageView
+        android:id="@+id/butt_asps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/radio_asps_n"
+        android:background="@drawable/btn_bottom_bg"
+        android:textColor="@drawable/text_color_selector"/>
+
+    <ImageView
+        android:id="@+id/butt_eq"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/radio_eq_n"
+        android:background="@drawable/btn_bottom_bg"
+        android:textColor="@drawable/text_color_selector"/>
+
+</LinearLayout>

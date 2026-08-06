@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/traffic">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/fm_notification_icon"
+        android:paddingStart="5dp"
+        android:layout_gravity="start"/>
+
+    <TextView
+        android:id="@+id/Tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/STR_TIP"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="40sp" />
+
+    <ImageView
+        android:id="@+id/close_ta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:src="@drawable/rds_ta"
+        android:layout_gravity="center_vertical|end" />
+
+</FrameLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">بلوتوث</string>
+
+    <string name="str_income_call_status">صدا زدن</string>
+    <string name="str_out_call_status">صدا زدن</string>
+    <string name="str_bt_call_held">حفظ</string>
+
+    <string name="str_bt_call_waiting">انتظار تماس</string>
+
+
+    <string name="unkown">ناشناس</string>
+
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bluetooth</string>
+    <string name="str_handsfree_device_connected">Η συσκευή ανοιχτής ακρόασης είναι συνδεδεμένη </string>
+    <string name="str_a2dp_device_connected">Η συσκευή μουσικής είναι συνδεδεμένη</string>
+    <string name="str_hid_device_connected">Η συσκευή HID είναι συνδεδεμένη</string>
+    <string name="str_income_call_status">Εισερχόμενη κλήση </string>
+    <string name="str_out_call_status">Εξερχόμενη κλήση</string>
+    <string name="str_bt_call_active">Ενεργή κλήση </string>
+    <string name="str_bt_call_held">Κράτηση κλήσης </string>
+    <string name="str_bt_call_waiting">Αναμονή κλήσης </string>
+    <string name="str_bt_call_abnormal">μη φυσιολογική κλήση </string>
+    <string name="str_bt_call_multiparty">τηλεφωνική διάσκεψη</string>
+    <string name="str_bt_call_accept_terminate">Λήξη και αποδοχή </string>
+    <string name="str_bt_call_accept_held">Κράτηση και αποδοχή </string>
+    <string name="str_bt_call_swap">Ανταλλαγή κλήσης </string>
+    <string name="str_bt_call_merge">Συγχώνευση κλήσης </string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">Άγνωστο</string>
+    <string name="time_text">00:00:00</string>
+</resources>

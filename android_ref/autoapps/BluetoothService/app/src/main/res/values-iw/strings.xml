@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">בלוטות</string>
+    <string name="str_handsfree_device_connected">מכשיר דיבורית מחובר</string>
+    <string name="str_a2dp_device_connected">מכשיר המוזיקה מחובר</string>
+    <string name="str_hid_device_connected">התקן HID מחובר</string>
+    <string name="str_income_call_status">שיחה נכנסת</string>
+    <string name="str_out_call_status">שיחה יוצאת</string>
+    <string name="str_bt_call_active">התקשרו לפעילה</string>
+    <string name="str_bt_call_held">התקשר ללהד</string>
+    <string name="str_bt_call_waiting">שיחה ממתינה</string>
+    <string name="str_bt_call_abnormal">שיחה לא תקינה</string>
+    <string name="str_bt_call_multiparty">שיחה מרובת-חלקים</string>
+    <string name="str_bt_call_accept_terminate">לסיים ולקבל</string>
+    <string name="str_bt_call_accept_held">מוחזק ומקבל</string>
+    <string name="str_bt_call_swap">החלף שיחה</string>
+    <string name="str_bt_call_merge">מיזוג שיחה</string>
+    <string name="str_calling_phone_number">10086</string>
+    <string name="unkown">לא ידוע</string>
+    <string name="time_text">00:00:00</string>
+</resources>

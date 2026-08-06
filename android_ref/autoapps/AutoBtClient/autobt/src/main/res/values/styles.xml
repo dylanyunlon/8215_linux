@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Style_Main_Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/sp_main_menu_title</item>
+        <item name="android:textColor">@color/colors_menu_title</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingLeft">85dp</item>
+    </style>
+
+    <style name="Style_Contacts_Key">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/dp_contact_key_padding</item>
+    </style>
+</resources>

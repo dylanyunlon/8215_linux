@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="theme_color" tools:ignore="MissingDefaultResource">#eebb65</color>
+    <color name="extdsp_fragment_band_freq_curve_color_1">#eebb65</color>
+    <color name="extdsp_fragment_band_freq_curve_color_2">#CCEEBB65</color>
+    <color name="extdsp_fragment_band_freq_curve_color_3">#99EEBB65</color>
+    <color name="extdsp_fragment_band_freq_curve_color_4">#80EEBB65</color>
+    <color name="extdsp_fragment_band_freq_curve_color_5">#66EEBB65</color>
+    <color name="extdsp_fragment_freq_curve_color_1">@color/extdsp_fragment_band_freq_curve_color_1</color>
+    <color name="extdsp_fragment_freq_curve_color_2">@color/extdsp_fragment_band_freq_curve_color_1</color>
+
+    <color name="ext_dsp_dbb_view_freq_curve_color">#eebb65</color>
+</resources>

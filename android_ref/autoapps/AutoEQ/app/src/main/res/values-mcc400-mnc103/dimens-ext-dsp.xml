@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extdsp_hlpf_radio_button_layout_marginTop">16dp</dimen>
+    <dimen name="extdsp_scroll_title_textSize">16sp</dimen>
+
+    <dimen name="extdsp_tv_q_title_margin_bottom">29dp</dimen>
+    <dimen name="extdsp_tv_gain_min_margin_bottom">8dp</dimen>
+    <dimen name="extdsp_tv_gain_margin_bottom">56dp</dimen>
+</resources>

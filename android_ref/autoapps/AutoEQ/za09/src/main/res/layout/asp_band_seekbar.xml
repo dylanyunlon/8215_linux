@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/asp_band_bg"
+    android:gravity="center_vertical"
+    android:paddingStart="@dimen/xt540_asp_band_seekbar_paddingStart"
+    android:orientation="horizontal">
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="0"
+        app:seekbar_freq_text="@string/band_freq_num0" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="1"
+        app:seekbar_freq_text="@string/band_freq_num1" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="2"
+        app:seekbar_freq_text="@string/band_freq_num2" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="3"
+        app:seekbar_freq_text="@string/band_freq_num3" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="4"
+        app:seekbar_freq_text="@string/band_freq_num4" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="5"
+        app:seekbar_freq_text="@string/band_freq_num5" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="6"
+        app:seekbar_freq_text="@string/band_freq_num6" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="7"
+        app:seekbar_freq_text="@string/band_freq_num7" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="8"
+        app:seekbar_freq_text="@string/band_freq_num8" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="9"
+        app:seekbar_freq_text="@string/band_freq_num9" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="10"
+        app:seekbar_freq_text="@string/band_freq_num10" />
+
+    <com.hcn.autoeq.view.AspSeekBar
+        android:id="@+id/asp_seek_11"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:seekbar_band_tag="11"
+        app:seekbar_freq_text="@string/band_freq_num11" />
+</LinearLayout>

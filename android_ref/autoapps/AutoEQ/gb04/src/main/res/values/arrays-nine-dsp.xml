@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array name="nine_dsp_band_reverb">
+        <item>@string/nine_tv_standard</item>
+        <item>@string/nine_band_user2</item>
+        <item>@string/nine_band_user1</item>
+        <item>@string/nine_band_user3</item>
+        <item>@string/reverb_classiz</item>
+        <item>@string/reverb_news</item>
+        <item>@string/reverb_pop</item>
+        <item>@string/reverb_city</item>
+        <item>@string/reverb_movie</item>
+        <item>@string/reverb_electronic</item>
+        <item>@string/reverb_rock</item>
+        <item>@string/reverb_techno</item>
+        <item>@string/reverb_jazz</item>
+    </string-array>
+    <string-array name="nine_dsp_spinner_loudness">
+        <item>@string/nine_tv_loudness_close</item>
+        <item>@string/nine_tv_loudness_low</item>
+        <item>@string/nine_tv_loudness_medium</item>
+        <item>@string/nine_tv_loudness_high</item>
+    </string-array>
+</resources>

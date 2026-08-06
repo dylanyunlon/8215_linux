@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:background="@drawable/extdsp_main_background">
+
+    <FrameLayout
+        android:id="@+id/eq_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <RadioGroup
+        android:id="@+id/rg_main"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/extdsp_activity_main_rg_main_layout_height"
+        android:background="@drawable/extdsp_main_footer_bg"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/extdsp_activity_main_rg_main_layout_height"
+            android:layout_weight="1"/>
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_band"
+            style="@style/RadioButtonStyle"
+            android:background="@null"
+            android:layout_weight="2"
+            android:drawableTop="@drawable/extdsp_band_selector"
+            android:gravity="center_horizontal" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_balance"
+            style="@style/RadioButtonStyle"
+            android:background="@null"
+            android:layout_weight="2"
+            android:drawableTop="@drawable/extdsp_balance_selector"
+            android:gravity="center_horizontal" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_attenuate"
+            style="@style/RadioButtonStyle"
+            android:background="@null"
+            android:layout_weight="2"
+            android:drawableTop="@drawable/extdsp_balance_attenuate_selector"
+            android:gravity="center_horizontal"
+            />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_filter"
+            style="@style/RadioButtonStyle"
+            android:background="@null"
+            android:layout_weight="2"
+            android:drawableTop="@drawable/extdsp_filter_selector"
+            android:gravity="center" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_extdsp_delay"
+            style="@style/RadioButtonStyle"
+            android:background="@null"
+            android:layout_weight="2"
+            android:drawableTop="@drawable/extdsp_delay_selector"
+            android:gravity="center_horizontal"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/extdsp_activity_main_rg_main_layout_height"
+            android:layout_weight="1"/>
+    </RadioGroup>
+
+</LinearLayout>

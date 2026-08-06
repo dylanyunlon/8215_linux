@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="@dimen/extdsp_band_seekbar_width"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_band_seekbar_tv_freq_layout_marginTop"
+        android:text=""
+        android:textColor="@android:color/darker_gray"
+        android:textSize="16sp" />
+
+    <com.hcn.autoeq.view.SeekBarRotator
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_seekbar_rotator_margin_top">
+
+        <SeekBar
+            android:id="@+id/sb_band"
+            android:layout_width="@dimen/extdsp_band_seekbar_height"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/extdsp_seekbar_margin"
+            android:background="@null"
+            android:paddingStart="@dimen/extdsp_seekbar_padding"
+            android:paddingEnd="@dimen/extdsp_seekbar_padding"
+            android:progressDrawable="@drawable/extdsp_band_seek_bar_bg"
+            android:splitTrack="false"
+            android:thumb="@drawable/extdsp_band_seek_bar_thumb"
+            android:thumbOffset="@dimen/extdsp_seekbar_thumb_offset" />
+    </com.hcn.autoeq.view.SeekBarRotator>
+
+    <TextView
+        android:id="@+id/tv_gain"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_seekbar_rotator_margin_top"
+        android:text="0"
+        android:textColor="@drawable/extdsp_seekbar_text_color" />
+
+    <TextView
+        android:id="@+id/tv_q_value"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/extdsp_seekbar_rotator_margin_top"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@drawable/extdsp_seekbar_text_color" />
+</LinearLayout>

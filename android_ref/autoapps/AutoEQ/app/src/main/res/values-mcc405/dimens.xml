@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_freq_curve_width_1">2dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">2dp</dimen>
+    <dimen name="dsp_frequency_bar_width">4dp</dimen>
+</resources>

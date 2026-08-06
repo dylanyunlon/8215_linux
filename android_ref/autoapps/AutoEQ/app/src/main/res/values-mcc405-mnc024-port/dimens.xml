@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_frequency_layout_padding">10dp</dimen>
+    <dimen name="dsp_frequency_gain_tv_size">12sp</dimen>
+    <dimen name="dsp_frequency_bar_tv_size">12sp</dimen>
+    <dimen name="dsp_tab_eq_width">215dp</dimen>
+    <dimen name="dsp_tab_surround_width">225dp</dimen>
+    <dimen name="dsp_tab_subwoofer_width">215dp</dimen>
+</resources>

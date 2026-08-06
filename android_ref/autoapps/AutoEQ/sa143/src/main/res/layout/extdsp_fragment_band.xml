@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <RadioGroup
+        android:id="@+id/rg_band_top_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_band_top_bg"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.hcn.autoeq.view.CustomSpinner
+            android:id="@+id/sp_reverb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/btn_band_reset_layout_Start"
+            android:background="@drawable/extdsp_band_mode_closed_selector"
+            android:dropDownSelector="@drawable/icon_select"
+            android:layout_gravity="center"
+            android:overlapAnchor="false"
+            android:popupBackground="@drawable/extdsp_band_mode_opened_bg"
+            android:spinnerMode="dropdown"
+            app:layout_constraintTop_toTopOf="@+id/rg_band_top_tab"
+            app:layout_constraintBottom_toBottomOf="@+id/rg_band_top_tab"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/rg_band_user"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/rg_band_user_height"
+        android:layout_marginStart="@dimen/rg_band_user_layout_Start"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@+id/btn_reset_band"
+        app:layout_constraintBottom_toBottomOf="@+id/rg_band_top_tab"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/rb_extdsp_band_user0"
+            style="@style/extdsp_radio_band_user_style"
+            android:text="@string/band_user0" />
+
+        <RadioButton
+            android:id="@+id/rb_extdsp_band_user1"
+            style="@style/extdsp_radio_band_user_style"
+            android:text="@string/band_user1" />
+
+        <RadioButton
+            android:id="@+id/rb_extdsp_band_user2"
+            style="@style/extdsp_radio_band_user_style"
+            android:text="@string/band_user2" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_reset_band"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/rg_band_user_layout_End"
+        android:background="@drawable/extdsp_band_reset_selector"
+        app:layout_constraintTop_toTopOf="@+id/rg_band_top_tab"
+        app:layout_constraintBottom_toBottomOf="@+id/rg_band_top_tab"
+        app:layout_constraintStart_toEndOf="@+id/rg_band_user" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_gain_max"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:paddingEnd="@dimen/tv_g_title_layout_Start"
+        android:layout_marginBottom="@dimen/tv_gain_center_layout_Bottom"
+        app:layout_constraintBottom_toTopOf="@+id/tv_gain_center"
+        app:layout_constraintEnd_toEndOf="@+id/tv_g_title"
+        tools:text="7" />
+
+    <TextView
+        android:id="@+id/tv_gain_center"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/tv_gain_center_layout_Bottom"
+        android:text="0"
+        android:paddingEnd="@dimen/tv_g_title_layout_Start"
+        app:layout_constraintBottom_toTopOf="@+id/tv_gain_min"
+        app:layout_constraintEnd_toEndOf="@+id/tv_g_title" />
+
+    <TextView
+        android:id="@+id/tv_gain_min"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:paddingEnd="@dimen/tv_g_title_layout_Start"
+        android:layout_marginBottom="@dimen/tv_g_title_layout_Bottom"
+        app:layout_constraintBottom_toTopOf="@+id/tv_g_title"
+        app:layout_constraintEnd_toEndOf="@+id/tv_g_title"
+        tools:text="-7" />
+
+    <TextView
+        android:id="@+id/tv_g_title"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/tv_g_title_layout_Start"
+        android:paddingStart ="@dimen/tv_g_title_layout_Start"
+        android:paddingEnd="@dimen/tv_g_title_layout_Start"
+        android:layout_marginBottom="@dimen/tv_g_title_layout_Bottom"
+        android:text="FC:"
+        app:layout_constraintBottom_toTopOf="@+id/tv_q_title"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_q_title"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/tv_q_title_layout_Bottom"
+        android:text="Q:"
+        android:paddingEnd="@dimen/tv_g_title_layout_Start"
+        app:layout_constraintBottom_toBottomOf="@+id/hsv_band"
+        app:layout_constraintEnd_toEndOf="@+id/tv_g_title" />
+
+    <HorizontalScrollView
+        android:id="@+id/hsv_band"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/hsv_band_layout_Start"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/rg_band_top_tab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_g_title"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/ll_band"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:minWidth="0dp"
+            android:orientation="vertical">
+            <!-- 此处控件高度要写明，不然不显示 -->
+            <com.auto.hequalizer.EqualizerSurface
+                android:id="@+id/es_freq"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tes_freq_height"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/extdsp_fragment_background"
+                app:background_color="#00000000"
+                app:bar_color="#ffffff"
+                app:bar_text_color="#ffffff"
+                app:bar_text_shadow_color="#ffffff"
+                app:bar_text_size="0dp"
+                app:bar_width="@dimen/dsp_frequency_bar_width"
+                app:freq_curve_bg_shader_color_1="@color/extdsp_fragment_band_freq_curve_color_1"
+                app:freq_curve_bg_shader_color_2="@color/extdsp_fragment_band_freq_curve_color_2"
+                app:freq_curve_bg_shader_color_3="@color/extdsp_fragment_band_freq_curve_color_3"
+                app:freq_curve_bg_shader_color_4="@color/extdsp_fragment_band_freq_curve_color_4"
+                app:freq_curve_bg_shader_color_5="@color/extdsp_fragment_band_freq_curve_color_5"
+                app:freq_curve_color_1="@color/extdsp_fragment_freq_curve_color_1"
+                app:freq_curve_color_2="@color/extdsp_fragment_freq_curve_color_2"
+                app:freq_curve_width_1="@dimen/dsp_freq_curve_width_1"
+                app:freq_curve_width_2="@dimen/dsp_freq_curve_width_2"
+                app:gain_text_color="#ffffff"
+                app:gain_text_size="0dp"
+                app:heq_bar_knob_color="#00000000" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

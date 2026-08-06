@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="y2">2.0px</dimen>
+    <dimen name="y5">5.0px</dimen>
+    <dimen name="y10">10.0px</dimen>
+    <dimen name="y15">15.0px</dimen>
+    <dimen name="y20">20.0px</dimen>
+    <dimen name="y23">23.0px</dimen>
+    <dimen name="y25">25.0px</dimen>
+    <dimen name="y26">26.0px</dimen>
+    <dimen name="y28">28.0px</dimen>
+    <dimen name="y30">30.0px</dimen>
+    <dimen name="y40">40.0px</dimen>
+    <dimen name="y50">50.0px</dimen>
+    <dimen name="y56">56.0px</dimen>
+    <dimen name="y70">70.0px</dimen>
+    <dimen name="y72">72.0px</dimen>
+    <dimen name="y80">80.0px</dimen>
+    <dimen name="y95">95.0px</dimen>
+    <dimen name="y110">110.0px</dimen>
+    <dimen name="y120">120.0px</dimen>
+    <dimen name="y190">190.0px</dimen>
+</resources>

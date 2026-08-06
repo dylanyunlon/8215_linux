@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x1024"
+    android:layout_height="@dimen/y600"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="@dimen/x40"
+        android:layout_marginRight="@dimen/x40" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x230"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btn_missed"
+                    android:layout_width="@dimen/x99"
+                    android:layout_height="@dimen/y74"
+                    android:layout_marginTop="@dimen/y5"
+                    android:button="@null"
+                    android:background="@drawable/missed" />
+
+                <RadioButton
+                    android:id="@+id/btn_received"
+                    android:layout_width="@dimen/x99"
+                    android:layout_height="@dimen/y74"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:button="@null"
+                    android:background="@drawable/received" />
+
+                <RadioButton
+                    android:id="@+id/btn_dialed"
+                    android:layout_width="@dimen/x99"
+                    android:layout_height="@dimen/y74"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:button="@null"
+                    android:background="@drawable/called" />
+
+                <RadioButton
+                    android:id="@+id/bt_callhistory_syn"
+                    android:layout_width="@dimen/x99"
+                    android:layout_height="@dimen/y74"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:button="@null"
+                    android:background="@drawable/sync" />
+
+            </RadioGroup>
+
+            <GridView
+                android:id="@+id/history_listview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y340"
+                android:choiceMode="singleChoice"
+                android:listSelector="@android:color/transparent"
+                android:verticalSpacing="@dimen/x16"
+                android:numColumns="4"
+                android:stretchMode="columnWidth"
+                android:padding="@dimen/x5" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/download_callhistory_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/dialog_bg"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressbar_download_callhistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/x16"
+            android:indeterminateDrawable="@drawable/blue_progressbar" />
+
+        <TextView
+            android:id="@+id/tv_download_callhistory_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/x16"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/callhistory_download_text"
+            android:textSize="@dimen/x30"
+            android:text="@string/str_download_history" />
+    </LinearLayout>
+
+</FrameLayout>

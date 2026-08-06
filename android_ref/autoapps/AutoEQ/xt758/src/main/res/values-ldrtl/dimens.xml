@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extdspdbbview_v_dbb">8dp</dimen>
+    <dimen name="extdsp_fragment_surround_iv_speaker_anim_layout_marginStart">0dp</dimen>
+    <dimen name="extdsp_fragment_surround_iv_speaker_anim_layout_marginEnd">130dp</dimen>
+    <dimen name="extdsp_fragment_surround_iv_loudness_speaker_layout_marginStart">0dp</dimen>
+    <dimen name="extdsp_fragment_surround_iv_loudness_speaker_layout_marginEnd">137dp</dimen>
+</resources>

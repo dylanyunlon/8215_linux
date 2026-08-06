@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_car"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_car_layout_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_car_layout_height"
+        android:layout_marginStart="@dimen/nine_dts_fragment_sound_focus_iv_sound_car_marginStart"
+        android:layout_marginTop="@dimen/nine_dts_fragment_sound_focus_iv_sound_car_marginTop"
+        android:src="@drawable/nine_sound_focus_car"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_front_l"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginLeft="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_front_l_marginStart"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_front_l_marginBottom"
+        android:src="@drawable/nine_bass_audio_left_08"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dts_bass_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_dts_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_rear_l"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginStart="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_rear_l_marginStart"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_rear_l_marginBottom"
+        android:src="@drawable/nine_bass_audio_left_08"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dts_bass_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_dts_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_forefront"
+        android:layout_width="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_forefront_width"
+        android:layout_height="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_forefront_height"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_forefront_marginBottom"
+        android:src="@drawable/nine_bass_audio_forefront_00"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dts_bass_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dts_bass_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_dts_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_front_r"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginRight="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_front_r_marginEnd"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_front_r_marginBottom"
+        android:src="@drawable/nine_bass_audio_right_08"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dts_bass_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dts_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_rear_r"
+        android:layout_width="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_width"
+        android:layout_height="@dimen/nine_dts_fragment_sound_focus_iv_sound_speaker_height"
+        android:layout_marginEnd="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_rear_r_marginEnd"
+        android:layout_marginBottom="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_rear_r_marginBottom"
+        android:src="@drawable/nine_bass_audio_right_08"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_dts_bass_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dts_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_rear"
+        android:layout_width="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_rear_width"
+        android:layout_height="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_rear_height"
+        android:layout_marginTop="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_rear_marginTop"
+        android:src="@drawable/nine_bass_audio_rear_08"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dts_bass_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_dts_bass_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_dts_bass_car" />
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_bg_top"
+        android:layout_width="@dimen/x0"
+        android:layout_height="@dimen/x0"
+        android:layout_marginBottom="@dimen/y24"
+        android:background="@drawable/nine_dsp_seek_bar_group_bg"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/iv_dts_bass_bg_bottom"
+        app:layout_constraintTop_toTopOf="@id/cl_dts_bass_bar"
+        app:layout_constraintStart_toStartOf="@id/cl_dts_bass_bar"
+        app:layout_constraintEnd_toEndOf="@id/cl_dts_bass_bar"/>
+
+    <ImageView
+        android:id="@+id/iv_dts_bass_bg_bottom"
+        android:layout_width="@dimen/x0"
+        android:layout_height="@dimen/nine_dts_fragment_bass_boost_iv_dts_bass_bg_bottom_height"
+        android:background="@drawable/nine_dsp_seek_bar_group_bg"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@id/cl_dts_bass_bar"
+        app:layout_constraintStart_toStartOf="@id/cl_dts_bass_bar"
+        app:layout_constraintEnd_toEndOf="@id/cl_dts_bass_bar"/>
+
+    <TextView
+        android:id="@+id/tv_freq_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nine_dts_fragment_bass_boost_tv_freq_title_layout_marginTop"
+        android:gravity="center"
+        android:text="@string/nine_dts_subwoofer_freq_title"
+        android:textColor="@color/nine_text_color_1"
+        android:textStyle="bold"
+        android:textSize="@dimen/nine_dts_fragment_bass_boost_tv_freq_title_layout_textSize"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dts_bass_bg_bottom"
+        app:layout_constraintStart_toStartOf="@+id/iv_dts_bass_bg_bottom"
+        app:layout_constraintTop_toTopOf="@+id/iv_dts_bass_bg_bottom" />
+
+    <ImageView
+        android:id="@+id/iv_bass_boost"
+        android:layout_width="@dimen/x811"
+        android:layout_height="@dimen/x498"
+        android:layout_marginTop="116dp"
+        android:visibility="gone"
+        android:src="@drawable/icon_nine_bass_boost_10"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dts_bass_car"
+        app:layout_constraintHorizontal_bias="0.552"
+        app:layout_constraintStart_toStartOf="@+id/iv_dts_bass_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_dts_bass_car" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_dts_bass_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nine_dts_fragment_bass_boost_cl_dts_bass_bar_marginTop"
+        android:paddingLeft="@dimen/nine_dts_fragment_bass_boost_cl_dts_bass_bar_paddingLeft"
+        android:paddingTop="@dimen/y20"
+        android:paddingRight="@dimen/nine_dts_fragment_bass_boost_cl_dts_bass_bar_paddingRight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.hcn.autoeq.view.NineSeekBarWithFrequency
+            android:id="@+id/sb_dts_bass_front"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="Front"
+            app:layout_constraintEnd_toStartOf="@+id/sb_dts_bass_rear"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:nine_seek_bar_down_name="@string/nine_tv_front"
+            app:nine_seek_bar_top_name_two="10" />
+
+        <com.hcn.autoeq.view.NineSeekBarWithFrequency
+            android:id="@+id/sb_dts_bass_rear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="Rear"
+            app:layout_constraintEnd_toStartOf="@+id/sb_dts_bass_bass_boost"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@+id/sb_dts_bass_front"
+            app:layout_constraintTop_toTopOf="parent"
+            app:nine_seek_bar_down_name="@string/nine_tv_rear"
+            app:nine_seek_bar_top_name_two="10" />
+
+        <com.hcn.autoeq.view.NineSeekBarWithFrequency
+            android:id="@+id/sb_dts_bass_bass_boost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="Subwoofer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@+id/sb_dts_bass_rear"
+            app:layout_constraintTop_toTopOf="parent"
+            app:nine_seek_bar_down_name="@string/str_subwoofer"
+            app:nine_seek_bar_top_name_two="10" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_dts_bass_reset"
+        android:layout_width="@dimen/x180"
+        android:layout_height="@dimen/y88"
+        android:layout_marginTop="@dimen/nine_dts_fragment_bass_boost_tv_dts_bass_reset_marginTop"
+        android:background="@drawable/nine_dts_btn_bg_selector"
+        android:gravity="center"
+        android:text="@string/nine_btn_reset"
+        android:textColor="@color/nine_text_color_n"
+        android:textSize="@dimen/x32"
+        app:layout_constraintEnd_toEndOf="@+id/cl_dts_bass_bar"
+        app:layout_constraintStart_toStartOf="@+id/cl_dts_bass_bar"
+        app:layout_constraintTop_toBottomOf="@+id/cl_dts_bass_bar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

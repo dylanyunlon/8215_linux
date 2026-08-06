@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="PresetViewFreqTextSize">60sp</dimen>
+    <dimen name="PresetViewIndexTextSize">60sp</dimen>
+    <dimen name="Band_Info_TextSize">50sp</dimen>
+    <dimen name="Band_Info_Btn_TextSize">45sp</dimen>
+    <dimen name="Keyboard_Input_Textsize">60sp</dimen>
+    <dimen name="RdsPsTextsize">25sp</dimen>
+    <dimen name="RdsRtInfoTextsize">23sp</dimen>
+    <dimen name="RadioRdsInfoMarginTop">30dp</dimen>
+</resources>

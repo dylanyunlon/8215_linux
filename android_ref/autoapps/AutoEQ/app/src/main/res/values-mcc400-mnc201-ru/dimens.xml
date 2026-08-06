@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_tab_title_surround">Surround</string>
+    <string name="surround_check_surround">Surround</string>
+    <string name="surround_check_bassboot">Bassboost</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_freq_curve_width_1">0dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">0dp</dimen>
+
+    <integer name="band_user_reverb_mode_x">-30</integer>
+    <integer name="band_user_reverb_mode_y">30</integer>
+
+
+    <dimen name="dsp_frequency_layout_height">700dp</dimen>
+    <dimen name="dsp_frequency_layout_padding">19dp</dimen>
+    <dimen name="dsp_frequency_gain_tv_size">20sp</dimen>
+    <dimen name="dsp_frequency_bar_tv_size">22sp</dimen>
+    <dimen name="dsp_tab_surround_tv_size">48sp</dimen>
+    <dimen name="dsp_tv_subwoofer_size">48sp</dimen>
+    <dimen name="dsp_seekbar_subwoofer_width">1280dp</dimen>
+    <dimen name="dsp_source_tv_size">40sp</dimen>
+    <dimen name="dsp_tab_eq_width">190dp</dimen>
+    <dimen name="dsp_tab_surround_width">260dp</dimen>
+    <dimen name="dsp_tab_subwoofer_width">360dp</dimen>
+    <dimen name="dsp_tab_text_size">40sp</dimen>
+    <dimen name="dsp_tab_height">110sp</dimen>
+    <dimen name="asp_reverb_width">138dip</dimen>
+    <dimen name="asp_reverb_height">116dip</dimen>
+    <dimen name="indicator_seek_bar_width">619dp</dimen>
+    <dimen name="indicator_seek_bar_height">18dp</dimen>
+    <dimen name="indicator_seek_tv_size">20sp</dimen>
+    <dimen name="tv_freq_aspk_tv_size">36sp</dimen>
+
+    <dimen name="balance_mode_marginStart">434dp</dimen>
+    <dimen name="balance_mode_marginTop">244dp</dimen>
+    <dimen name="eq_balance_marginEnd">464dp</dimen>
+    <dimen name="asp_reverb_bottom">16dp</dimen>
+</resources>

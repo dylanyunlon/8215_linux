@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dsp_freq_curve_width_1">2dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">2dp</dimen>
+
+    <dimen name="extdsp_fragment_bar_padding_top">22dp</dimen>
+    <dimen name="extdsp_fragment_gain_padding_bottom">22dp</dimen>
+</resources>

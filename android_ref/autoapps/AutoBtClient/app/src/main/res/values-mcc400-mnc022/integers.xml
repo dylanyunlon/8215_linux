@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--paired_fragment_type = 0 默认MCC UI使用 通过点击按钮配对和连接的方式-->
+    <!--paired_fragment_type = 1 通过点击配对列表弹窗选择配对和连接的方式 za01使用-->
+    <integer name="paired_fragment_type">0</integer>
+
+    <!--setup_fragment_type = 0 默认MCC UI使用 通过点击按钮配对和连接的方式-->
+    <!--setup_fragment_type = 1 za01使用的设置界面UI-->
+    <integer name="setup_fragment_type">0</integer>
+    <!-- direction 方向： 横向：0   垂直：1-->
+    <integer name="side_bar_direction">1</integer>
+    <integer name="side_bar_text_size">14</integer>
+</resources>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            style="@style/csc_asp_tab_pop_button_item_style"
+            android:layout_width="wrap_content"
+            android:background="@drawable/csc_asp_band_mode_top_n" />
+
+        <RadioButton
+            style="@style/csc_asp_tab_pop_button_item_style"
+            android:layout_width="wrap_content"
+            android:background="@drawable/csc_asp_band_mode_middle_n" />
+
+        <RadioButton
+            style="@style/csc_asp_tab_pop_button_item_style"
+            android:layout_width="wrap_content"
+            android:background="@drawable/csc_asp_band_mode_middle_n" />
+
+        <RadioButton
+            style="@style/csc_asp_tab_pop_button_item_style"
+            android:layout_width="wrap_content"
+            android:background="@drawable/csc_asp_band_mode_bottom_n" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rg_asp_band_volume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/rb_csc_asp_volume_off"
+            style="@style/csc_asp_tab_pop_button_item_style"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/csc_asp_band_volume_top_selector"
+            android:text="@string/tab_rb_csc_asp_volume_off" />
+
+        <RadioButton
+            android:id="@+id/rb_csc_asp_volume_low"
+            style="@style/csc_asp_tab_pop_button_item_style"
+            android:layout_width="204dp"
+            android:background="@drawable/csc_asp_band_volume_middle_selector"
+            android:text="@string/tab_rb_csc_asp_volume_low" />
+
+        <RadioButton
+            android:id="@+id/rb_csc_asp_volume_middle"
+            style="@style/csc_asp_tab_pop_button_item_style"
+            android:layout_width="204dp"
+            android:background="@drawable/csc_asp_band_volume_middle_selector"
+            android:text="@string/tab_rb_csc_asp_volume_middle" />
+
+        <RadioButton
+            android:id="@+id/rb_csc_asp_volume_high"
+            style="@style/csc_asp_tab_pop_button_item_style"
+            android:layout_width="204dp"
+            android:background="@drawable/csc_asp_band_volume_bottom_selector"
+            android:text="@string/tab_rb_csc_asp_volume_high" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

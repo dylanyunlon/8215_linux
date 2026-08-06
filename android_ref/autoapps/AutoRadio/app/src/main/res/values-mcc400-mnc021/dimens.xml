@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rds_toggle_margin_start">80dp</dimen>
+    <dimen name="rds_toggle_button_text_size">32sp</dimen>
+    <dimen name="ll_rds_loc_margin_top">13dp</dimen>
+    <dimen name="ll_rds_af_margin_top">20dp</dimen>
+    <dimen name="ll_rds_ta_margin_top">22dp</dimen>
+
+    <dimen name="round_knob_seek_bar_width">348dp</dimen>
+    <dimen name="round_knob_seek_bar_arc_width">12dp</dimen>
+    <integer name="round_knob_seek_bar_pic_transparent_distance">-4</integer>
+    <dimen name="round_knob_seek_bar_text_width">66dp</dimen>
+    <dimen name="round_knob_seek_bar_text_size">22sp</dimen>
+    <dimen name="round_knob_seek_bar_text_margin_bottom">30dp</dimen>
+
+    <dimen name="PresetViewFreqTextSize">36sp</dimen>
+    <dimen name="PresetViewIndexTextSize">30sp</dimen>
+    <dimen name="PresetViewFreqSmallTextSize">30sp</dimen>
+    <dimen name="PresetViewIndexSmallTextSize">24sp</dimen>
+    <dimen name="bottom_menu_padding">5dp</dimen>
+    <dimen name="preset_layout_padding">10dp</dimen>
+    <dimen name="preset_view_padding">7dp</dimen>
+    <dimen name="preset_view_padding_top">15dp</dimen>
+    <dimen name="preset_view_margin_bottom">14dp</dimen>
+    <dimen name="preset_viewpager_margin_top">10dp</dimen>
+
+    <dimen name="rds_pty_text_size">28sp</dimen>
+    <dimen name="rds_pty_title_text_size">30sp</dimen>
+    <dimen name="rds_rt_text_size">24sp</dimen>
+    <dimen name="rds_imgbtn_margin_end">10dp</dimen>
+    <dimen name="preset_viewpager_margin_end">0dp</dimen>
+
+</resources>

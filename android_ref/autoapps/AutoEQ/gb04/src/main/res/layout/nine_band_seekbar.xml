@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <com.hcn_library.view.SeekBarRotator
+        android:id="@+id/sbr_band_font"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <SeekBar
+            android:id="@+id/sb_nine"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="@dimen/nine_band_seekbar_sb_nine_height"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:maxHeight="@dimen/y28"
+            android:minHeight="@dimen/y28"
+            android:paddingStart="@dimen/y12"
+            android:paddingEnd="@dimen/y12"
+            android:progressDrawable="@drawable/nine_progress_bg_selector"
+            android:splitTrack="false"
+            android:thumb="@drawable/nine_seek_bar_thumb"
+            android:thumbOffset="@dimen/y12" />
+    </com.hcn_library.view.SeekBarRotator>
+
+    <TextView
+        android:id="@+id/tv_g"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nine_band_seekbar_tv_g_marginTop"
+        android:gravity="center"
+        android:paddingVertical="@dimen/nine_band_seekbar_tv_g_paddingVertical"
+        android:text="0"
+        android:textColor="@color/nine_text_color_2"
+        android:textSize="@dimen/x24"
+        app:layout_constraintEnd_toEndOf="@+id/sbr_band_font"
+        app:layout_constraintStart_toStartOf="@+id/sbr_band_font"
+        app:layout_constraintTop_toBottomOf="@+id/sbr_band_font" />
+
+    <TextView
+        android:id="@+id/tv_q"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/nine_band_seekbar_tv_q_marginTop"
+        android:gravity="center"
+        android:paddingVertical="@dimen/nine_band_seekbar_tv_g_paddingVertical"
+        android:text="0"
+        android:textColor="@color/nine_text_color_2"
+        android:textSize="@dimen/x24"
+        app:layout_constraintEnd_toEndOf="@+id/sbr_band_font"
+        app:layout_constraintStart_toStartOf="@+id/sbr_band_font"
+        app:layout_constraintTop_toBottomOf="@+id/tv_g" />
+</androidx.constraintlayout.widget.ConstraintLayout>

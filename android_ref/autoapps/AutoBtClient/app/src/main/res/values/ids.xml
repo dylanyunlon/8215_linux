@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tv_contact_count" type="id" />
+    <item name="btn_contact_clear" type="id"/>
+    <item name="bt_name_change_dialog" type="layout"/>
+    <item name="edit_bt_name" type="id"/>
+    <item name="bt_name_confirm" type="id"/>
+    <item name="bt_name_cancel" type="id"/>
+    <item name="pin_code_change_dialog" type="layout"/>
+    <item name="edit_pin_code" type="id"/>
+    <item name="pin_code_confirm" type="id"/>
+    <item name="pin_code_cancel" type="id"/>
+    <item name="pair_list_operation_dialog" type="layout"/>
+    <item name="unpair_device_listitem" type="layout"/>
+    <item name="bt_paired_operation_radio_group" type="id" />
+    <item name="bt_paired_disconnect" type="id" />
+    <item name="bt_paired_connect" type="id"/>
+    <item name="bt_paired_delete" type="id"/>
+    <item name="bt_pair_device_progressbar" type="id"/>
+    <item name="ivPlayingAnim" type="id"/>
+    <item name="bt_calling_status" type="layout"/>
+    <item name="bt_calling_status_mini" type="layout"/>
+    <item name="edit_search_text" type="id"/>
+
+    <item name="contacts_delete_confirm_dialog" type="layout"/>
+    <item name="contacts_delete_confirm" type="id"/>
+    <item name="contacts_delete_cancel" type="id"/>
+
+    <item name="pair_audio_profile_dialog" type="layout"/>
+    <item name="bt_pair_device_name" type="id"/>
+    <item name="cb_hfp_profile" type="id"/>
+    <item name="cb_a2dp_profile" type="id"/>
+    <item name="audio_profile_select_confirm" type="id"/>
+    <item name="audio_profile_select_cancel" type="id"/>
+
+
+    <item name="layout_wallpaper" type="id"/>
+    <item name="btn_set_wallpaper" type="id"/>
+    <item name="wallpaper_dialog" type="layout"/>
+    <item name="wallpaper_recyclerview" type="id"/>
+    <item name="wallpaper_listitem" type="layout"/>
+    <item name="iv_wallpaper" type="id"/>
+    <item name="iv_wallpaper_bg" type="id"/>
+</resources>

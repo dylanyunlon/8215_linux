@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="theme_color" tools:ignore="MissingDefaultResource">#14ed85</color>
+    <color name="extdsp_fragment_freq_curve_color_1">@color/theme_color</color>
+    <color name="extdsp_fragment_freq_curve_color_2">@color/theme_color</color>
+    <color name="ext_dsp_dbb_view_freq_curve_color">@color/theme_color</color>
+</resources>

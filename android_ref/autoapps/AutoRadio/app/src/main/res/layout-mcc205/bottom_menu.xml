@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/BottomMenu"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingEnd="@dimen/bottom_menu_padding"
+    android:paddingStart="@dimen/bottom_menu_padding"
+    android:background="@drawable/bottom_bg"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/butt_asps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_scan"
+        android:textColor="@drawable/text_color_selector" />
+
+    <ImageView
+        android:id="@+id/butt_scan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="bottom|center"
+        android:textColor="@drawable/text_color_selector"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/btn_preset_up"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/butt_bottom_prev"
+        android:gravity="bottom|center"
+        android:textColor="@drawable/text_color_selector" />
+
+    <ImageView
+        android:id="@+id/butt_band"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/butt_xml_band"
+        android:gravity="bottom|center"
+        android:textColor="@drawable/text_color_selector" />
+
+    <ImageView
+        android:id="@+id/btn_preset_down"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/butt_bottom_next"
+        android:gravity="bottom|center"
+        android:textColor="@drawable/text_color_selector" />
+
+    <ImageView
+        android:id="@+id/butt_locdx"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:src="@drawable/butt_xml_loc"
+        android:textColor="@drawable/text_color_selector" />
+</LinearLayout>

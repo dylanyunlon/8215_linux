@@ -1,0 +1,30 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        maven {
+            allowInsecureProtocol = true
+            url = 'http://ssh.light-comm.com:6081/repository/hcnlibs-releases/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'http://ssh.light-comm.com:6081/repository/maven-central/'
+        }
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        maven {
+            allowInsecureProtocol = true
+            url = 'http://ssh.light-comm.com:6081/repository/hcnlibs-releases/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'http://ssh.light-comm.com:6081/repository/maven-central/'
+        }
+    }
+}
+include ':app'
+include ':radio-api'

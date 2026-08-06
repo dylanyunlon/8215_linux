@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- extdsp_activity_main -->
+    <dimen name="extdsp_activity_main_rg_main_layout_height">96dp</dimen>
+    <dimen name="extdsp_activity_main_rb_extdsp_band_textSize">24sp</dimen>
+
+    <dimen name="extdsp_band_button_marginEnd">40dp</dimen>
+    <dimen name="extdsp_scroll_title_textSize">14sp</dimen>
+    <dimen name="extdsp_band_user_textSize">24sp</dimen>
+
+
+
+    <!-- extdsp_band_seekbar -->
+    <dimen name="extdsp_band_seekbar_layout_width">86dp</dimen>
+    <dimen name="extdsp_band_seekbar_tv_freq_layout_height">48dp</dimen>
+    <dimen name="extdsp_band_seekbar_tv_freq_textSize">16sp</dimen>
+    <dimen name="extdsp_band_seekbar_sb_band_layout_height">178dp</dimen>
+    <dimen name="extdsp_band_seekbar_sb_band_layout_width">28dp</dimen>
+    <dimen name="extdsp_band_seekbar_tv_gain_layout_marginTop">8dp</dimen>
+    <dimen name="extdsp_band_seekbar_tv_q_value_layout_marginTop">8dp</dimen>
+
+    <!-- extdsp_attenuate_seekbar -->
+    <dimen name="extdsp_attenuate_seekbar_tv_attenuate_top_text_textSize">24sp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_sb_attenuate_maxHeight">53dp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_sb_attenuate_layout_width">322dp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_tv_left_1_textSize">12sp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_sbr_attenuate_layout_marginTop">18dp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_tv_left_6_layout_marginEnd">10dp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_tv_left_6_layout_marginBottom">4dp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_cb_mute_layout_marginTop">21dp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_cb_invert_layout_marginTop">38dp</dimen>
+
+    <!-- extdsp_fragment_attenuate -->
+    <dimen name="extdsp_fragment_attenuate_tv_mute_layout_marginBottom">52dp</dimen>
+    <dimen name="extdsp_fragment_attenuate_tv_invert_layout_marginBottom">27dp</dimen>
+    <dimen name="extdsp_fragment_attenuate_tv_mute_textSize">22sp</dimen>
+    <dimen name="extdsp_fragment_attenuate_extdsp_link_line_lr_rr_layout_marginBottom">12dp</dimen>
+    <dimen name="extdsp_fragment_attenuate_btn_link_lf_rf_layout_marginTop">10dp</dimen>
+
+    <!-- extdsp_delay_item_2 -->
+    <dimen name="extdsp_delay_item_2_tv_value_textSize">26sp</dimen>
+    <dimen name="extdsp_delay_item_tv_value_textSize">22sp</dimen>
+    <dimen name="extdsp_delay_item_2_tv_value_minWidth">100dp</dimen>
+
+    <!-- extdsp_fragment_balance -->
+    <dimen name="extdsp_fragment_balance_balance_mode_main_textSize">26sp</dimen>
+    <dimen name="extdsp_fragment_balance_balance_mode_main_layout_marginStart">147dp</dimen>
+    <dimen name="extdsp_fragment_balance_balance_mode_main_layout_marginTop">100dp</dimen>
+    <dimen name="extdsp_fragment_balance_balance_mode_whole_layout_marginBottom">40dp</dimen>
+
+    <!-- extdsp_fragment_band -->
+    <dimen name="extdsp_fragment_band_paddingStart">16dp</dimen>
+    <dimen name="extdsp_fragment_band_paddingTop">15dp</dimen>
+    <dimen name="extdsp_fragment_band_tv_gain_max_layout_marginBottom">56dp</dimen>
+    <dimen name="extdsp_fragment_band_tv_gain_min_layout_marginBottom">6dp</dimen>
+    <dimen name="extdsp_fragment_band_tv_g_title_layout_marginBottom">12dp</dimen>
+    <dimen name="extdsp_fragment_band_tv_q_title_layout_marginBottom">9dp</dimen>
+    <dimen name="extdsp_fragment_band_hsv_band_layout_marginBottom">8dp</dimen>
+    <dimen name="extdsp_fragment_band_es_freq_layout_marginTop">0dp</dimen>
+    <dimen name="extdsp_fragment_band_rg_band_user_layout_marginBottom">10dp</dimen>
+    <dimen name="extdsp_fragment_band_es_freq_layout_height">195dp</dimen>
+    <dimen name="extdsp_fragment_band_sp_reverb_layout_marginStart">32dp</dimen>
+    <dimen name="extdsp_fragment_band_btn_reset_band_layout_marginEnd">16dp</dimen>
+
+    <!-- extdsp_fragment_dbb -->
+    <dimen name="extdsp_fragment_dbb_rb_dbb_mode_fl_fr_textSize">26sp</dimen>
+    <dimen name="extdsp_fragment_dbb_rg_dbb_mode_layout_marginStart">30dp</dimen>
+    <dimen name="extdsp_fragment_dbb_iv_dbb_touch_bg_layout_marginStart">50dp</dimen>
+    <dimen name="extdsp_fragment_dbb_rb_dbb_mode_rl_rr_layout_marginTop">30dp</dimen>
+    <dimen name="extdsp_fragment_dbb_v_dbb_layout_marginStart">34dp</dimen>
+    <dimen name="extdsp_fragment_dbb_v_dbb_layout_marginBottom">24dp</dimen>
+    <dimen name="extdsp_fragment_dbb_btn_reset_dbb_layout_marginEnd">50dp</dimen>
+    <dimen name="extdsp_fragment_dbb_btn_reset_dbb_layout_marginBottom">15dp</dimen>
+
+    <!-- extdsp_fragment_delay -->
+    <dimen name="extdsp_fragment_delay_btn_reset_delay_layout_marginBottom">45dp</dimen>
+
+    <!-- extdsp_fragment_filter -->
+    <dimen name="extdsp_fragment_filter_rg_extdsp_hlpf_main_layout_marginStart">20dp</dimen>
+    <dimen name="extdsp_fragment_filter_rg_extdsp_hlpf_main_layout_marginVertical">40dp</dimen>
+
+    <!-- extdsp_fragment_hlpf -->
+    <dimen name="extdsp_fragment_hlpf_rsb_hlpf_layout_width">980dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_rsb_hlpf_layout_height">150dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_rsb_hlpf_rsb_progress_drawable_default">121dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_rg_hlpf_output_mode_layout_marginStart">43dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_rb_hlpf_mode_fl_fr_layout_marginBottom">24dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_rb_hlpf_mode_fl_fr_textSize">26sp</dimen>
+    <dimen name="extdsp_fragment_hlpf_iv_hpf_layout_marginStart">100dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_tv_hpf_title_textSize">24sp</dimen>
+    <dimen name="extdsp_fragment_hlpf_iv_lpf_layout_marginStart">68dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_tv_hpf_freq_title_layout_marginTop">12dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_tv_hpf_freq_title_textSize">20sp</dimen>
+    <dimen name="extdsp_fragment_hlpf_tv_hpf_freq_layout_marginTop">8dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_btn_reset_hlpf_layout_marginBottom">8dp</dimen>
+    <dimen name="extdsp_fragment_hlpf_btn_reset_hlpf_layout_marginEnd">50dp</dimen>
+
+    <!-- extdsp_fragment_surround -->
+    <dimen name="extdsp_fragment_surround_btn_surround_enable_title_layout_marginStart">76dp</dimen>
+    <dimen name="extdsp_fragment_surround_btn_surround_enable_title_textSize">26sp</dimen>
+    <dimen name="extdsp_fragment_surround_iv_surround_car_layout_marginStart">80dp</dimen>
+    <dimen name="extdsp_fragment_surround_iv_speaker_anim_layout_marginStart">61dp</dimen>
+
+    <!-- extdsp_slope_item -->
+    <dimen name="extdsp_slope_item_tv_filter_slope_minHeight">42dp</dimen>
+    <dimen name="extdsp_slope_item_tv_filter_slope_textSize">20sp</dimen>
+
+</resources>

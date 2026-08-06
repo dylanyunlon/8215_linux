@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="MissingDefaultResource">
+
+    <RadioGroup
+        android:id="@+id/rg_band_top_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_band_top_bg"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/btn_band_reset"
+            style="@style/extdsp_radio_button_style"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/extdsp_band_reset_title" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/btn_band_reverb_mode"
+            style="@style/extdsp_radio_button_style"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/extdsp_band_reverb_mode_title" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/btn_band_user_reverb_mode"
+            style="@style/extdsp_radio_button_style"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:paddingHorizontal="100dp"
+            android:text="@string/band_user0" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_gain_max"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_gain_margin_bottom"
+        app:layout_constraintBottom_toTopOf="@+id/tv_gain_center"
+        app:layout_constraintEnd_toEndOf="@+id/tv_g_title"
+        tools:text="7" />
+
+    <TextView
+        android:id="@+id/tv_gain_center"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_gain_margin_bottom"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/tv_gain_min"
+        app:layout_constraintEnd_toEndOf="@+id/tv_g_title" />
+
+    <TextView
+        android:id="@+id/tv_gain_min"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_gain_min_margin_bottom"
+        app:layout_constraintBottom_toTopOf="@+id/tv_g_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_g_title"
+        tools:text="-7" />
+
+    <TextView
+        android:id="@+id/tv_g_title"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/extdsp_tv_g_title_margin_bottom"
+        android:text="FC:"
+        app:layout_constraintBottom_toTopOf="@+id/tv_q_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_q_title" />
+
+    <TextView
+        android:id="@+id/tv_q_title"
+        style="@style/extdsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="@dimen/extdsp_tv_q_title_margin_bottom"
+        android:paddingStart="8dp"
+        android:text="Q:"
+        app:layout_constraintBottom_toBottomOf="@+id/hsv_band"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <HorizontalScrollView
+        android:id="@+id/hsv_band"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_g_title"
+        app:layout_constraintTop_toBottomOf="@+id/rg_band_top_tab">
+
+        <LinearLayout
+            android:id="@+id/ll_band"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:minWidth="@dimen/extdsp_ll_band_minWidth"
+            android:orientation="vertical">
+            <!-- 此处控件高度要写明，不然不显示 -->
+            <com.auto.hequalizer.EqualizerSurface
+                android:id="@+id/es_freq"
+                heq_bar_knob_shadow_color="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/extdsp_es_freq_layout_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/extdsp_frequency_bar_width_layout_marginTop"
+                android:background="@android:color/transparent"
+                app:background_color="@android:color/transparent"
+                app:bar_color="@android:color/transparent"
+                app:bar_text_size="0sp"
+                app:bar_width="@dimen/dsp_frequency_bar_width"
+                app:freq_curve_bg_shader_color_1="@color/extdsp_fragment_band_freq_curve_color_1"
+                app:freq_curve_bg_shader_color_2="@color/extdsp_fragment_band_freq_curve_color_2"
+                app:freq_curve_bg_shader_color_3="@color/extdsp_fragment_band_freq_curve_color_3"
+                app:freq_curve_bg_shader_color_4="@color/extdsp_fragment_band_freq_curve_color_4"
+                app:freq_curve_bg_shader_color_5="@color/extdsp_fragment_band_freq_curve_color_5"
+                app:freq_curve_bg_shader_pos_1="@android:color/transparent"
+                app:freq_curve_bg_shader_pos_2="@android:color/transparent"
+                app:freq_curve_bg_shader_pos_3="@android:color/transparent"
+                app:freq_curve_bg_shader_pos_4="@android:color/transparent"
+                app:freq_curve_bg_shader_pos_5="@android:color/transparent"
+                app:freq_curve_color_1="@android:color/transparent"
+                app:freq_curve_color_2="@android:color/transparent"
+                app:freq_curve_width_1="@dimen/dsp_freq_curve_width_1"
+                app:freq_curve_width_2="@dimen/dsp_freq_curve_width_2"
+                app:gain_text_color="@android:color/transparent"
+                app:gain_text_size="0sp"
+                app:gridlines_color="@android:color/transparent"
+                app:heq_bar_knob_color="@android:color/white" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/ll_band_reverb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/extdsp_band_gvp_band_ll_band_reverb_paddingHorizontal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.hcn.autoeq.view.GalleryViewPager
+            android:id="@+id/gvp_band_reverb"
+            android:layout_width="@dimen/extdsp_band_gvp_band_reverb_layout_width"
+            android:layout_height="@dimen/extdsp_band_gvp_band_reverb_layout_width"
+            android:clipChildren="false"
+            android:overScrollMode="never" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

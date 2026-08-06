@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="fydsp_textSize">22sp</dimen>
+
+    <dimen name="fydsp_alert_dialog_title_textSize">28sp</dimen>
+    <dimen name="fydsp_alert_dialog_content_textSize">20sp</dimen>
+    <dimen name="fydsp_alert_dialog_btn_textSize">26sp</dimen>
+
+    <!-- band mode -->
+    <dimen name="fydsp_band_mode_textSize">36sp</dimen>
+    <dimen name="fydsp_band_mode_maxWidth">115dp</dimen>
+
+    <!-- band q value seekbar -->
+    <dimen name="fydsp_band_sb_seekbar_layout_width">373dp</dimen>
+    <dimen name="fydsp_band_sb_seekbar_layout_height">42dp</dimen>
+
+    <!-- band -->
+    <dimen name="fydsp_band_user_paddingStart">16dp</dimen>
+    <dimen name="fydsp_band_user_paddingEnd">25dp</dimen>
+    <dimen name="fydsp_band_user_textSize">20dp</dimen>
+    <dimen name="fydsp_seekbar_rotator_margin_top">12dp</dimen>
+    <!-- 宽度比实际图片宽一些，16段时正好铺满整屏，也方便手指拖动 -->
+    <dimen name="fydsp_band_seekbar_minWidth">60dp</dimen>
+    <dimen name="fydsp_band_seekbar_width">0dp</dimen>
+    <dimen name="fydsp_band_seekbar_height">170dp</dimen>
+    <dimen name="fydsp_scroll_title_textSize">16sp</dimen>
+    <dimen name="fydsp_seekbar_margin">0dp</dimen>
+    <dimen name="fydsp_seekbar_padding">0dp</dimen>
+    <dimen name="fydsp_seekbar_thumb_offset">0dp</dimen>
+    <dimen name="fydsp_tv_gain_margin_bottom">62dp</dimen>
+    <dimen name="fydsp_tv_g_title_margin_bottom">14dp</dimen>
+    <dimen name="fydsp_tv_q_title_margin_bottom">0dp</dimen>
+    <dimen name="fydsp_es_freq_layout_height">132dp</dimen>
+    <dimen name="fydsp_ll_band_minWidth">0dp</dimen>
+    <dimen name="fydsp_sp_reverb_layout_marginStart">24dp</dimen>
+    <dimen name="fydsp_tv_gain_min_margin_bottom">0dp</dimen>
+    <dimen name="fydsp_iv_band_line_margin_bottom">10dp</dimen>
+    <dimen name="fydsp_freq_curve_width_1">1dp</dimen>
+    <dimen name="fydsp_freq_curve_width_2">1dp</dimen>
+    <dimen name="fydsp_move_scroll_btn_width">76dp</dimen>
+    <dimen name="fydsp_move_scroll_btn_height">64dp</dimen>
+    <dimen name="fydsp_move_scroll_btn_padding">10dp</dimen>
+
+    <!-- balance -->
+    <dimen name="fydsp_balance_direct_padding">0dip</dimen>
+    <dimen name="fydsp_balance_mode_text_size">24sp</dimen>
+
+    <!-- attenuate -->
+    <dimen name="fydsp_attenuate_title_textSize">20sp</dimen>
+    <dimen name="fydsp_attenuate_seekbar_width">76dp</dimen>
+    <dimen name="fydsp_attenuate_seekbar_height">232dp</dimen>
+    <dimen name="fydsp_attenuate_cb_mute_layout_marginTop">30dp</dimen>
+    <dimen name="fydsp_attenuate_cb_invert_layout_marginTop">60dp</dimen>
+    <dimen name="fydsp_attenuate_tv_right_layout_margin">10dp</dimen>
+    <dimen name="fydsp_attenuate_tv_mute_layout_marginBottom">70dp</dimen>
+    <dimen name="fydsp_attenuate_btn_link_lf_rf_layout_marginStart">120dp</dimen>
+    <dimen name="fydsp_attenuate_btn_link_lf_rf_layout_marginBottom">50dp</dimen>
+    <integer name="fydsp_attenuate_asb_lf_layout_constraintCircleAngle">330</integer>
+    <integer name="fydsp_attenuate_asb_rf_layout_constraintCircleAngle">30</integer>
+    <dimen name="fydsp_attenuate_asb_lf_layout_constraintCircleRadius">185dp</dimen>
+    <dimen name="fydsp_attenuate_lf_help_view_layout_marginBottom">390dp</dimen>
+
+    <!-- filter -->
+    <dimen name="fydsp_filter_rg_hlpf_output_mode_maxWidth">106dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_way2_f_layout_marginStart">126dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_way2_r_layout_marginStart">45dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_way2_subwoofer_center_layout_marginStart">28dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_way3_f_center_layout_marginStart">126dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_channel51_center_layout_marginStart">101dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_channel51_r_layout_marginStart">59dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_channel51_subwoofer_layout_marginStart">25dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_way6_f_layout_marginStart">126dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_way6_r_layout_marginStart">45dp</dimen>
+    <dimen name="fydsp_filter_btn_hlpf_speaker_way6_subwoofer_center_layout_marginStart">28dp</dimen>
+    <dimen name="fydsp_filter_tv_title_minHeight">38dp</dimen>
+    <dimen name="fydsp_filter_rca_line_bg_layout_width">1152dp</dimen>
+    <dimen name="fydsp_filter_rca_line_bg_layout_height">160dp</dimen>
+    <dimen name="fydsp_filter_rca_line_layout_width">1082dp</dimen>
+
+    <!-- delay -->
+    <dimen name="fydsp_delat_tv_time_textSize">24sp</dimen>
+
+
+</resources>

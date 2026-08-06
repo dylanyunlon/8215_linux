@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:background="@drawable/extdsp_main_background">
+
+    <ImageView
+        android:id="@+id/iv_delay_item_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_value_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_reduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_btn_reduce_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_delay_item_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_delay_item_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_item_bg" />
+
+    <TextView
+        android:id="@+id/tv_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minWidth="@dimen/extdsp_delay_item_2_tv_value_minWidth"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extdsp_delay_item_2_tv_value_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/tv_distance"
+        app:layout_constraintEnd_toStartOf="@+id/btn_add"
+        app:layout_constraintStart_toEndOf="@+id/btn_reduce"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_item_bg"
+        tools:text="20 ms" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minWidth="@dimen/extdsp_delay_item_2_tv_value_minWidth"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/extdsp_delay_item_tv_value_textSize"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_delay_item_bg"
+        app:layout_constraintEnd_toStartOf="@+id/tv_value"
+        app:layout_constraintStart_toEndOf="@+id/tv_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_value"
+        tools:text="20 ms" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/extdsp_delay_btn_add_selector"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_delay_item_bg"
+        app:layout_constraintEnd_toEndOf="@+id/iv_delay_item_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_delay_item_bg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

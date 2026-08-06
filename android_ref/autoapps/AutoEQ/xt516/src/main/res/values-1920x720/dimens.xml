@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <dimen name="dsp_freq_curve_width_1">3dp</dimen>
+    <dimen name="dsp_freq_curve_width_2">3dp</dimen>
+    <dimen name="dsp_frequency_bar_width">5dp</dimen>
+    <dimen name="xt516_logo_layout_marginTop">38dp</dimen>
+</resources>

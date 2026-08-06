@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 背景图 -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <!-- 定义圆角的半径 -->
+            <corners android:radius="@dimen/x8" />
+
+            <!-- 设置矩形的填充颜色 -->
+            <solid android:color="@color/nine_seek_bar_bg_color" />
+        </shape>
+    </item>
+
+    <!-- 进和能量图 -->
+    <item android:id="@android:id/progress">
+        <scale
+            android:drawable="@drawable/nine_progress_bg_u"
+            android:scaleWidth="100%" />
+    </item>
+</layer-list>

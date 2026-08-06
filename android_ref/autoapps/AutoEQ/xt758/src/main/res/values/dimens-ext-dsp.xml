@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- activity_main -->
+    <dimen name="extdsp_rb_extdsp_band_paddingTop">0dp</dimen>
+    <!-- band -->
+    <dimen name="extdsp_band_user_paddingStart">16dp</dimen>
+    <dimen name="extdsp_band_user_textSize">19sp</dimen>
+    <dimen name="extdsp_seekbar_rotator_margin_top">13dp</dimen>
+    <dimen name="extdsp_attenuate_cb_invert_layout_marginTop">15dp</dimen>
+    <dimen name="extdsp_attenuate_tv_right_layout_margin">10dp</dimen>
+    <!-- 宽度比实际图片宽一些，14段时正好铺满整屏，也方便手指拖动 -->
+    <dimen name="extdsp_band_seekbar_tv_freq_textSize">12sp</dimen>
+    <dimen name="extdsp_band_seekbar_width">50dp</dimen>
+    <dimen name="extdsp_band_seekbar_height">170dp</dimen>
+    <dimen name="extdsp_scroll_title_textSize">12sp</dimen>
+    <dimen name="extdsp_seekbar_margin">0dp</dimen>
+    <dimen name="extdsp_seekbar_padding">0dp</dimen>
+    <dimen name="extdsp_seekbar_thumb_offset">0dp</dimen>
+    <dimen name="extdsp_tv_gain_margin_bottom">66dp</dimen>
+    <dimen name="extdsp_tv_g_title_margin_bottom">11dp</dimen>
+    <dimen name="extdsp_tv_q_title_margin_bottom">23dp</dimen>
+    <dimen name="extdsp_band_button_marginEnd">110dp</dimen>
+    <dimen name="extdsp_es_freq_layout_height">89dp</dimen>
+    <dimen name="extdsp_sp_reverb_layout_marginStart">40dp</dimen>
+    <dimen name="extdsp_btn_reset_band_layout_marginEnd">16dp</dimen>
+    <dimen name="extdsp_ll_band_minWidth">1259dp</dimen>
+    <dimen name="extdsp_tv_gain_min_margin_bottom">7dp</dimen>
+    <dimen name="extdsp_band_hsv_band_layout_marginStart">5dp</dimen>
+    <dimen name="extdsp_band_gvp_band_reverb_layout_width">202dp</dimen>
+    <dimen name="extdsp_band_gvp_band_ll_band_reverb_paddingHorizontal">190dp</dimen>
+    <dimen name="extdsp_frequency_bar_width_layout_marginTop">30dp</dimen>
+    <dimen name="extdsp_main_rg_main_layout_height">25dp</dimen>
+    <dimen name="extdsp_band_seekbar_tv_freq_layout_marginTop">0dp</dimen>
+    <dimen name="extdsp_fragment_band_es_freq_layout_marginTop">0dp</dimen>
+    <dimen name="extdsp_fragment_band_rg_band_user_layout_marginBottom">8dp</dimen>
+
+    <!-- balance -->
+    <dimen name="extdsp_balance_mode_text_size">20sp</dimen>
+    <dimen name="extdsp_balance_marginEnd">160dip</dimen>
+    <dimen name="extdsp_balance_direct_padding">0dip</dimen>
+
+    <!-- attenuate -->
+    <dimen name="extdsp_attenuate_title_textSize">20sp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_width">50dp</dimen>
+    <dimen name="extdsp_attenuate_seekbar_height">266dp</dimen>
+    <dimen name="extdsp_attenuate_tv_mute_layout_marginBottom">44dp</dimen>
+    <dimen name="extdsp_attenuate_tv_invert_layout_marginBottom">29dp</dimen>
+    <dimen name="extdsp_attenuate_title_layout_marginStart">80dp</dimen>
+    <dimen name="extdsp_fragment_attenuate_asb_lf_layout_marginTop">0dp</dimen>
+    <dimen name="extdsp_fragment_attenuate_btn_link_lf_rf_layout_marginTop">10dp</dimen>
+    <dimen name="extdsp_fragment_attenuate_paddingBottom">0dp</dimen>
+    <dimen name="extdsp_attenuate_tv_mute_paddingTop">0dp</dimen>
+    <dimen name="extdsp_attenuate_tv_invert_paddingTop">0dp</dimen>
+
+    <!-- filter -->
+    <dimen name="extdsp_filter_slope_minHeight">28dp</dimen>
+    <dimen name="extdsp_filter_slope_textSize">15sp</dimen>
+    <dimen name="extdsp_hlpf_rsb_width">1026dp</dimen>
+    <dimen name="extdsp_hlpf_rsb_height">142dp</dimen>
+    <dimen name="extdsp_hlpf_progress_height">100dp</dimen>
+    <dimen name="extdsp_hlpf_radio_button_layout_marginTop">9dp</dimen>
+    <dimen name="extdsp_filter_btn_reset_hlpf_layout_marginEnd">40dp</dimen>
+    <dimen name="extdsp_filter_btn_reset_hlpf_layout_marginBottom">10dp</dimen>
+    <dimen name="extdsp_filter_iv_hpf_layout_marginTop">30dp</dimen>
+
+    <!-- delay -->
+    <dimen name="extdsp_round_knob_seek_bar_width">136dp</dimen>
+    <dimen name="extdsp_round_knob_seek_bar_arc_width">12dp</dimen>
+    <integer name="extdsp_round_knob_seek_bar_pic_transparent_distance">-4</integer>
+    <dimen name="extdsp_tv_time_textSize">22sp</dimen>
+    <dimen name="extdsp_tv_value_textSize">20sp</dimen>
+    <dimen name="extdsp_tv_band_mode_layout_width">90dp</dimen>
+
+    <!-- gallery -->
+    <dimen name="extdsp_gallery_item_btn_name_textSize">20sp</dimen>
+    <dimen name="extdsp_gallery_item_btn_name_layout_marginBottom">13dp</dimen>
+
+</resources>

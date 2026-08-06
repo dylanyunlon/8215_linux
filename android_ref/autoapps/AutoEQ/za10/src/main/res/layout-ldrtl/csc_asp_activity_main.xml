@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/eq_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8" />
+
+    <RadioGroup
+        android:id="@+id/rg_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_csc_asp_balance"
+            style="@style/csc_asp_radio_button_style"
+            android:background="@drawable/csc_asp_balance_bg_selector"
+            android:drawableTop="@drawable/csc_asp_balance_selector"
+            android:paddingTop="@dimen/csc_asp_rb_band_paddingTop"
+            android:text="@string/menu_tab_rb_csc_asp_balance" />
+
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_csc_asp_subwoofer"
+            style="@style/csc_asp_radio_button_style"
+            android:background="@drawable/csc_asp_subwoofer_bg_selector"
+            android:drawableTop="@drawable/csc_asp_subwoofer_selector"
+            android:visibility="visible"
+            android:paddingTop="@dimen/csc_asp_rb_band_paddingTop"
+            android:text="@string/menu_tab_rb_csc_asp_subwoofer" />
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_csc_asp_q_value"
+            style="@style/csc_asp_radio_button_style"
+            android:background="@drawable/csc_asp_q_value_bg_selector"
+            android:drawableTop="@drawable/csc_asp_q_value_selector"
+            android:paddingTop="@dimen/csc_asp_rb_band_paddingTop"
+            android:text="@string/menu_tab_rb_csc_asp_q_value" />
+
+
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_csc_asp_equalizer"
+            style="@style/csc_asp_radio_button_style"
+            android:background="@drawable/csc_asp_equalizer_bg_selector"
+            android:drawableTop="@drawable/csc_asp_equalizer_selector"
+            android:paddingTop="@dimen/csc_asp_rb_band_paddingTop"
+            android:text="@string/menu_tab_rb_csc_asp_equalizer" />
+        <com.hcn.autoeq.view.DrawableCenterRadioButton
+            android:id="@+id/rb_csc_asp_equalizer_chart"
+            style="@style/csc_asp_radio_button_style"
+            android:background="@drawable/csc_asp_equalizer_chart_bg_selector"
+            android:drawableTop="@drawable/csc_asp_equalizer_chart_selector"
+            android:paddingTop="@dimen/csc_asp_rb_band_paddingTop"
+            android:text="@string/menu_tab_rb_csc_asp_equalizer_chart" />
+    </RadioGroup>
+`
+</LinearLayout>

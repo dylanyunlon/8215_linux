@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/device_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y50"
+    android:layout_marginStart="@dimen/x30"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/device_item_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/x10">
+
+        <TextView
+            android:id="@+id/item_remote_device_name"
+            android:layout_width="@dimen/x340"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/x22" />
+
+        <TextView
+            android:id="@+id/item_remote_connect_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/x16"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/item_remote_device_macaddr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/x10"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/device_select"
+            android:layout_width="@dimen/x46"
+            android:layout_height="@dimen/y50"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/x8"
+            android:background="@drawable/set_rb_off" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_config_profile"
+        android:layout_width="@dimen/x46"
+        android:layout_height="@dimen/y50"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/x20"
+        android:layout_marginTop="@dimen/y5"
+        android:background="@drawable/more" />
+
+</LinearLayout>
+

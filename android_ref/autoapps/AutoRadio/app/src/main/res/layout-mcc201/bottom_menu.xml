@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/BottomMenu"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="10dp"
+              android:gravity="center">
+
+    <Button
+        android:id="@+id/butt_band"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:background="@drawable/butt_xml_band"
+        android:textColor="@drawable/text_color_selector"/>
+    <LinearLayout android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="5"
+                  android:background="@drawable/bottom_bg"
+                  android:layout_marginStart="5dp"
+                  android:layout_marginEnd="5dp"
+                  android:gravity="center">
+
+        <Button
+            android:id="@+id/butt_asps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/Self_Search"
+            android:textSize="@dimen/bottom_btn_text_size"
+            android:background="@drawable/btn_bottom_bg"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/butt_bottom_prev"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom|center"
+            android:background="@drawable/butt_bottom_prev"
+            android:textColor="@drawable/text_color_selector"/>
+        <Button
+            android:id="@+id/butt_bottom_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom|center"
+            android:background="@drawable/butt_bottom_next"
+            android:textColor="@drawable/text_color_selector"/>
+
+        <Button
+            android:id="@+id/butt_locdx"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/DX"
+            android:textSize="@dimen/bottom_btn_text_size"
+            android:background="@drawable/btn_bottom_bg"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/butt_scan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/scan"
+            android:textSize="@dimen/bottom_btn_text_size"
+            android:background="@drawable/btn_bottom_bg"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/butt_back"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center"
+        android:background="@drawable/butt_xml_back"
+        android:textColor="@drawable/text_color_selector"/>
+</LinearLayout>

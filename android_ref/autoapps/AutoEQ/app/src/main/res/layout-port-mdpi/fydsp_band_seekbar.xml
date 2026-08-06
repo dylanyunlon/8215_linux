@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="@dimen/fydsp_band_seekbar_minWidth"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_gain"
+        style="@style/fydsp_scroll_title_style"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/fydsp_seekbar_rotator_margin_top"
+        android:text="0"
+        android:textColor="@drawable/fydsp_seekbar_text_color" />
+
+    <com.hcn.autoeq.view.SeekBarRotator
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/fydsp_seekbar_rotator_margin_top">
+
+        <SeekBar
+            android:id="@+id/sb_band"
+            android:layout_width="@dimen/fydsp_band_seekbar_height"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fydsp_seekbar_margin"
+            android:background="@null"
+            android:maxHeight="@dimen/fydsp_band_seekbar_width"
+            android:paddingStart="@dimen/fydsp_seekbar_padding"
+            android:paddingEnd="@dimen/fydsp_seekbar_padding"
+            android:progressDrawable="@drawable/fydsp_band_seek_bar_bg"
+            android:splitTrack="false"
+            android:thumb="@drawable/fydsp_band_seek_bar_thumb"
+            android:thumbOffset="@dimen/fydsp_seekbar_thumb_offset" />
+    </com.hcn.autoeq.view.SeekBarRotator>
+
+    <TextView
+        android:id="@+id/tv_freq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/fydsp_seekbar_rotator_margin_top"
+        android:background="@drawable/fydsp_band_btn_freq_selector"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        tools:text="100" />
+
+    <TextView
+        android:id="@+id/tv_q_value"
+        style="@style/fydsp_scroll_title_style"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/fydsp_seekbar_rotator_margin_top"
+        android:background="@drawable/fydsp_band_btn_freq_selector"
+        android:gravity="center"
+        android:textColor="@drawable/fydsp_seekbar_text_color"
+        tools:text="1" />
+</LinearLayout>

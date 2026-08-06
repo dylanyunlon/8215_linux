@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/asp_bass_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/asp_seekbar_bg"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.hcn.autoeq.view.SeekBarRotator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <com.hcn.autoeq.view.IndicatorSeekBar
+                android:id="@+id/indicator_seek_bar"
+                android:layout_width="@dimen/indicator_seek_bar_width"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:maxHeight="@dimen/indicator_seek_bar_height"
+                android:progressDrawable="@drawable/asp_seekbar_selector"
+                android:splitTrack="false"
+                android:thumb="@drawable/asp_seekbar_thumb" />
+        </com.hcn.autoeq.view.SeekBarRotator>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_freq_asp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:maxLines="1"
+        android:text="20Hz"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/indicator_seek_tv_size"
+        tools:ignore="NotSibling" />
+</LinearLayout>

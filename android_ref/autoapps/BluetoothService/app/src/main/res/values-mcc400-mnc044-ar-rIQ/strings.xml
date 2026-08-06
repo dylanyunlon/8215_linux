@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">خزمەتگوزاری بلوتوز</string>
+  <string name="str_handsfree_device_connected">ئامێری دەستی ئازاد بەستراوەتەوە</string>
+  <string name="str_a2dp_device_connected">ئامێری مۆسیقا بەستراوەتەوە</string>
+  <string name="str_hid_device_connected">ئامێری HID بەستراوەتەوە</string>
+  <string name="str_income_call_status">پەیوەندی هاتوو</string>
+  <string name="str_out_call_status">پەیوەندی دەرەکی </string>
+  <string name="str_bt_call_active">پەیوەندیەکە چالاکە</string>
+  <string name="str_bt_call_held">پەیوەندیەکە بەڕێوەچوو</string>
+  <string name="str_bt_call_waiting">پەیوەنیەکە لە چاوەڕوانیدایە</string>
+  <string name="str_bt_call_abnormal">پەیوەندی نائاسایی</string>
+  <string name="str_bt_call_multiparty">پەیوەندی فرەلایەنە</string>
+  <string name="str_bt_call_accept_terminate">کۆتای پێ بهێنە و پەسەندی بکە </string>
+  <string name="str_bt_call_accept_held">وەرگرتن و پەسەندکردن</string>
+  <string name="str_bt_call_swap">پەیوەندی گۆڕینەوە</string>
+  <string name="str_bt_call_merge">پەیوەندی تێکەڵکردن</string>
+  <string name="str_calling_phone_number">10086</string>
+  <string name="unkown">نەناسراو</string>
+  <string name="time_text">00:00:00</string>
+  <string name="str_letter_hicar_tips">کارکردنی HiCar ، ئیشپێکردنی بلوتوز ڕێگەپێدراو نیە .</string>
+  <string name="bluetooth_profile_a2dp">سەرچاوەی دەنگ</string>
+  <string name="bluetooth_profile_a2dp_sink">وەرگری دەنگی </string>
+  <string name="bluetooth_profile_pbap">هاوبەشکردنی پەیوەدی</string>
+  <string name="bluetooth_profile_headset_client">کڕیاری تەلەفۆن</string>
+  <string name="bluetooth_profile_pan_NAP">خاڵی دەستگەیشتن بە تۆڕ</string>
+  <string name="bluetooth_pairing_error_message">کێشەیەک هەبوو لەکاتی پێکەوەبەستنەوە لەگەڵ</string>
+  <string name="bluetooth_pairing_pin_error_message">کێشەیەک هەبوو لەکاتی پێکەوەبەستنەوە لەگەڵ چونکە ژمارەی نهێنی کەسی یان کلیلی نهێنی تێپەڕبوون دروست نیە .</string>
+  <string name="bluetooth_pairing_device_down_error_message">ناتوانرێت پەیوەندی کردن دروست بکرێت لەگەڵ </string>
+  <string name="bluetooth_pairing_rejected_error_message">بەستنەوە ڕەتکرایەوە لەلایەن .</string>
+  <string name="bluetooth_unpair_device_message">ئامێری پچڕاندن ، تکایە پەیوەندی ئەم ئامێرە بە مۆبایلەکەوە بپچڕێنە و دووبارە ئامێری بلوتوز سکان بکەرەوە !</string>
+</resources>

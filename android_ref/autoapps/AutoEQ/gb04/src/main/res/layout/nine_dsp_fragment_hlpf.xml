@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_seekbar_bg"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:layout_height="@dimen/nine_dsp_fragment_band_nine_eq_surface_bg_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_dbb_iv_dbb_bg_marginTop"
+        android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_marginStart"
+        android:background="@drawable/nine_chart_edit_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y10"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/iv_seekbar_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_seekbar_bg"
+        app:layout_constraintTop_toBottomOf="@+id/iv_seekbar_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/nine_dsp_fragment_hlpf_TextView_20_marginStart"
+            android:text="20Hz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_TextView_50_marginStart"
+            android:text="50Hz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_TextView_100_marginStart"
+            android:text="100Hz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_TextView_200_marginStart"
+            android:text="200Hz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_TextView_500_marginStart"
+            android:text="500Hz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_TextView_1k_marginStart"
+            android:text="1KHz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_TextView_2k_marginStart"
+            android:text="2KHz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_TextView_5k_marginStart"
+            android:text="5KHz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_TextView_10k_marginStart"
+            android:text="10KHz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/nine_dsp_fragment_hlpf_TextView_20k_marginEnd"
+            android:text="20KHz"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x24"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.hcn.autoeq.view.NineHLFView
+        android:id="@+id/nine_hlpf"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_seekbar_bg_width"
+        android:layout_height="@dimen/nine_dsp_fragment_band_nine_eq_surface_bg_height"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_seekbar_bg"
+        app:layout_constraintEnd_toEndOf="@+id/iv_seekbar_bg"
+        app:layout_constraintStart_toStartOf="@+id/iv_seekbar_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_seekbar_bg" />
+
+    <RadioGroup
+        android:id="@+id/rg_hlpf_output_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_dbb_rg_hlpf_output_mode_marginBottom"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/rb_hlpf_mode_fl_fr"
+            style="@style/nine_filter_radio_button_style"
+            android:text="@string/nine_btn_filter_channel_front" />
+
+        <RadioButton
+            android:id="@+id/rb_hlpf_mode_rl_rr"
+            style="@style/nine_filter_radio_button_style"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/nine_btn_filter_channel_rear" />
+
+        <RadioButton
+            android:id="@+id/rb_hlpf_mode_center"
+            style="@style/nine_filter_radio_button_style"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/nine_tv_channel_center" />
+
+        <RadioButton
+            android:id="@+id/rb_hlpf_mode_subwoofer"
+            style="@style/nine_filter_radio_button_style"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/str_subwoofer" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_hlpf_TextView_marginBottom"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/nine_tv_filter_freq_h"
+        android:textColor="@color/nine_text_color_n"
+        android:textSize="@dimen/x48"
+        app:layout_constraintBottom_toTopOf="@+id/cc_filter_h"
+        app:layout_constraintEnd_toEndOf="@+id/cc_filter_h"
+        app:layout_constraintStart_toStartOf="@+id/cc_filter_h" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cc_filter_h"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_height"
+        android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_marginStart"
+        android:background="@drawable/nine_filter_freq_show_bg"
+        android:paddingHorizontal="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_paddingHorizontal"
+        android:paddingTop="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_paddingTop"
+        android:paddingBottom="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_paddingBottom"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_marginBottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rg_hlpf_output_mode">
+
+        <ImageView
+            android:id="@+id/iv_h_arrow_delay"
+            android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_width"
+            android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_height"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_marginStart"
+            android:clickable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/nine_dsp_filter_reduce_selector"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_freq_h"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_height"
+            android:gravity="center"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/nine_dsp_fragment_hlpf_tv_freq_h_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_h_arrow_delay"
+            app:layout_constraintBottom_toBottomOf="@id/iv_h_arrow_delay"
+            />
+
+        <ImageView
+            android:id="@+id/iv_h_arrow_plus"
+            android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_width"
+            android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_height"
+            android:layout_marginEnd="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_marginStart"
+            android:clickable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/nine_dsp_filter_plus_selector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/hlpf_slope_title"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x28"
+            app:layout_constraintBottom_toBottomOf="@+id/bt_slope_h"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bt_slope_h" />
+
+        <ToggleButton
+            android:id="@+id/bt_slope_h"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/y52"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_bt_slope_h_marginTop"
+            android:background="@drawable/nine_switch_on_off_bg_selector"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text=""
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_freq_h" />
+
+        <GridView
+            android:id="@+id/grid_view_h"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_grid_view_h_marginTop"
+            android:layout_weight="1"
+            android:horizontalSpacing="@dimen/nine_dsp_fragment_hlpf_grid_view_h_horizontalSpacing"
+            android:numColumns="3"
+            android:verticalSpacing="@dimen/nine_dsp_fragment_hlpf_grid_view_h_verticalSpacing"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bt_slope_h" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/iv_hlpf_car"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_car_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_car_height"
+        android:scaleType="centerInside"
+        android:src="@drawable/nine_filter_car_model"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cc_filter_l"
+        app:layout_constraintStart_toEndOf="@+id/cc_filter_h" />
+
+    <ImageView
+        android:id="@+id/iv_hlpf_front_l"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintStart_toStartOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car" />
+
+    <ImageView
+        android:id="@+id/iv_hlpf_rear_l"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_rear_l_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintStart_toStartOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car" />
+
+    <ImageView
+        android:id="@+id/iv_hlpf_forefront"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_forefront_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car" />
+
+    <ImageView
+        android:id="@+id/iv_hlpf_front_r"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car" />
+
+    <ImageView
+        android:id="@+id/iv_hlpf_rear_r"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_rear_l_marginTop"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintTop_toTopOf="@+id/iv_hlpf_car" />
+
+    <ImageView
+        android:id="@+id/iv_hlpf_rear"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_front_l_height"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_hlpf_iv_hlpf_rear_marginBottom"
+        android:src="@drawable/icon_nine_filter_switch_thumb_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_hlpf_car"
+        app:layout_constraintEnd_toEndOf="@+id/iv_hlpf_car"
+        app:layout_constraintStart_toStartOf="@+id/iv_hlpf_car" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_hlpf_TextView_marginBottom"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/nine_tv_filter_freq_l"
+        android:textColor="@color/nine_text_color_n"
+        android:textSize="@dimen/x48"
+        app:layout_constraintBottom_toTopOf="@+id/cc_filter_l"
+        app:layout_constraintEnd_toEndOf="@+id/cc_filter_l"
+        app:layout_constraintStart_toStartOf="@+id/cc_filter_l" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cc_filter_l"
+        android:layout_width="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_width"
+        android:layout_height="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_height"
+        android:background="@drawable/nine_filter_freq_show_bg"
+        android:paddingHorizontal="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_paddingHorizontal"
+        android:paddingTop="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_paddingTop"
+        android:paddingBottom="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_paddingBottom"
+        android:layout_marginBottom="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_marginBottom"
+        android:layout_marginEnd="@dimen/nine_dsp_fragment_hlpf_cc_filter_h_marginEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_l_arrow_delay"
+            android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_width"
+            android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_height"
+            android:layout_marginStart="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_marginStart"
+            android:clickable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/nine_dsp_filter_reduce_selector"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_freq_l"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_height"
+            android:gravity="center"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/nine_dsp_fragment_hlpf_tv_freq_h_textSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_l_arrow_delay"
+            app:layout_constraintBottom_toBottomOf="@id/iv_l_arrow_delay"
+            />
+
+        <ImageView
+            android:id="@+id/iv_l_arrow_plus"
+            android:layout_width="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_width"
+            android:layout_height="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_height"
+            android:layout_marginEnd="@dimen/nine_dsp_fragment_hlpf_iv_h_arrow_delay_marginStart"
+            android:clickable="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/nine_dsp_filter_plus_selector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/hlpf_slope_title"
+            android:textColor="@color/nine_text_color_n"
+            android:textSize="@dimen/x28"
+            app:layout_constraintBottom_toBottomOf="@+id/bt_slope_l"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/bt_slope_l" />
+
+        <ToggleButton
+            android:id="@+id/bt_slope_l"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/y52"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_bt_slope_h_marginTop"
+            android:background="@drawable/nine_switch_on_off_bg_selector"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text=""
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_freq_l" />
+
+        <GridView
+            android:id="@+id/grid_view_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/nine_dsp_fragment_hlpf_grid_view_h_marginTop"
+            android:layout_weight="1"
+            android:horizontalSpacing="@dimen/nine_dsp_fragment_hlpf_grid_view_h_horizontalSpacing"
+            android:numColumns="3"
+            android:verticalSpacing="@dimen/nine_dsp_fragment_hlpf_grid_view_h_verticalSpacing"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bt_slope_l" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

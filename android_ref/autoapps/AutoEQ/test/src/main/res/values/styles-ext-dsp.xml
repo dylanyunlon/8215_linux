@@ -1,0 +1,68 @@
+<resources>
+    <!-- band -->
+    <style name="extdsp_radio_button_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:textSize">@dimen/main_radiobutton_text_size</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="extdsp_scroll_title_style">
+        <item name="android:textSize">@dimen/extdsp_scroll_title_textSize</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxWidth">200dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="extdsp_radio_band_user_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@drawable/extdsp_radio_text_selector</item>
+        <item name="android:textSize">@dimen/extdsp_band_user_textSize</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/extdsp_band_user_selector</item>
+        <item name="android:layout_marginEnd">@dimen/extdsp_band_button_marginEnd</item>
+    </style>
+
+    <style name="extdsp_band_mode_style" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@android:color/transparent</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <!-- balance -->
+    <style name="extdsp_balance_mode_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/extdsp_balance_btn_mode_selector</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@drawable/extdsp_radio_text_selector</item>
+        <item name="android:textSize">@dimen/extdsp_band_user_textSize</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- filter -->
+    <style name="extdsp_filter_radio_button_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@drawable/radio_text_selector</item>
+        <item name="android:textSize">@dimen/main_radiobutton_text_size</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+</resources>
