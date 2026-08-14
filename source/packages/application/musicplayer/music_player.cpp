@@ -69,11 +69,15 @@ static void media_state_callback(int new_state, void *user_data)
         ctx->state = PLAYER_STATE_PAUSED;
         break;
     case MediaPlayer::StoppedState:
-        /* Track ended naturally -> auto-advance */
+        /* Track ended naturally -> auto-advance.
+         * Only auto-advance if we were PLAYING (natural completion).
+         * If state is already STOPPED or PAUSED, this is a user-initiated
+         * stop or a double-callback — do NOT recurse into next(). */
         if (ctx->state == PLAYER_STATE_PLAYING) {
+            ctx->state = PLAYER_STATE_STOPPED; /* Set before unlocking! */
             pthread_mutex_unlock(&ctx->mutex);
             music_player_next(ctx);
-            return;
+            return; /* next() handles its own locking and callback */
         }
         ctx->state = PLAYER_STATE_STOPPED;
         break;
@@ -155,7 +159,26 @@ MusicPlayerContext *music_player_create(void)
     MusicPlayerContext *ctx = new (std::nothrow) MusicPlayerContext();
     if (!ctx) return NULL;
 
-    memset(ctx, 0, sizeof(MusicPlayerContext));
+    /* Zero-initialize all POD members safely. The struct is POD-like,
+     * but using memset after new is technically UB in C++ if there are
+     * non-trivial members. We explicitly init each field instead. */
+    ctx->player = NULL;
+    ctx->player_ready = false;
+    ctx->playlist = NULL;
+    ctx->playlist_count = 0;
+    ctx->current_index = -1;
+    ctx->shuffle_order = NULL;
+    ctx->state = PLAYER_STATE_IDLE;
+    ctx->mode = PLAY_MODE_SEQUENTIAL;
+    ctx->state_cb = NULL;
+    ctx->state_cb_data = NULL;
+    ctx->track_cb = NULL;
+    ctx->track_cb_data = NULL;
+    ctx->position_cb = NULL;
+    ctx->position_cb_data = NULL;
+    ctx->poll_running = false;
+    ctx->poll_thread = 0;
+
     pthread_mutex_init(&ctx->mutex, NULL);
 
     ctx->player = new (std::nothrow) MediaPlayer();
@@ -193,8 +216,9 @@ void music_player_destroy(MusicPlayerContext *ctx)
     ctx->poll_running = false;
     pthread_join(ctx->poll_thread, NULL);
 
-    /* Stop playback */
-    if (ctx->player && ctx->state == PLAYER_STATE_PLAYING) {
+    /* Stop playback regardless of state */
+    if (ctx->player && (ctx->state == PLAYER_STATE_PLAYING ||
+                        ctx->state == PLAYER_STATE_PAUSED)) {
         ctx->player->stop();
     }
 
@@ -268,14 +292,20 @@ int music_player_play(MusicPlayerContext *ctx, int index)
     pthread_mutex_lock(&ctx->mutex);
 
     if (index == -1) {
-        if (ctx->current_index >= 0) {
-            /* Resume */
+        if (ctx->current_index >= 0 && ctx->state == PLAYER_STATE_PAUSED) {
+            /* Resume from pause */
             ctx->player->resume();
             ctx->state = PLAYER_STATE_PLAYING;
+
+            PlayerState s = ctx->state;
+            on_state_changed_fn cb = ctx->state_cb;
+            void *data = ctx->state_cb_data;
             pthread_mutex_unlock(&ctx->mutex);
+            if (cb) cb(s, data);
             return 0;
         }
-        index = 0;
+        /* If stopped or idle, (re)start from current or track 0 */
+        index = (ctx->current_index >= 0) ? ctx->current_index : 0;
     }
 
     if (index < 0 || index >= ctx->playlist_count) {

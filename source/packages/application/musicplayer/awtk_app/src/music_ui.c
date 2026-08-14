@@ -1,0 +1,442 @@
+/**
+ * @file music_ui.c
+ * @brief AWTK UI layer implementation for the music player.
+ *
+ * All widgets are created programmatically (no XML UI description needed,
+ * though XML can be used if preferred — just load via window_open()).
+ *
+ * Layout targets 1024×600 (same as cluster large screen).
+ *
+ * Reference: Android MusicInfoLayout.java / MusicListLayout.java
+ *            Android MusicInfoFragment.java (play controls)
+ *
+ * Copyright (C) AutoChips Inc. All rights reserved.
+ */
+
+#include "music_ui.h"
+
+#include <stdio.h>
+#include <string.h>
+
+/*============================================================================
+ * Widget name constants (for widget_lookup)
+ *==========================================================================*/
+#define W_TITLE       "lbl_title"
+#define W_ARTIST      "lbl_artist"
+#define W_ALBUM       "lbl_album"
+#define W_TIME_CUR    "lbl_time_cur"
+#define W_TIME_TOTAL  "lbl_time_total"
+#define W_SLIDER      "slider_progress"
+#define W_BTN_PLAY    "btn_play"
+#define W_BTN_PREV    "btn_prev"
+#define W_BTN_NEXT    "btn_next"
+#define W_BTN_MODE    "btn_mode"
+#define W_LBL_MODE    "lbl_mode"
+#define W_LBL_STATUS  "lbl_status"
+#define W_LIST_VIEW   "list_playlist"
+#define W_LBL_COUNT   "lbl_count"
+
+/*============================================================================
+ * Module state
+ *==========================================================================*/
+static widget_t* s_win = NULL;
+static bool s_slider_dragging = false;
+
+/*============================================================================
+ * Helper: find child widget by name
+ *==========================================================================*/
+static widget_t* find(const char* name) {
+    return s_win ? widget_lookup(s_win, name, TRUE) : NULL;
+}
+
+/*============================================================================
+ * Time formatting helper
+ *==========================================================================*/
+static void format_time(char* buf, int buf_len, int ms) {
+    if (ms < 0) ms = 0;
+    int sec = ms / 1000;
+    int min = sec / 60;
+    sec %= 60;
+    snprintf(buf, buf_len, "%02d:%02d", min, sec);
+}
+
+/*============================================================================
+ * Widget event handlers → music_app calls
+ *==========================================================================*/
+static ret_t on_btn_play_click(void* ctx, event_t* e) {
+    (void)ctx;
+    (void)e;
+    music_app_toggle_play_pause();
+    return RET_OK;
+}
+
+static ret_t on_btn_prev_click(void* ctx, event_t* e) {
+    (void)ctx;
+    (void)e;
+    music_app_prev();
+    return RET_OK;
+}
+
+static ret_t on_btn_next_click(void* ctx, event_t* e) {
+    (void)ctx;
+    (void)e;
+    music_app_next();
+    return RET_OK;
+}
+
+static ret_t on_btn_mode_click(void* ctx, event_t* e) {
+    (void)ctx;
+    (void)e;
+    music_app_cycle_play_mode();
+
+    /* Update mode label immediately */
+    const music_app_state_t* st = music_app_get_state();
+    const char* mode_str = "Sequential";
+    switch (st->play_mode) {
+        case PLAY_MODE_SEQUENTIAL: mode_str = "Sequential";  break;
+        case PLAY_MODE_REPEAT_ALL: mode_str = "Repeat All";  break;
+        case PLAY_MODE_REPEAT_ONE: mode_str = "Repeat One";  break;
+        case PLAY_MODE_SHUFFLE:    mode_str = "Shuffle";      break;
+    }
+    widget_t* lbl = find(W_LBL_MODE);
+    if (lbl) widget_set_text_utf8(lbl, mode_str);
+
+    return RET_OK;
+}
+
+static ret_t on_slider_value_changed(void* ctx, event_t* e) {
+    (void)ctx;
+    (void)e;
+
+    if (!s_slider_dragging) return RET_OK;
+
+    widget_t* slider = find(W_SLIDER);
+    if (slider) {
+        int value = (int)widget_get_prop_int(slider, WIDGET_PROP_VALUE, 0);
+        music_app_seek(value);
+    }
+    return RET_OK;
+}
+
+static ret_t on_slider_pointer_down(void* ctx, event_t* e) {
+    (void)ctx;
+    (void)e;
+    s_slider_dragging = true;
+    return RET_OK;
+}
+
+static ret_t on_slider_pointer_up(void* ctx, event_t* e) {
+    (void)ctx;
+    (void)e;
+    s_slider_dragging = false;
+    /* Seek to final position */
+    widget_t* slider = find(W_SLIDER);
+    if (slider) {
+        int value = (int)widget_get_prop_int(slider, WIDGET_PROP_VALUE, 0);
+        music_app_seek(value);
+    }
+    return RET_OK;
+}
+
+/*============================================================================
+ * Playlist item click handler
+ *==========================================================================*/
+static ret_t on_list_item_click(void* ctx, event_t* e) {
+    (void)ctx;
+    widget_t* item = WIDGET(e->target);
+    if (item) {
+        int index = widget_get_prop_int(item, "item_index", -1);
+        if (index >= 0) {
+            music_app_play(index);
+        }
+    }
+    return RET_OK;
+}
+
+/*============================================================================
+ * UI creation — programmatic widget construction
+ *==========================================================================*/
+ret_t music_ui_create(widget_t* win) {
+    s_win = win;
+
+    /* === Top area: song info (title, artist, album) === */
+    widget_t* lbl_title = label_create(win, 20, 20, 700, 40);
+    widget_set_name(lbl_title, W_TITLE);
+    widget_set_text_utf8(lbl_title, "No Track");
+    widget_set_style_str(lbl_title, "font_size", "28");
+    widget_set_style_str(lbl_title, "text_color", "#FFFFFF");
+
+    widget_t* lbl_artist = label_create(win, 20, 65, 500, 30);
+    widget_set_name(lbl_artist, W_ARTIST);
+    widget_set_text_utf8(lbl_artist, "---");
+    widget_set_style_str(lbl_artist, "font_size", "20");
+    widget_set_style_str(lbl_artist, "text_color", "#80eee1");
+
+    widget_t* lbl_album = label_create(win, 530, 65, 300, 30);
+    widget_set_name(lbl_album, W_ALBUM);
+    widget_set_text_utf8(lbl_album, "---");
+    widget_set_style_str(lbl_album, "font_size", "18");
+    widget_set_style_str(lbl_album, "text_color", "#888888");
+
+    /* === Progress area: time labels + slider === */
+    widget_t* lbl_cur = label_create(win, 20, 110, 60, 25);
+    widget_set_name(lbl_cur, W_TIME_CUR);
+    widget_set_text_utf8(lbl_cur, "00:00");
+    widget_set_style_str(lbl_cur, "font_size", "16");
+    widget_set_style_str(lbl_cur, "text_color", "#CCCCCC");
+
+    widget_t* slider = slider_create(win, 85, 112, 600, 20);
+    widget_set_name(slider, W_SLIDER);
+    slider_set_min(slider, 0);
+    slider_set_max(slider, 100);
+    slider_set_value(slider, 0);
+    widget_on(slider, EVT_VALUE_CHANGED, on_slider_value_changed, NULL);
+    widget_on(slider, EVT_POINTER_DOWN, on_slider_pointer_down, NULL);
+    widget_on(slider, EVT_POINTER_UP, on_slider_pointer_up, NULL);
+
+    widget_t* lbl_total = label_create(win, 695, 110, 60, 25);
+    widget_set_name(lbl_total, W_TIME_TOTAL);
+    widget_set_text_utf8(lbl_total, "00:00");
+    widget_set_style_str(lbl_total, "font_size", "16");
+    widget_set_style_str(lbl_total, "text_color", "#CCCCCC");
+
+    /* === Control buttons === */
+    int btn_y = 150;
+    int btn_w = 80;
+    int btn_h = 50;
+    int btn_gap = 20;
+    int btn_x = (1024 - 3 * btn_w - 2 * btn_gap) / 2;
+
+    widget_t* btn_prev = button_create(win, btn_x, btn_y, btn_w, btn_h);
+    widget_set_name(btn_prev, W_BTN_PREV);
+    widget_set_text_utf8(btn_prev, "|<");
+    widget_on(btn_prev, EVT_CLICK, on_btn_prev_click, NULL);
+
+    widget_t* btn_play = button_create(win, btn_x + btn_w + btn_gap, btn_y,
+                                       btn_w, btn_h);
+    widget_set_name(btn_play, W_BTN_PLAY);
+    widget_set_text_utf8(btn_play, "Play");
+    widget_on(btn_play, EVT_CLICK, on_btn_play_click, NULL);
+
+    widget_t* btn_next = button_create(win, btn_x + 2*(btn_w + btn_gap), btn_y,
+                                       btn_w, btn_h);
+    widget_set_name(btn_next, W_BTN_NEXT);
+    widget_set_text_utf8(btn_next, ">|");
+    widget_on(btn_next, EVT_CLICK, on_btn_next_click, NULL);
+
+    /* Mode button (right side) */
+    widget_t* btn_mode = button_create(win, 850, btn_y, 140, btn_h);
+    widget_set_name(btn_mode, W_BTN_MODE);
+    widget_set_text_utf8(btn_mode, "Mode");
+    widget_on(btn_mode, EVT_CLICK, on_btn_mode_click, NULL);
+
+    widget_t* lbl_mode = label_create(win, 850, btn_y + btn_h + 5, 140, 25);
+    widget_set_name(lbl_mode, W_LBL_MODE);
+    widget_set_text_utf8(lbl_mode, "Repeat All");
+    widget_set_style_str(lbl_mode, "font_size", "16");
+    widget_set_style_str(lbl_mode, "text_color", "#80eee1");
+
+    /* === Status label (scanning, device info) === */
+    widget_t* lbl_status = label_create(win, 20, 215, 984, 25);
+    widget_set_name(lbl_status, W_LBL_STATUS);
+    widget_set_text_utf8(lbl_status, "Insert USB to start");
+    widget_set_style_str(lbl_status, "font_size", "16");
+    widget_set_style_str(lbl_status, "text_color", "#AAAAAA");
+
+    /* Track count label */
+    widget_t* lbl_count = label_create(win, 850, 215, 160, 25);
+    widget_set_name(lbl_count, W_LBL_COUNT);
+    widget_set_text_utf8(lbl_count, "0 tracks");
+    widget_set_style_str(lbl_count, "font_size", "14");
+    widget_set_style_str(lbl_count, "text_color", "#888888");
+
+    /* === Playlist area (bottom half) === */
+    /* Note: For production, this should use a proper list_view with virtual
+     * scrolling via AWTK's list_view_create(). Here we use a simple approach
+     * suitable for the initial implementation. A full list_view with
+     * custom item renderer will be added as a follow-up enhancement. */
+    widget_t* list = list_view_create(win, 20, 250, 984, 340);
+    widget_set_name(list, W_LIST_VIEW);
+
+    printf("[music_ui] UI created\n");
+    return RET_OK;
+}
+
+void music_ui_destroy(void) {
+    s_win = NULL;
+    printf("[music_ui] UI destroyed\n");
+}
+
+/*============================================================================
+ * Playlist rebuild — populates list_view with current playlist
+ *==========================================================================*/
+static void rebuild_playlist_view(void) {
+    widget_t* list = find(W_LIST_VIEW);
+    if (!list) return;
+
+    /* Clear existing children */
+    widget_destroy_children(list);
+
+    int count = music_app_get_playlist_count();
+    int cur_idx = music_app_get_current_index();
+
+    /* Limit visible items for performance (production: use virtual list) */
+    int max_visible = count < 100 ? count : 100;
+    int item_h = 35;
+
+    int i;
+    for (i = 0; i < max_visible; i++) {
+        const MusicInfo* info = music_app_get_track_info(i);
+        if (!info) continue;
+
+        char text[512];
+        snprintf(text, sizeof(text), "%s%d. %s - %s",
+                 (i == cur_idx) ? ">> " : "   ",
+                 i + 1, info->title, info->artist);
+
+        widget_t* item = label_create(list, 0, i * item_h, 984, item_h);
+        widget_set_text_utf8(item, text);
+        widget_set_prop_int(item, "item_index", i);
+        widget_set_style_str(item, "font_size", "16");
+
+        if (i == cur_idx) {
+            widget_set_style_str(item, "text_color", "#00E0FF");
+        } else {
+            widget_set_style_str(item, "text_color", "#CCCCCC");
+        }
+
+        widget_on(item, EVT_CLICK, on_list_item_click, NULL);
+    }
+
+    /* Update count label */
+    widget_t* lbl = find(W_LBL_COUNT);
+    if (lbl) {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "%d tracks", count);
+        widget_set_text_utf8(lbl, buf);
+    }
+
+    widget_invalidate_force(list, NULL);
+}
+
+/*============================================================================
+ * App event handler — called on AWTK main thread
+ *==========================================================================*/
+void music_ui_on_app_event(music_app_event_t event, void* param) {
+    int int_param = param ? *(int*)param : 0;
+
+    switch (event) {
+        case APP_EVENT_STORAGE_MOUNTED: {
+            widget_t* lbl = find(W_LBL_STATUS);
+            const storage_device_state_t* dev = music_app_get_device(int_param);
+            if (lbl && dev) {
+                char buf[256];
+                snprintf(buf, sizeof(buf), "Device inserted: %s",
+                         dev->mount_point);
+                widget_set_text_utf8(lbl, buf);
+            }
+            break;
+        }
+
+        case APP_EVENT_STORAGE_UNMOUNTED: {
+            widget_t* lbl = find(W_LBL_STATUS);
+            if (lbl) {
+                widget_set_text_utf8(lbl, "Device removed");
+            }
+            rebuild_playlist_view();
+            break;
+        }
+
+        case APP_EVENT_SCAN_STARTED: {
+            widget_t* lbl = find(W_LBL_STATUS);
+            if (lbl) {
+                widget_set_text_utf8(lbl, "Scanning...");
+            }
+            break;
+        }
+
+        case APP_EVENT_SCAN_FINISHED: {
+            widget_t* lbl = find(W_LBL_STATUS);
+            if (lbl) {
+                char buf[128];
+                snprintf(buf, sizeof(buf), "Scan complete: %d tracks",
+                         music_app_get_playlist_count());
+                widget_set_text_utf8(lbl, buf);
+            }
+            break;
+        }
+
+        case APP_EVENT_PLAYLIST_CHANGED: {
+            rebuild_playlist_view();
+            break;
+        }
+
+        case APP_EVENT_TRACK_CHANGED: {
+            const music_app_state_t* st = music_app_get_state();
+            if (st->current_info) {
+                widget_t* t = find(W_TITLE);
+                widget_t* a = find(W_ARTIST);
+                widget_t* al = find(W_ALBUM);
+                if (t)  widget_set_text_utf8(t, st->current_info->title);
+                if (a)  widget_set_text_utf8(a, st->current_info->artist);
+                if (al) widget_set_text_utf8(al, st->current_info->album);
+            }
+
+            /* Rebuild list to highlight current track */
+            rebuild_playlist_view();
+            break;
+        }
+
+        case APP_EVENT_STATE_CHANGED: {
+            widget_t* btn = find(W_BTN_PLAY);
+            if (btn) {
+                PlayerState ps = (PlayerState)int_param;
+                if (ps == PLAYER_STATE_PLAYING) {
+                    widget_set_text_utf8(btn, "Pause");
+                } else {
+                    widget_set_text_utf8(btn, "Play");
+                }
+            }
+            break;
+        }
+
+        case APP_EVENT_POSITION_CHANGED: {
+            if (s_slider_dragging) break;
+
+            const music_app_state_t* st = music_app_get_state();
+            int pos = st->current_position_ms;
+            int dur = st->current_duration_ms;
+
+            widget_t* slider = find(W_SLIDER);
+            if (slider && dur > 0) {
+                slider_set_max(slider, dur);
+                slider_set_value(slider, pos);
+            }
+
+            char buf[16];
+            widget_t* lbl_cur = find(W_TIME_CUR);
+            if (lbl_cur) {
+                format_time(buf, sizeof(buf), pos);
+                widget_set_text_utf8(lbl_cur, buf);
+            }
+
+            widget_t* lbl_total = find(W_TIME_TOTAL);
+            if (lbl_total && dur > 0) {
+                format_time(buf, sizeof(buf), dur);
+                widget_set_text_utf8(lbl_total, buf);
+            }
+            break;
+        }
+
+        case APP_EVENT_ERROR: {
+            widget_t* lbl = find(W_LBL_STATUS);
+            if (lbl) {
+                widget_set_text_utf8(lbl, "Playback error");
+            }
+            break;
+        }
+
+        default:
+            break;
+    }
+}

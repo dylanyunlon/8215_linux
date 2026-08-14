@@ -170,6 +170,13 @@ int music_parse_id3v2(const char *filepath, MusicInfo *info)
     /* uint8_t flags = header[5]; */
     uint32_t tag_size = read_synchsafe(&header[6]);
 
+    /* Sanity check: cap tag size at 10 MB to prevent OOM from malformed files.
+     * Real-world ID3 tags with embedded album art rarely exceed 5 MB. */
+    if (tag_size == 0 || tag_size > 10 * 1024 * 1024) {
+        fclose(fp);
+        return -1;
+    }
+
     /* Read entire tag into memory */
     uint8_t *tag_data = (uint8_t *)malloc(tag_size);
     if (!tag_data) {
@@ -230,11 +237,22 @@ int music_parse_id3v2(const char *filepath, MusicInfo *info)
 
 /* ---------- Directory scanner ---------- */
 
-static int uid_counter = 0;
+/* Maximum recursion depth to prevent symlink loops and excessive nesting.
+ * Android MediaFilePathScan does not recurse infinitely either — it skips
+ * hidden dirs and .nomedia. We add an explicit depth cap for safety. */
+#define MAX_SCAN_DEPTH 20
+
+/* Per-list UID counter — avoids global static which is not thread-safe
+ * if two scans run on different MusicLists concurrently. */
 
 static int scan_dir_recursive(MusicList *list, const char *dir_path,
-                              const char *device_name)
+                              const char *device_name, int depth)
 {
+    if (depth > MAX_SCAN_DEPTH) {
+        fprintf(stderr, "[MusicScanner] Max depth reached: %s\n", dir_path);
+        return 0;
+    }
+
     DIR *dir = opendir(dir_path);
     if (!dir) {
         fprintf(stderr, "[MusicScanner] Cannot open dir: %s (%s)\n",
@@ -249,28 +267,51 @@ static int scan_dir_recursive(MusicList *list, const char *dir_path,
             strcmp(entry->d_name, "..") == 0)
             continue;
 
+        /* Skip hidden files/dirs (Android MediaFilePathScan filters these) */
+        if (entry->d_name[0] == '.')
+            continue;
+
         /* Build full path */
         char fullpath[MUSIC_MAX_PATH_LEN];
         snprintf(fullpath, sizeof(fullpath), "%s/%s", dir_path, entry->d_name);
 
+        /* Use lstat to detect symlinks — avoid following symlink loops */
         struct stat st;
-        if (stat(fullpath, &st) != 0) continue;
+        if (lstat(fullpath, &st) != 0) continue;
+
+        /* Skip symlinks entirely to prevent infinite loops */
+        if (S_ISLNK(st.st_mode)) continue;
 
         if (S_ISDIR(st.st_mode)) {
+            /* Skip Android-style non-scan paths (aligned with MediaFilePathScan) */
+            if (strstr(fullpath, "/Android") ||
+                strstr(fullpath, "/LOST.DIR") ||
+                strstr(fullpath, "/System Volume Information") ||
+                strstr(fullpath, "/DCIM")) {
+                continue;
+            }
+
+            /* Skip dirs with .nomedia file */
+            char nomedia[MUSIC_MAX_PATH_LEN];
+            snprintf(nomedia, sizeof(nomedia), "%s/.nomedia", fullpath);
+            struct stat nm_st;
+            if (stat(nomedia, &nm_st) == 0) continue;
+
             /* Recurse into subdirectory */
-            scan_dir_recursive(list, fullpath, device_name);
+            scan_dir_recursive(list, fullpath, device_name, depth + 1);
         } else if (S_ISREG(st.st_mode)) {
             if (!music_is_audio_file(entry->d_name)) continue;
             if (list->count >= list->capacity) {
                 fprintf(stderr, "[MusicScanner] Capacity reached: %d\n",
                         list->capacity);
-                break;
+                closedir(dir);
+                return 0; /* Not an error — capacity exhausted */
             }
 
             MusicInfo *info = &list->items[list->count];
             memset(info, 0, sizeof(MusicInfo));
 
-            info->uid = ++uid_counter;
+            info->uid = list->count + 1; /* per-list 1-based UID */
             info->media_type = MEDIA_TYPE_MUSIC;
             info->file_size = (uint32_t)st.st_size;
             strncpy(info->filepath, fullpath, MUSIC_MAX_PATH_LEN - 1);
@@ -356,7 +397,7 @@ int music_scan_directory(MusicList *list, const char *dir_path)
 
     printf("[MusicScanner] Start scanning: %s\n", dir_path);
 
-    int ret = scan_dir_recursive(list, dir_path, dir_path);
+    int ret = scan_dir_recursive(list, dir_path, dir_path, 0);
 
     list->state = (ret == 0) ? SCAN_DONE : SCAN_ERROR;
     printf("[MusicScanner] Scan complete: %d files found\n", list->count);
@@ -422,8 +463,10 @@ int music_db_load(MusicList *list, const char *db_path)
         MusicInfo *m = &list->items[list->count];
         memset(m, 0, sizeof(MusicInfo));
 
-        int n = sscanf(line, "%d\t%d\t", &m->uid, (int*)&m->media_type);
+        int tmp_type = 0;
+        int n = sscanf(line, "%d\t%d\t", &m->uid, &tmp_type);
         if (n < 2) continue;
+        m->media_type = (MediaType)tmp_type;
 
         /* Parse tab-separated fields manually for strings with spaces */
         char *fields[11];
@@ -444,7 +487,7 @@ int music_db_load(MusicList *list, const char *db_path)
             strncpy(m->filepath, fields[7], MUSIC_MAX_PATH_LEN - 1);
             strncpy(m->filename, fields[8], MUSIC_MAX_TAG_LEN - 1);
             strncpy(m->device_name, fields[9], MUSIC_MAX_PATH_LEN - 1);
-            m->file_size = (uint32_t)atol(fields[10]);
+            m->file_size = (uint32_t)strtoul(fields[10], NULL, 10);
             list->count++;
         }
     }

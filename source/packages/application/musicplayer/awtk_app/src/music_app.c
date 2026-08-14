@@ -1,0 +1,709 @@
+/**
+ * @file music_app.c
+ * @brief AWTK Music Player Application Controller implementation.
+ *
+ * This is the "brain" of the music player, coordinating:
+ *   1. USB hotplug → trigger scan
+ *   2. Scan complete → load playlist
+ *   3. Playback events → update UI
+ *   4. State persistence → last-memory resume
+ *
+ * Reference: Android LocalService.java (~2600 lines, collapsed here to ~500)
+ *
+ * Copyright (C) AutoChips Inc. All rights reserved.
+ */
+
+#include "music_app.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <sys/stat.h>
+
+/*============================================================================
+ * Config paths (mirrors Android Preferences / IConstant)
+ *==========================================================================*/
+#define STATE_FILE_DIR   "/data/music"
+#define STATE_FILE_PATH  "/data/music/last_state.cfg"
+
+/*============================================================================
+ * Module state
+ *==========================================================================*/
+static struct {
+    music_app_state_t       state;
+    MusicPlayerContext*     player;
+    storage_device_state_t  devices[MAX_STORAGE_DEVICES];
+    int                     device_count;
+    music_app_ui_callback_t ui_cb;
+    pthread_mutex_t         mutex;
+    bool                    inited;
+
+    /* [GAP-6] Prev/next debounce (Android ControlHandler 500ms filter) */
+    uint64_t                last_prev_next_ms;
+
+    /* [GAP-7] Error file auto-skip counter (Android mFileNotExistCount) */
+    int                     error_count;
+
+    /* [GAP-9] Delayed auto-next timer ID */
+    uint32_t                auto_next_timer_id;
+
+    /* [GAP-11] Periodic state save timer ID */
+    uint32_t                save_timer_id;
+} s_app;
+
+/*============================================================================
+ * Forward declarations
+ *==========================================================================*/
+static void on_storage_event(const storage_device_info_t* info, void* user_data);
+static void on_player_state(PlayerState state, void* user_data);
+static void on_player_track(int index, const MusicInfo* info, void* user_data);
+static void on_player_position(int position_ms, int duration_ms, void* user_data);
+static void scan_device_async(int dev_idx);
+
+/*============================================================================
+ * AWTK main-thread dispatch helpers
+ *
+ * Callbacks from USB monitor / player threads use idle_queue to
+ * deliver events to the AWTK main loop, ensuring thread safety
+ * for widget updates.
+ *==========================================================================*/
+
+typedef struct {
+    music_app_event_t event;
+    int               int_param;
+} ui_event_data_t;
+
+static ret_t ui_event_dispatch(const idle_info_t* idle) {
+    ui_event_data_t* data = (ui_event_data_t*)idle->ctx;
+    if (data && s_app.ui_cb) {
+        s_app.ui_cb(data->event, &data->int_param);
+    }
+    free(data);
+    return RET_REMOVE;
+}
+
+static void post_ui_event(music_app_event_t event, int param) {
+    ui_event_data_t* data = (ui_event_data_t*)calloc(1, sizeof(ui_event_data_t));
+    if (data) {
+        data->event = event;
+        data->int_param = param;
+        idle_queue(ui_event_dispatch, data);
+    }
+}
+
+/*============================================================================
+ * Storage device management
+ *==========================================================================*/
+
+static int find_device_by_mount(const char* mp) {
+    int i;
+    for (i = 0; i < s_app.device_count; i++) {
+        if (strcmp(s_app.devices[i].mount_point, mp) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static int add_device(const storage_device_info_t* info) {
+    if (s_app.device_count >= MAX_STORAGE_DEVICES) {
+        fprintf(stderr, "[music_app] Max storage devices reached\n");
+        return -1;
+    }
+
+    int idx = s_app.device_count;
+    storage_device_state_t* dev = &s_app.devices[idx];
+
+    memset(dev, 0, sizeof(*dev));
+    dev->mounted = true;
+    dev->type = info->type;
+    snprintf(dev->mount_point, sizeof(dev->mount_point), "%s", info->mount_point);
+    dev->music_list = music_list_create(MUSIC_MAX_FILES);
+
+    s_app.device_count++;
+    return idx;
+}
+
+static void remove_device(int idx) {
+    if (idx < 0 || idx >= s_app.device_count) return;
+
+    storage_device_state_t* dev = &s_app.devices[idx];
+    if (dev->music_list) {
+        music_list_destroy(dev->music_list);
+        dev->music_list = NULL;
+    }
+
+    /* Shift remaining devices down */
+    int i;
+    for (i = idx; i < s_app.device_count - 1; i++) {
+        s_app.devices[i] = s_app.devices[i + 1];
+    }
+    s_app.device_count--;
+
+    /* Fix current device index */
+    if (s_app.state.current_device_idx >= s_app.device_count) {
+        s_app.state.current_device_idx = s_app.device_count - 1;
+    }
+    if (s_app.state.current_device_idx < 0) {
+        s_app.state.current_device_idx = 0;
+    }
+}
+
+/*============================================================================
+ * USB monitor callback (called from monitor thread)
+ *==========================================================================*/
+static void on_storage_event(const storage_device_info_t* info, void* user_data) {
+    (void)user_data;
+
+    pthread_mutex_lock(&s_app.mutex);
+
+    if (info->event == STORAGE_EVENT_MOUNTED) {
+        int idx = find_device_by_mount(info->mount_point);
+        if (idx < 0) {
+            idx = add_device(info);
+        }
+        if (idx >= 0) {
+            s_app.devices[idx].mounted = true;
+            printf("[music_app] Storage mounted: %s (idx=%d)\n",
+                   info->mount_point, idx);
+
+            /* Auto-switch to newly inserted device */
+            s_app.state.current_device_idx = idx;
+
+            pthread_mutex_unlock(&s_app.mutex);
+
+            post_ui_event(APP_EVENT_STORAGE_MOUNTED, idx);
+            scan_device_async(idx);
+            return;
+        }
+    } else if (info->event == STORAGE_EVENT_UNMOUNTED ||
+               info->event == STORAGE_EVENT_EJECT) {
+        int idx = find_device_by_mount(info->mount_point);
+        if (idx >= 0) {
+            printf("[music_app] Storage unmounted: %s (idx=%d)\n",
+                   info->mount_point, idx);
+
+            /* [GAP-2] Only stop if current track is ON the unmounted device.
+             * Android: checks mCurrentMediaInfo.mFilePath.contains(strPath) */
+            if (idx == s_app.state.current_device_idx) {
+                bool should_stop = true;
+                if (s_app.state.current_info != NULL) {
+                    /* Check if the current file path starts with the unmounted mount point */
+                    if (strncmp(s_app.state.current_info->filepath,
+                                info->mount_point,
+                                strlen(info->mount_point)) != 0) {
+                        should_stop = false; /* Playing from a different partition */
+                    }
+                }
+                if (should_stop) {
+                    pthread_mutex_unlock(&s_app.mutex);
+                    music_app_stop();
+                    pthread_mutex_lock(&s_app.mutex);
+                }
+            }
+
+            remove_device(idx);
+            pthread_mutex_unlock(&s_app.mutex);
+
+            post_ui_event(APP_EVENT_STORAGE_UNMOUNTED, idx);
+            return;
+        }
+    }
+
+    pthread_mutex_unlock(&s_app.mutex);
+}
+
+/*============================================================================
+ * Async scanning (runs in a background thread)
+ *
+ * Mirrors Android RemoteService's file scan + ID3 parse pipeline.
+ *==========================================================================*/
+typedef struct {
+    int dev_idx;
+} scan_task_t;
+
+static void* scan_thread_func(void* arg) {
+    scan_task_t* task = (scan_task_t*)arg;
+    int dev_idx = task->dev_idx;
+    free(task);
+
+    pthread_mutex_lock(&s_app.mutex);
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) {
+        pthread_mutex_unlock(&s_app.mutex);
+        return NULL;
+    }
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    dev->scanning = true;
+    dev->scan_done = false;
+    dev->id3_done = false;
+
+    char path[STORAGE_PATH_MAX];
+    snprintf(path, sizeof(path), "%s", dev->mount_point);
+    MusicList* list = dev->music_list;
+    pthread_mutex_unlock(&s_app.mutex);
+
+    post_ui_event(APP_EVENT_SCAN_STARTED, dev_idx);
+
+    printf("[music_app] Scanning %s ...\n", path);
+    music_scan_directory(list, path);
+
+    /* Save to cache DB */
+    char db_path[MUSIC_MAX_PATH_LEN];
+    snprintf(db_path, sizeof(db_path), "%s/music_%d.db", STATE_FILE_DIR, dev_idx);
+    mkdir(STATE_FILE_DIR, 0755);
+    music_db_save(list, db_path);
+
+    pthread_mutex_lock(&s_app.mutex);
+    if (dev_idx < s_app.device_count) {
+        dev = &s_app.devices[dev_idx];
+        dev->scanning = false;
+        dev->scan_done = true;
+        dev->id3_done = true; /* ID3 is parsed during scan */
+    }
+    pthread_mutex_unlock(&s_app.mutex);
+
+    printf("[music_app] Scan complete: %d files in %s\n", list->count, path);
+
+    /* Load playlist if this is the current device */
+    pthread_mutex_lock(&s_app.mutex);
+    bool is_current = (dev_idx == s_app.state.current_device_idx);
+    pthread_mutex_unlock(&s_app.mutex);
+
+    if (is_current && list->count > 0 && s_app.player) {
+        music_player_set_playlist(s_app.player, list);
+        post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+
+        /* [GAP-12] Try to resume last playing track at remembered position.
+         * Android: getLastMediaInfoPosition() + readMediaTime() + seekToTime() */
+        if (s_app.state.last_path[0] != '\0') {
+            int resume_idx = -1;
+            int i;
+            for (i = 0; i < list->count; i++) {
+                if (strcmp(list->items[i].filepath, s_app.state.last_path) == 0) {
+                    resume_idx = i;
+                    break;
+                }
+            }
+            if (resume_idx >= 0) {
+                printf("[music_app] Resuming: track %d, position %d ms\n",
+                       resume_idx, s_app.state.last_position_ms);
+                music_player_play(s_app.player, resume_idx);
+                if (s_app.state.last_position_ms > 0) {
+                    music_player_seek(s_app.player, s_app.state.last_position_ms);
+                }
+                /* Clear last_path so we don't re-seek on next scan */
+                s_app.state.last_path[0] = '\0';
+                s_app.state.last_position_ms = 0;
+            }
+        }
+    }
+
+    post_ui_event(APP_EVENT_SCAN_FINISHED, dev_idx);
+    return NULL;
+}
+
+static void scan_device_async(int dev_idx) {
+    scan_task_t* task = (scan_task_t*)calloc(1, sizeof(scan_task_t));
+    if (!task) return;
+
+    task->dev_idx = dev_idx;
+
+    pthread_t t;
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    pthread_create(&t, &attr, scan_thread_func, task);
+    pthread_attr_destroy(&attr);
+}
+
+/*============================================================================
+ * [GAP-9] Delayed auto-next timer callback
+ * Android: H0.sendEmptyMessageDelayed(MSG_GOTO_NEXT_MEDIA, 1000)
+ *==========================================================================*/
+static ret_t delayed_auto_next_cb(const timer_info_t* timer) {
+    (void)timer;
+    s_app.auto_next_timer_id = TK_INVALID_ID;
+    if (s_app.player) {
+        music_player_next(s_app.player);
+    }
+    return RET_REMOVE;
+}
+
+/*============================================================================
+ * [GAP-11] Periodic state save timer (every 30 seconds)
+ * Android: writeCurrentMediaTime called on pause/stop/focus-loss
+ *==========================================================================*/
+static ret_t periodic_save_cb(const timer_info_t* timer) {
+    (void)timer;
+    music_app_save_state();
+    return RET_REPEAT;
+}
+
+/*============================================================================
+ * Player callbacks (called from player thread)
+ *==========================================================================*/
+static void on_player_state(PlayerState state, void* user_data) {
+    (void)user_data;
+    pthread_mutex_lock(&s_app.mutex);
+    s_app.state.player_state = state;
+    pthread_mutex_unlock(&s_app.mutex);
+
+    /* [GAP-7] Error handling: auto-skip or rescan
+     * Android: EVENT_ERROR_FILE_NOT_EXIST → count 3 → requestScanStorageDevice */
+    if (state == PLAYER_STATE_ERROR) {
+        s_app.error_count++;
+        if (s_app.error_count >= 3) {
+            printf("[music_app] 3 consecutive errors, triggering rescan\n");
+            s_app.error_count = 0;
+            post_ui_event(APP_EVENT_ERROR, 0);
+            /* Use delayed next to avoid tight error loop */
+            if (s_app.auto_next_timer_id != TK_INVALID_ID) {
+                timer_remove(s_app.auto_next_timer_id);
+            }
+            /* Rescan after a delay */
+            idle_queue((idle_func_t)(void*)music_app_rescan, NULL);
+        } else {
+            printf("[music_app] Play error, auto-skip to next (err_count=%d)\n",
+                   s_app.error_count);
+            post_ui_event(APP_EVENT_ERROR, 0);
+            /* Auto-skip with 500ms delay */
+            if (s_app.auto_next_timer_id != TK_INVALID_ID) {
+                timer_remove(s_app.auto_next_timer_id);
+            }
+            s_app.auto_next_timer_id = timer_add(delayed_auto_next_cb, NULL, 500);
+        }
+        return;
+    }
+
+    /* Reset error counter on successful play */
+    if (state == PLAYER_STATE_PLAYING) {
+        s_app.error_count = 0;
+    }
+
+    /* [GAP-8+9] Natural track completion → delayed auto-next
+     * Android: EVENT_MEDIA_COMPLETION → writeMediaTime(0) → delay 1000ms → next */
+    if (state == PLAYER_STATE_STOPPED) {
+        /* Clear progress for completed track so next resume starts from 0 */
+        pthread_mutex_lock(&s_app.mutex);
+        s_app.state.last_position_ms = 0;
+        s_app.state.current_position_ms = 0;
+        pthread_mutex_unlock(&s_app.mutex);
+
+        /* 1-second delayed auto-next (Android MSG_GOTO_NEXT_MEDIA delay) */
+        if (s_app.auto_next_timer_id != TK_INVALID_ID) {
+            timer_remove(s_app.auto_next_timer_id);
+        }
+        s_app.auto_next_timer_id = timer_add(delayed_auto_next_cb, NULL, 1000);
+    }
+
+    /* [GAP-11] Save state on pause/stop (Android writeCurrentMediaTime) */
+    if (state == PLAYER_STATE_PAUSED || state == PLAYER_STATE_STOPPED) {
+        music_app_save_state();
+    }
+
+    post_ui_event(APP_EVENT_STATE_CHANGED, (int)state);
+}
+
+static void on_player_track(int index, const MusicInfo* info, void* user_data) {
+    (void)user_data;
+    pthread_mutex_lock(&s_app.mutex);
+    s_app.state.current_info = info;
+    pthread_mutex_unlock(&s_app.mutex);
+    post_ui_event(APP_EVENT_TRACK_CHANGED, index);
+}
+
+static void on_player_position(int position_ms, int duration_ms, void* user_data) {
+    (void)user_data;
+    pthread_mutex_lock(&s_app.mutex);
+    s_app.state.current_position_ms = position_ms;
+    if (duration_ms > 0) {
+        s_app.state.current_duration_ms = duration_ms;
+    }
+    pthread_mutex_unlock(&s_app.mutex);
+    post_ui_event(APP_EVENT_POSITION_CHANGED, position_ms);
+}
+
+/*============================================================================
+ * Public API
+ *==========================================================================*/
+
+int music_app_init(music_app_ui_callback_t ui_cb) {
+    if (s_app.inited) {
+        fprintf(stderr, "[music_app] Already initialized\n");
+        return -1;
+    }
+
+    memset(&s_app, 0, sizeof(s_app));
+    pthread_mutex_init(&s_app.mutex, NULL);
+    s_app.ui_cb = ui_cb;
+    s_app.state.play_mode = PLAY_MODE_REPEAT_ALL;
+    s_app.state.current_device_idx = -1;
+    s_app.auto_next_timer_id = TK_INVALID_ID;
+    s_app.save_timer_id = TK_INVALID_ID;
+    s_app.error_count = 0;
+    s_app.last_prev_next_ms = 0;
+
+    /* Create player */
+    s_app.player = music_player_create();
+    if (!s_app.player) {
+        fprintf(stderr, "[music_app] Failed to create player\n");
+        /* Non-fatal: app can still scan and display, just not play */
+    } else {
+        music_player_set_state_callback(s_app.player, on_player_state, NULL);
+        music_player_set_track_callback(s_app.player, on_player_track, NULL);
+        music_player_set_position_callback(s_app.player, on_player_position, NULL);
+        music_player_set_mode(s_app.player, s_app.state.play_mode);
+    }
+
+    /* Start USB monitor */
+    usb_monitor_start(on_storage_event, NULL);
+
+    /* Discover already-mounted devices */
+    usb_monitor_scan_existing(on_storage_event, NULL);
+
+    /* Restore last play state */
+    music_app_restore_state();
+
+    /* [GAP-11] Start periodic state save (every 30 seconds)
+     * Android: writeCurrentMediaTime on timer + pause/stop */
+    s_app.save_timer_id = timer_add(periodic_save_cb, NULL, 30000);
+
+    s_app.inited = true;
+    printf("[music_app] Initialized, %d devices found\n", s_app.device_count);
+    return 0;
+}
+
+void music_app_deinit(void) {
+    if (!s_app.inited) return;
+
+    music_app_save_state();
+
+    /* Clean up timers */
+    if (s_app.auto_next_timer_id != TK_INVALID_ID) {
+        timer_remove(s_app.auto_next_timer_id);
+        s_app.auto_next_timer_id = TK_INVALID_ID;
+    }
+    if (s_app.save_timer_id != TK_INVALID_ID) {
+        timer_remove(s_app.save_timer_id);
+        s_app.save_timer_id = TK_INVALID_ID;
+    }
+
+    usb_monitor_stop();
+
+    if (s_app.player) {
+        music_player_destroy(s_app.player);
+        s_app.player = NULL;
+    }
+
+    int i;
+    for (i = 0; i < s_app.device_count; i++) {
+        if (s_app.devices[i].music_list) {
+            music_list_destroy(s_app.devices[i].music_list);
+        }
+    }
+
+    pthread_mutex_destroy(&s_app.mutex);
+    memset(&s_app, 0, sizeof(s_app));
+
+    printf("[music_app] Deinitialized\n");
+}
+
+const music_app_state_t* music_app_get_state(void) {
+    return &s_app.state;
+}
+
+void music_app_play(int index) {
+    if (s_app.player) {
+        music_player_play(s_app.player, index);
+    }
+}
+
+void music_app_pause(void) {
+    if (s_app.player) {
+        music_player_pause(s_app.player);
+    }
+}
+
+void music_app_resume(void) {
+    if (s_app.player) {
+        music_player_resume(s_app.player);
+    }
+}
+
+void music_app_stop(void) {
+    if (s_app.player) {
+        music_player_stop(s_app.player);
+    }
+}
+
+/* [GAP-6] Prev/next debounce — Android ControlHandler 500ms filter
+ * Vehicle rotary knobs can fire 5-10 events in 100ms */
+#define PREV_NEXT_DEBOUNCE_MS 500
+
+void music_app_next(void) {
+    uint64_t now = timer_manager()->get_elapsed_ms
+        ? timer_manager()->get_elapsed_ms(timer_manager()) : 0;
+    if (now > 0 && (now - s_app.last_prev_next_ms) < PREV_NEXT_DEBOUNCE_MS) {
+        return; /* Debounce: ignore rapid repeated presses */
+    }
+    s_app.last_prev_next_ms = now;
+    if (s_app.player) {
+        music_player_next(s_app.player);
+    }
+}
+
+void music_app_prev(void) {
+    uint64_t now = timer_manager()->get_elapsed_ms
+        ? timer_manager()->get_elapsed_ms(timer_manager()) : 0;
+    if (now > 0 && (now - s_app.last_prev_next_ms) < PREV_NEXT_DEBOUNCE_MS) {
+        return;
+    }
+    s_app.last_prev_next_ms = now;
+    if (s_app.player) {
+        music_player_prev(s_app.player);
+    }
+}
+
+void music_app_seek(int position_ms) {
+    if (s_app.player) {
+        music_player_seek(s_app.player, position_ms);
+    }
+}
+
+void music_app_toggle_play_pause(void) {
+    PlayerState st = music_player_get_state(s_app.player);
+    if (st == PLAYER_STATE_PLAYING) {
+        music_app_pause();
+    } else if (st == PLAYER_STATE_PAUSED) {
+        music_app_resume();
+    } else {
+        music_app_play(-1);
+    }
+}
+
+void music_app_set_play_mode(PlayMode mode) {
+    pthread_mutex_lock(&s_app.mutex);
+    s_app.state.play_mode = mode;
+    pthread_mutex_unlock(&s_app.mutex);
+    if (s_app.player) {
+        music_player_set_mode(s_app.player, mode);
+    }
+}
+
+void music_app_cycle_play_mode(void) {
+    PlayMode cur = s_app.state.play_mode;
+    PlayMode next = (PlayMode)((cur + 1) % 4);
+    music_app_set_play_mode(next);
+}
+
+int music_app_get_playlist_count(void) {
+    return s_app.player ? music_player_get_playlist_count(s_app.player) : 0;
+}
+
+const MusicInfo* music_app_get_track_info(int index) {
+    return s_app.player ? music_player_get_track_info(s_app.player, index) : NULL;
+}
+
+int music_app_get_current_index(void) {
+    return s_app.player ? music_player_get_current_index(s_app.player) : -1;
+}
+
+int music_app_get_device_count(void) {
+    return s_app.device_count;
+}
+
+const storage_device_state_t* music_app_get_device(int idx) {
+    if (idx >= 0 && idx < s_app.device_count) {
+        return &s_app.devices[idx];
+    }
+    return NULL;
+}
+
+void music_app_switch_device(int idx) {
+    if (idx < 0 || idx >= s_app.device_count) return;
+
+    pthread_mutex_lock(&s_app.mutex);
+    s_app.state.current_device_idx = idx;
+    storage_device_state_t* dev = &s_app.devices[idx];
+    pthread_mutex_unlock(&s_app.mutex);
+
+    /* Stop current playback */
+    music_app_stop();
+
+    /* If scan done, load playlist */
+    if (dev->scan_done && dev->music_list && dev->music_list->count > 0) {
+        music_player_set_playlist(s_app.player, dev->music_list);
+        post_ui_event(APP_EVENT_PLAYLIST_CHANGED, idx);
+    } else if (!dev->scanning) {
+        /* Trigger scan if not already running */
+        scan_device_async(idx);
+    }
+}
+
+void music_app_rescan(void) {
+    int idx = s_app.state.current_device_idx;
+    if (idx >= 0 && idx < s_app.device_count) {
+        music_app_stop();
+        scan_device_async(idx);
+    }
+}
+
+/*============================================================================
+ * State persistence (mirrors Android Preferences read/write)
+ *==========================================================================*/
+
+void music_app_save_state(void) {
+    mkdir(STATE_FILE_DIR, 0755);
+    FILE* fp = fopen(STATE_FILE_PATH, "w");
+    if (!fp) return;
+
+    pthread_mutex_lock(&s_app.mutex);
+    fprintf(fp, "play_mode=%d\n", (int)s_app.state.play_mode);
+    fprintf(fp, "device_idx=%d\n", s_app.state.current_device_idx);
+
+    if (s_app.state.current_info) {
+        fprintf(fp, "last_path=%s\n", s_app.state.current_info->filepath);
+        fprintf(fp, "last_position=%d\n", s_app.state.current_position_ms);
+    } else if (s_app.state.last_path[0]) {
+        fprintf(fp, "last_path=%s\n", s_app.state.last_path);
+        fprintf(fp, "last_position=%d\n", s_app.state.last_position_ms);
+    }
+    pthread_mutex_unlock(&s_app.mutex);
+
+    fclose(fp);
+    printf("[music_app] State saved\n");
+}
+
+void music_app_restore_state(void) {
+    FILE* fp = fopen(STATE_FILE_PATH, "r");
+    if (!fp) return;
+
+    char line[1024];
+    while (fgets(line, sizeof(line), fp)) {
+        char* nl = strchr(line, '\n');
+        if (nl) *nl = '\0';
+
+        if (strncmp(line, "play_mode=", 10) == 0) {
+            int m = atoi(line + 10);
+            if (m >= 0 && m <= 3) {
+                s_app.state.play_mode = (PlayMode)m;
+                if (s_app.player) {
+                    music_player_set_mode(s_app.player, s_app.state.play_mode);
+                }
+            }
+        } else if (strncmp(line, "device_idx=", 11) == 0) {
+            /* device_idx is informational; actual device is discovered at runtime */
+        } else if (strncmp(line, "last_path=", 10) == 0) {
+            snprintf(s_app.state.last_path, sizeof(s_app.state.last_path),
+                     "%s", line + 10);
+        } else if (strncmp(line, "last_position=", 14) == 0) {
+            s_app.state.last_position_ms = atoi(line + 14);
+        }
+    }
+    fclose(fp);
+    printf("[music_app] State restored: mode=%d last=%s\n",
+           s_app.state.play_mode, s_app.state.last_path);
+}

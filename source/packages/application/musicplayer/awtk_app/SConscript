@@ -1,0 +1,55 @@
+# SConscript for AWTK Music Player Application
+#
+# Build within the awtk-linux-fb SCons environment.
+# Usage from awtk-linux-fb/:
+#   scons APP=../../../packages/application/musicplayer/awtk_app
+#
+# This follows the same pattern as the existing awtk ridedash app.
+
+import os
+import platform
+
+Import('env')
+
+env = env.Clone()
+
+# Application sources
+APP_SRC = Glob('src/*.c')
+
+# Also need the musicplayer library sources (scanner + player)
+MUSIC_LIB_DIR = os.path.join(env['APP_ROOT'], '..', '..')
+MUSIC_LIB_SRC = [
+    os.path.join(MUSIC_LIB_DIR, 'music_scanner.c'),
+]
+
+# music_player.cpp is C++ — handle separately
+MUSIC_PLAYER_CPP = os.path.join(MUSIC_LIB_DIR, 'music_player.cpp')
+
+# Include paths
+env.Append(CPPPATH=[
+    'src',
+    MUSIC_LIB_DIR,  # for music_scanner.h, music_player.h
+])
+
+# Compiler flags
+env.Append(CCFLAGS=['-DAWTK_LINUX_FB'])
+env.Append(CFLAGS=['-std=c11'])
+env.Append(CXXFLAGS=['-std=c++11'])
+
+# Link flags
+env.Append(LIBS=[
+    'pthread',
+    'atcmediaplayer',  # MediaPlayer class
+])
+
+# Build objects
+c_objs = env.Object(APP_SRC + MUSIC_LIB_SRC)
+cpp_objs = env.Object(MUSIC_PLAYER_CPP)
+
+# Final executable
+APP_BIN = env.Program(
+    target='bin/music_player',
+    source=c_objs + cpp_objs
+)
+
+Return('APP_BIN')
