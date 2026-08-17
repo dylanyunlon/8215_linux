@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
     int i;
     int has_id3 = 0;
     int no_id3 = 0;
+    int has_apic = 0;
 
     for (i = 0; i < list->count; i++) {
         const MusicInfo *info = &list->items[i];
@@ -76,15 +77,55 @@ int main(int argc, char *argv[])
             no_id3++;
         }
 
-        /* 截断显示 */
-        char fn[41], ti[21], ar[21], al[16];
-        snprintf(fn, sizeof(fn), "%s", info->filename);
-        snprintf(ti, sizeof(ti), "%s", info->title[0] ? info->title : "--");
-        snprintf(ar, sizeof(ar), "%s", info->artist[0] ? info->artist : "--");
-        snprintf(al, sizeof(al), "%s", info->album[0] ? info->album : "--");
+        /* 检查是否有APIC封面 */
+        {
+            FILE *fp = fopen(info->filepath, "rb");
+            if (fp) {
+                unsigned char hdr[10];
+                int has_cover = 0;
+                if (fread(hdr, 1, 10, fp) == 10 &&
+                    hdr[0] == 'I' && hdr[1] == 'D' && hdr[2] == '3') {
+                    /* Quick scan for "APIC" in first 64KB */
+                    unsigned char buf[65536];
+                    size_t n = fread(buf, 1, sizeof(buf), fp);
+                    size_t j;
+                    for (j = 0; j + 3 < n; j++) {
+                        if (buf[j]=='A' && buf[j+1]=='P' &&
+                            buf[j+2]=='I' && buf[j+3]=='C') {
+                            has_cover = 1;
+                            has_apic++;
+                            break;
+                        }
+                    }
+                }
+                fclose(fp);
 
-        printf("%-4d  %-40s  %-20s  %-20s  %-15s  %s\n",
-               i + 1, fn, ti, ar, al, info->filepath);
+                /* 截断显示 */
+                char fn[41], ti[21], ar[21], al[16];
+                snprintf(fn, sizeof(fn), "%s", info->filename);
+                snprintf(ti, sizeof(ti), "%s", info->title[0] ? info->title : "--");
+                snprintf(ar, sizeof(ar), "%s", info->artist[0] ? info->artist : "--");
+                snprintf(al, sizeof(al), "%s", info->album[0] ? info->album : "--");
+
+                printf("%-4d  %-40s  %-20s  %-20s  %-15s  %s  %s\n",
+                       i + 1, fn, ti, ar, al,
+                       has_cover ? "[ART]" : "     ",
+                       info->filepath);
+            }
+        }
+
+        /* Check for .lrc file */
+        {
+            char lrc_path[512];
+            snprintf(lrc_path, sizeof(lrc_path), "%s", info->filepath);
+            char *dot = strrchr(lrc_path, '.');
+            if (dot) strcpy(dot, ".lrc");
+            FILE *lrc_fp = fopen(lrc_path, "r");
+            if (lrc_fp) {
+                fclose(lrc_fp);
+                printf("      ^ LRC歌词文件存在: %s\n", lrc_path);
+            }
+        }
     }
 
     /* 汇总 */
@@ -95,6 +136,7 @@ int main(int argc, char *argv[])
     printf("发现音频文件: %d 个\n", list->count);
     printf("有ID3标签:    %d 个\n", has_id3);
     printf("无ID3标签:    %d 个\n", no_id3);
+    printf("有专辑封面:   %d 个\n", has_apic);
     printf("扫描耗时:     %.3f 秒\n", elapsed);
     printf("========================================\n");
 

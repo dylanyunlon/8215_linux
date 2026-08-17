@@ -59,6 +59,21 @@ static struct {
     /* Issue #2: Folder list cache for folder browsing */
     char*                   folder_paths[MUSIC_MAX_FILES]; /* unique folder strings */
     int                     folder_count;
+
+    /* Issue #3: Album/Artist classification cache */
+    music_group_t           album_groups[MUSIC_MAX_GROUPS];
+    int                     album_group_count;
+    music_group_t           artist_groups[MUSIC_MAX_GROUPS];
+    int                     artist_group_count;
+
+    /* Issue #7: Album art cache for current track */
+    uint8_t*                album_art_data;
+    int                     album_art_size;
+    char                    album_art_path[MUSIC_MAX_PATH_LEN]; /* filepath of cached art */
+
+    /* Issue #8: LRC lyrics cache for current track */
+    lrc_data_t              lyrics;
+    char                    lyrics_path[MUSIC_MAX_PATH_LEN]; /* filepath of cached lyrics */
 } s_app;
 
 /*============================================================================
@@ -70,6 +85,9 @@ static void on_player_track(int index, const MusicInfo* info, void* user_data);
 static void on_player_position(int position_ms, int duration_ms, void* user_data);
 static void scan_device_async(int dev_idx);
 static void build_folder_cache(void);
+static void build_classification_cache(void);
+static void load_lyrics_for_current(void);
+static void load_album_art_for_current(void);
 
 /*============================================================================
  * AWTK main-thread dispatch helpers
@@ -279,6 +297,9 @@ static void* scan_thread_func(void* arg) {
     /* Issue #2: Rebuild folder cache after scan */
     build_folder_cache();
 
+    /* Issue #3: Build album/artist classification */
+    build_classification_cache();
+
     /* Issue #1: Validate favorites against scan result — remove stale entries */
     favorite_validate(list);
 
@@ -427,6 +448,11 @@ static void on_player_track(int index, const MusicInfo* info, void* user_data) {
     pthread_mutex_lock(&s_app.mutex);
     s_app.state.current_info = info;
     pthread_mutex_unlock(&s_app.mutex);
+
+    /* Issue #7,#8: Pre-load album art and lyrics for new track */
+    load_album_art_for_current();
+    load_lyrics_for_current();
+
     post_ui_event(APP_EVENT_TRACK_CHANGED, index);
 }
 
@@ -518,6 +544,18 @@ void music_app_deinit(void) {
 
     /* Cleanup favorite manager (Issue #1) */
     favorite_deinit();
+
+    /* Cleanup album art cache (Issue #7) */
+    if (s_app.album_art_data) {
+        free(s_app.album_art_data);
+        s_app.album_art_data = NULL;
+    }
+
+    /* Cleanup lyrics cache (Issue #8) */
+    if (s_app.lyrics.lines) {
+        free(s_app.lyrics.lines);
+        s_app.lyrics.lines = NULL;
+    }
 
     /* Cleanup folder path cache (Issue #2) */
     {
@@ -922,4 +960,442 @@ int music_app_search(const char* keyword, const MusicInfo** results, int max_res
         }
     }
     return found;
+}
+
+/*============================================================================
+ * Issue #3: Album/Artist classification
+ * Mirrors Android MediaService.classifyMediaInfoList()
+ *==========================================================================*/
+
+/**
+ * Find or create a group by key in the given group array.
+ */
+static music_group_t* find_or_create_group(music_group_t* groups, int* count,
+                                           const char* key, int max_groups) {
+    int i;
+    /* Empty key → use placeholder */
+    const char* effective_key = (key && key[0]) ? key : "Unknown";
+
+    for (i = 0; i < *count; i++) {
+        if (strcmp(groups[i].key, effective_key) == 0) {
+            return &groups[i];
+        }
+    }
+
+    if (*count >= max_groups) return NULL;
+
+    music_group_t* g = &groups[*count];
+    memset(g, 0, sizeof(*g));
+    snprintf(g->key, sizeof(g->key), "%s", effective_key);
+    g->count = 0;
+    (*count)++;
+    return g;
+}
+
+static void build_classification_cache(void) {
+    s_app.album_group_count = 0;
+    s_app.artist_group_count = 0;
+
+    int dev_idx = s_app.state.current_device_idx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list) return;
+
+    MusicList* list = dev->music_list;
+    int i;
+    for (i = 0; i < list->count; i++) {
+        const MusicInfo* info = &list->items[i];
+
+        /* Album grouping */
+        music_group_t* ag = find_or_create_group(
+            s_app.album_groups, &s_app.album_group_count,
+            info->album, MUSIC_MAX_GROUPS);
+        if (ag && ag->count < MUSIC_MAX_FILES) {
+            ag->items[ag->count++] = info;
+        }
+
+        /* Artist grouping */
+        music_group_t* rg = find_or_create_group(
+            s_app.artist_groups, &s_app.artist_group_count,
+            info->artist, MUSIC_MAX_GROUPS);
+        if (rg && rg->count < MUSIC_MAX_FILES) {
+            rg->items[rg->count++] = info;
+        }
+    }
+
+    printf("[music_app] Classification: %d albums, %d artists\n",
+           s_app.album_group_count, s_app.artist_group_count);
+}
+
+void music_app_get_album_list(const music_group_t** out_groups, int* out_count) {
+    if (s_app.album_group_count == 0) {
+        build_classification_cache();
+    }
+    if (out_groups) *out_groups = s_app.album_groups;
+    if (out_count) *out_count = s_app.album_group_count;
+}
+
+void music_app_get_artist_list(const music_group_t** out_groups, int* out_count) {
+    if (s_app.artist_group_count == 0) {
+        build_classification_cache();
+    }
+    if (out_groups) *out_groups = s_app.artist_groups;
+    if (out_count) *out_count = s_app.artist_group_count;
+}
+
+void music_app_play_group(const music_group_t* group, int index) {
+    if (!group || index < 0 || index >= group->count) return;
+    if (!s_app.player) return;
+
+    const MusicInfo* target = group->items[index];
+
+    /* Find this track's index in the global playlist and play it */
+    int dev_idx = s_app.state.current_device_idx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list) return;
+
+    int i;
+    for (i = 0; i < dev->music_list->count; i++) {
+        if (strcmp(dev->music_list->items[i].filepath, target->filepath) == 0) {
+            music_app_play(i);
+            return;
+        }
+    }
+}
+
+/*============================================================================
+ * Issue #8: LRC lyrics parser
+ * Mirrors Android LyricsManager + LyricsRow
+ *
+ * LRC format: [mm:ss.xx] lyrics text
+ * Example:    [00:12.50] Hello world
+ *==========================================================================*/
+
+/**
+ * Parse a single LRC time tag "[mm:ss.xx]" and return milliseconds.
+ * Returns -1 on parse failure.
+ */
+static int parse_lrc_time(const char* tag) {
+    /* tag points to the character after '[' */
+    int min = 0, sec = 0, ms = 0;
+
+    /* Try [mm:ss.xx] or [mm:ss.xxx] or [mm:ss:xx] */
+    if (sscanf(tag, "%d:%d.%d", &min, &sec, &ms) >= 2) {
+        /* ms might be 2 or 3 digits; normalize to milliseconds */
+        if (ms < 100) ms *= 10; /* e.g. ".05" → 50ms, ".5" → 500ms */
+        return min * 60000 + sec * 1000 + ms;
+    }
+    if (sscanf(tag, "%d:%d:%d", &min, &sec, &ms) >= 2) {
+        if (ms < 100) ms *= 10;
+        return min * 60000 + sec * 1000 + ms;
+    }
+    return -1;
+}
+
+static void lrc_data_clear(lrc_data_t* lrc) {
+    if (lrc->lines) {
+        free(lrc->lines);
+        lrc->lines = NULL;
+    }
+    lrc->count = 0;
+    lrc->capacity = 0;
+}
+
+static void lrc_data_add(lrc_data_t* lrc, int time_ms, const char* text) {
+    if (lrc->count >= lrc->capacity) {
+        int new_cap = lrc->capacity == 0 ? 64 : lrc->capacity * 2;
+        lrc_line_t* new_lines = (lrc_line_t*)realloc(lrc->lines,
+                                                      new_cap * sizeof(lrc_line_t));
+        if (!new_lines) return;
+        lrc->lines = new_lines;
+        lrc->capacity = new_cap;
+    }
+
+    lrc_line_t* line = &lrc->lines[lrc->count];
+    line->time_ms = time_ms;
+    snprintf(line->text, sizeof(line->text), "%s", text ? text : "");
+    lrc->count++;
+}
+
+/* Sort comparator for lrc lines by time */
+static int lrc_cmp(const void* a, const void* b) {
+    const lrc_line_t* la = (const lrc_line_t*)a;
+    const lrc_line_t* lb = (const lrc_line_t*)b;
+    return la->time_ms - lb->time_ms;
+}
+
+/**
+ * Parse a .lrc file into lrc_data_t.
+ * Handles multiple time tags per line: [00:01.00][00:05.00] text
+ */
+static int parse_lrc_file(const char* lrc_path, lrc_data_t* out) {
+    FILE* fp = fopen(lrc_path, "r");
+    if (!fp) return -1;
+
+    lrc_data_clear(out);
+
+    char line[1024];
+    while (fgets(line, sizeof(line), fp)) {
+        char* nl = strchr(line, '\n');
+        if (nl) *nl = '\0';
+        char* cr = strchr(line, '\r');
+        if (cr) *cr = '\0';
+
+        if (line[0] == '\0') continue;
+
+        /* Extract all time tags and the text content */
+        const char* p = line;
+        int times[16];
+        int time_count = 0;
+
+        while (*p == '[' && time_count < 16) {
+            const char* close = strchr(p, ']');
+            if (!close) break;
+
+            char tag[32];
+            int tag_len = (int)(close - p - 1);
+            if (tag_len <= 0 || tag_len >= (int)sizeof(tag)) {
+                /* Skip non-time tags like [ti:Title] [ar:Artist] */
+                p = close + 1;
+                continue;
+            }
+
+            memcpy(tag, p + 1, tag_len);
+            tag[tag_len] = '\0';
+
+            int t = parse_lrc_time(tag);
+            if (t >= 0) {
+                times[time_count++] = t;
+            }
+
+            p = close + 1;
+        }
+
+        /* p now points to the lyrics text */
+        const char* text = p;
+
+        /* Add an entry for each time tag */
+        int ti;
+        for (ti = 0; ti < time_count; ti++) {
+            lrc_data_add(out, times[ti], text);
+        }
+    }
+
+    fclose(fp);
+
+    /* Sort by time */
+    if (out->count > 1) {
+        qsort(out->lines, out->count, sizeof(lrc_line_t), lrc_cmp);
+    }
+
+    printf("[music_app] Parsed LRC: %d lines from %s\n", out->count, lrc_path);
+    return out->count > 0 ? 0 : -1;
+}
+
+static void load_lyrics_for_current(void) {
+    const music_app_state_t* st = music_app_get_state();
+    if (!st->current_info) return;
+
+    const char* filepath = st->current_info->filepath;
+
+    /* Already loaded for this track? */
+    if (strcmp(s_app.lyrics_path, filepath) == 0 && s_app.lyrics.count > 0) {
+        return;
+    }
+
+    lrc_data_clear(&s_app.lyrics);
+    s_app.lyrics_path[0] = '\0';
+
+    /* Build .lrc path: replace extension with .lrc */
+    char lrc_path[MUSIC_MAX_PATH_LEN];
+    snprintf(lrc_path, sizeof(lrc_path), "%s", filepath);
+    char* dot = strrchr(lrc_path, '.');
+    if (dot) {
+        strcpy(dot, ".lrc");
+    } else {
+        snprintf(lrc_path + strlen(lrc_path),
+                 sizeof(lrc_path) - strlen(lrc_path), ".lrc");
+    }
+
+    /* Try to parse */
+    if (parse_lrc_file(lrc_path, &s_app.lyrics) == 0) {
+        snprintf(s_app.lyrics_path, sizeof(s_app.lyrics_path), "%s", filepath);
+    }
+}
+
+const lrc_data_t* music_app_get_lyrics(void) {
+    load_lyrics_for_current();
+    return s_app.lyrics.count > 0 ? &s_app.lyrics : NULL;
+}
+
+int music_app_get_lyrics_line(int time_ms) {
+    if (s_app.lyrics.count <= 0) return -1;
+
+    /* Binary search for the last line whose time <= time_ms */
+    int lo = 0, hi = s_app.lyrics.count - 1, result = 0;
+    while (lo <= hi) {
+        int mid = (lo + hi) / 2;
+        if (s_app.lyrics.lines[mid].time_ms <= time_ms) {
+            result = mid;
+            lo = mid + 1;
+        } else {
+            hi = mid - 1;
+        }
+    }
+    return result;
+}
+
+/*============================================================================
+ * Issue #7: Album art (APIC frame) extraction from ID3v2
+ * Mirrors Android BitmapCache.loadNativeImage()
+ *
+ * ID3v2 APIC frame layout:
+ *   [1 byte]  encoding
+ *   [string]  MIME type (null-terminated)
+ *   [1 byte]  picture type (03 = cover front)
+ *   [string]  description (null-terminated)
+ *   [data]    image data (JPEG or PNG)
+ *==========================================================================*/
+
+static uint32_t read_be32_art(const uint8_t* p) {
+    return ((uint32_t)p[0] << 24) | ((uint32_t)p[1] << 16) |
+           ((uint32_t)p[2] << 8)  | (uint32_t)p[3];
+}
+
+static uint32_t read_synchsafe_art(const uint8_t* p) {
+    return ((uint32_t)(p[0] & 0x7F) << 21) |
+           ((uint32_t)(p[1] & 0x7F) << 14) |
+           ((uint32_t)(p[2] & 0x7F) << 7)  |
+           (uint32_t)(p[3] & 0x7F);
+}
+
+static int extract_apic_from_file(const char* filepath,
+                                  uint8_t** out_data, int* out_size) {
+    FILE* fp = fopen(filepath, "rb");
+    if (!fp) return -1;
+
+    uint8_t header[10];
+    if (fread(header, 1, 10, fp) != 10) { fclose(fp); return -1; }
+
+    if (header[0] != 'I' || header[1] != 'D' || header[2] != '3') {
+        fclose(fp);
+        return -1;
+    }
+
+    uint8_t version_major = header[3];
+    uint32_t tag_size = read_synchsafe_art(&header[6]);
+
+    if (tag_size == 0 || tag_size > 10 * 1024 * 1024) {
+        fclose(fp);
+        return -1;
+    }
+
+    uint8_t* tag_data = (uint8_t*)malloc(tag_size);
+    if (!tag_data) { fclose(fp); return -1; }
+
+    if (fread(tag_data, 1, tag_size, fp) != tag_size) {
+        free(tag_data);
+        fclose(fp);
+        return -1;
+    }
+    fclose(fp);
+
+    /* Scan for APIC frame */
+    uint32_t pos = 0;
+    while (pos + 10 <= tag_size) {
+        char frame_id[5];
+        memcpy(frame_id, &tag_data[pos], 4);
+        frame_id[4] = '\0';
+
+        if (!isupper((unsigned char)frame_id[0]) &&
+            !isdigit((unsigned char)frame_id[0])) break;
+
+        uint32_t frame_size;
+        if (version_major >= 4) {
+            frame_size = read_synchsafe_art(&tag_data[pos + 4]);
+        } else {
+            frame_size = read_be32_art(&tag_data[pos + 4]);
+        }
+
+        pos += 10;
+        if (frame_size == 0 || pos + frame_size > tag_size) break;
+
+        if (strcmp(frame_id, "APIC") == 0) {
+            /* Parse APIC frame */
+            uint32_t fpos = pos;
+            /* uint8_t encoding = tag_data[fpos]; */
+            fpos++; /* skip encoding byte */
+
+            /* Skip MIME type (null-terminated string) */
+            while (fpos < pos + frame_size && tag_data[fpos] != 0) fpos++;
+            fpos++; /* skip null terminator */
+
+            /* Skip picture type byte */
+            fpos++;
+
+            /* Skip description (null-terminated) */
+            while (fpos < pos + frame_size && tag_data[fpos] != 0) fpos++;
+            fpos++; /* skip null terminator */
+
+            /* Remaining is image data */
+            int img_size = (int)(pos + frame_size - fpos);
+            if (img_size > 0) {
+                *out_data = (uint8_t*)malloc(img_size);
+                if (*out_data) {
+                    memcpy(*out_data, &tag_data[fpos], img_size);
+                    *out_size = img_size;
+                    free(tag_data);
+                    return 0;
+                }
+            }
+        }
+
+        pos += frame_size;
+    }
+
+    free(tag_data);
+    return -1;
+}
+
+static void load_album_art_for_current(void) {
+    const music_app_state_t* st = music_app_get_state();
+    if (!st->current_info) return;
+
+    const char* filepath = st->current_info->filepath;
+
+    /* Already loaded for this track? */
+    if (strcmp(s_app.album_art_path, filepath) == 0) {
+        return;
+    }
+
+    /* Free old data */
+    if (s_app.album_art_data) {
+        free(s_app.album_art_data);
+        s_app.album_art_data = NULL;
+        s_app.album_art_size = 0;
+    }
+    s_app.album_art_path[0] = '\0';
+
+    uint8_t* data = NULL;
+    int size = 0;
+    if (extract_apic_from_file(filepath, &data, &size) == 0) {
+        s_app.album_art_data = data;
+        s_app.album_art_size = size;
+        snprintf(s_app.album_art_path, sizeof(s_app.album_art_path),
+                 "%s", filepath);
+        printf("[music_app] Album art: %d bytes from %s\n", size, filepath);
+    }
+}
+
+int music_app_get_album_art(const uint8_t** out_data, int* out_size) {
+    load_album_art_for_current();
+    if (s_app.album_art_data && s_app.album_art_size > 0) {
+        if (out_data) *out_data = s_app.album_art_data;
+        if (out_size) *out_size = s_app.album_art_size;
+        return 0;
+    }
+    return -1;
 }

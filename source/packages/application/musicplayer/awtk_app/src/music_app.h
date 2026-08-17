@@ -34,6 +34,7 @@
 #include "music_player.h"
 #include "usb_monitor.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -188,6 +189,80 @@ void music_app_play_folder(const char* folder_path);
  * @return Number of matches found.
  */
 int music_app_search(const char* keyword, const MusicInfo** results, int max_results);
+
+/* --- Album/Artist classification (Issue #3, mirrors Android classifyMediaInfoList) --- */
+
+/** Max number of unique albums or artists */
+#define MUSIC_MAX_GROUPS  256
+
+/**
+ * @brief A group of tracks sharing the same album or artist key.
+ *        Mirrors Android MusicKeyInfo.
+ */
+typedef struct {
+    char            key[MUSIC_MAX_TAG_LEN]; /* album or artist name */
+    const MusicInfo* items[MUSIC_MAX_FILES]; /* pointers into scan list */
+    int             count;
+} music_group_t;
+
+/**
+ * @brief Get album groups from current device.
+ * @param out_groups  Receives pointer to internal array.
+ * @param out_count   Number of groups.
+ */
+void music_app_get_album_list(const music_group_t** out_groups, int* out_count);
+
+/**
+ * @brief Get artist groups from current device.
+ */
+void music_app_get_artist_list(const music_group_t** out_groups, int* out_count);
+
+/**
+ * @brief Play a track from within a group (album or artist).
+ * @param group       The group to play from.
+ * @param index       Index within the group.
+ */
+void music_app_play_group(const music_group_t* group, int index);
+
+/* --- LRC lyrics (Issue #8, mirrors Android LyricsManager) --- */
+
+/** A single LRC lyrics line */
+typedef struct {
+    int  time_ms;       /* timestamp in milliseconds */
+    char text[256];     /* lyrics text content */
+} lrc_line_t;
+
+/** Parsed LRC result */
+typedef struct {
+    lrc_line_t* lines;
+    int         count;
+    int         capacity;
+} lrc_data_t;
+
+/**
+ * @brief Load LRC lyrics for the currently playing track.
+ *        Searches for a .lrc file with the same name as the audio file.
+ * @return Pointer to internal lrc_data (NULL if no lyrics found).
+ *         Valid until next call or track change.
+ */
+const lrc_data_t* music_app_get_lyrics(void);
+
+/**
+ * @brief Find the lyrics line index for a given playback position.
+ * @param time_ms  Current playback position in ms.
+ * @return Line index (0-based), or -1 if no lyrics.
+ */
+int music_app_get_lyrics_line(int time_ms);
+
+/* --- Album art / APIC (Issue #7) --- */
+
+/**
+ * @brief Extract album art (APIC frame) from current track's ID3 tag.
+ * @param out_data  Receives pointer to JPEG/PNG data (internal buffer).
+ * @param out_size  Receives data size in bytes.
+ * @return 0 on success, -1 if no album art found.
+ */
+int music_app_get_album_art(const uint8_t** out_data, int* out_size);
 
 #ifdef __cplusplus
 }
