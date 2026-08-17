@@ -91,6 +91,7 @@ typedef enum {
     APP_EVENT_POSITION_CHANGED      = 7,
     APP_EVENT_PLAYLIST_CHANGED      = 8,
     APP_EVENT_ERROR                 = 9,
+    APP_EVENT_FAVORITE_CHANGED      = 10,  /* Issue #1: favorite add/remove */
 } music_app_event_t;
 
 /**
@@ -153,6 +154,40 @@ void music_app_rescan(void);
 /* --- Last-memory persistence --- */
 void music_app_save_state(void);
 void music_app_restore_state(void);
+
+/* --- Favorite management (Issue #1, mirrors Android FavoriteManager) --- */
+bool music_app_toggle_favorite(void);
+bool music_app_is_favorite(void);
+int  music_app_get_favorite_count(void);
+const MusicInfo* music_app_get_favorite_list(int* out_count);
+
+/* --- Folder browsing (Issue #2, mirrors Android FolderListLayout) --- */
+
+/**
+ * @brief Get unique folder list from current device's scanned files.
+ * @param out_folders  Receives an array of folder path strings.
+ *                     Caller must NOT free (points into internal data).
+ * @param out_count    Receives the number of folders.
+ */
+void music_app_get_folder_list(const char*** out_folders, int* out_count);
+
+/**
+ * @brief Filter playlist to only songs in the given folder.
+ *        Starts playing the first song in that folder.
+ * @param folder_path  The folder to play from.
+ */
+void music_app_play_folder(const char* folder_path);
+
+/* --- Search (Issue #6) --- */
+
+/**
+ * @brief Search tracks by keyword (matches title/artist/album/filename).
+ * @param keyword    Search string (case-insensitive).
+ * @param results    Caller-provided array to receive matching MusicInfo pointers.
+ * @param max_results  Max entries to fill.
+ * @return Number of matches found.
+ */
+int music_app_search(const char* keyword, const MusicInfo** results, int max_results);
 
 #ifdef __cplusplus
 }

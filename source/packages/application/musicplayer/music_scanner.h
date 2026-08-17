@@ -66,7 +66,9 @@ typedef struct {
     char         filepath[MUSIC_MAX_PATH_LEN];  /* absolute path */
     char         filename[MUSIC_MAX_TAG_LEN];   /* file name only */
     char         device_name[MUSIC_MAX_PATH_LEN]; /* mount point e.g. /mnt/usb */
+    char         folder_path[MUSIC_MAX_PATH_LEN]; /* parent directory path */
     uint32_t     file_size;                     /* bytes */
+    int          folder_index;  /* -1 = this is a folder entry, >=0 = file */
 } MusicInfo;
 
 /*

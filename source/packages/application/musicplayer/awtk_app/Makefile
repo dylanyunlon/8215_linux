@@ -42,7 +42,8 @@ endif
 APP_C_SRCS  = src/main.c \
               src/music_app.c \
               src/music_ui.c \
-              src/usb_monitor.c
+              src/usb_monitor.c \
+              src/favorite_manager.c
 
 # Shared library sources (from parent musicplayer dir)
 LIB_C_SRCS  = ../music_scanner.c

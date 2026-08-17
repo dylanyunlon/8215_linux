@@ -14,13 +14,17 @@
  */
 
 #include "music_app.h"
+#include "favorite_manager.h"
 
+#define _GNU_SOURCE  /* for strcasestr */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <ctype.h>
 
 /*============================================================================
  * Config paths (mirrors Android Preferences / IConstant)
@@ -51,6 +55,10 @@ static struct {
 
     /* [GAP-11] Periodic state save timer ID */
     uint32_t                save_timer_id;
+
+    /* Issue #2: Folder list cache for folder browsing */
+    char*                   folder_paths[MUSIC_MAX_FILES]; /* unique folder strings */
+    int                     folder_count;
 } s_app;
 
 /*============================================================================
@@ -61,6 +69,7 @@ static void on_player_state(PlayerState state, void* user_data);
 static void on_player_track(int index, const MusicInfo* info, void* user_data);
 static void on_player_position(int position_ms, int duration_ms, void* user_data);
 static void scan_device_async(int dev_idx);
+static void build_folder_cache(void);
 
 /*============================================================================
  * AWTK main-thread dispatch helpers
@@ -267,6 +276,12 @@ static void* scan_thread_func(void* arg) {
 
     printf("[music_app] Scan complete: %d files in %s\n", list->count, path);
 
+    /* Issue #2: Rebuild folder cache after scan */
+    build_folder_cache();
+
+    /* Issue #1: Validate favorites against scan result — remove stale entries */
+    favorite_validate(list);
+
     /* Load playlist if this is the current device */
     pthread_mutex_lock(&s_app.mutex);
     bool is_current = (dev_idx == s_app.state.current_device_idx);
@@ -464,6 +479,9 @@ int music_app_init(music_app_ui_callback_t ui_cb) {
     /* Discover already-mounted devices */
     usb_monitor_scan_existing(on_storage_event, NULL);
 
+    /* Initialize favorite manager (Issue #1) */
+    favorite_init(NULL);
+
     /* Restore last play state */
     music_app_restore_state();
 
@@ -496,6 +514,19 @@ void music_app_deinit(void) {
     if (s_app.player) {
         music_player_destroy(s_app.player);
         s_app.player = NULL;
+    }
+
+    /* Cleanup favorite manager (Issue #1) */
+    favorite_deinit();
+
+    /* Cleanup folder path cache (Issue #2) */
+    {
+        int fi;
+        for (fi = 0; fi < s_app.folder_count; fi++) {
+            free(s_app.folder_paths[fi]);
+            s_app.folder_paths[fi] = NULL;
+        }
+        s_app.folder_count = 0;
     }
 
     int i;
@@ -574,6 +605,7 @@ void music_app_seek(int position_ms) {
 }
 
 void music_app_toggle_play_pause(void) {
+    if (!s_app.player) return;
     PlayerState st = music_player_get_state(s_app.player);
     if (st == PLAYER_STATE_PLAYING) {
         music_app_pause();
@@ -706,4 +738,188 @@ void music_app_restore_state(void) {
     fclose(fp);
     printf("[music_app] State restored: mode=%d last=%s\n",
            s_app.state.play_mode, s_app.state.last_path);
+}
+
+/*============================================================================
+ * Issue #1: Favorite management API
+ * Mirrors Android FavoriteManager add/remove/toggle
+ *==========================================================================*/
+
+bool music_app_toggle_favorite(void) {
+    const music_app_state_t* st = music_app_get_state();
+    if (!st->current_info) return false;
+
+    bool result = favorite_toggle(st->current_info);
+    post_ui_event(APP_EVENT_FAVORITE_CHANGED, result ? 1 : 0);
+    favorite_save();
+    return result;
+}
+
+bool music_app_is_favorite(void) {
+    const music_app_state_t* st = music_app_get_state();
+    if (!st->current_info) return false;
+    return favorite_contains(st->current_info->filepath);
+}
+
+int music_app_get_favorite_count(void) {
+    int count = 0;
+    favorite_get_list(&count);
+    return count;
+}
+
+const MusicInfo* music_app_get_favorite_list(int* out_count) {
+    return favorite_get_list(out_count);
+}
+
+/*============================================================================
+ * Issue #2: Folder browsing API
+ * Mirrors Android FolderListLayout + MediaFilePathScan
+ *==========================================================================*/
+
+/**
+ * Build unique folder list from the current device's scanned files.
+ * Extracts dirname(filepath) for each file and deduplicates.
+ */
+static void build_folder_cache(void) {
+    /* Free old cache */
+    int i;
+    for (i = 0; i < s_app.folder_count; i++) {
+        free(s_app.folder_paths[i]);
+        s_app.folder_paths[i] = NULL;
+    }
+    s_app.folder_count = 0;
+
+    int dev_idx = s_app.state.current_device_idx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list) return;
+
+    MusicList* list = dev->music_list;
+    for (i = 0; i < list->count && s_app.folder_count < MUSIC_MAX_FILES; i++) {
+        /* Extract directory from filepath */
+        char dir[MUSIC_MAX_PATH_LEN];
+        snprintf(dir, sizeof(dir), "%s", list->items[i].filepath);
+        char* slash = strrchr(dir, '/');
+        if (slash && slash != dir) {
+            *slash = '\0';
+        } else {
+            continue;
+        }
+
+        /* Also populate folder_path in the MusicInfo */
+        snprintf(list->items[i].folder_path, sizeof(list->items[i].folder_path),
+                 "%s", dir);
+        list->items[i].folder_index = i; /* file entry, not a folder */
+
+        /* Check for duplicate */
+        bool exists = false;
+        int j;
+        for (j = 0; j < s_app.folder_count; j++) {
+            if (strcmp(s_app.folder_paths[j], dir) == 0) {
+                exists = true;
+                break;
+            }
+        }
+
+        if (!exists) {
+            s_app.folder_paths[s_app.folder_count] = strdup(dir);
+            s_app.folder_count++;
+        }
+    }
+
+    printf("[music_app] Built folder cache: %d unique folders\n", s_app.folder_count);
+}
+
+void music_app_get_folder_list(const char*** out_folders, int* out_count) {
+    if (s_app.folder_count == 0) {
+        build_folder_cache();
+    }
+    if (out_folders) *out_folders = (const char**)s_app.folder_paths;
+    if (out_count) *out_count = s_app.folder_count;
+}
+
+void music_app_play_folder(const char* folder_path) {
+    if (!folder_path || !s_app.player) return;
+
+    int dev_idx = s_app.state.current_device_idx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list) return;
+
+    /* Find the first file in this folder and start playback.
+     * The player's playlist is the full list; we just jump to the right index. */
+    MusicList* list = dev->music_list;
+    int folder_len = (int)strlen(folder_path);
+    int i;
+    for (i = 0; i < list->count; i++) {
+        /* Check if filepath starts with folder_path + "/" */
+        if (strncmp(list->items[i].filepath, folder_path, folder_len) == 0
+            && list->items[i].filepath[folder_len] == '/') {
+            /* Check it's directly in this folder, not a subfolder */
+            const char* rest = list->items[i].filepath + folder_len + 1;
+            if (strchr(rest, '/') == NULL) {
+                music_app_play(i);
+                return;
+            }
+        }
+    }
+
+    printf("[music_app] No files found in folder: %s\n", folder_path);
+}
+
+/*============================================================================
+ * Issue #6: Search API
+ * Mirrors Android MusicSearchFragment keyword matching
+ *==========================================================================*/
+
+/**
+ * Case-insensitive substring search (portable).
+ */
+static bool str_contains_ci(const char* haystack, const char* needle) {
+    if (!haystack || !needle) return false;
+    if (needle[0] == '\0') return true;
+
+    int hlen = (int)strlen(haystack);
+    int nlen = (int)strlen(needle);
+    if (nlen > hlen) return false;
+
+    int i, j;
+    for (i = 0; i <= hlen - nlen; i++) {
+        bool match = true;
+        for (j = 0; j < nlen; j++) {
+            if (tolower((unsigned char)haystack[i + j]) !=
+                tolower((unsigned char)needle[j])) {
+                match = false;
+                break;
+            }
+        }
+        if (match) return true;
+    }
+    return false;
+}
+
+int music_app_search(const char* keyword, const MusicInfo** results, int max_results) {
+    if (!keyword || !results || max_results <= 0) return 0;
+
+    int dev_idx = s_app.state.current_device_idx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return 0;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list) return 0;
+
+    MusicList* list = dev->music_list;
+    int found = 0;
+    int i;
+    for (i = 0; i < list->count && found < max_results; i++) {
+        const MusicInfo* info = &list->items[i];
+        if (str_contains_ci(info->title, keyword) ||
+            str_contains_ci(info->artist, keyword) ||
+            str_contains_ci(info->album, keyword) ||
+            str_contains_ci(info->filename, keyword)) {
+            results[found++] = info;
+        }
+    }
+    return found;
 }

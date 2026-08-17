@@ -14,6 +14,7 @@
  */
 
 #include "music_ui.h"
+#include "favorite_manager.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -35,6 +36,7 @@
 #define W_LBL_STATUS  "lbl_status"
 #define W_LIST_VIEW   "list_playlist"
 #define W_LBL_COUNT   "lbl_count"
+#define W_BTN_FAV     "btn_fav"
 
 /*============================================================================
  * Module state
@@ -104,16 +106,43 @@ static ret_t on_btn_mode_click(void* ctx, event_t* e) {
     return RET_OK;
 }
 
+/* Issue #1: Favorite toggle button handler */
+static void update_fav_button_text(void) {
+    widget_t* btn = find(W_BTN_FAV);
+    if (btn) {
+        bool is_fav = music_app_is_favorite();
+        widget_set_text_utf8(btn, is_fav ? "Unfav" : "Fav");
+    }
+}
+
+static ret_t on_btn_fav_click(void* ctx, event_t* e) {
+    (void)ctx;
+    (void)e;
+    music_app_toggle_favorite();
+    update_fav_button_text();
+    return RET_OK;
+}
+
 static ret_t on_slider_value_changed(void* ctx, event_t* e) {
     (void)ctx;
     (void)e;
 
+    /* Issue #5: During drag, only update the time label visually.
+     * The actual seek command is sent once in on_slider_pointer_up().
+     * Sending seek on every value change causes audio stutter because
+     * the player restarts decoding from a new position each time. */
     if (!s_slider_dragging) return RET_OK;
 
+    /* Update the current-time label to follow the user's finger */
     widget_t* slider = find(W_SLIDER);
     if (slider) {
         int value = (int)widget_get_prop_int(slider, WIDGET_PROP_VALUE, 0);
-        music_app_seek(value);
+        char buf[16];
+        format_time(buf, sizeof(buf), value);
+        widget_t* lbl_cur = find(W_TIME_CUR);
+        if (lbl_cur) {
+            widget_set_text_utf8(lbl_cur, buf);
+        }
     }
     return RET_OK;
 }
@@ -225,10 +254,16 @@ ret_t music_ui_create(widget_t* win) {
     widget_on(btn_next, EVT_CLICK, on_btn_next_click, NULL);
 
     /* Mode button (right side) */
-    widget_t* btn_mode = button_create(win, 850, btn_y, 140, btn_h);
+    widget_t* btn_mode = button_create(win, 850, btn_y, 80, btn_h);
     widget_set_name(btn_mode, W_BTN_MODE);
     widget_set_text_utf8(btn_mode, "Mode");
     widget_on(btn_mode, EVT_CLICK, on_btn_mode_click, NULL);
+
+    /* Issue #1: Favorite button */
+    widget_t* btn_fav = button_create(win, 940, btn_y, 64, btn_h);
+    widget_set_name(btn_fav, W_BTN_FAV);
+    widget_set_text_utf8(btn_fav, "Fav");
+    widget_on(btn_fav, EVT_CLICK, on_btn_fav_click, NULL);
 
     widget_t* lbl_mode = label_create(win, 850, btn_y + btn_h + 5, 140, 25);
     widget_set_name(lbl_mode, W_LBL_MODE);
@@ -368,6 +403,22 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
 
         case APP_EVENT_PLAYLIST_CHANGED: {
             rebuild_playlist_view();
+
+            /* Issue #10: Update index/total count after playlist loads */
+            {
+                int total = music_app_get_playlist_count();
+                int cur_idx = music_app_get_current_index();
+                widget_t* lbl = find(W_LBL_COUNT);
+                if (lbl) {
+                    char buf[64];
+                    if (cur_idx >= 0 && total > 0) {
+                        snprintf(buf, sizeof(buf), "%d/%d", cur_idx + 1, total);
+                    } else {
+                        snprintf(buf, sizeof(buf), "%d tracks", total);
+                    }
+                    widget_set_text_utf8(lbl, buf);
+                }
+            }
             break;
         }
 
@@ -377,13 +428,59 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
                 widget_t* t = find(W_TITLE);
                 widget_t* a = find(W_ARTIST);
                 widget_t* al = find(W_ALBUM);
-                if (t)  widget_set_text_utf8(t, st->current_info->title);
-                if (a)  widget_set_text_utf8(a, st->current_info->artist);
-                if (al) widget_set_text_utf8(al, st->current_info->album);
+
+                /* Issue #13: If title is empty, show filename without extension.
+                 * If artist/album is empty, show "--" instead of blank.
+                 * Mirrors Android MusicInfoLayout.updateId3TextInfo() logic. */
+                if (t) {
+                    const char* title = st->current_info->title;
+                    if (title[0] == '\0' || strcmp(title, "<Unknown>") == 0) {
+                        /* Fallback: show filename without extension */
+                        char name_buf[MUSIC_MAX_TAG_LEN];
+                        snprintf(name_buf, sizeof(name_buf), "%s", st->current_info->filename);
+                        char* dot = strrchr(name_buf, '.');
+                        if (dot) *dot = '\0';
+                        widget_set_text_utf8(t, name_buf[0] ? name_buf : "Unknown");
+                    } else {
+                        widget_set_text_utf8(t, title);
+                    }
+                }
+                if (a) {
+                    const char* artist = st->current_info->artist;
+                    widget_set_text_utf8(a,
+                        (artist[0] == '\0' || strcmp(artist, "<Unknown>") == 0) ? "--" : artist);
+                }
+                if (al) {
+                    const char* album = st->current_info->album;
+                    widget_set_text_utf8(al,
+                        (album[0] == '\0' || strcmp(album, "<Unknown>") == 0) ? "--" : album);
+                }
             }
+
+            /* Issue #10: Update "current/total" display.
+             * Mirrors Android MusicInfoLayout.changeTotalValue(). */
+            {
+                int cur_idx = music_app_get_current_index();
+                int total = music_app_get_playlist_count();
+                widget_t* lbl = find(W_LBL_COUNT);
+                if (lbl && total > 0) {
+                    char buf[64];
+                    snprintf(buf, sizeof(buf), "%d/%d", cur_idx + 1, total);
+                    widget_set_text_utf8(lbl, buf);
+                }
+            }
+
+            /* Issue #1: Update favorite button state on track change */
+            update_fav_button_text();
 
             /* Rebuild list to highlight current track */
             rebuild_playlist_view();
+            break;
+        }
+
+        case APP_EVENT_FAVORITE_CHANGED: {
+            /* Issue #1: Favorite state changed — update button */
+            update_fav_button_text();
             break;
         }
 
