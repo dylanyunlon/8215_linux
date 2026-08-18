@@ -43,6 +43,7 @@
  *==========================================================================*/
 static widget_t* s_win = NULL;
 static bool s_slider_dragging = false;
+static int s_last_highlight_idx = -1; /* Issue #20: track last highlighted row */
 
 /*============================================================================
  * Helper: find child widget by name
@@ -351,7 +352,59 @@ static void rebuild_playlist_view(void) {
         widget_set_text_utf8(lbl, buf);
     }
 
+    /* Issue #20: Remember the current highlight index for incremental updates */
+    s_last_highlight_idx = cur_idx;
+
     widget_invalidate_force(list, NULL);
+}
+
+/*============================================================================
+ * Issue #20 fix: Lightweight playlist highlight update.
+ * Only changes the text color of the old and new highlighted rows,
+ * avoiding the full destroy+rebuild cycle that causes flicker.
+ *==========================================================================*/
+static void update_playlist_highlight(int new_idx) {
+    widget_t* list = find(W_LIST_VIEW);
+    if (!list) return;
+
+    int child_count = widget_count_children(list);
+
+    /* Un-highlight old row */
+    if (s_last_highlight_idx >= 0 && s_last_highlight_idx < child_count) {
+        widget_t* old_item = widget_get_child(list, s_last_highlight_idx);
+        if (old_item) {
+            widget_set_style_str(old_item, "text_color", "#CCCCCC");
+
+            /* Update text to remove ">>" prefix */
+            const MusicInfo* info = music_app_get_track_info(s_last_highlight_idx);
+            if (info) {
+                char text[512];
+                snprintf(text, sizeof(text), "   %d. %s - %s",
+                         s_last_highlight_idx + 1, info->title, info->artist);
+                widget_set_text_utf8(old_item, text);
+            }
+            widget_invalidate_force(old_item, NULL);
+        }
+    }
+
+    /* Highlight new row */
+    if (new_idx >= 0 && new_idx < child_count) {
+        widget_t* new_item = widget_get_child(list, new_idx);
+        if (new_item) {
+            widget_set_style_str(new_item, "text_color", "#00E0FF");
+
+            const MusicInfo* info = music_app_get_track_info(new_idx);
+            if (info) {
+                char text[512];
+                snprintf(text, sizeof(text), ">> %d. %s - %s",
+                         new_idx + 1, info->title, info->artist);
+                widget_set_text_utf8(new_item, text);
+            }
+            widget_invalidate_force(new_item, NULL);
+        }
+    }
+
+    s_last_highlight_idx = new_idx;
 }
 
 /*============================================================================
@@ -473,8 +526,13 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             /* Issue #1: Update favorite button state on track change */
             update_fav_button_text();
 
-            /* Rebuild list to highlight current track */
-            rebuild_playlist_view();
+            /* Issue #20 fix: Use lightweight highlight update instead of
+             * full rebuild. Only changes the text/color of old and new
+             * highlighted rows, avoiding destroy+recreate of all widgets. */
+            {
+                int cur_idx = music_app_get_current_index();
+                update_playlist_highlight(cur_idx);
+            }
             break;
         }
 

@@ -235,13 +235,39 @@ bool favorite_contains(const char* filepath) {
 }
 
 bool favorite_toggle(const MusicInfo* info) {
-    if (!info) return false;
+    if (!info || info->filepath[0] == '\0') return false;
 
-    if (favorite_contains(info->filepath)) {
-        favorite_remove(info->filepath);
+    /* Issue #22 fix: Hold mutex throughout check+action to prevent TOCTOU race.
+     * If two threads toggle the same track simultaneously, one might add
+     * a duplicate. By holding the lock for the entire operation, the
+     * check-and-modify is atomic. */
+    pthread_mutex_lock(&s_fav.mutex);
+
+    int idx = find_by_path(info->filepath);
+    if (idx >= 0) {
+        /* Already favorited → remove (inline, lock already held) */
+        MusicInfo removed = s_fav.items[idx];
+        int i;
+        for (i = idx; i < s_fav.count - 1; i++) {
+            s_fav.items[i] = s_fav.items[i + 1];
+        }
+        s_fav.count--;
+        pthread_mutex_unlock(&s_fav.mutex);
+        notify(FAVORITE_OP_REMOVE, &removed, idx);
         return false;  /* Now un-favorited */
     } else {
-        favorite_add(info);
+        /* Not favorited → add (inline, lock already held) */
+        if (s_fav.count >= FAVORITE_MAX_COUNT) {
+            pthread_mutex_unlock(&s_fav.mutex);
+            notify(FAVORITE_OP_MAX_LIMIT, NULL, -1);
+            return false;
+        }
+        int new_idx = s_fav.count;
+        s_fav.items[new_idx] = *info;
+        s_fav.items[new_idx].uid = new_idx;
+        s_fav.count++;
+        pthread_mutex_unlock(&s_fav.mutex);
+        notify(FAVORITE_OP_ADD, info, new_idx);
         return true;   /* Now favorited */
     }
 }

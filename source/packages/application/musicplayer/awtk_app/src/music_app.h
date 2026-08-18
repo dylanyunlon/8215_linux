@@ -56,6 +56,18 @@ typedef struct {
 } storage_device_state_t;
 
 /*============================================================================
+ * Playlist type (mirrors Android IPlaylistType)
+ * Issue #23: Track which playlist source is active
+ *==========================================================================*/
+typedef enum {
+    PLAYLIST_TYPE_DEVICE   = 0,  /* full device list */
+    PLAYLIST_TYPE_FOLDER   = 1,  /* folder-filtered list */
+    PLAYLIST_TYPE_FAVORITE = 2,  /* favorites list */
+    PLAYLIST_TYPE_ALBUM    = 3,  /* album group list */
+    PLAYLIST_TYPE_ARTIST   = 4,  /* artist group list */
+} playlist_type_t;
+
+/*============================================================================
  * Application play state (mirrors Android AppGlobalData)
  *==========================================================================*/
 typedef struct {
@@ -64,6 +76,9 @@ typedef struct {
 
     /* Play mode */
     PlayMode                play_mode;
+
+    /* Issue #23: Current playlist type */
+    playlist_type_t         playlist_type;
 
     /* Current track info (points into playlist, do NOT free) */
     const MusicInfo*        current_info;

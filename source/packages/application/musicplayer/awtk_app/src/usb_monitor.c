@@ -423,7 +423,11 @@ int usb_monitor_start(usb_monitor_callback_t cb, void* user_data) {
     struct sockaddr_nl addr;
     memset(&addr, 0, sizeof(addr));
     addr.nl_family = AF_NETLINK;
-    addr.nl_pid = getpid();
+    /* Issue #28 fix: Use nl_pid=0 to let the kernel auto-assign a unique
+     * port ID. Using getpid() can conflict with other uevent listeners
+     * (e.g. udevd, other components) in the same process, causing
+     * bind() to fail with EADDRINUSE. */
+    addr.nl_pid = 0;
     addr.nl_groups = 1; /* UEVENT multicast group */
 
     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0) {

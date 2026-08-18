@@ -380,38 +380,41 @@ static ret_t periodic_save_cb(const timer_info_t* timer) {
 
 /*============================================================================
  * Player callbacks (called from player thread)
+ *
+ * Issue #15/27 fix: AWTK timer_add/timer_remove are NOT thread-safe.
+ * All timer operations must be dispatched to the AWTK main thread via
+ * idle_queue(). We post a state-change idle that handles timers + events
+ * on the main thread.
  *==========================================================================*/
-static void on_player_state(PlayerState state, void* user_data) {
-    (void)user_data;
-    pthread_mutex_lock(&s_app.mutex);
-    s_app.state.player_state = state;
-    pthread_mutex_unlock(&s_app.mutex);
 
-    /* [GAP-7] Error handling: auto-skip or rescan
-     * Android: EVENT_ERROR_FILE_NOT_EXIST → count 3 → requestScanStorageDevice */
+/* Idle handler: processes player state changes on AWTK main thread */
+static ret_t player_state_idle_handler(const idle_info_t* idle) {
+    PlayerState state = (PlayerState)(intptr_t)idle->ctx;
+
+    /* [GAP-7] Error handling: auto-skip or rescan */
     if (state == PLAYER_STATE_ERROR) {
         s_app.error_count++;
         if (s_app.error_count >= 3) {
             printf("[music_app] 3 consecutive errors, triggering rescan\n");
             s_app.error_count = 0;
             post_ui_event(APP_EVENT_ERROR, 0);
-            /* Use delayed next to avoid tight error loop */
+            /* Cancel pending auto-next (now safe — we're on main thread) */
             if (s_app.auto_next_timer_id != TK_INVALID_ID) {
                 timer_remove(s_app.auto_next_timer_id);
+                s_app.auto_next_timer_id = TK_INVALID_ID;
             }
-            /* Rescan after a delay */
-            idle_queue((idle_func_t)(void*)music_app_rescan, NULL);
+            music_app_rescan();
         } else {
             printf("[music_app] Play error, auto-skip to next (err_count=%d)\n",
                    s_app.error_count);
             post_ui_event(APP_EVENT_ERROR, 0);
-            /* Auto-skip with 500ms delay */
             if (s_app.auto_next_timer_id != TK_INVALID_ID) {
                 timer_remove(s_app.auto_next_timer_id);
+                s_app.auto_next_timer_id = TK_INVALID_ID;
             }
             s_app.auto_next_timer_id = timer_add(delayed_auto_next_cb, NULL, 500);
         }
-        return;
+        return RET_REMOVE;
     }
 
     /* Reset error counter on successful play */
@@ -419,28 +422,38 @@ static void on_player_state(PlayerState state, void* user_data) {
         s_app.error_count = 0;
     }
 
-    /* [GAP-8+9] Natural track completion → delayed auto-next
-     * Android: EVENT_MEDIA_COMPLETION → writeMediaTime(0) → delay 1000ms → next */
+    /* [GAP-8+9] Natural track completion → delayed auto-next */
     if (state == PLAYER_STATE_STOPPED) {
-        /* Clear progress for completed track so next resume starts from 0 */
         pthread_mutex_lock(&s_app.mutex);
         s_app.state.last_position_ms = 0;
         s_app.state.current_position_ms = 0;
         pthread_mutex_unlock(&s_app.mutex);
 
-        /* 1-second delayed auto-next (Android MSG_GOTO_NEXT_MEDIA delay) */
         if (s_app.auto_next_timer_id != TK_INVALID_ID) {
             timer_remove(s_app.auto_next_timer_id);
+            s_app.auto_next_timer_id = TK_INVALID_ID;
         }
         s_app.auto_next_timer_id = timer_add(delayed_auto_next_cb, NULL, 1000);
     }
 
-    /* [GAP-11] Save state on pause/stop (Android writeCurrentMediaTime) */
+    /* [GAP-11] Save state on pause/stop */
     if (state == PLAYER_STATE_PAUSED || state == PLAYER_STATE_STOPPED) {
         music_app_save_state();
     }
 
     post_ui_event(APP_EVENT_STATE_CHANGED, (int)state);
+    return RET_REMOVE;
+}
+
+static void on_player_state(PlayerState state, void* user_data) {
+    (void)user_data;
+    pthread_mutex_lock(&s_app.mutex);
+    s_app.state.player_state = state;
+    pthread_mutex_unlock(&s_app.mutex);
+
+    /* Issue #15/27 fix: dispatch all timer/UI work to AWTK main thread.
+     * We pass the PlayerState as the ctx pointer (cast to intptr_t). */
+    idle_queue(player_state_idle_handler, (void*)(intptr_t)state);
 }
 
 static void on_player_track(int index, const MusicInfo* info, void* user_data) {
@@ -477,8 +490,15 @@ int music_app_init(music_app_ui_callback_t ui_cb) {
         return -1;
     }
 
-    memset(&s_app, 0, sizeof(s_app));
+    /* Issue #25 fix: Do NOT memset the entire struct — that would corrupt
+     * a previously-destroyed mutex on reinit. Initialize each field explicitly.
+     * This also avoids zeroing any field that might be referenced by a
+     * lingering thread from a prior deinit cycle. */
     pthread_mutex_init(&s_app.mutex, NULL);
+    memset(&s_app.state, 0, sizeof(s_app.state));
+    s_app.player = NULL;
+    memset(s_app.devices, 0, sizeof(s_app.devices));
+    s_app.device_count = 0;
     s_app.ui_cb = ui_cb;
     s_app.state.play_mode = PLAY_MODE_REPEAT_ALL;
     s_app.state.current_device_idx = -1;
@@ -486,6 +506,16 @@ int music_app_init(music_app_ui_callback_t ui_cb) {
     s_app.save_timer_id = TK_INVALID_ID;
     s_app.error_count = 0;
     s_app.last_prev_next_ms = 0;
+    s_app.folder_count = 0;
+    s_app.album_group_count = 0;
+    s_app.artist_group_count = 0;
+    s_app.album_art_data = NULL;
+    s_app.album_art_size = 0;
+    s_app.album_art_path[0] = '\0';
+    memset(&s_app.lyrics, 0, sizeof(s_app.lyrics));
+    s_app.lyrics_path[0] = '\0';
+    /* Issue #23: Initialize playlist type tracking */
+    s_app.state.playlist_type = PLAYLIST_TYPE_DEVICE;
 
     /* Create player */
     s_app.player = music_player_create();
@@ -819,6 +849,10 @@ const MusicInfo* music_app_get_favorite_list(int* out_count) {
  * Extracts dirname(filepath) for each file and deduplicates.
  */
 static void build_folder_cache(void) {
+    /* Issue #14 fix: protect shared folder cache with mutex since this
+     * runs on scan thread while UI thread may call get_folder_list(). */
+    pthread_mutex_lock(&s_app.mutex);
+
     /* Free old cache */
     int i;
     for (i = 0; i < s_app.folder_count; i++) {
@@ -828,10 +862,16 @@ static void build_folder_cache(void) {
     s_app.folder_count = 0;
 
     int dev_idx = s_app.state.current_device_idx;
-    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) {
+        pthread_mutex_unlock(&s_app.mutex);
+        return;
+    }
 
     storage_device_state_t* dev = &s_app.devices[dev_idx];
-    if (!dev->music_list) return;
+    if (!dev->music_list) {
+        pthread_mutex_unlock(&s_app.mutex);
+        return;
+    }
 
     MusicList* list = dev->music_list;
     for (i = 0; i < list->count && s_app.folder_count < MUSIC_MAX_FILES; i++) {
@@ -867,6 +907,7 @@ static void build_folder_cache(void) {
     }
 
     printf("[music_app] Built folder cache: %d unique folders\n", s_app.folder_count);
+    pthread_mutex_unlock(&s_app.mutex);
 }
 
 void music_app_get_folder_list(const char*** out_folders, int* out_count) {
@@ -886,25 +927,52 @@ void music_app_play_folder(const char* folder_path) {
     storage_device_state_t* dev = &s_app.devices[dev_idx];
     if (!dev->music_list) return;
 
-    /* Find the first file in this folder and start playback.
-     * The player's playlist is the full list; we just jump to the right index. */
-    MusicList* list = dev->music_list;
+    /* Issue #16 fix: Build a sub-playlist containing only songs in this folder,
+     * then set it as the player's current playlist. This way next/prev stays
+     * within the folder. Mirrors Android updatePlaylist(FOLDER_LIST, list). */
+    MusicList* src = dev->music_list;
     int folder_len = (int)strlen(folder_path);
+
+    /* Create temporary list for folder songs */
+    MusicList* folder_list = music_list_create(src->count);
+    if (!folder_list) return;
+
     int i;
-    for (i = 0; i < list->count; i++) {
-        /* Check if filepath starts with folder_path + "/" */
-        if (strncmp(list->items[i].filepath, folder_path, folder_len) == 0
-            && list->items[i].filepath[folder_len] == '/') {
-            /* Check it's directly in this folder, not a subfolder */
-            const char* rest = list->items[i].filepath + folder_len + 1;
+    for (i = 0; i < src->count; i++) {
+        if (strncmp(src->items[i].filepath, folder_path, folder_len) == 0
+            && src->items[i].filepath[folder_len] == '/') {
+            const char* rest = src->items[i].filepath + folder_len + 1;
             if (strchr(rest, '/') == NULL) {
-                music_app_play(i);
-                return;
+                /* Direct child of this folder */
+                if (folder_list->count < folder_list->capacity) {
+                    folder_list->items[folder_list->count] = src->items[i];
+                    folder_list->count++;
+                }
             }
         }
     }
 
-    printf("[music_app] No files found in folder: %s\n", folder_path);
+    if (folder_list->count == 0) {
+        printf("[music_app] No files found in folder: %s\n", folder_path);
+        music_list_destroy(folder_list);
+        return;
+    }
+
+    /* Set the folder sub-list as the player's playlist */
+    music_player_set_playlist(s_app.player, folder_list);
+
+    /* Issue #23: Track playlist type */
+    pthread_mutex_lock(&s_app.mutex);
+    s_app.state.playlist_type = PLAYLIST_TYPE_FOLDER;
+    pthread_mutex_unlock(&s_app.mutex);
+
+    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+
+    /* Start playing the first song */
+    music_app_play(0);
+
+    /* folder_list data was copied by set_playlist; we can destroy the container */
+    music_list_destroy(folder_list);
 }
 
 /*============================================================================
@@ -993,14 +1061,24 @@ static music_group_t* find_or_create_group(music_group_t* groups, int* count,
 }
 
 static void build_classification_cache(void) {
+    /* Issue #14 fix: protect shared classification cache with mutex since
+     * this runs on scan thread while UI thread may call get_album/artist_list(). */
+    pthread_mutex_lock(&s_app.mutex);
+
     s_app.album_group_count = 0;
     s_app.artist_group_count = 0;
 
     int dev_idx = s_app.state.current_device_idx;
-    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) {
+        pthread_mutex_unlock(&s_app.mutex);
+        return;
+    }
 
     storage_device_state_t* dev = &s_app.devices[dev_idx];
-    if (!dev->music_list) return;
+    if (!dev->music_list) {
+        pthread_mutex_unlock(&s_app.mutex);
+        return;
+    }
 
     MusicList* list = dev->music_list;
     int i;
@@ -1026,6 +1104,7 @@ static void build_classification_cache(void) {
 
     printf("[music_app] Classification: %d albums, %d artists\n",
            s_app.album_group_count, s_app.artist_group_count);
+    pthread_mutex_unlock(&s_app.mutex);
 }
 
 void music_app_get_album_list(const music_group_t** out_groups, int* out_count) {
@@ -1048,22 +1127,50 @@ void music_app_play_group(const music_group_t* group, int index) {
     if (!group || index < 0 || index >= group->count) return;
     if (!s_app.player) return;
 
-    const MusicInfo* target = group->items[index];
-
-    /* Find this track's index in the global playlist and play it */
-    int dev_idx = s_app.state.current_device_idx;
-    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
-
-    storage_device_state_t* dev = &s_app.devices[dev_idx];
-    if (!dev->music_list) return;
+    /* Issue #17 fix: Build a sub-playlist from the group's items, then set it
+     * as the player's playlist. This way next/prev stays within the album/artist.
+     * Mirrors Android behavior where clicking a song in an album plays that
+     * album as the current playlist. */
+    MusicList* group_list = music_list_create(group->count);
+    if (!group_list) return;
 
     int i;
-    for (i = 0; i < dev->music_list->count; i++) {
-        if (strcmp(dev->music_list->items[i].filepath, target->filepath) == 0) {
-            music_app_play(i);
-            return;
+    for (i = 0; i < group->count; i++) {
+        if (group->items[i] && group_list->count < group_list->capacity) {
+            group_list->items[group_list->count] = *(group->items[i]);
+            group_list->count++;
         }
     }
+
+    if (group_list->count == 0) {
+        music_list_destroy(group_list);
+        return;
+    }
+
+    music_player_set_playlist(s_app.player, group_list);
+
+    /* Issue #23: Determine playlist type from group context.
+     * Caller knows whether this is album or artist, but we infer from
+     * album_groups vs artist_groups membership. Default to ALBUM. */
+    pthread_mutex_lock(&s_app.mutex);
+    /* Check if this group is in the artist_groups array */
+    bool is_artist = false;
+    for (i = 0; i < s_app.artist_group_count; i++) {
+        if (&s_app.artist_groups[i] == group) {
+            is_artist = true;
+            break;
+        }
+    }
+    s_app.state.playlist_type = is_artist ? PLAYLIST_TYPE_ARTIST : PLAYLIST_TYPE_ALBUM;
+    pthread_mutex_unlock(&s_app.mutex);
+
+    int dev_idx = s_app.state.current_device_idx;
+    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+
+    /* Play the selected track within the group */
+    music_app_play(index);
+
+    music_list_destroy(group_list);
 }
 
 /*============================================================================
@@ -1233,6 +1340,11 @@ const lrc_data_t* music_app_get_lyrics(void) {
 
 int music_app_get_lyrics_line(int time_ms) {
     if (s_app.lyrics.count <= 0) return -1;
+
+    /* Issue #24 fix: if time_ms is before the first lyric line (e.g. during
+     * intro/prelude), return -1 to indicate "no lyric line active yet".
+     * Android LyricsManager does not highlight any line during the intro. */
+    if (time_ms < s_app.lyrics.lines[0].time_ms) return -1;
 
     /* Binary search for the last line whose time <= time_ms */
     int lo = 0, hi = s_app.lyrics.count - 1, result = 0;

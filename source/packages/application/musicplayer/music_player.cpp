@@ -30,7 +30,13 @@ struct MusicPlayerContext {
     int                  playlist_count;
     int                  current_index;
 
-    /* Shuffle order */
+    /* Issue #19: Shuffle consumption pool (mirrors Android mRandomPositionList).
+     * Pool contains indices not yet played. Each next() picks randomly from
+     * the pool and removes it, guaranteeing every track plays exactly once. */
+    int                 *shuffle_pool;
+    int                  shuffle_pool_count;
+
+    /* Legacy shuffle_order kept for compatibility (used by set_mode) */
     int                 *shuffle_order;
 
     /* State */
@@ -69,16 +75,17 @@ static void media_state_callback(int new_state, void *user_data)
         ctx->state = PLAYER_STATE_PAUSED;
         break;
     case MediaPlayer::StoppedState:
-        /* Track ended naturally -> auto-advance.
-         * Only auto-advance if we were PLAYING (natural completion).
-         * If state is already STOPPED or PAUSED, this is a user-initiated
-         * stop or a double-callback — do NOT recurse into next(). */
-        if (ctx->state == PLAYER_STATE_PLAYING) {
-            ctx->state = PLAYER_STATE_STOPPED; /* Set before unlocking! */
-            pthread_mutex_unlock(&ctx->mutex);
-            music_player_next(ctx);
-            return; /* next() handles its own locking and callback */
-        }
+        /* Issue #26 fix: Do NOT call music_player_next() here.
+         * Auto-next is now handled exclusively by music_app.c's
+         * on_player_state() callback, which posts a delayed timer on the
+         * AWTK main thread. Calling next() here caused a "double-jump" bug:
+         * once from this callback, once from the delayed timer.
+         *
+         * We just set the state and let the callback chain handle it:
+         *   MediaPlayer → media_state_callback → on_player_state (user cb)
+         *   → idle_queue → player_state_idle_handler → timer_add(1000ms)
+         *   → delayed_auto_next_cb → music_player_next()
+         */
         ctx->state = PLAYER_STATE_STOPPED;
         break;
     case MediaPlayer::ErrorState:
@@ -95,33 +102,65 @@ static void media_state_callback(int new_state, void *user_data)
     if (cb) cb(s, data);
 }
 
-/* --- Shuffle helper --- */
+/* --- Shuffle helper (Issue #19: consumption pool) --- */
 
-static void generate_shuffle(MusicPlayerContext *ctx)
+/**
+ * Rebuild the shuffle consumption pool with all track indices.
+ * Mirrors Android MusicPlaylistEx.updateRandomPositionList().
+ */
+static void rebuild_shuffle_pool(MusicPlayerContext *ctx)
 {
-    if (!ctx->shuffle_order || ctx->playlist_count <= 0) return;
+    if (!ctx->shuffle_pool || ctx->playlist_count <= 0) return;
 
-    /* Fisher-Yates shuffle */
     for (int i = 0; i < ctx->playlist_count; i++)
-        ctx->shuffle_order[i] = i;
+        ctx->shuffle_pool[i] = i;
+    ctx->shuffle_pool_count = ctx->playlist_count;
+}
 
-    srand((unsigned)time(NULL));
-    for (int i = ctx->playlist_count - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
-        int tmp = ctx->shuffle_order[i];
-        ctx->shuffle_order[i] = ctx->shuffle_order[j];
-        ctx->shuffle_order[j] = tmp;
+/**
+ * Remove a specific index from the shuffle pool.
+ * Mirrors Android MusicPlaylistEx.removeFromRandomPositionList().
+ */
+static void shuffle_pool_remove(MusicPlayerContext *ctx, int track_index)
+{
+    for (int i = 0; i < ctx->shuffle_pool_count; i++) {
+        if (ctx->shuffle_pool[i] == track_index) {
+            /* Swap with last element and shrink */
+            ctx->shuffle_pool[i] = ctx->shuffle_pool[ctx->shuffle_pool_count - 1];
+            ctx->shuffle_pool_count--;
+            return;
+        }
     }
 }
 
-/* Map logical index to actual playlist index based on play mode */
-static int get_actual_index(MusicPlayerContext *ctx, int logical_index)
+/**
+ * Pick a random index from the shuffle pool without replacement.
+ * Mirrors Android MusicPlaylistEx.getNextRandomPosition().
+ * If pool is empty, rebuilds it (new cycle — all tracks played once).
+ */
+static int shuffle_pool_pick_next(MusicPlayerContext *ctx)
 {
-    if (ctx->mode == PLAY_MODE_SHUFFLE && ctx->shuffle_order) {
-        if (logical_index >= 0 && logical_index < ctx->playlist_count)
-            return ctx->shuffle_order[logical_index];
+    if (ctx->shuffle_pool_count <= 0) {
+        rebuild_shuffle_pool(ctx);
     }
-    return logical_index;
+
+    if (ctx->shuffle_pool_count <= 0) return 0;
+
+    int pick = rand() % ctx->shuffle_pool_count;
+    int result = ctx->shuffle_pool[pick];
+
+    /* Remove picked item (swap with last) */
+    ctx->shuffle_pool[pick] = ctx->shuffle_pool[ctx->shuffle_pool_count - 1];
+    ctx->shuffle_pool_count--;
+
+    return result;
+}
+
+/* Legacy generate_shuffle — kept for set_mode compatibility, rebuilds pool */
+static void generate_shuffle(MusicPlayerContext *ctx)
+{
+    srand((unsigned)time(NULL));
+    rebuild_shuffle_pool(ctx);
 }
 
 /* --- Position polling thread --- */
@@ -168,6 +207,8 @@ MusicPlayerContext *music_player_create(void)
     ctx->playlist_count = 0;
     ctx->current_index = -1;
     ctx->shuffle_order = NULL;
+    ctx->shuffle_pool = NULL;
+    ctx->shuffle_pool_count = 0;
     ctx->state = PLAYER_STATE_IDLE;
     ctx->mode = PLAY_MODE_SEQUENTIAL;
     ctx->state_cb = NULL;
@@ -225,6 +266,7 @@ void music_player_destroy(MusicPlayerContext *ctx)
     delete ctx->player;
     free(ctx->playlist);
     free(ctx->shuffle_order);
+    free(ctx->shuffle_pool);
     pthread_mutex_destroy(&ctx->mutex);
     delete ctx;
 
@@ -245,13 +287,16 @@ int music_player_set_playlist(MusicPlayerContext *ctx, const MusicList *list)
     /* Free old playlist */
     free(ctx->playlist);
     free(ctx->shuffle_order);
+    free(ctx->shuffle_pool);
 
     /* Copy new playlist */
     ctx->playlist_count = list->count;
     ctx->playlist = (MusicInfo *)calloc(list->count, sizeof(MusicInfo));
     ctx->shuffle_order = (int *)calloc(list->count, sizeof(int));
+    ctx->shuffle_pool = (int *)calloc(list->count, sizeof(int));
+    ctx->shuffle_pool_count = 0;
 
-    if (!ctx->playlist || !ctx->shuffle_order) {
+    if (!ctx->playlist || !ctx->shuffle_order || !ctx->shuffle_pool) {
         ctx->playlist_count = 0;
         pthread_mutex_unlock(&ctx->mutex);
         return -1;
@@ -313,11 +358,13 @@ int music_player_play(MusicPlayerContext *ctx, int index)
         return -1;
     }
 
-    int actual = get_actual_index(ctx, index);
-    if (actual < 0 || actual >= ctx->playlist_count) {
-        pthread_mutex_unlock(&ctx->mutex);
-        return -1;
-    }
+    /* Issue #18 fix: Use the index directly — do NOT apply shuffle mapping.
+     * In Android (MusicPlaylistEx), shuffle only affects adjustPlayPosition()
+     * (auto-next/prev), NOT user-initiated play. When a user clicks a song
+     * in the list, they expect THAT song to play, not a random one.
+     *
+     * The shuffle_order is only consumed by music_player_next/prev. */
+    int actual = index;
 
     /* Stop current if playing */
     if (ctx->state == PLAYER_STATE_PLAYING) {
@@ -409,11 +456,9 @@ int music_player_next(MusicPlayerContext *ctx)
         next = (next + 1) % ctx->playlist_count;
         break;
     case PLAY_MODE_SHUFFLE:
-        next = (next + 1) % ctx->playlist_count;
-        if (next == 0) {
-            /* Reshuffled at wrap-around */
-            generate_shuffle(ctx);
-        }
+        /* Issue #19 fix: Use consumption pool (Android mRandomPositionList).
+         * Pick a random unplayed track. Pool auto-refills when exhausted. */
+        next = shuffle_pool_pick_next(ctx);
         break;
     }
 

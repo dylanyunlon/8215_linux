@@ -1,0 +1,729 @@
+--- source/packages/application/musicplayer/awtk_app/src/music_app.h.orig	2026-08-18 03:47:31.117030560 +0000
++++ source/packages/application/musicplayer/awtk_app/src/music_app.h	2026-08-18 03:51:40.146051864 +0000
+@@ -56,6 +56,18 @@
+ } storage_device_state_t;
+ 
+ /*============================================================================
++ * Playlist type (mirrors Android IPlaylistType)
++ * Issue #23: Track which playlist source is active
++ *==========================================================================*/
++typedef enum {
++    PLAYLIST_TYPE_DEVICE   = 0,  /* full device list */
++    PLAYLIST_TYPE_FOLDER   = 1,  /* folder-filtered list */
++    PLAYLIST_TYPE_FAVORITE = 2,  /* favorites list */
++    PLAYLIST_TYPE_ALBUM    = 3,  /* album group list */
++    PLAYLIST_TYPE_ARTIST   = 4,  /* artist group list */
++} playlist_type_t;
++
++/*============================================================================
+  * Application play state (mirrors Android AppGlobalData)
+  *==========================================================================*/
+ typedef struct {
+@@ -65,6 +77,9 @@
+     /* Play mode */
+     PlayMode                play_mode;
+ 
++    /* Issue #23: Current playlist type */
++    playlist_type_t         playlist_type;
++
+     /* Current track info (points into playlist, do NOT free) */
+     const MusicInfo*        current_info;
+     int                     current_position_ms;
+
+--- source/packages/application/musicplayer/awtk_app/src/music_app.c.orig	2026-08-18 03:47:31.115663667 +0000
++++ source/packages/application/musicplayer/awtk_app/src/music_app.c	2026-08-18 03:52:11.243479704 +0000
+@@ -380,38 +380,41 @@
+ 
+ /*============================================================================
+  * Player callbacks (called from player thread)
++ *
++ * Issue #15/27 fix: AWTK timer_add/timer_remove are NOT thread-safe.
++ * All timer operations must be dispatched to the AWTK main thread via
++ * idle_queue(). We post a state-change idle that handles timers + events
++ * on the main thread.
+  *==========================================================================*/
+-static void on_player_state(PlayerState state, void* user_data) {
+-    (void)user_data;
+-    pthread_mutex_lock(&s_app.mutex);
+-    s_app.state.player_state = state;
+-    pthread_mutex_unlock(&s_app.mutex);
+ 
+-    /* [GAP-7] Error handling: auto-skip or rescan
+-     * Android: EVENT_ERROR_FILE_NOT_EXIST → count 3 → requestScanStorageDevice */
++/* Idle handler: processes player state changes on AWTK main thread */
++static ret_t player_state_idle_handler(const idle_info_t* idle) {
++    PlayerState state = (PlayerState)(intptr_t)idle->ctx;
++
++    /* [GAP-7] Error handling: auto-skip or rescan */
+     if (state == PLAYER_STATE_ERROR) {
+         s_app.error_count++;
+         if (s_app.error_count >= 3) {
+             printf("[music_app] 3 consecutive errors, triggering rescan\n");
+             s_app.error_count = 0;
+             post_ui_event(APP_EVENT_ERROR, 0);
+-            /* Use delayed next to avoid tight error loop */
++            /* Cancel pending auto-next (now safe — we're on main thread) */
+             if (s_app.auto_next_timer_id != TK_INVALID_ID) {
+                 timer_remove(s_app.auto_next_timer_id);
++                s_app.auto_next_timer_id = TK_INVALID_ID;
+             }
+-            /* Rescan after a delay */
+-            idle_queue((idle_func_t)(void*)music_app_rescan, NULL);
++            music_app_rescan();
+         } else {
+             printf("[music_app] Play error, auto-skip to next (err_count=%d)\n",
+                    s_app.error_count);
+             post_ui_event(APP_EVENT_ERROR, 0);
+-            /* Auto-skip with 500ms delay */
+             if (s_app.auto_next_timer_id != TK_INVALID_ID) {
+                 timer_remove(s_app.auto_next_timer_id);
++                s_app.auto_next_timer_id = TK_INVALID_ID;
+             }
+             s_app.auto_next_timer_id = timer_add(delayed_auto_next_cb, NULL, 500);
+         }
+-        return;
++        return RET_REMOVE;
+     }
+ 
+     /* Reset error counter on successful play */
+@@ -419,28 +422,38 @@
+         s_app.error_count = 0;
+     }
+ 
+-    /* [GAP-8+9] Natural track completion → delayed auto-next
+-     * Android: EVENT_MEDIA_COMPLETION → writeMediaTime(0) → delay 1000ms → next */
++    /* [GAP-8+9] Natural track completion → delayed auto-next */
+     if (state == PLAYER_STATE_STOPPED) {
+-        /* Clear progress for completed track so next resume starts from 0 */
+         pthread_mutex_lock(&s_app.mutex);
+         s_app.state.last_position_ms = 0;
+         s_app.state.current_position_ms = 0;
+         pthread_mutex_unlock(&s_app.mutex);
+ 
+-        /* 1-second delayed auto-next (Android MSG_GOTO_NEXT_MEDIA delay) */
+         if (s_app.auto_next_timer_id != TK_INVALID_ID) {
+             timer_remove(s_app.auto_next_timer_id);
++            s_app.auto_next_timer_id = TK_INVALID_ID;
+         }
+         s_app.auto_next_timer_id = timer_add(delayed_auto_next_cb, NULL, 1000);
+     }
+ 
+-    /* [GAP-11] Save state on pause/stop (Android writeCurrentMediaTime) */
++    /* [GAP-11] Save state on pause/stop */
+     if (state == PLAYER_STATE_PAUSED || state == PLAYER_STATE_STOPPED) {
+         music_app_save_state();
+     }
+ 
+     post_ui_event(APP_EVENT_STATE_CHANGED, (int)state);
++    return RET_REMOVE;
++}
++
++static void on_player_state(PlayerState state, void* user_data) {
++    (void)user_data;
++    pthread_mutex_lock(&s_app.mutex);
++    s_app.state.player_state = state;
++    pthread_mutex_unlock(&s_app.mutex);
++
++    /* Issue #15/27 fix: dispatch all timer/UI work to AWTK main thread.
++     * We pass the PlayerState as the ctx pointer (cast to intptr_t). */
++    idle_queue(player_state_idle_handler, (void*)(intptr_t)state);
+ }
+ 
+ static void on_player_track(int index, const MusicInfo* info, void* user_data) {
+@@ -477,8 +490,15 @@
+         return -1;
+     }
+ 
+-    memset(&s_app, 0, sizeof(s_app));
++    /* Issue #25 fix: Do NOT memset the entire struct — that would corrupt
++     * a previously-destroyed mutex on reinit. Initialize each field explicitly.
++     * This also avoids zeroing any field that might be referenced by a
++     * lingering thread from a prior deinit cycle. */
+     pthread_mutex_init(&s_app.mutex, NULL);
++    memset(&s_app.state, 0, sizeof(s_app.state));
++    s_app.player = NULL;
++    memset(s_app.devices, 0, sizeof(s_app.devices));
++    s_app.device_count = 0;
+     s_app.ui_cb = ui_cb;
+     s_app.state.play_mode = PLAY_MODE_REPEAT_ALL;
+     s_app.state.current_device_idx = -1;
+@@ -486,6 +506,16 @@
+     s_app.save_timer_id = TK_INVALID_ID;
+     s_app.error_count = 0;
+     s_app.last_prev_next_ms = 0;
++    s_app.folder_count = 0;
++    s_app.album_group_count = 0;
++    s_app.artist_group_count = 0;
++    s_app.album_art_data = NULL;
++    s_app.album_art_size = 0;
++    s_app.album_art_path[0] = '\0';
++    memset(&s_app.lyrics, 0, sizeof(s_app.lyrics));
++    s_app.lyrics_path[0] = '\0';
++    /* Issue #23: Initialize playlist type tracking */
++    s_app.state.playlist_type = PLAYLIST_TYPE_DEVICE;
+ 
+     /* Create player */
+     s_app.player = music_player_create();
+@@ -819,6 +849,10 @@
+  * Extracts dirname(filepath) for each file and deduplicates.
+  */
+ static void build_folder_cache(void) {
++    /* Issue #14 fix: protect shared folder cache with mutex since this
++     * runs on scan thread while UI thread may call get_folder_list(). */
++    pthread_mutex_lock(&s_app.mutex);
++
+     /* Free old cache */
+     int i;
+     for (i = 0; i < s_app.folder_count; i++) {
+@@ -828,10 +862,16 @@
+     s_app.folder_count = 0;
+ 
+     int dev_idx = s_app.state.current_device_idx;
+-    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
++    if (dev_idx < 0 || dev_idx >= s_app.device_count) {
++        pthread_mutex_unlock(&s_app.mutex);
++        return;
++    }
+ 
+     storage_device_state_t* dev = &s_app.devices[dev_idx];
+-    if (!dev->music_list) return;
++    if (!dev->music_list) {
++        pthread_mutex_unlock(&s_app.mutex);
++        return;
++    }
+ 
+     MusicList* list = dev->music_list;
+     for (i = 0; i < list->count && s_app.folder_count < MUSIC_MAX_FILES; i++) {
+@@ -867,6 +907,7 @@
+     }
+ 
+     printf("[music_app] Built folder cache: %d unique folders\n", s_app.folder_count);
++    pthread_mutex_unlock(&s_app.mutex);
+ }
+ 
+ void music_app_get_folder_list(const char*** out_folders, int* out_count) {
+@@ -886,25 +927,52 @@
+     storage_device_state_t* dev = &s_app.devices[dev_idx];
+     if (!dev->music_list) return;
+ 
+-    /* Find the first file in this folder and start playback.
+-     * The player's playlist is the full list; we just jump to the right index. */
+-    MusicList* list = dev->music_list;
++    /* Issue #16 fix: Build a sub-playlist containing only songs in this folder,
++     * then set it as the player's current playlist. This way next/prev stays
++     * within the folder. Mirrors Android updatePlaylist(FOLDER_LIST, list). */
++    MusicList* src = dev->music_list;
+     int folder_len = (int)strlen(folder_path);
++
++    /* Create temporary list for folder songs */
++    MusicList* folder_list = music_list_create(src->count);
++    if (!folder_list) return;
++
+     int i;
+-    for (i = 0; i < list->count; i++) {
+-        /* Check if filepath starts with folder_path + "/" */
+-        if (strncmp(list->items[i].filepath, folder_path, folder_len) == 0
+-            && list->items[i].filepath[folder_len] == '/') {
+-            /* Check it's directly in this folder, not a subfolder */
+-            const char* rest = list->items[i].filepath + folder_len + 1;
++    for (i = 0; i < src->count; i++) {
++        if (strncmp(src->items[i].filepath, folder_path, folder_len) == 0
++            && src->items[i].filepath[folder_len] == '/') {
++            const char* rest = src->items[i].filepath + folder_len + 1;
+             if (strchr(rest, '/') == NULL) {
+-                music_app_play(i);
+-                return;
++                /* Direct child of this folder */
++                if (folder_list->count < folder_list->capacity) {
++                    folder_list->items[folder_list->count] = src->items[i];
++                    folder_list->count++;
++                }
+             }
+         }
+     }
+ 
+-    printf("[music_app] No files found in folder: %s\n", folder_path);
++    if (folder_list->count == 0) {
++        printf("[music_app] No files found in folder: %s\n", folder_path);
++        music_list_destroy(folder_list);
++        return;
++    }
++
++    /* Set the folder sub-list as the player's playlist */
++    music_player_set_playlist(s_app.player, folder_list);
++
++    /* Issue #23: Track playlist type */
++    pthread_mutex_lock(&s_app.mutex);
++    s_app.state.playlist_type = PLAYLIST_TYPE_FOLDER;
++    pthread_mutex_unlock(&s_app.mutex);
++
++    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
++
++    /* Start playing the first song */
++    music_app_play(0);
++
++    /* folder_list data was copied by set_playlist; we can destroy the container */
++    music_list_destroy(folder_list);
+ }
+ 
+ /*============================================================================
+@@ -993,14 +1061,24 @@
+ }
+ 
+ static void build_classification_cache(void) {
++    /* Issue #14 fix: protect shared classification cache with mutex since
++     * this runs on scan thread while UI thread may call get_album/artist_list(). */
++    pthread_mutex_lock(&s_app.mutex);
++
+     s_app.album_group_count = 0;
+     s_app.artist_group_count = 0;
+ 
+     int dev_idx = s_app.state.current_device_idx;
+-    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
++    if (dev_idx < 0 || dev_idx >= s_app.device_count) {
++        pthread_mutex_unlock(&s_app.mutex);
++        return;
++    }
+ 
+     storage_device_state_t* dev = &s_app.devices[dev_idx];
+-    if (!dev->music_list) return;
++    if (!dev->music_list) {
++        pthread_mutex_unlock(&s_app.mutex);
++        return;
++    }
+ 
+     MusicList* list = dev->music_list;
+     int i;
+@@ -1026,6 +1104,7 @@
+ 
+     printf("[music_app] Classification: %d albums, %d artists\n",
+            s_app.album_group_count, s_app.artist_group_count);
++    pthread_mutex_unlock(&s_app.mutex);
+ }
+ 
+ void music_app_get_album_list(const music_group_t** out_groups, int* out_count) {
+@@ -1048,22 +1127,50 @@
+     if (!group || index < 0 || index >= group->count) return;
+     if (!s_app.player) return;
+ 
+-    const MusicInfo* target = group->items[index];
++    /* Issue #17 fix: Build a sub-playlist from the group's items, then set it
++     * as the player's playlist. This way next/prev stays within the album/artist.
++     * Mirrors Android behavior where clicking a song in an album plays that
++     * album as the current playlist. */
++    MusicList* group_list = music_list_create(group->count);
++    if (!group_list) return;
+ 
+-    /* Find this track's index in the global playlist and play it */
+-    int dev_idx = s_app.state.current_device_idx;
+-    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
++    int i;
++    for (i = 0; i < group->count; i++) {
++        if (group->items[i] && group_list->count < group_list->capacity) {
++            group_list->items[group_list->count] = *(group->items[i]);
++            group_list->count++;
++        }
++    }
+ 
+-    storage_device_state_t* dev = &s_app.devices[dev_idx];
+-    if (!dev->music_list) return;
++    if (group_list->count == 0) {
++        music_list_destroy(group_list);
++        return;
++    }
+ 
+-    int i;
+-    for (i = 0; i < dev->music_list->count; i++) {
+-        if (strcmp(dev->music_list->items[i].filepath, target->filepath) == 0) {
+-            music_app_play(i);
+-            return;
++    music_player_set_playlist(s_app.player, group_list);
++
++    /* Issue #23: Determine playlist type from group context.
++     * Caller knows whether this is album or artist, but we infer from
++     * album_groups vs artist_groups membership. Default to ALBUM. */
++    pthread_mutex_lock(&s_app.mutex);
++    /* Check if this group is in the artist_groups array */
++    bool is_artist = false;
++    for (i = 0; i < s_app.artist_group_count; i++) {
++        if (&s_app.artist_groups[i] == group) {
++            is_artist = true;
++            break;
+         }
+     }
++    s_app.state.playlist_type = is_artist ? PLAYLIST_TYPE_ARTIST : PLAYLIST_TYPE_ALBUM;
++    pthread_mutex_unlock(&s_app.mutex);
++
++    int dev_idx = s_app.state.current_device_idx;
++    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
++
++    /* Play the selected track within the group */
++    music_app_play(index);
++
++    music_list_destroy(group_list);
+ }
+ 
+ /*============================================================================
+@@ -1234,6 +1341,11 @@
+ int music_app_get_lyrics_line(int time_ms) {
+     if (s_app.lyrics.count <= 0) return -1;
+ 
++    /* Issue #24 fix: if time_ms is before the first lyric line (e.g. during
++     * intro/prelude), return -1 to indicate "no lyric line active yet".
++     * Android LyricsManager does not highlight any line during the intro. */
++    if (time_ms < s_app.lyrics.lines[0].time_ms) return -1;
++
+     /* Binary search for the last line whose time <= time_ms */
+     int lo = 0, hi = s_app.lyrics.count - 1, result = 0;
+     while (lo <= hi) {
+
+--- source/packages/application/musicplayer/awtk_app/src/music_ui.c.orig	2026-08-18 03:47:31.118352339 +0000
++++ source/packages/application/musicplayer/awtk_app/src/music_ui.c	2026-08-18 03:54:38.328890719 +0000
+@@ -43,6 +43,7 @@
+  *==========================================================================*/
+ static widget_t* s_win = NULL;
+ static bool s_slider_dragging = false;
++static int s_last_highlight_idx = -1; /* Issue #20: track last highlighted row */
+ 
+ /*============================================================================
+  * Helper: find child widget by name
+@@ -351,10 +352,62 @@
+         widget_set_text_utf8(lbl, buf);
+     }
+ 
++    /* Issue #20: Remember the current highlight index for incremental updates */
++    s_last_highlight_idx = cur_idx;
++
+     widget_invalidate_force(list, NULL);
+ }
+ 
+ /*============================================================================
++ * Issue #20 fix: Lightweight playlist highlight update.
++ * Only changes the text color of the old and new highlighted rows,
++ * avoiding the full destroy+rebuild cycle that causes flicker.
++ *==========================================================================*/
++static void update_playlist_highlight(int new_idx) {
++    widget_t* list = find(W_LIST_VIEW);
++    if (!list) return;
++
++    int child_count = widget_count_children(list);
++
++    /* Un-highlight old row */
++    if (s_last_highlight_idx >= 0 && s_last_highlight_idx < child_count) {
++        widget_t* old_item = widget_get_child(list, s_last_highlight_idx);
++        if (old_item) {
++            widget_set_style_str(old_item, "text_color", "#CCCCCC");
++
++            /* Update text to remove ">>" prefix */
++            const MusicInfo* info = music_app_get_track_info(s_last_highlight_idx);
++            if (info) {
++                char text[512];
++                snprintf(text, sizeof(text), "   %d. %s - %s",
++                         s_last_highlight_idx + 1, info->title, info->artist);
++                widget_set_text_utf8(old_item, text);
++            }
++            widget_invalidate_force(old_item, NULL);
++        }
++    }
++
++    /* Highlight new row */
++    if (new_idx >= 0 && new_idx < child_count) {
++        widget_t* new_item = widget_get_child(list, new_idx);
++        if (new_item) {
++            widget_set_style_str(new_item, "text_color", "#00E0FF");
++
++            const MusicInfo* info = music_app_get_track_info(new_idx);
++            if (info) {
++                char text[512];
++                snprintf(text, sizeof(text), ">> %d. %s - %s",
++                         new_idx + 1, info->title, info->artist);
++                widget_set_text_utf8(new_item, text);
++            }
++            widget_invalidate_force(new_item, NULL);
++        }
++    }
++
++    s_last_highlight_idx = new_idx;
++}
++
++/*============================================================================
+  * App event handler — called on AWTK main thread
+  *==========================================================================*/
+ void music_ui_on_app_event(music_app_event_t event, void* param) {
+@@ -473,8 +526,13 @@
+             /* Issue #1: Update favorite button state on track change */
+             update_fav_button_text();
+ 
+-            /* Rebuild list to highlight current track */
+-            rebuild_playlist_view();
++            /* Issue #20 fix: Use lightweight highlight update instead of
++             * full rebuild. Only changes the text/color of old and new
++             * highlighted rows, avoiding destroy+recreate of all widgets. */
++            {
++                int cur_idx = music_app_get_current_index();
++                update_playlist_highlight(cur_idx);
++            }
+             break;
+         }
+ 
+
+--- source/packages/application/musicplayer/awtk_app/src/favorite_manager.c.orig	2026-08-18 03:47:31.122761828 +0000
++++ source/packages/application/musicplayer/awtk_app/src/favorite_manager.c	2026-08-18 03:53:42.794005398 +0000
+@@ -235,13 +235,39 @@
+ }
+ 
+ bool favorite_toggle(const MusicInfo* info) {
+-    if (!info) return false;
++    if (!info || info->filepath[0] == '\0') return false;
+ 
+-    if (favorite_contains(info->filepath)) {
+-        favorite_remove(info->filepath);
++    /* Issue #22 fix: Hold mutex throughout check+action to prevent TOCTOU race.
++     * If two threads toggle the same track simultaneously, one might add
++     * a duplicate. By holding the lock for the entire operation, the
++     * check-and-modify is atomic. */
++    pthread_mutex_lock(&s_fav.mutex);
++
++    int idx = find_by_path(info->filepath);
++    if (idx >= 0) {
++        /* Already favorited → remove (inline, lock already held) */
++        MusicInfo removed = s_fav.items[idx];
++        int i;
++        for (i = idx; i < s_fav.count - 1; i++) {
++            s_fav.items[i] = s_fav.items[i + 1];
++        }
++        s_fav.count--;
++        pthread_mutex_unlock(&s_fav.mutex);
++        notify(FAVORITE_OP_REMOVE, &removed, idx);
+         return false;  /* Now un-favorited */
+     } else {
+-        favorite_add(info);
++        /* Not favorited → add (inline, lock already held) */
++        if (s_fav.count >= FAVORITE_MAX_COUNT) {
++            pthread_mutex_unlock(&s_fav.mutex);
++            notify(FAVORITE_OP_MAX_LIMIT, NULL, -1);
++            return false;
++        }
++        int new_idx = s_fav.count;
++        s_fav.items[new_idx] = *info;
++        s_fav.items[new_idx].uid = new_idx;
++        s_fav.count++;
++        pthread_mutex_unlock(&s_fav.mutex);
++        notify(FAVORITE_OP_ADD, info, new_idx);
+         return true;   /* Now favorited */
+     }
+ }
+
+--- source/packages/application/musicplayer/awtk_app/src/usb_monitor.c.orig	2026-08-18 03:47:31.124047803 +0000
++++ source/packages/application/musicplayer/awtk_app/src/usb_monitor.c	2026-08-18 03:53:49.585304021 +0000
+@@ -423,7 +423,11 @@
+     struct sockaddr_nl addr;
+     memset(&addr, 0, sizeof(addr));
+     addr.nl_family = AF_NETLINK;
+-    addr.nl_pid = getpid();
++    /* Issue #28 fix: Use nl_pid=0 to let the kernel auto-assign a unique
++     * port ID. Using getpid() can conflict with other uevent listeners
++     * (e.g. udevd, other components) in the same process, causing
++     * bind() to fail with EADDRINUSE. */
++    addr.nl_pid = 0;
+     addr.nl_groups = 1; /* UEVENT multicast group */
+ 
+     if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
+
+--- source/packages/application/musicplayer/music_player.cpp.orig	2026-08-18 03:47:31.125364610 +0000
++++ source/packages/application/musicplayer/music_player.cpp	2026-08-18 03:53:30.796967533 +0000
+@@ -30,7 +30,13 @@
+     int                  playlist_count;
+     int                  current_index;
+ 
+-    /* Shuffle order */
++    /* Issue #19: Shuffle consumption pool (mirrors Android mRandomPositionList).
++     * Pool contains indices not yet played. Each next() picks randomly from
++     * the pool and removes it, guaranteeing every track plays exactly once. */
++    int                 *shuffle_pool;
++    int                  shuffle_pool_count;
++
++    /* Legacy shuffle_order kept for compatibility (used by set_mode) */
+     int                 *shuffle_order;
+ 
+     /* State */
+@@ -69,16 +75,17 @@
+         ctx->state = PLAYER_STATE_PAUSED;
+         break;
+     case MediaPlayer::StoppedState:
+-        /* Track ended naturally -> auto-advance.
+-         * Only auto-advance if we were PLAYING (natural completion).
+-         * If state is already STOPPED or PAUSED, this is a user-initiated
+-         * stop or a double-callback — do NOT recurse into next(). */
+-        if (ctx->state == PLAYER_STATE_PLAYING) {
+-            ctx->state = PLAYER_STATE_STOPPED; /* Set before unlocking! */
+-            pthread_mutex_unlock(&ctx->mutex);
+-            music_player_next(ctx);
+-            return; /* next() handles its own locking and callback */
+-        }
++        /* Issue #26 fix: Do NOT call music_player_next() here.
++         * Auto-next is now handled exclusively by music_app.c's
++         * on_player_state() callback, which posts a delayed timer on the
++         * AWTK main thread. Calling next() here caused a "double-jump" bug:
++         * once from this callback, once from the delayed timer.
++         *
++         * We just set the state and let the callback chain handle it:
++         *   MediaPlayer → media_state_callback → on_player_state (user cb)
++         *   → idle_queue → player_state_idle_handler → timer_add(1000ms)
++         *   → delayed_auto_next_cb → music_player_next()
++         */
+         ctx->state = PLAYER_STATE_STOPPED;
+         break;
+     case MediaPlayer::ErrorState:
+@@ -95,33 +102,65 @@
+     if (cb) cb(s, data);
+ }
+ 
+-/* --- Shuffle helper --- */
++/* --- Shuffle helper (Issue #19: consumption pool) --- */
+ 
+-static void generate_shuffle(MusicPlayerContext *ctx)
++/**
++ * Rebuild the shuffle consumption pool with all track indices.
++ * Mirrors Android MusicPlaylistEx.updateRandomPositionList().
++ */
++static void rebuild_shuffle_pool(MusicPlayerContext *ctx)
+ {
+-    if (!ctx->shuffle_order || ctx->playlist_count <= 0) return;
++    if (!ctx->shuffle_pool || ctx->playlist_count <= 0) return;
+ 
+-    /* Fisher-Yates shuffle */
+     for (int i = 0; i < ctx->playlist_count; i++)
+-        ctx->shuffle_order[i] = i;
++        ctx->shuffle_pool[i] = i;
++    ctx->shuffle_pool_count = ctx->playlist_count;
++}
+ 
+-    srand((unsigned)time(NULL));
+-    for (int i = ctx->playlist_count - 1; i > 0; i--) {
+-        int j = rand() % (i + 1);
+-        int tmp = ctx->shuffle_order[i];
+-        ctx->shuffle_order[i] = ctx->shuffle_order[j];
+-        ctx->shuffle_order[j] = tmp;
++/**
++ * Remove a specific index from the shuffle pool.
++ * Mirrors Android MusicPlaylistEx.removeFromRandomPositionList().
++ */
++static void shuffle_pool_remove(MusicPlayerContext *ctx, int track_index)
++{
++    for (int i = 0; i < ctx->shuffle_pool_count; i++) {
++        if (ctx->shuffle_pool[i] == track_index) {
++            /* Swap with last element and shrink */
++            ctx->shuffle_pool[i] = ctx->shuffle_pool[ctx->shuffle_pool_count - 1];
++            ctx->shuffle_pool_count--;
++            return;
++        }
+     }
+ }
+ 
+-/* Map logical index to actual playlist index based on play mode */
+-static int get_actual_index(MusicPlayerContext *ctx, int logical_index)
++/**
++ * Pick a random index from the shuffle pool without replacement.
++ * Mirrors Android MusicPlaylistEx.getNextRandomPosition().
++ * If pool is empty, rebuilds it (new cycle — all tracks played once).
++ */
++static int shuffle_pool_pick_next(MusicPlayerContext *ctx)
+ {
+-    if (ctx->mode == PLAY_MODE_SHUFFLE && ctx->shuffle_order) {
+-        if (logical_index >= 0 && logical_index < ctx->playlist_count)
+-            return ctx->shuffle_order[logical_index];
++    if (ctx->shuffle_pool_count <= 0) {
++        rebuild_shuffle_pool(ctx);
+     }
+-    return logical_index;
++
++    if (ctx->shuffle_pool_count <= 0) return 0;
++
++    int pick = rand() % ctx->shuffle_pool_count;
++    int result = ctx->shuffle_pool[pick];
++
++    /* Remove picked item (swap with last) */
++    ctx->shuffle_pool[pick] = ctx->shuffle_pool[ctx->shuffle_pool_count - 1];
++    ctx->shuffle_pool_count--;
++
++    return result;
++}
++
++/* Legacy generate_shuffle — kept for set_mode compatibility, rebuilds pool */
++static void generate_shuffle(MusicPlayerContext *ctx)
++{
++    srand((unsigned)time(NULL));
++    rebuild_shuffle_pool(ctx);
+ }
+ 
+ /* --- Position polling thread --- */
+@@ -168,6 +207,8 @@
+     ctx->playlist_count = 0;
+     ctx->current_index = -1;
+     ctx->shuffle_order = NULL;
++    ctx->shuffle_pool = NULL;
++    ctx->shuffle_pool_count = 0;
+     ctx->state = PLAYER_STATE_IDLE;
+     ctx->mode = PLAY_MODE_SEQUENTIAL;
+     ctx->state_cb = NULL;
+@@ -225,6 +266,7 @@
+     delete ctx->player;
+     free(ctx->playlist);
+     free(ctx->shuffle_order);
++    free(ctx->shuffle_pool);
+     pthread_mutex_destroy(&ctx->mutex);
+     delete ctx;
+ 
+@@ -245,13 +287,16 @@
+     /* Free old playlist */
+     free(ctx->playlist);
+     free(ctx->shuffle_order);
++    free(ctx->shuffle_pool);
+ 
+     /* Copy new playlist */
+     ctx->playlist_count = list->count;
+     ctx->playlist = (MusicInfo *)calloc(list->count, sizeof(MusicInfo));
+     ctx->shuffle_order = (int *)calloc(list->count, sizeof(int));
++    ctx->shuffle_pool = (int *)calloc(list->count, sizeof(int));
++    ctx->shuffle_pool_count = 0;
+ 
+-    if (!ctx->playlist || !ctx->shuffle_order) {
++    if (!ctx->playlist || !ctx->shuffle_order || !ctx->shuffle_pool) {
+         ctx->playlist_count = 0;
+         pthread_mutex_unlock(&ctx->mutex);
+         return -1;
+@@ -313,11 +358,13 @@
+         return -1;
+     }
+ 
+-    int actual = get_actual_index(ctx, index);
+-    if (actual < 0 || actual >= ctx->playlist_count) {
+-        pthread_mutex_unlock(&ctx->mutex);
+-        return -1;
+-    }
++    /* Issue #18 fix: Use the index directly — do NOT apply shuffle mapping.
++     * In Android (MusicPlaylistEx), shuffle only affects adjustPlayPosition()
++     * (auto-next/prev), NOT user-initiated play. When a user clicks a song
++     * in the list, they expect THAT song to play, not a random one.
++     *
++     * The shuffle_order is only consumed by music_player_next/prev. */
++    int actual = index;
+ 
+     /* Stop current if playing */
+     if (ctx->state == PLAYER_STATE_PLAYING) {
+@@ -409,11 +456,9 @@
+         next = (next + 1) % ctx->playlist_count;
+         break;
+     case PLAY_MODE_SHUFFLE:
+-        next = (next + 1) % ctx->playlist_count;
+-        if (next == 0) {
+-            /* Reshuffled at wrap-around */
+-            generate_shuffle(ctx);
+-        }
++        /* Issue #19 fix: Use consumption pool (Android mRandomPositionList).
++         * Pick a random unplayed track. Pool auto-refills when exhausted. */
++        next = shuffle_pool_pick_next(ctx);
+         break;
+     }
+ 
