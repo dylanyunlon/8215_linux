@@ -1,0 +1,160 @@
+2026-08-10T16:35:45.649225507Z /usr/local/corex/lib/python3/dist-packages/torch/cuda/__init__.py:51: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+2026-08-10T16:35:48.723124693Z To enable the following instructions: SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI AMX_TILE AMX_INT8 AMX_BF16 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-08-10T16:35:54.188433291Z INFO 08-10 16:35:54 api_server.py:568] vLLM API server version 0.6.3
+2026-08-10T16:35:54.188654592Z INFO 08-10 16:35:54 api_server.py:569] args: Namespace(host=None, port=8000, uvicorn_log_level='info', allow_credentials=False, allowed_origins=['*'], allowed_methods=['*'], allowed_headers=['*'], api_key=None, lora_modules=None, prompt_adapters=None, chat_template=None, response_role='assistant', ssl_keyfile=None, ssl_certfile=None, ssl_ca_certs=None, ssl_cert_reqs=0, root_path=None, middleware=[], return_tokens_as_token_ids=False, disable_frontend_multiprocessing=True, enable_auto_tool_choice=True, tool_call_parser='qwen3_coder', tool_parser_plugin='', reasoning_parser='qwen3', model='/model', tokenizer=None, skip_tokenizer_init=False, revision=None, code_revision=None, tokenizer_revision=None, tokenizer_mode='auto', trust_remote_code=True, download_dir=None, load_format='auto', config_format='auto', dtype='half', kv_cache_dtype='auto', quantization_param_path=None, max_model_len=80000, guided_decoding_backend='outlines', distributed_executor_backend=None, worker_use_ray=False, pipeline_parallel_size=1, tensor_parallel_size=4, max_parallel_loading_workers=None, ray_workers_use_nsight=False, block_size=16, enable_prefix_caching=True, disable_sliding_window=False, use_v2_block_manager=True, num_lookahead_slots=0, seed=0, swap_space=4, cpu_offload_gb=0, gpu_memory_utilization=0.95, num_gpu_blocks_override=None, max_num_batched_tokens=4096, max_num_seqs=2, max_logprobs=20, disable_log_stats=False, quantization=None, rope_scaling=None, rope_theta=None, enforce_eager=True, max_context_len_to_capture=None, max_seq_len_to_capture=8192, disable_custom_all_reduce=False, tokenizer_pool_size=0, tokenizer_pool_type='ray', tokenizer_pool_extra_config=None, limit_mm_per_prompt=None, mm_processor_kwargs=None, enable_lora=False, max_loras=1, max_lora_rank=16, lora_extra_vocab_size=256, lora_dtype='auto', long_lora_scaling_factors=None, max_cpu_loras=None, fully_sharded_loras=False, enable_prompt_adapter=False, max_prompt_adapters=1, max_prompt_adapter_token=0, device='auto', num_scheduler_steps=1, multi_step_stream_outputs=True, scheduler_delay_factor=0.0, enable_chunked_prefill=True, speculative_model=None, speculative_model_quantization=None, num_speculative_tokens=None, speculative_disable_mqa_scorer=False, speculative_draft_tensor_parallel_size=None, speculative_max_model_len=None, speculative_disable_by_batch_size=None, ngram_prompt_lookup_max=None, ngram_prompt_lookup_min=None, spec_decoding_acceptance_method='rejection_sampler', typical_acceptance_sampler_posterior_threshold=None, typical_acceptance_sampler_posterior_alpha=None, disable_logprobs_during_spec_decoding=None, model_loader_extra_config=None, ignore_patterns=[], preemption_mode=None, served_model_name=['llm'], qlora_adapter_name_or_path=None, otlp_traces_endpoint=None, collect_detailed_traces=None, disable_async_output_proc=False, override_neuron_config=None, scheduling_policy='fcfs', disable_log_requests=True, max_log_len=None, disable_fastapi_docs=False)
+2026-08-10T16:35:54.205289444Z INFO 08-10 16:35:54 config.py:1670] Downcasting torch.float32 to torch.float16.
+2026-08-10T16:36:05.097399761Z INFO 08-10 16:36:05 config.py:887] Defaulting to use mp for distributed inference
+2026-08-10T16:36:05.097710877Z INFO 08-10 16:36:05 config.py:1005] Chunked prefill is enabled with max_num_batched_tokens=4096.
+2026-08-10T16:36:05.097804651Z WARNING 08-10 16:36:05 config.py:380] To see benefits of async output processing, enable CUDA graph. Since, enforce-eager is enabled, async output processor cannot be used
+2026-08-10T16:36:05.100486471Z INFO 08-10 16:36:05 llm_engine.py:237] Initializing an LLM engine (v0.6.3) with config: model='/model', speculative_config=None, tokenizer='/model', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.float16, max_seq_len=80000, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=True, quantization=None, enforce_eager=True, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=llm, use_v2_block_manager=True, num_scheduler_steps=1, chunked_prefill_enabled=True multi_step_stream_outputs=True, enable_prefix_caching=True, use_async_output_proc=False, use_cached_outputs=False, mm_processor_kwargs=None)
+2026-08-10T16:36:05.595781812Z INFO 08-10 16:36:05 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+2026-08-10T16:36:15.140439809Z INFO 08-10 16:36:15 shm_broadcast.py:242] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer=<vllm.distributed.device_communicators.shm_broadcast.ShmRingBuffer object at 0x7fb12036ecb0>, local_subscribe_port=60429, remote_subscribe_port=None)
+2026-08-10T16:36:15.171005881Z INFO 08-10 16:36:15 qwen3_5.py:68] ixformer loaded — BI-V100 hardware acceleration available
+2026-08-10T16:36:15.172527984Z INFO 08-10 16:36:15 qwen3_5.py:85] ix_bridge: full ixformer MoE pipeline available (topk + fused_moe)
+2026-08-10T16:36:15.417289600Z   from pkg_resources import packaging  # type: ignore[attr-defined]
+2026-08-10T16:36:15.480660263Z INFO 08-10 16:36:15 qwen3_5.py:118] FlashQLA SM70 GDN module found — fused CUDA kernel available (JIT on first call)
+2026-08-10T16:36:15.481063950Z INFO 08-10 16:36:15 qwen3_5.py:125] CoreX GDN module found — fused GDN kernels available
+2026-08-10T16:36:15.481317386Z INFO 08-10 16:36:15 qwen3_5.py:132] CoreX MoE module found — fused MoE kernels available
+2026-08-10T16:36:15.481679704Z INFO 08-10 16:36:15 qwen3_5.py:141] CoreX FA2 module found — fused attention kernels available
+2026-08-10T16:36:15.481857047Z INFO 08-10 16:36:15 qwen3_5.py:151] EX Engine MoE topk_softmax kernel available
+2026-08-10T16:36:15.485634021Z INFO 08-10 16:36:15 corex_gdn.py:47] Loaded fused CoreX GDN decode operator from /usr/local/corex/lib64/libcorex_gdn.so
+2026-08-10T16:36:54.210200128Z WARNING 08-10 16:36:54 qwen3_5.py:518] CoreX GDN forward failed (Given groups=1, weight of size [1, 1, 4], expected input[1, 128, 4099] to have 1 channels, but got 128 channels instead), falling back
+2026-08-10T16:37:14.868947649Z INFO 08-10 16:37:14 distributed_gpu_executor.py:57] # GPU blocks: 20500, # CPU blocks: 6553
+2026-08-10T16:37:14.868978809Z INFO 08-10 16:37:14 distributed_gpu_executor.py:61] Maximum concurrency for 80000 tokens per request: 4.10x
+2026-08-10T16:37:18.980691565Z INFO 08-10 16:37:18 serving_chat.py:79] "auto" tool choice has been enabled please note that while the parallel_tool_calls client option is preset for compatibility reasons, it will be ignored.
+2026-08-10T16:37:18.982070751Z INFO 08-10 16:37:18 serving_chat.py:101] Reasoning parser 'qwen3' enabled.
+2026-08-10T16:37:18.982137965Z WARNING 08-10 16:37:18 serving_embedding.py:199] embedding_mode is False. Embedding API will not work.
+2026-08-10T16:37:18.982188161Z INFO 08-10 16:37:18 launcher.py:19] Available routes are:
+2026-08-10T16:37:18.982213784Z INFO 08-10 16:37:18 launcher.py:27] Route: /openapi.json, Methods: GET, HEAD
+2026-08-10T16:37:18.982234604Z INFO 08-10 16:37:18 launcher.py:27] Route: /docs, Methods: GET, HEAD
+2026-08-10T16:37:18.982259943Z INFO 08-10 16:37:18 launcher.py:27] Route: /docs/oauth2-redirect, Methods: GET, HEAD
+2026-08-10T16:37:18.982282291Z INFO 08-10 16:37:18 launcher.py:27] Route: /redoc, Methods: GET, HEAD
+2026-08-10T16:37:18.982304836Z INFO 08-10 16:37:18 launcher.py:27] Route: /health, Methods: GET
+2026-08-10T16:37:18.982322492Z INFO 08-10 16:37:18 launcher.py:27] Route: /tokenize, Methods: POST
+2026-08-10T16:37:18.982341431Z INFO 08-10 16:37:18 launcher.py:27] Route: /detokenize, Methods: POST
+2026-08-10T16:37:18.982362608Z INFO 08-10 16:37:18 launcher.py:27] Route: /v1/models, Methods: GET
+2026-08-10T16:37:18.982383775Z INFO 08-10 16:37:18 launcher.py:27] Route: /version, Methods: GET
+2026-08-10T16:37:18.982397708Z INFO 08-10 16:37:18 launcher.py:27] Route: /v1/chat/completions, Methods: POST
+2026-08-10T16:37:18.982425852Z INFO 08-10 16:37:18 launcher.py:27] Route: /v1/completions, Methods: POST
+2026-08-10T16:37:18.982441531Z INFO 08-10 16:37:18 launcher.py:27] Route: /v1/embeddings, Methods: POST
+2026-08-10T16:37:18.999040842Z INFO:     Started server process [1]
+2026-08-10T16:37:18.999076558Z INFO:     Waiting for application startup.
+2026-08-10T16:37:18.999284081Z INFO:     Application startup complete.
+2026-08-10T16:37:18.999613889Z INFO:     Uvicorn running on socket ('0.0.0.0', 8000) (Press CTRL+C to quit)
+2026-08-10T16:37:44.978675281Z INFO:     172.17.0.1:45394 - "GET /health HTTP/1.1" 200 OK
+2026-08-10T16:37:44.979424331Z INFO:     172.17.0.1:45394 - "GET /v1/models HTTP/1.1" 200 OK
+2026-08-10T16:40:36.585697995Z INFO:     172.28.22.23:33813 - "GET /get_model_info HTTP/1.1" 404 Not Found
+2026-08-10T16:40:36.588286643Z INFO:     172.28.22.23:1959 - "GET /get_server_info HTTP/1.1" 404 Not Found
+2026-08-10T16:40:36.589701475Z INFO:     172.28.22.23:42891 - "GET /version HTTP/1.1" 200 OK
+2026-08-10T16:40:40.146193938Z INFO:     172.28.22.23:40117 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:40:40.278308158Z INFO:     172.28.22.23:22350 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:40:48.940677317Z INFO:     172.28.22.23:1722 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:41:24.511960617Z INFO:     172.28.22.23:53724 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:41:24.651610428Z WARNING 08-10 16:41:24 serving_chat.py:320] Image data in request but model has no multimodal_config — rejecting to protect engine
+2026-08-10T16:41:24.651820491Z INFO:     172.28.22.23:50611 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T16:41:24.778537167Z INFO:     172.28.22.23:62760 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:41:30.869975532Z INFO:     172.28.22.23:62870 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:46:36.787521082Z ERROR 08-10 16:46:36 serving_chat.py:230] Error in loading multi-modal data
+2026-08-10T16:46:36.787536978Z ERROR 08-10 16:46:36 serving_chat.py:230] Traceback (most recent call last):
+2026-08-10T16:46:36.787547538Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/client.py", line 770, in _request
+2026-08-10T16:46:36.787550327Z ERROR 08-10 16:46:36 serving_chat.py:230]     resp = await handler(req)
+2026-08-10T16:46:36.787553480Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/client.py", line 725, in _connect_and_send_request
+2026-08-10T16:46:36.787557214Z ERROR 08-10 16:46:36 serving_chat.py:230]     conn = await self._connector.connect(
+2026-08-10T16:46:36.787559458Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/connector.py", line 642, in connect
+2026-08-10T16:46:36.787561852Z ERROR 08-10 16:46:36 serving_chat.py:230]     proto = await self._create_connection(req, traces, timeout)
+2026-08-10T16:46:36.787563805Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/connector.py", line 1209, in _create_connection
+2026-08-10T16:46:36.787566277Z ERROR 08-10 16:46:36 serving_chat.py:230]     _, proto = await self._create_direct_connection(req, traces, timeout)
+2026-08-10T16:46:36.787569555Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/connector.py", line 1550, in _create_direct_connection
+2026-08-10T16:46:36.787571698Z ERROR 08-10 16:46:36 serving_chat.py:230]     transp, proto = await self._wrap_create_connection(
+2026-08-10T16:46:36.787573570Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/connector.py", line 1283, in _wrap_create_connection
+2026-08-10T16:46:36.787575716Z ERROR 08-10 16:46:36 serving_chat.py:230]     return await self._loop.create_connection(*args, **kwargs, sock=sock)
+2026-08-10T16:46:36.787577774Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "uvloop/loop.pyx", line 2088, in create_connection
+2026-08-10T16:46:36.787579746Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "uvloop/loop.pyx", line 2083, in uvloop.loop.Loop.create_connection
+2026-08-10T16:46:36.787582166Z ERROR 08-10 16:46:36 serving_chat.py:230] asyncio.exceptions.CancelledError
+2026-08-10T16:46:36.787584296Z ERROR 08-10 16:46:36 serving_chat.py:230] 
+2026-08-10T16:46:36.787586435Z ERROR 08-10 16:46:36 serving_chat.py:230] The above exception was the direct cause of the following exception:
+2026-08-10T16:46:36.787592088Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/openai/serving_chat.py", line 228, in create_chat_completion
+2026-08-10T16:46:36.787594322Z ERROR 08-10 16:46:36 serving_chat.py:230]     mm_data = await mm_data_future
+2026-08-10T16:46:36.787596644Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/chat_utils.py", line 248, in all_mm_data
+2026-08-10T16:46:36.787599245Z ERROR 08-10 16:46:36 serving_chat.py:230]     items = await asyncio.gather(*self._items)
+2026-08-10T16:46:36.787605047Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/corex/lib/python3/dist-packages/vllm/multimodal/utils.py", line 140, in async_get_and_parse_image
+2026-08-10T16:46:36.787607648Z ERROR 08-10 16:46:36 serving_chat.py:230]     image = await async_fetch_image(image_url)
+2026-08-10T16:46:36.787609545Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/corex/lib/python3/dist-packages/vllm/multimodal/utils.py", line 62, in async_fetch_image
+2026-08-10T16:46:36.787611570Z ERROR 08-10 16:46:36 serving_chat.py:230]     image_raw = await global_http_connection.async_get_bytes(
+2026-08-10T16:46:36.787613502Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/corex/lib/python3/dist-packages/vllm/connections.py", line 92, in async_get_bytes
+2026-08-10T16:46:36.787615557Z ERROR 08-10 16:46:36 serving_chat.py:230]     async with await self.get_async_response(url, timeout=timeout) as r:
+2026-08-10T16:46:36.787617494Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/client.py", line 1488, in __aenter__
+2026-08-10T16:46:36.787619797Z ERROR 08-10 16:46:36 serving_chat.py:230]     self._resp: _RetType = await self._coro
+2026-08-10T16:46:36.787621731Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/client.py", line 622, in _request
+2026-08-10T16:46:36.787623714Z ERROR 08-10 16:46:36 serving_chat.py:230]     with timer:
+2026-08-10T16:46:36.787625569Z ERROR 08-10 16:46:36 serving_chat.py:230]   File "/usr/local/lib/python3.10/site-packages/aiohttp/helpers.py", line 685, in __exit__
+2026-08-10T16:46:36.787627566Z ERROR 08-10 16:46:36 serving_chat.py:230]     raise asyncio.TimeoutError from exc_val
+2026-08-10T16:46:36.787629666Z ERROR 08-10 16:46:36 serving_chat.py:230] asyncio.exceptions.TimeoutError
+2026-08-10T16:46:36.787728916Z INFO:     172.28.22.23:31202 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T16:47:51.361426804Z INFO:     172.28.22.23:43623 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:05.582108411Z INFO:     172.28.22.23:63831 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:07.430751840Z INFO:     172.28.22.23:57185 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:09.302728126Z INFO:     172.28.22.23:7405 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:17.424450499Z INFO:     172.28.22.23:40506 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:23.030080412Z INFO:     172.28.22.23:46960 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:24.355432258Z INFO:     172.28.22.23:23511 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:25.686452390Z INFO:     172.28.22.23:23923 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:31.339897336Z INFO:     172.28.22.23:56981 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:31.466380072Z INFO:     172.28.22.23:14901 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T16:49:37.066415197Z INFO:     172.28.22.23:11620 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:41.672453772Z INFO:     172.28.22.23:28146 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:42.738377004Z INFO:     172.28.22.23:40810 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:42.865144383Z INFO:     172.28.22.23:19667 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T16:49:43.929650241Z INFO:     172.28.22.23:14234 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:44.997712813Z INFO:     172.28.22.23:45825 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:46.570846300Z INFO:     172.28.22.23:14319 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:52.211506076Z INFO:     172.28.22.23:34677 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:53.298412327Z INFO:     172.28.22.23:40388 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:54.896437180Z INFO:     172.28.22.23:48101 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:57.740386167Z INFO:     172.28.22.23:6808 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:49:59.467842645Z INFO:     172.28.22.23:1368 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:50:01.598917358Z INFO:     172.28.22.23:50326 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:50:02.471331067Z INFO:     172.28.22.23:10520 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:50:05.375816915Z INFO:     172.28.22.23:41906 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:55:05.631143745Z INFO:     172.28.22.23:25353 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T16:55:05.634287470Z INFO:     172.28.22.23:31425 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T16:55:05.756486840Z INFO:     172.28.22.23:20832 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T16:55:07.537737151Z INFO:     172.28.22.23:55169 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:55:08.468331607Z INFO:     172.28.22.23:40574 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:55:16.231943973Z INFO:     172.28.22.23:58767 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:55:19.108937778Z INFO:     172.28.22.23:39933 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T16:55:19.234879543Z INFO:     172.28.22.23:43624 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:00:24.131609555Z INFO 08-10 17:00:24 serving_chat.py:893] Client disconnected (non-stream watcher), aborting request chat-8d8dc330f296441789c39a5ead989985
+2026-08-10T17:00:32.589749654Z INFO:     172.28.22.23:54615 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:00:33.557128608Z INFO:     172.28.22.23:53195 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:00:34.617569029Z INFO:     172.28.22.23:16185 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:00:35.792258428Z INFO:     172.28.22.23:50225 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:00:38.768760834Z INFO:     172.28.22.23:58062 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:00:43.083309654Z INFO:     172.28.22.23:27984 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:00:43.552557470Z WARNING 08-10 17:00:43 serving_chat.py:320] Image data in request but model has no multimodal_config — rejecting to protect engine
+2026-08-10T17:00:43.552765416Z INFO:     172.28.22.23:13201 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T17:00:43.557717034Z INFO:     172.28.22.23:9078 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T17:02:51.700780577Z INFO:     172.28.22.23:10456 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:05:01.004222191Z INFO:     172.28.22.23:52517 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:05:01.009220160Z INFO:     172.28.22.23:24727 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T17:05:01.011658712Z INFO:     172.28.22.23:57621 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T17:05:01.014392536Z ERROR 08-10 17:05:01 serving_chat.py:224] Error in applying chat template from request
+2026-08-10T17:05:01.014397666Z ERROR 08-10 17:05:01 serving_chat.py:224] Traceback (most recent call last):
+2026-08-10T17:05:01.014399940Z ERROR 08-10 17:05:01 serving_chat.py:224]   File "/usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/openai/serving_chat.py", line 209, in create_chat_completion
+2026-08-10T17:05:01.014402394Z ERROR 08-10 17:05:01 serving_chat.py:224]     prompt = apply_hf_chat_template(
+2026-08-10T17:05:01.014404526Z ERROR 08-10 17:05:01 serving_chat.py:224]   File "/usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/chat_utils.py", line 574, in apply_hf_chat_template
+2026-08-10T17:05:01.014406699Z ERROR 08-10 17:05:01 serving_chat.py:224]     return tokenizer.apply_chat_template(
+2026-08-10T17:05:01.014408648Z ERROR 08-10 17:05:01 serving_chat.py:224]   File "/usr/local/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 1623, in apply_chat_template
+2026-08-10T17:05:01.014410720Z ERROR 08-10 17:05:01 serving_chat.py:224]     isinstance(conversation[0], (list, tuple)) or hasattr(conversation[0], "messages")
+2026-08-10T17:05:01.014412820Z ERROR 08-10 17:05:01 serving_chat.py:224] IndexError: list index out of range
+2026-08-10T17:05:01.014663540Z /usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/openai/api_server.py:344: RuntimeWarning: coroutine 'AsyncMultiModalItemTracker.all_mm_data' was never awaited
+2026-08-10T17:05:01.014667002Z   generator = await chat(raw_request).create_chat_completion(
+2026-08-10T17:05:01.014669372Z RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+2026-08-10T17:05:01.014802453Z INFO:     172.28.22.23:52981 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T17:05:12.319587597Z INFO:     172.28.22.23:4028 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:40:02.884410176Z INFO:     172.28.22.23:53647 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T17:40:51.914060959Z INFO:     172.28.22.23:53647 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T18:17:32.637403426Z INFO:     172.28.22.23:49670 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T18:22:19.909542537Z INFO:     172.28.22.23:49670 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T19:22:23.803015386Z INFO:     172.28.22.23:12991 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T19:35:09.356593530Z INFO:     172.28.22.23:12991 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request

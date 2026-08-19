@@ -1,0 +1,100 @@
+/usr/local/corex/lib/python3/dist-packages/torch/cuda/__init__.py:51: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+
+INFO ... importing.py:10] Triton not installed; certain GPU-related functions will not be available.
+
+2026-08-10 08:27:48.686705: I tensorflow/core/util/port.cc:110] oneDNN custom operations are on. ...
+2026-08-10 08:27:48.739565: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions ...
+WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+
+INFO ... api_server.py:568] vLLM API server version 0.6.3
+INFO ... api_server.py:569] args: Namespace(host=None, port=8000, ..., model='/model', dtype='half', max_model_len=80000, tensor_parallel_size=4, max_num_seqs=2, enforce_eager=True, enable_prefix_caching=True, enable_chunked_prefill=True, max_num_batched_tokens=4096, ...)
+
+INFO ... config.py:1670] Downcasting torch.float32 to torch.float16.
+INFO ... config.py:887] Defaulting to use mp for distributed inference
+INFO ... config.py:1005] Chunked prefill is enabled with max_num_batched_tokens=4096.
+WARNING ... config.py:380] To see benefits of async output processing, enable CUDA graph. Since, enforce-eager is enabled, async output processor cannot be used
+
+INFO ... llm_engine.py:237] Initializing an LLM engine (v0.6.3) with config: model='/model', ..., tensor_parallel_size=4, max_seq_len=80000, enforce_eager=True, enable_prefix_caching=True, ...
+
+INFO ... custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+INFO ... selector.py:115] Using XFormers backend.
+
+(VllmWorkerProcess pid=30/31/32) INFO ... selector.py:115] Using XFormers backend.
+(VllmWorkerProcess pid=30/31/32) INFO ... multiproc_worker_utils.py:216] Worker ready; awaiting tasks
+INFO ... shm_broadcast.py:242] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], ...)
+
+INFO ... model_runner.py:1065] Starting to load model /model...
+(VllmWorkerProcess pid=*) INFO ... model_runner.py:1065] Starting to load model /model...
+
+INFO / (VllmWorkerProcess) ... qwen3_5.py:68] ixformer loaded — BI-V100 hardware acceleration available
+开始判断我们需要开发哪些dlopen的动态链接库
+WARNING ... qwen3_5.py:100] ix_bridge: IMPORT FAILED (No module named 'ex_engine.python'). MoE will use PyTorch fallback. This is 3-10x slower.
+WARNING ... qwen3_5.py:120] FlashQLA SM70 GDN not found (No module named 'vllm.model_executor.models.flash_qla_sm70') — using PyTorch GDN
+INFO ... qwen3_5.py:125] CoreX GDN module found — fused GDN kernels available
+INFO ... qwen3_5.py:132] CoreX MoE module found — fused MoE kernels available
+WARNING ... qwen3_5.py:143] corex_fa2 import failed: cannot import name 'corex_fa2' from 'vllm.model_executor.models' (/usr/local/corex/lib/python3/dist-packages/vllm/model_executor/models/__init__.py)
+
+WARNING ... qwen3_5.py:477] GatedDeltaNet layer 0~38: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+INFO ... qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+
+INFO ... serving_chat.py:79] "auto" tool choice has been enabled please note that while the parallel_tool_calls client option is preset for compatibility reasons, it will be ignored.
+INFO ... serving_chat.py:101] Reasoning parser 'qwen3' enabled.
+WARNING ... serving_embedding.py:199] embedding_mode is False. Embedding API will not work.
+
+INFO ... launcher.py:19] Available routes are:
+Route: /openapi.json, Methods: HEAD, GET
+Route: /docs, Methods: HEAD, GET
+Route: /docs/oauth2-redirect, Methods: HEAD, GET
+Route: /redoc, Methods: HEAD, GET
+Route: /health, Methods: GET
+Route: /tokenize, Methods: POST
+Route: /detokenize, Methods: POST
+Route: /v1/models, Methods: GET
+Route: /version, Methods: GET
+Route: /v1/chat/completions, Methods: POST
+Route: /v1/completions, Methods: POST
+Route: /v1/embeddings, Methods: POST
+
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on socket ('0.0.0.0', 8000) (Press CTRL+C to quit)
+
+INFO ... metrics.py:345] Avg prompt throughput: 0.0 / 60.5 / 6.9 / 0.0 tokens/s, Avg generation throughput: 0.0 / 2.3 / 3.6 / 4.0 / 4.1 tokens/s, Running: 0/1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%/0.1%, CPU KV cache usage: 0.0%.
+INFO ... metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+
+INFO:     172.17.0.1:* - "GET /health HTTP/1.1" 200 OK
+INFO:     172.17.0.1:* - "GET /v1/models HTTP/1.1" 200 OK
+INFO:     172.28.22.23:* - "GET /get_model_info HTTP/1.1" 404 Not Found
+INFO:     172.28.22.23:* - "GET /get_server_info HTTP/1.1" 404 Not Found
+INFO:     172.28.22.23:* - "GET /version HTTP/1.1" 200 OK
+
+INFO:     172.28.22.23:* - "POST /v1/chat/completions HTTP/1.1" 200 OK   （出现过几次正常成功）
+
+ERROR ... async_llm_engine.py:66] Engine background task failed
+Traceback (most recent call last):
+  ...
+  File ".../vllm/multimodal/registry.py", line 125, in map_input
+    raise ValueError(
+ValueError: You set image=0 (or defaulted to 1) in `--limit-mm-per-prompt`, but found 1 items in the same prompt.
+
+Exception in callback ... 
+The above exception was the direct cause of the following exception:
+...
+vllm.engine.async_llm_engine.AsyncEngineDeadError: Task finished unexpectedly. This should never happen! Please open an issue on Github. See stack trace above for the actual cause.
+
+ERROR ... api_server.py:349] Error in chat completion (policy=engine_dead)
+...
+vllm.engine.async_llm_engine.AsyncEngineDeadError: Background loop is not running. If it was running, inspect the output to find the stacktrace of the error that caused the background loop to stop (AsyncEngineDeadError).
+
+INFO:     172.28.22.23:* - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+
+ERROR ... serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+INFO:     172.28.22.23:* - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+（之后大量重复，已全部合并）
+
+(VllmWorkerProcess pid=30/31/32) WARNING ... shm_broadcast.py:397] No available block found in 60 second.
+（之后每分钟重复出现）
+真正导致引擎死掉的核心错误就是这一句：
+textValueError: You set image=0 (or defaulted to 1) in `--limit-mm-per-prompt`, but found 1 items in the same prompt.

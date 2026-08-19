@@ -1,0 +1,939 @@
+2026-08-10T08:27:45.667262200Z /usr/local/corex/lib/python3/dist-packages/torch/cuda/__init__.py:51: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+2026-08-10T08:27:45.667309141Z   import pynvml  # type: ignore[import]
+2026-08-10T08:27:47.204784239Z INFO 08-10 08:27:47 importing.py:10] Triton not installed; certain GPU-related functions will not be available.
+2026-08-10T08:27:48.686769098Z 2026-08-10 08:27:48.686705: I tensorflow/core/util/port.cc:110] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-08-10T08:27:48.739621077Z 2026-08-10 08:27:48.739565: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+2026-08-10T08:27:48.739633239Z To enable the following instructions: SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI AMX_TILE AMX_INT8 AMX_BF16 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-08-10T08:27:48.771021853Z WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+2026-08-10T08:27:54.189447512Z INFO 08-10 08:27:54 api_server.py:568] vLLM API server version 0.6.3
+2026-08-10T08:27:54.189696593Z INFO 08-10 08:27:54 api_server.py:569] args: Namespace(host=None, port=8000, uvicorn_log_level='info', allow_credentials=False, allowed_origins=['*'], allowed_methods=['*'], allowed_headers=['*'], api_key=None, lora_modules=None, prompt_adapters=None, chat_template=None, response_role='assistant', ssl_keyfile=None, ssl_certfile=None, ssl_ca_certs=None, ssl_cert_reqs=0, root_path=None, middleware=[], return_tokens_as_token_ids=False, disable_frontend_multiprocessing=True, enable_auto_tool_choice=True, tool_call_parser='qwen3_coder', tool_parser_plugin='', reasoning_parser='qwen3', model='/model', tokenizer=None, skip_tokenizer_init=False, revision=None, code_revision=None, tokenizer_revision=None, tokenizer_mode='auto', trust_remote_code=True, download_dir=None, load_format='auto', config_format='auto', dtype='half', kv_cache_dtype='auto', quantization_param_path=None, max_model_len=80000, guided_decoding_backend='outlines', distributed_executor_backend=None, worker_use_ray=False, pipeline_parallel_size=1, tensor_parallel_size=4, max_parallel_loading_workers=None, ray_workers_use_nsight=False, block_size=16, enable_prefix_caching=True, disable_sliding_window=False, use_v2_block_manager=True, num_lookahead_slots=0, seed=0, swap_space=4, cpu_offload_gb=0, gpu_memory_utilization=0.95, num_gpu_blocks_override=None, max_num_batched_tokens=4096, max_num_seqs=2, max_logprobs=20, disable_log_stats=False, quantization=None, rope_scaling=None, rope_theta=None, enforce_eager=True, max_context_len_to_capture=None, max_seq_len_to_capture=8192, disable_custom_all_reduce=False, tokenizer_pool_size=0, tokenizer_pool_type='ray', tokenizer_pool_extra_config=None, limit_mm_per_prompt=None, mm_processor_kwargs=None, enable_lora=False, max_loras=1, max_lora_rank=16, lora_extra_vocab_size=256, lora_dtype='auto', long_lora_scaling_factors=None, max_cpu_loras=None, fully_sharded_loras=False, enable_prompt_adapter=False, max_prompt_adapters=1, max_prompt_adapter_token=0, device='auto', num_scheduler_steps=1, multi_step_stream_outputs=True, scheduler_delay_factor=0.0, enable_chunked_prefill=True, speculative_model=None, speculative_model_quantization=None, num_speculative_tokens=None, speculative_disable_mqa_scorer=False, speculative_draft_tensor_parallel_size=None, speculative_max_model_len=None, speculative_disable_by_batch_size=None, ngram_prompt_lookup_max=None, ngram_prompt_lookup_min=None, spec_decoding_acceptance_method='rejection_sampler', typical_acceptance_sampler_posterior_threshold=None, typical_acceptance_sampler_posterior_alpha=None, disable_logprobs_during_spec_decoding=None, model_loader_extra_config=None, ignore_patterns=[], preemption_mode=None, served_model_name=['llm'], qlora_adapter_name_or_path=None, otlp_traces_endpoint=None, collect_detailed_traces=None, disable_async_output_proc=False, override_neuron_config=None, scheduling_policy='fcfs', disable_log_requests=True, max_log_len=None, disable_fastapi_docs=False)
+2026-08-10T08:27:54.206116388Z INFO 08-10 08:27:54 config.py:1670] Downcasting torch.float32 to torch.float16.
+2026-08-10T08:28:04.822389817Z INFO 08-10 08:28:04 config.py:887] Defaulting to use mp for distributed inference
+2026-08-10T08:28:04.822703505Z INFO 08-10 08:28:04 config.py:1005] Chunked prefill is enabled with max_num_batched_tokens=4096.
+2026-08-10T08:28:04.822784022Z WARNING 08-10 08:28:04 config.py:380] To see benefits of async output processing, enable CUDA graph. Since, enforce-eager is enabled, async output processor cannot be used
+2026-08-10T08:28:04.825474016Z INFO 08-10 08:28:04 llm_engine.py:237] Initializing an LLM engine (v0.6.3) with config: model='/model', speculative_config=None, tokenizer='/model', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, rope_scaling=None, rope_theta=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.float16, max_seq_len=80000, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=True, quantization=None, enforce_eager=True, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='outlines'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=llm, use_v2_block_manager=True, num_scheduler_steps=1, chunked_prefill_enabled=True multi_step_stream_outputs=True, enable_prefix_caching=True, use_async_output_proc=False, use_cached_outputs=False, mm_processor_kwargs=None)
+2026-08-10T08:28:05.321171191Z INFO 08-10 08:28:05 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+2026-08-10T08:28:05.371609953Z INFO 08-10 08:28:05 selector.py:115] Using XFormers backend.
+2026-08-10T08:28:05.813315979Z /usr/local/corex/lib/python3/dist-packages/torch/cuda/__init__.py:51: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+2026-08-10T08:28:05.813326540Z   import pynvml  # type: ignore[import]
+2026-08-10T08:28:05.813349229Z /usr/local/corex/lib/python3/dist-packages/torch/cuda/__init__.py:51: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+2026-08-10T08:28:05.813359756Z   import pynvml  # type: ignore[import]
+2026-08-10T08:28:05.813411038Z /usr/local/corex/lib/python3/dist-packages/torch/cuda/__init__.py:51: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+2026-08-10T08:28:05.813423197Z   import pynvml  # type: ignore[import]
+2026-08-10T08:28:07.350483010Z INFO 08-10 08:28:07 importing.py:10] Triton not installed; certain GPU-related functions will not be available.
+2026-08-10T08:28:07.350488733Z INFO 08-10 08:28:07 importing.py:10] Triton not installed; certain GPU-related functions will not be available.
+2026-08-10T08:28:07.350491019Z INFO 08-10 08:28:07 importing.py:10] Triton not installed; certain GPU-related functions will not be available.
+2026-08-10T08:28:08.938567733Z WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+2026-08-10T08:28:08.938571902Z WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+2026-08-10T08:28:08.938574079Z WARNING:tensorflow:Deprecation warnings have been disabled. Set TF_ENABLE_DEPRECATION_WARNINGS=1 to re-enable them.
+2026-08-10T08:28:14.502672242Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 selector.py:115] Using XFormers backend.
+2026-08-10T08:28:14.509683571Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 selector.py:115] Using XFormers backend.
+2026-08-10T08:28:14.514201138Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 selector.py:115] Using XFormers backend.
+2026-08-10T08:28:14.523105460Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 multiproc_worker_utils.py:216] Worker ready; awaiting tasks
+2026-08-10T08:28:14.529743196Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 multiproc_worker_utils.py:216] Worker ready; awaiting tasks
+2026-08-10T08:28:14.534283090Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 multiproc_worker_utils.py:216] Worker ready; awaiting tasks
+2026-08-10T08:28:14.876378841Z INFO 08-10 08:28:14 shm_broadcast.py:242] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer=<vllm.distributed.device_communicators.shm_broadcast.ShmRingBuffer object at 0x7fe744521a50>, local_subscribe_port=45225, remote_subscribe_port=None)
+2026-08-10T08:28:14.915269357Z INFO 08-10 08:28:14 model_runner.py:1065] Starting to load model /model...
+2026-08-10T08:28:14.915526649Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 model_runner.py:1065] Starting to load model /model...
+2026-08-10T08:28:14.915613028Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 model_runner.py:1065] Starting to load model /model...
+2026-08-10T08:28:14.915659281Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 model_runner.py:1065] Starting to load model /model...
+2026-08-10T08:28:14.917775926Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:68] ixformer loaded — BI-V100 hardware acceleration available
+2026-08-10T08:28:14.918008985Z INFO 08-10 08:28:14 qwen3_5.py:68] ixformer loaded — BI-V100 hardware acceleration available
+2026-08-10T08:28:14.918792043Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:100] ix_bridge: IMPORT FAILED (No module named 'ex_engine.python'). MoE will use PyTorch fallback. This is 3-10x slower.
+2026-08-10T08:28:14.918837084Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:68] ixformer loaded — BI-V100 hardware acceleration available
+2026-08-10T08:28:14.918844643Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:68] ixformer loaded — BI-V100 hardware acceleration available
+2026-08-10T08:28:14.918880327Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:120] FlashQLA SM70 GDN not found (No module named 'vllm.model_executor.models.flash_qla_sm70') — using PyTorch GDN
+2026-08-10T08:28:14.919066097Z WARNING 08-10 08:28:14 qwen3_5.py:100] ix_bridge: IMPORT FAILED (No module named 'ex_engine.python'). MoE will use PyTorch fallback. This is 3-10x slower.
+2026-08-10T08:28:14.919164465Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:125] CoreX GDN module found — fused GDN kernels available
+2026-08-10T08:28:14.919170163Z WARNING 08-10 08:28:14 qwen3_5.py:120] FlashQLA SM70 GDN not found (No module named 'vllm.model_executor.models.flash_qla_sm70') — using PyTorch GDN
+2026-08-10T08:28:14.919394113Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:132] CoreX MoE module found — fused MoE kernels available
+2026-08-10T08:28:14.919472086Z INFO 08-10 08:28:14 qwen3_5.py:125] CoreX GDN module found — fused GDN kernels available
+2026-08-10T08:28:14.919692995Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:143] corex_fa2 import failed: cannot import name 'corex_fa2' from 'vllm.model_executor.models' (/usr/local/corex/lib/python3/dist-packages/vllm/model_executor/models/__init__.py)
+2026-08-10T08:28:14.919708292Z INFO 08-10 08:28:14 qwen3_5.py:132] CoreX MoE module found — fused MoE kernels available
+2026-08-10T08:28:14.919941323Z WARNING 08-10 08:28:14 qwen3_5.py:143] corex_fa2 import failed: cannot import name 'corex_fa2' from 'vllm.model_executor.models' (/usr/local/corex/lib/python3/dist-packages/vllm/model_executor/models/__init__.py)
+2026-08-10T08:28:14.920341735Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:100] ix_bridge: IMPORT FAILED (No module named 'ex_engine.python'). MoE will use PyTorch fallback. This is 3-10x slower.
+2026-08-10T08:28:14.920358670Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:100] ix_bridge: IMPORT FAILED (No module named 'ex_engine.python'). MoE will use PyTorch fallback. This is 3-10x slower.
+2026-08-10T08:28:14.920487729Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:120] FlashQLA SM70 GDN not found (No module named 'vllm.model_executor.models.flash_qla_sm70') — using PyTorch GDN
+2026-08-10T08:28:14.920503793Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:120] FlashQLA SM70 GDN not found (No module named 'vllm.model_executor.models.flash_qla_sm70') — using PyTorch GDN
+2026-08-10T08:28:14.920928990Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:125] CoreX GDN module found — fused GDN kernels available
+2026-08-10T08:28:14.920937956Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:125] CoreX GDN module found — fused GDN kernels available
+2026-08-10T08:28:14.921290554Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:132] CoreX MoE module found — fused MoE kernels available
+2026-08-10T08:28:14.921295574Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:132] CoreX MoE module found — fused MoE kernels available
+2026-08-10T08:28:14.921766283Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:143] corex_fa2 import failed: cannot import name 'corex_fa2' from 'vllm.model_executor.models' (/usr/local/corex/lib/python3/dist-packages/vllm/model_executor/models/__init__.py)
+2026-08-10T08:28:14.921777648Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:143] corex_fa2 import failed: cannot import name 'corex_fa2' from 'vllm.model_executor.models' (/usr/local/corex/lib/python3/dist-packages/vllm/model_executor/models/__init__.py)
+2026-08-10T08:28:14.923190362Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 0: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.923706743Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.923842901Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 0: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.924374942Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 1: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.924408386Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.924834911Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.925143313Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 1: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.925411080Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 2: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.925658079Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.925928535Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.926278225Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 2: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.926746857Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.926891764Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 0: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.926909287Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 0: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.927765573Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.927774440Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.928977671Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 1: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.928983468Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 1: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.929824813Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.929828046Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.930917540Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 2: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.930928354Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 2: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.931828722Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.931836705Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.957247357Z INFO 08-10 08:28:14 selector.py:115] Using XFormers backend.
+2026-08-10T08:28:14.958510904Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.959147417Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 4: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.959729635Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.960327452Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 5: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.960825147Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.961419235Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 6: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.961998689Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.963068409Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.963697308Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 8: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.964228155Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.964724534Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 selector.py:115] Using XFormers backend.
+2026-08-10T08:28:14.964799543Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 9: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.965306467Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.965847836Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.965912576Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 10: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.966479219Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.966512377Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 4: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.966995811Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.967556878Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.967563988Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 5: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.968042861Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.968205047Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 12: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.968642981Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 6: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.968748550Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.969153237Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.969368283Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 13: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.969969645Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.970213417Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.970792386Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 8: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.971301089Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.971392364Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 14: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.971835894Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 9: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.971991730Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.972346524Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.972914542Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 10: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.973216107Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.973471346Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.973877894Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 16: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.974437515Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.974523607Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.975015661Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 17: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.975051544Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 12: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.975591139Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.975679570Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.976169169Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 13: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.976296181Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 18: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.976852781Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.977454529Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.978093696Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 14: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.978103874Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.978652845Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.978751191Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 20: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.979368684Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.979862113Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.980051697Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 21: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.980457522Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 16: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.980685029Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.981034633Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.981257747Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 22: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.981617922Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 17: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.981896872Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.982246749Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.982844760Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 18: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.983178235Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.983405961Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.983818258Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 24: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.984445772Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.984573445Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.985127838Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 25: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.985163425Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 20: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.985791373Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.985795704Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.986425366Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 21: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.986452824Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 26: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.986628786Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 selector.py:115] Using XFormers backend.
+2026-08-10T08:28:14.986632756Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 selector.py:115] Using XFormers backend.
+2026-08-10T08:28:14.987016673Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.987160568Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.987548253Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 22: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.988166192Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.988209626Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.988215447Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.988498117Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.989134100Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 28: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.989370916Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 4: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.989383414Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 4: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.989385813Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.989880176Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.990002843Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 24: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.990300593Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.990303355Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.990578258Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 29: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.990744289Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.991284920Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.991341431Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 5: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.991347863Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 5: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.991387341Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 25: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.991950424Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 30: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.991982433Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.992242236Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.992248703Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.992594051Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 26: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.992766234Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.993288440Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.993371985Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 6: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.993379615Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 6: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.994130889Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.994335735Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.994341879Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.994513431Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.994737181Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 32: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.995138613Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 28: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.995516426Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.995866269Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.996180264Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 33: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.996214571Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.996217011Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.996489132Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 29: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.996906717Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.997180827Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.997354080Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 8: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.997364517Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 8: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.997664854Z WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 34: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.997842219Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 30: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.998287602Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.998291552Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.998503566Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.998551979Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.999333438Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 9: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.999340191Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:14 qwen3_5.py:477] GatedDeltaNet layer 9: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:14.999810328Z INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:14.999922760Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:14 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.000252366Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.000261919Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.000510367Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 32: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.001035813Z WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 36: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.001194718Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.001359239Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 10: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.001363695Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 10: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.001804736Z INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.001831934Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 33: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.002388972Z WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 37: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.002393439Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.002395668Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.002519227Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.003167525Z INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.003201105Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 34: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.003898042Z WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 38: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.003991298Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.004373901Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.004380105Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.004777823Z INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.005315941Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.005436010Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 12: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.005447083Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 12: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.006205639Z INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.006432173Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 36: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.006437122Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.006440005Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.007066496Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.007558174Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 13: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.007565405Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 13: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.007584586Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 37: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.008373310Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.009010373Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 38: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.009582770Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.009592691Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.009846451Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.010744683Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 14: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.010751003Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 14: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.011274338Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.011714863Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.011732145Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.013733053Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.013906963Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.014361117Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 16: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.014563904Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 16: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.014949204Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.015128328Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.015542389Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 17: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.015734494Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 17: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.016193283Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.016336011Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.016800763Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 18: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.016935839Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 18: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.017388684Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.017511214Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.018602311Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.018684366Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.019201678Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 20: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.019269456Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 20: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.019856304Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.019865259Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.020495268Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 21: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.020508673Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 21: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.021094417Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.021098874Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.021633625Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 22: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.021649868Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 22: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.022244833Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.022257453Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.023421400Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.023474483Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.024035271Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 24: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.024088106Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 24: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.024714430Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.024826801Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.025344302Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 25: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.025435825Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 25: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.025951484Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.026067801Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.026548193Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 26: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.026635985Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 26: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.027167201Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.027289582Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.028336857Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.028498727Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.028958038Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 28: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.029114229Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 28: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.029640533Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.029773634Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.030230412Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 29: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.030393557Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 29: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.030836936Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.031033334Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.031501905Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 30: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.031679591Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 30: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.032207674Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.032371089Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.033489121Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.033690277Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.034105401Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 32: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.034270630Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 32: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.034750987Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.034924946Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.035389193Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 33: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.035521859Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 33: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.036016957Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.036225231Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.036688811Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 34: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.036903475Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 34: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.037392761Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.037678071Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.038628245Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.038983000Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.039726379Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 36: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.040078600Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 36: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.040491511Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.040779460Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.041022564Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 37: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.041317043Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 37: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.041806211Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.042014105Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.042436940Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 38: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.042661179Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:15 qwen3_5.py:477] GatedDeltaNet layer 38: CoreX GDN init failed (CoreXGDN.__init__() got an unexpected keyword argument 'num_v_heads'), using PyTorch
+2026-08-10T08:28:15.043279012Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.043490138Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.044688687Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.044899866Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:15 qwen3_5.py:1091] MoE: CoreX fused MoE forward available
+2026-08-10T08:28:15.057806453Z 
+Loading safetensors checkpoint shards:   0% Completed | 0/16 [00:00<?, ?it/s]
+2026-08-10T08:28:16.300786298Z 
+Loading safetensors checkpoint shards:   6% Completed | 1/16 [00:01<00:18,  1.24s/it]
+2026-08-10T08:28:17.399191287Z 
+Loading safetensors checkpoint shards:  12% Completed | 2/16 [00:02<00:16,  1.16s/it]
+2026-08-10T08:28:17.926622247Z 
+Loading safetensors checkpoint shards:  19% Completed | 3/16 [00:02<00:11,  1.15it/s]
+2026-08-10T08:28:19.152202149Z 
+Loading safetensors checkpoint shards:  25% Completed | 4/16 [00:04<00:12,  1.01s/it]
+2026-08-10T08:28:20.123098964Z 
+Loading safetensors checkpoint shards:  31% Completed | 5/16 [00:05<00:10,  1.00it/s]
+2026-08-10T08:28:21.183535807Z 
+Loading safetensors checkpoint shards:  38% Completed | 6/16 [00:06<00:10,  1.02s/it]
+2026-08-10T08:28:22.263999156Z 
+Loading safetensors checkpoint shards:  44% Completed | 7/16 [00:07<00:09,  1.04s/it]
+2026-08-10T08:28:23.439404934Z 
+Loading safetensors checkpoint shards:  50% Completed | 8/16 [00:08<00:08,  1.08s/it]
+2026-08-10T08:28:24.884737153Z 
+Loading safetensors checkpoint shards:  56% Completed | 9/16 [00:09<00:08,  1.20s/it]
+2026-08-10T08:28:26.078954172Z 
+Loading safetensors checkpoint shards:  62% Completed | 10/16 [00:11<00:07,  1.20s/it]
+2026-08-10T08:28:27.071464336Z 
+Loading safetensors checkpoint shards:  69% Completed | 11/16 [00:12<00:05,  1.13s/it]
+2026-08-10T08:28:28.459147430Z 
+Loading safetensors checkpoint shards:  75% Completed | 12/16 [00:13<00:04,  1.21s/it]
+2026-08-10T08:28:29.780221619Z 
+Loading safetensors checkpoint shards:  81% Completed | 13/16 [00:14<00:03,  1.24s/it]
+2026-08-10T08:28:30.764284666Z 
+Loading safetensors checkpoint shards:  88% Completed | 14/16 [00:15<00:02,  1.17s/it]
+2026-08-10T08:28:31.857554645Z 
+Loading safetensors checkpoint shards:  94% Completed | 15/16 [00:16<00:01,  1.14s/it]
+2026-08-10T08:28:33.056740695Z 
+Loading safetensors checkpoint shards: 100% Completed | 16/16 [00:17<00:00,  1.16s/it]
+2026-08-10T08:28:33.056868050Z 
+Loading safetensors checkpoint shards: 100% Completed | 16/16 [00:17<00:00,  1.12s/it]
+2026-08-10T08:28:33.056878473Z 
+2026-08-10T08:28:33.503297016Z [1;36m(VllmWorkerProcess pid=31)[0;0m INFO 08-10 08:28:33 model_runner.py:1076] Loading model weights took 16.2303 GB
+2026-08-10T08:28:33.505821621Z [1;36m(VllmWorkerProcess pid=30)[0;0m INFO 08-10 08:28:33 model_runner.py:1076] Loading model weights took 16.2303 GB
+2026-08-10T08:28:33.512178929Z [1;36m(VllmWorkerProcess pid=32)[0;0m INFO 08-10 08:28:33 model_runner.py:1076] Loading model weights took 16.2303 GB
+2026-08-10T08:28:33.514712302Z INFO 08-10 08:28:33 model_runner.py:1076] Loading model weights took 16.2303 GB
+2026-08-10T08:28:54.183708513Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:28:54 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 0 (frac=0.5000), replacing with zeros
+2026-08-10T08:28:54.183791096Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:28:54 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 0 (frac=0.5000), replacing with zeros
+2026-08-10T08:28:54.183821062Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:28:54 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 0 (frac=0.5000), replacing with zeros
+2026-08-10T08:28:54.183943240Z WARNING 08-10 08:28:54 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 0 (frac=0.5000), replacing with zeros
+2026-08-10T08:28:54.395492159Z [1;36m(VllmWorkerProcess pid=32)[0;0m /usr/local/corex/lib/python3/dist-packages/torch/utils/cpp_extension.py:28: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+2026-08-10T08:28:54.395510385Z [1;36m(VllmWorkerProcess pid=30)[0;0m /usr/local/corex/lib/python3/dist-packages/torch/utils/cpp_extension.py:28: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+2026-08-10T08:28:54.395513277Z [1;36m(VllmWorkerProcess pid=31)[0;0m /usr/local/corex/lib/python3/dist-packages/torch/utils/cpp_extension.py:28: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+2026-08-10T08:28:54.395515879Z [1;36m(VllmWorkerProcess pid=32)[0;0m   from pkg_resources import packaging  # type: ignore[attr-defined]
+2026-08-10T08:28:54.395517832Z [1;36m(VllmWorkerProcess pid=30)[0;0m   from pkg_resources import packaging  # type: ignore[attr-defined]
+2026-08-10T08:28:54.395519946Z [1;36m(VllmWorkerProcess pid=31)[0;0m   from pkg_resources import packaging  # type: ignore[attr-defined]
+2026-08-10T08:28:54.395934495Z /usr/local/corex/lib/python3/dist-packages/torch/utils/cpp_extension.py:28: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+2026-08-10T08:28:54.395939762Z   from pkg_resources import packaging  # type: ignore[attr-defined]
+2026-08-10T08:29:11.262697621Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 1 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.262711837Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 1 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.262714518Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 1 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.262717179Z WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 1 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.368000643Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 2 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.368013200Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 2 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.368053020Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 2 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.368090531Z WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 2 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.515428147Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 4 (frac=0.5005), replacing with zeros
+2026-08-10T08:29:11.515434583Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 4 (frac=0.5005), replacing with zeros
+2026-08-10T08:29:11.515487906Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 4 (frac=0.5005), replacing with zeros
+2026-08-10T08:29:11.515511422Z WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 4 (frac=0.5005), replacing with zeros
+2026-08-10T08:29:11.619733663Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 5 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.619742616Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 5 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.619745022Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 5 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.619747265Z WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 5 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.725717282Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 6 (frac=0.5000), replacing with zeros
+2026-08-10T08:29:11.725762005Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 6 (frac=0.5000), replacing with zeros
+2026-08-10T08:29:11.725765252Z WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 6 (frac=0.5000), replacing with zeros
+2026-08-10T08:29:11.725767575Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 6 (frac=0.5000), replacing with zeros
+2026-08-10T08:29:11.869911178Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 8 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.869916090Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 8 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.869955856Z WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 8 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.869978378Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 8 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.976735735Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 9 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.976757808Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 9 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.976762366Z WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 9 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:11.976767014Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:11 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 9 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.083488413Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 10 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.083530319Z WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 10 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.083551502Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 10 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.083556416Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 10 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.232687410Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 12 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.232694202Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 12 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.232723816Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 12 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.232743415Z WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 12 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.342760802Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 13 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.342782874Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 13 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.342787478Z WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 13 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.342794628Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 13 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.450294420Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 14 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.450320015Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 14 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.450324403Z WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 14 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.450328941Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 14 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.600235926Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 16 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.600276791Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 16 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.600298296Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 16 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.600315235Z WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 16 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.710862116Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 17 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.710868399Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 17 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.710903462Z WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 17 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.710924192Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 17 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.820221562Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 18 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.820256783Z WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 18 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.820279178Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 18 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.820286446Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 18 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.972441448Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 20 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.972447696Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 20 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.972479694Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 20 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:12.972482241Z WARNING 08-10 08:29:12 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 20 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.083051610Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 21 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.083076128Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 21 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.083080795Z WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 21 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.083086177Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 21 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.191166012Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 22 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.191205218Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 22 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.191236401Z WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 22 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.191243469Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 22 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.340965518Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 24 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.340986132Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 24 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.340990176Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 24 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.340993554Z WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 24 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.450247316Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 25 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.450254141Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 25 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.450275476Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 25 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.450290934Z WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 25 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.558934436Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 26 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.558943944Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 26 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.558969519Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 26 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.558972143Z WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 26 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.707951076Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 28 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.707975486Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 28 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.707981149Z WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 28 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.707992540Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 28 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.817004089Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 29 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.817013879Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 29 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.817021970Z WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 29 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:13.817026108Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:29:13 qwen3_5.py:751] NaN in prefill GatedDeltaNet layer 29 (frac=1.0000), replacing with zeros
+2026-08-10T08:29:15.392107361Z INFO 08-10 08:29:15 distributed_gpu_executor.py:57] # GPU blocks: 20449, # CPU blocks: 6553
+2026-08-10T08:29:15.392139014Z INFO 08-10 08:29:15 distributed_gpu_executor.py:61] Maximum concurrency for 80000 tokens per request: 4.09x
+2026-08-10T08:29:19.623812482Z INFO 08-10 08:29:19 serving_chat.py:79] "auto" tool choice has been enabled please note that while the parallel_tool_calls client option is preset for compatibility reasons, it will be ignored.
+2026-08-10T08:29:19.625121113Z INFO 08-10 08:29:19 serving_chat.py:101] Reasoning parser 'qwen3' enabled.
+2026-08-10T08:29:19.625167138Z WARNING 08-10 08:29:19 serving_embedding.py:199] embedding_mode is False. Embedding API will not work.
+2026-08-10T08:29:19.625218078Z INFO 08-10 08:29:19 launcher.py:19] Available routes are:
+2026-08-10T08:29:19.625255438Z INFO 08-10 08:29:19 launcher.py:27] Route: /openapi.json, Methods: HEAD, GET
+2026-08-10T08:29:19.625274331Z INFO 08-10 08:29:19 launcher.py:27] Route: /docs, Methods: HEAD, GET
+2026-08-10T08:29:19.625296658Z INFO 08-10 08:29:19 launcher.py:27] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+2026-08-10T08:29:19.625320488Z INFO 08-10 08:29:19 launcher.py:27] Route: /redoc, Methods: HEAD, GET
+2026-08-10T08:29:19.625339422Z INFO 08-10 08:29:19 launcher.py:27] Route: /health, Methods: GET
+2026-08-10T08:29:19.625361190Z INFO 08-10 08:29:19 launcher.py:27] Route: /tokenize, Methods: POST
+2026-08-10T08:29:19.625383302Z INFO 08-10 08:29:19 launcher.py:27] Route: /detokenize, Methods: POST
+2026-08-10T08:29:19.625406449Z INFO 08-10 08:29:19 launcher.py:27] Route: /v1/models, Methods: GET
+2026-08-10T08:29:19.625425490Z INFO 08-10 08:29:19 launcher.py:27] Route: /version, Methods: GET
+2026-08-10T08:29:19.625442720Z INFO 08-10 08:29:19 launcher.py:27] Route: /v1/chat/completions, Methods: POST
+2026-08-10T08:29:19.625462465Z INFO 08-10 08:29:19 launcher.py:27] Route: /v1/completions, Methods: POST
+2026-08-10T08:29:19.625481623Z INFO 08-10 08:29:19 launcher.py:27] Route: /v1/embeddings, Methods: POST
+2026-08-10T08:29:19.642194660Z INFO:     Started server process [1]
+2026-08-10T08:29:19.642233733Z INFO:     Waiting for application startup.
+2026-08-10T08:29:19.642576832Z INFO:     Application startup complete.
+2026-08-10T08:29:19.642910006Z INFO:     Uvicorn running on socket ('0.0.0.0', 8000) (Press CTRL+C to quit)
+2026-08-10T08:29:29.643370365Z INFO 08-10 08:29:29 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:29:29.643399418Z INFO 08-10 08:29:29 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:29:39.643767802Z INFO 08-10 08:29:39 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:29:39.643789037Z INFO 08-10 08:29:39 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:29:44.977924579Z INFO:     172.17.0.1:37038 - "GET /health HTTP/1.1" 200 OK
+2026-08-10T08:29:44.978618961Z INFO:     172.17.0.1:37038 - "GET /v1/models HTTP/1.1" 200 OK
+2026-08-10T08:29:49.644010790Z INFO 08-10 08:29:49 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:29:49.644033564Z INFO 08-10 08:29:49 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:29:59.644604007Z INFO 08-10 08:29:59 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:29:59.644636130Z INFO 08-10 08:29:59 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:30:09.645030538Z INFO 08-10 08:30:09 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:30:09.645061785Z INFO 08-10 08:30:09 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:30:19.644676065Z INFO 08-10 08:30:19 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:30:19.644702405Z INFO 08-10 08:30:19 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:30:29.645153284Z INFO 08-10 08:30:29 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:30:29.645182471Z INFO 08-10 08:30:29 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:30:39.645647995Z INFO 08-10 08:30:39 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:30:39.645678604Z INFO 08-10 08:30:39 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:30:49.646380814Z INFO 08-10 08:30:49 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:30:49.646422686Z INFO 08-10 08:30:49 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:30:59.646689360Z INFO 08-10 08:30:59 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:30:59.646757406Z INFO 08-10 08:30:59 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:31:09.646904927Z INFO 08-10 08:31:09 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:31:09.646925658Z INFO 08-10 08:31:09 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:31:19.647152409Z INFO 08-10 08:31:19 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:31:19.647180508Z INFO 08-10 08:31:19 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:31:29.647380787Z INFO 08-10 08:31:29 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:31:29.647411767Z INFO 08-10 08:31:29 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:31:39.647589912Z INFO 08-10 08:31:39 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:31:39.647617337Z INFO 08-10 08:31:39 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:31:49.647910374Z INFO 08-10 08:31:49 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:31:49.647937228Z INFO 08-10 08:31:49 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:31:58.412639857Z INFO:     172.28.22.23:11238 - "GET /get_model_info HTTP/1.1" 404 Not Found
+2026-08-10T08:31:58.414793184Z INFO:     172.28.22.23:10379 - "GET /get_server_info HTTP/1.1" 404 Not Found
+2026-08-10T08:31:58.416192095Z INFO:     172.28.22.23:42073 - "GET /version HTTP/1.1" 200 OK
+2026-08-10T08:32:00.393227529Z INFO 08-10 08:32:00 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:00.393268424Z INFO 08-10 08:32:00 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:01.966554761Z INFO:     172.28.22.23:31301 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T08:32:02.096224207Z INFO:     172.28.22.23:61145 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T08:32:05.501818494Z INFO 08-10 08:32:05 metrics.py:345] Avg prompt throughput: 60.5 tokens/s, Avg generation throughput: 2.3 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.1%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:05.501851522Z INFO 08-10 08:32:05 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:10.627070714Z INFO:     172.28.22.23:14358 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T08:32:10.627507717Z INFO 08-10 08:32:10 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3.7 tokens/s, Running: 0 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:10.627537618Z INFO 08-10 08:32:10 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:15.861275064Z INFO 08-10 08:32:15 metrics.py:345] Avg prompt throughput: 6.9 tokens/s, Avg generation throughput: 3.6 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:15.861321611Z INFO 08-10 08:32:15 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:21.056029698Z INFO 08-10 08:32:21 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:21.056083585Z INFO 08-10 08:32:21 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:26.252349719Z INFO 08-10 08:32:26 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:26.252383042Z INFO 08-10 08:32:26 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:31.415194898Z INFO 08-10 08:32:31 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4.1 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:31.415224612Z INFO 08-10 08:32:31 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:36.572727110Z INFO 08-10 08:32:36 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4.1 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:36.572783007Z INFO 08-10 08:32:36 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:41.753060862Z INFO 08-10 08:32:41 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4.1 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:32:41.753089237Z INFO 08-10 08:32:41 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:32:44.507397187Z INFO:     172.28.22.23:3750 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-08-10T08:32:44.646585925Z ERROR 08-10 08:32:44 async_llm_engine.py:66] Engine background task failed
+2026-08-10T08:32:44.646591130Z ERROR 08-10 08:32:44 async_llm_engine.py:66] Traceback (most recent call last):
+2026-08-10T08:32:44.646593578Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 56, in _log_task_completion
+2026-08-10T08:32:44.646603295Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     return_value = task.result()
+2026-08-10T08:32:44.646605553Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 857, in run_engine_loop
+2026-08-10T08:32:44.646608442Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     result = task.result()
+2026-08-10T08:32:44.646610347Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 776, in engine_step
+2026-08-10T08:32:44.646612521Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     request_outputs = await self.engine.step_async(virtual_engine)
+2026-08-10T08:32:44.646614560Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 348, in step_async
+2026-08-10T08:32:44.646617244Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     outputs = await self.model_executor.execute_model_async(
+2026-08-10T08:32:44.646619490Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/executor/distributed_gpu_executor.py", line 181, in execute_model_async
+2026-08-10T08:32:44.646621602Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     return await self._driver_execute_model_async(execute_model_req)
+2026-08-10T08:32:44.646623638Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/executor/multiproc_gpu_executor.py", line 224, in _driver_execute_model_async
+2026-08-10T08:32:44.646626021Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     return await self.driver_exec_model(execute_model_req)
+2026-08-10T08:32:44.646628247Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+2026-08-10T08:32:44.646630424Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     result = self.fn(*self.args, **self.kwargs)
+2026-08-10T08:32:44.646632692Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 303, in execute_model
+2026-08-10T08:32:44.646634952Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     inputs = self.prepare_input(execute_model_req)
+2026-08-10T08:32:44.646637223Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 291, in prepare_input
+2026-08-10T08:32:44.646639213Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     return self._get_driver_input_and_broadcast(execute_model_req)
+2026-08-10T08:32:44.646641153Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 253, in _get_driver_input_and_broadcast
+2026-08-10T08:32:44.646643486Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     self.model_runner.prepare_model_input(
+2026-08-10T08:32:44.646645663Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 1598, in prepare_model_input
+2026-08-10T08:32:44.646650384Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     model_input = self._prepare_model_input_tensors(
+2026-08-10T08:32:44.646652365Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 1201, in _prepare_model_input_tensors
+2026-08-10T08:32:44.646654606Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     builder.add_seq_group(seq_group_metadata)
+2026-08-10T08:32:44.646656486Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 720, in add_seq_group
+2026-08-10T08:32:44.646658454Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     per_seq_group_fn(inter_data, seq_group_metadata)
+2026-08-10T08:32:44.646660456Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 650, in _compute_multi_modal_input
+2026-08-10T08:32:44.646663133Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     mm_kwargs = self.multi_modal_input_mapper(
+2026-08-10T08:32:44.646665010Z ERROR 08-10 08:32:44 async_llm_engine.py:66]   File "/usr/local/corex/lib/python3/dist-packages/vllm/multimodal/registry.py", line 125, in map_input
+2026-08-10T08:32:44.646666996Z ERROR 08-10 08:32:44 async_llm_engine.py:66]     raise ValueError(
+2026-08-10T08:32:44.646669005Z ERROR 08-10 08:32:44 async_llm_engine.py:66] ValueError: You set image=0 (or defaulted to 1) in `--limit-mm-per-prompt`, but found 1 items in the same prompt.
+2026-08-10T08:32:44.646924793Z Exception in callback functools.partial(<function _log_task_completion at 0x7fe754cb0280>, error_callback=<bound method AsyncLLMEngine._error_callback of <vllm.engine.async_llm_engine.AsyncLLMEngine object at 0x7fe7450df040>>)
+2026-08-10T08:32:44.646938655Z handle: <Handle functools.partial(<function _log_task_completion at 0x7fe754cb0280>, error_callback=<bound method AsyncLLMEngine._error_callback of <vllm.engine.async_llm_engine.AsyncLLMEngine object at 0x7fe7450df040>>)>
+2026-08-10T08:32:44.646941723Z Traceback (most recent call last):
+2026-08-10T08:32:44.646943770Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 56, in _log_task_completion
+2026-08-10T08:32:44.646946401Z     return_value = task.result()
+2026-08-10T08:32:44.646948320Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 857, in run_engine_loop
+2026-08-10T08:32:44.646950291Z     result = task.result()
+2026-08-10T08:32:44.646952132Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 776, in engine_step
+2026-08-10T08:32:44.646954043Z     request_outputs = await self.engine.step_async(virtual_engine)
+2026-08-10T08:32:44.646955966Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 348, in step_async
+2026-08-10T08:32:44.646957894Z     outputs = await self.model_executor.execute_model_async(
+2026-08-10T08:32:44.646959753Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/executor/distributed_gpu_executor.py", line 181, in execute_model_async
+2026-08-10T08:32:44.646968445Z     return await self._driver_execute_model_async(execute_model_req)
+2026-08-10T08:32:44.646970420Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/executor/multiproc_gpu_executor.py", line 224, in _driver_execute_model_async
+2026-08-10T08:32:44.646972474Z     return await self.driver_exec_model(execute_model_req)
+2026-08-10T08:32:44.646974224Z   File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+2026-08-10T08:32:44.646976102Z     result = self.fn(*self.args, **self.kwargs)
+2026-08-10T08:32:44.646977870Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 303, in execute_model
+2026-08-10T08:32:44.646979800Z     inputs = self.prepare_input(execute_model_req)
+2026-08-10T08:32:44.646981656Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 291, in prepare_input
+2026-08-10T08:32:44.646983550Z     return self._get_driver_input_and_broadcast(execute_model_req)
+2026-08-10T08:32:44.646985853Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 253, in _get_driver_input_and_broadcast
+2026-08-10T08:32:44.646987852Z     self.model_runner.prepare_model_input(
+2026-08-10T08:32:44.646989561Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 1598, in prepare_model_input
+2026-08-10T08:32:44.646991557Z     model_input = self._prepare_model_input_tensors(
+2026-08-10T08:32:44.646993500Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 1201, in _prepare_model_input_tensors
+2026-08-10T08:32:44.646995783Z     builder.add_seq_group(seq_group_metadata)
+2026-08-10T08:32:44.646997510Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 720, in add_seq_group
+2026-08-10T08:32:44.646999398Z     per_seq_group_fn(inter_data, seq_group_metadata)
+2026-08-10T08:32:44.647001156Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 650, in _compute_multi_modal_input
+2026-08-10T08:32:44.647003070Z     mm_kwargs = self.multi_modal_input_mapper(
+2026-08-10T08:32:44.647004880Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/multimodal/registry.py", line 125, in map_input
+2026-08-10T08:32:44.647006767Z     raise ValueError(
+2026-08-10T08:32:44.647008603Z ValueError: You set image=0 (or defaulted to 1) in `--limit-mm-per-prompt`, but found 1 items in the same prompt.
+2026-08-10T08:32:44.647011066Z 
+2026-08-10T08:32:44.647012787Z The above exception was the direct cause of the following exception:
+2026-08-10T08:32:44.647014652Z 
+2026-08-10T08:32:44.647016263Z Traceback (most recent call last):
+2026-08-10T08:32:44.647017984Z   File "uvloop/cbhandles.pyx", line 63, in uvloop.loop.Handle._run
+2026-08-10T08:32:44.647019880Z   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 68, in _log_task_completion
+2026-08-10T08:32:44.647024476Z     raise AsyncEngineDeadError(
+2026-08-10T08:32:44.647026536Z vllm.engine.async_llm_engine.AsyncEngineDeadError: Task finished unexpectedly. This should never happen! Please open an issue on Github. See stack trace above for the actual cause.
+2026-08-10T08:32:44.647853253Z ERROR 08-10 08:32:44 api_server.py:349] Error in chat completion (policy=engine_dead)
+2026-08-10T08:32:44.647857373Z ERROR 08-10 08:32:44 api_server.py:349] Traceback (most recent call last):
+2026-08-10T08:32:44.647859765Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/openai/serving_chat.py", line 896, in chat_completion_full_generator
+2026-08-10T08:32:44.647861999Z ERROR 08-10 08:32:44 api_server.py:349]     async for res in result_generator:
+2026-08-10T08:32:44.647863932Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/utils.py", line 458, in iterate_with_cancellation
+2026-08-10T08:32:44.647866042Z ERROR 08-10 08:32:44 api_server.py:349]     item = await awaits[0]
+2026-08-10T08:32:44.647867900Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 1046, in generate
+2026-08-10T08:32:44.647869941Z ERROR 08-10 08:32:44 api_server.py:349]     async for output in await self.add_request(
+2026-08-10T08:32:44.647871836Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 114, in generator
+2026-08-10T08:32:44.647873751Z ERROR 08-10 08:32:44 api_server.py:349]     raise result
+2026-08-10T08:32:44.647875540Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 56, in _log_task_completion
+2026-08-10T08:32:44.647877679Z ERROR 08-10 08:32:44 api_server.py:349]     return_value = task.result()
+2026-08-10T08:32:44.647879496Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 857, in run_engine_loop
+2026-08-10T08:32:44.647881494Z ERROR 08-10 08:32:44 api_server.py:349]     result = task.result()
+2026-08-10T08:32:44.647883316Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 776, in engine_step
+2026-08-10T08:32:44.647885339Z ERROR 08-10 08:32:44 api_server.py:349]     request_outputs = await self.engine.step_async(virtual_engine)
+2026-08-10T08:32:44.647887168Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 348, in step_async
+2026-08-10T08:32:44.647889192Z ERROR 08-10 08:32:44 api_server.py:349]     outputs = await self.model_executor.execute_model_async(
+2026-08-10T08:32:44.647891512Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/executor/distributed_gpu_executor.py", line 181, in execute_model_async
+2026-08-10T08:32:44.647893585Z ERROR 08-10 08:32:44 api_server.py:349]     return await self._driver_execute_model_async(execute_model_req)
+2026-08-10T08:32:44.647898540Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/executor/multiproc_gpu_executor.py", line 224, in _driver_execute_model_async
+2026-08-10T08:32:44.647900653Z ERROR 08-10 08:32:44 api_server.py:349]     return await self.driver_exec_model(execute_model_req)
+2026-08-10T08:32:44.647902520Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+2026-08-10T08:32:44.647904507Z ERROR 08-10 08:32:44 api_server.py:349]     result = self.fn(*self.args, **self.kwargs)
+2026-08-10T08:32:44.647906394Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 303, in execute_model
+2026-08-10T08:32:44.647908652Z ERROR 08-10 08:32:44 api_server.py:349]     inputs = self.prepare_input(execute_model_req)
+2026-08-10T08:32:44.647910716Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 291, in prepare_input
+2026-08-10T08:32:44.647912757Z ERROR 08-10 08:32:44 api_server.py:349]     return self._get_driver_input_and_broadcast(execute_model_req)
+2026-08-10T08:32:44.647914638Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/worker_base.py", line 253, in _get_driver_input_and_broadcast
+2026-08-10T08:32:44.647916852Z ERROR 08-10 08:32:44 api_server.py:349]     self.model_runner.prepare_model_input(
+2026-08-10T08:32:44.647919310Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 1598, in prepare_model_input
+2026-08-10T08:32:44.647921471Z ERROR 08-10 08:32:44 api_server.py:349]     model_input = self._prepare_model_input_tensors(
+2026-08-10T08:32:44.647923479Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 1201, in _prepare_model_input_tensors
+2026-08-10T08:32:44.647926473Z ERROR 08-10 08:32:44 api_server.py:349]     builder.add_seq_group(seq_group_metadata)
+2026-08-10T08:32:44.647928989Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 720, in add_seq_group
+2026-08-10T08:32:44.647931089Z ERROR 08-10 08:32:44 api_server.py:349]     per_seq_group_fn(inter_data, seq_group_metadata)
+2026-08-10T08:32:44.647933023Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/worker/model_runner.py", line 650, in _compute_multi_modal_input
+2026-08-10T08:32:44.647934978Z ERROR 08-10 08:32:44 api_server.py:349]     mm_kwargs = self.multi_modal_input_mapper(
+2026-08-10T08:32:44.647936965Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/multimodal/registry.py", line 125, in map_input
+2026-08-10T08:32:44.647939754Z ERROR 08-10 08:32:44 api_server.py:349]     raise ValueError(
+2026-08-10T08:32:44.647941554Z ERROR 08-10 08:32:44 api_server.py:349] ValueError: You set image=0 (or defaulted to 1) in `--limit-mm-per-prompt`, but found 1 items in the same prompt.
+2026-08-10T08:32:44.647945994Z ERROR 08-10 08:32:44 api_server.py:349] 
+2026-08-10T08:32:44.647947776Z ERROR 08-10 08:32:44 api_server.py:349] During handling of the above exception, another exception occurred:
+2026-08-10T08:32:44.647949836Z ERROR 08-10 08:32:44 api_server.py:349] 
+2026-08-10T08:32:44.647951595Z ERROR 08-10 08:32:44 api_server.py:349] Traceback (most recent call last):
+2026-08-10T08:32:44.647953371Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/openai/api_server.py", line 344, in create_chat_completion
+2026-08-10T08:32:44.647955394Z ERROR 08-10 08:32:44 api_server.py:349]     generator = await chat(raw_request).create_chat_completion(
+2026-08-10T08:32:44.647957336Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/openai/serving_chat.py", line 368, in create_chat_completion
+2026-08-10T08:32:44.647959765Z ERROR 08-10 08:32:44 api_server.py:349]     return await self.chat_completion_full_generator(
+2026-08-10T08:32:44.647961601Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/entrypoints/openai/serving_chat.py", line 908, in chat_completion_full_generator
+2026-08-10T08:32:44.647963662Z ERROR 08-10 08:32:44 api_server.py:349]     await self.engine_client.abort(request_id)
+2026-08-10T08:32:44.647965603Z ERROR 08-10 08:32:44 api_server.py:349]   File "/usr/local/corex/lib/python3/dist-packages/vllm/engine/async_llm_engine.py", line 1243, in abort
+2026-08-10T08:32:44.647967780Z ERROR 08-10 08:32:44 api_server.py:349]     raise AsyncEngineDeadError(
+2026-08-10T08:32:44.647970658Z ERROR 08-10 08:32:44 api_server.py:349] vllm.engine.async_llm_engine.AsyncEngineDeadError: Background loop is not running. If it was running, inspect the output to find the stacktrace of the error that caused the background loop to stop (AsyncEngineDeadError).
+2026-08-10T08:32:44.647976243Z INFO:     172.28.22.23:3477 - "POST /v1/chat/completions HTTP/1.1" 503 Service Unavailable
+2026-08-10T08:32:44.650420852Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.650569021Z INFO:     172.28.22.23:65069 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.652028205Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.652133581Z INFO:     172.28.22.23:10071 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.653778559Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.653875967Z INFO:     172.28.22.23:24906 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.655516660Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.655613828Z INFO:     172.28.22.23:42689 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.657266949Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.657366449Z INFO:     172.28.22.23:6925 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.658965470Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.659058030Z INFO:     172.28.22.23:26595 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.660652307Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.660755865Z INFO:     172.28.22.23:4931 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.662328237Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.662425323Z INFO:     172.28.22.23:36320 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.663927037Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.664020454Z INFO:     172.28.22.23:64294 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.665555043Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.665656697Z INFO:     172.28.22.23:23359 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.667211404Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.667309955Z INFO:     172.28.22.23:27068 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.668805402Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.668898184Z INFO:     172.28.22.23:31834 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.670385607Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.670475895Z INFO:     172.28.22.23:49829 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.671992956Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.672081190Z INFO:     172.28.22.23:41967 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.673609140Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.673706532Z INFO:     172.28.22.23:62873 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.675212305Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.675303927Z INFO:     172.28.22.23:6942 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.676769729Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.676859558Z INFO:     172.28.22.23:56422 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.678386118Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.678475704Z INFO:     172.28.22.23:16516 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.679968603Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.680061698Z INFO:     172.28.22.23:60339 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.681561314Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.681651530Z INFO:     172.28.22.23:38456 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.683097006Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.683184364Z INFO:     172.28.22.23:18486 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.684702663Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.684788983Z INFO:     172.28.22.23:57274 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.686264991Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.686348982Z INFO:     172.28.22.23:64417 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.688665390Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.688766243Z INFO:     172.28.22.23:28822 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.690770612Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.690865113Z INFO:     172.28.22.23:50082 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.692390172Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.692480716Z INFO:     172.28.22.23:51838 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.693957715Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.694044830Z INFO:     172.28.22.23:55630 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.695589092Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.695690819Z INFO:     172.28.22.23:54113 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.697227578Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.697320886Z INFO:     172.28.22.23:11840 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.698767594Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.698859393Z INFO:     172.28.22.23:34694 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.700333935Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.700422218Z INFO:     172.28.22.23:30557 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.702033724Z INFO:     172.28.22.23:13001 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.703570020Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.703667825Z INFO:     172.28.22.23:62662 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.705151110Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.705245531Z INFO:     172.28.22.23:54504 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.706762752Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.706855419Z INFO:     172.28.22.23:14733 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.708433582Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.708538954Z INFO:     172.28.22.23:41872 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.710120350Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.710216950Z INFO:     172.28.22.23:20023 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.711712029Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.711804522Z INFO:     172.28.22.23:38128 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.713324560Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.713439887Z INFO:     172.28.22.23:42522 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.714968633Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.715058675Z INFO:     172.28.22.23:12648 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.716597367Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.716696459Z INFO:     172.28.22.23:8235 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.718146757Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.718240235Z INFO:     172.28.22.23:21767 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.719780057Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:32:44.719869503Z INFO:     172.28.22.23:26564 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:32:44.721495015Z ERROR 08-10 08:32:44 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+
+
+
+
+
+。
+》
+》》
+》》》》》
+。
+。
+。
+。
+。
+。
+。
+2026-08-10T08:35:16.779420497Z INFO:     172.28.22.23:7288 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:16.790334819Z ERROR 08-10 08:35:16 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:16.790453226Z INFO:     172.28.22.23:60155 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:16.841881571Z ERROR 08-10 08:35:16 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:16.842000182Z INFO:     172.28.22.23:1854 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:16.916231025Z ERROR 08-10 08:35:16 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:16.916348540Z INFO:     172.28.22.23:41385 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:17.658672621Z ERROR 08-10 08:35:17 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:17.658789870Z INFO:     172.28.22.23:13012 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:17.668097906Z ERROR 08-10 08:35:17 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:17.668207360Z INFO:     172.28.22.23:47137 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:17.736899833Z ERROR 08-10 08:35:17 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:17.737020848Z INFO:     172.28.22.23:34934 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:17.773547520Z ERROR 08-10 08:35:17 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:17.773663668Z INFO:     172.28.22.23:6739 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:17.808958109Z ERROR 08-10 08:35:17 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:17.809069278Z INFO:     172.28.22.23:25040 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:17.882924467Z ERROR 08-10 08:35:17 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:17.883045059Z INFO:     172.28.22.23:6313 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:17.892834072Z ERROR 08-10 08:35:17 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:17.892948257Z INFO:     172.28.22.23:51218 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:17.989536818Z ERROR 08-10 08:35:17 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:17.989657865Z INFO:     172.28.22.23:61011 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.040321103Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.040434108Z INFO:     172.28.22.23:22708 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.062535061Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.062658294Z INFO:     172.28.22.23:63826 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.176956017Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.177073628Z INFO:     172.28.22.23:10969 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.220759193Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.220864160Z INFO:     172.28.22.23:56218 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.344461493Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.344577978Z INFO:     172.28.22.23:34246 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.368699020Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.368814136Z INFO:     172.28.22.23:5693 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.407435255Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.407555696Z INFO:     172.28.22.23:51847 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.496862597Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.496986330Z INFO:     172.28.22.23:35234 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:18.538373982Z ERROR 08-10 08:35:18 serving_chat.py:130] Engine is dead, returning 503 for graceful degradation
+2026-08-10T08:35:18.538491850Z INFO:     172.28.22.23:48923 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+2026-08-10T08:35:20.634497358Z INFO 08-10 08:35:20 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:35:20.634562638Z INFO 08-10 08:35:20 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:35:30.634968729Z INFO 08-10 08:35:30 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:35:30.634991904Z INFO 08-10 08:35:30 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:35:40.635406214Z INFO 08-10 08:35:40 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:35:40.635441389Z INFO 08-10 08:35:40 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:35:44.645154931Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:35:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:35:44.645394838Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:35:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:35:44.645862971Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:35:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:35:50.635814225Z INFO 08-10 08:35:50 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:35:50.635834957Z INFO 08-10 08:35:50 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:36:00.636216446Z INFO 08-10 08:36:00 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:36:00.636245136Z INFO 08-10 08:36:00 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:36:10.636608525Z INFO 08-10 08:36:10 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:36:10.636637304Z INFO 08-10 08:36:10 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:36:20.636920813Z INFO 08-10 08:36:20 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:36:20.636938143Z INFO 08-10 08:36:20 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:36:30.637247873Z INFO 08-10 08:36:30 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:36:30.637268174Z INFO 08-10 08:36:30 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:36:40.637619025Z INFO 08-10 08:36:40 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:36:40.637646574Z INFO 08-10 08:36:40 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:36:44.645284328Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:36:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:36:44.645674292Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:36:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:36:44.645689177Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:36:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:36:50.637961221Z INFO 08-10 08:36:50 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:36:50.637986477Z INFO 08-10 08:36:50 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:37:00.638277979Z INFO 08-10 08:37:00 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:37:00.638304584Z INFO 08-10 08:37:00 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:37:10.638680445Z INFO 08-10 08:37:10 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:37:10.638716590Z INFO 08-10 08:37:10 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:37:20.638991898Z INFO 08-10 08:37:20 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:37:20.639013162Z INFO 08-10 08:37:20 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:37:30.639426880Z INFO 08-10 08:37:30 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:37:30.639448187Z INFO 08-10 08:37:30 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:37:40.639752973Z INFO 08-10 08:37:40 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:37:40.639784082Z INFO 08-10 08:37:40 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:37:44.645344713Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:37:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:37:44.645756300Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:37:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:37:44.645824079Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:37:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:37:50.639967711Z INFO 08-10 08:37:50 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:37:50.639992797Z INFO 08-10 08:37:50 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:38:00.640283368Z INFO 08-10 08:38:00 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:38:00.640322989Z INFO 08-10 08:38:00 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:38:10.641596954Z INFO 08-10 08:38:10 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:38:10.641622943Z INFO 08-10 08:38:10 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:38:20.641881791Z INFO 08-10 08:38:20 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:38:20.641903953Z INFO 08-10 08:38:20 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:38:30.642362456Z INFO 08-10 08:38:30 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:38:30.642383547Z INFO 08-10 08:38:30 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:38:40.643093613Z INFO 08-10 08:38:40 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:38:40.643118851Z INFO 08-10 08:38:40 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:38:44.645456092Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:38:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:38:44.645645739Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:38:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:38:44.645788999Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:38:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:38:50.643453176Z INFO 08-10 08:38:50 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:38:50.643490741Z INFO 08-10 08:38:50 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:39:00.643950605Z INFO 08-10 08:39:00 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:39:00.643964204Z INFO 08-10 08:39:00 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:39:10.644611206Z INFO 08-10 08:39:10 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:39:10.644633117Z INFO 08-10 08:39:10 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:39:20.644889617Z INFO 08-10 08:39:20 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:39:20.644905172Z INFO 08-10 08:39:20 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:39:30.645605060Z INFO 08-10 08:39:30 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:39:30.645641501Z INFO 08-10 08:39:30 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:39:40.645908834Z INFO 08-10 08:39:40 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:39:40.645934804Z INFO 08-10 08:39:40 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:39:44.645404530Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:39:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:39:44.645512289Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:39:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:39:44.645587509Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:39:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:39:50.646374427Z INFO 08-10 08:39:50 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:39:50.646395618Z INFO 08-10 08:39:50 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:40:00.646823356Z INFO 08-10 08:40:00 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:40:00.646860116Z INFO 08-10 08:40:00 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:40:10.647432989Z INFO 08-10 08:40:10 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:40:10.647449892Z INFO 08-10 08:40:10 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:40:20.647894498Z INFO 08-10 08:40:20 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:40:20.647915720Z INFO 08-10 08:40:20 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:40:30.648268432Z INFO 08-10 08:40:30 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:40:30.648288621Z INFO 08-10 08:40:30 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:40:40.649592884Z INFO 08-10 08:40:40 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:40:40.649621655Z INFO 08-10 08:40:40 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:40:44.645830378Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:40:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:40:44.645906217Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:40:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:40:44.646447654Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:40:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:40:50.650082377Z INFO 08-10 08:40:50 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:40:50.650096585Z INFO 08-10 08:40:50 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:41:00.650601644Z INFO 08-10 08:41:00 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:41:00.650625796Z INFO 08-10 08:41:00 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:41:10.651068405Z INFO 08-10 08:41:10 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:41:10.651092260Z INFO 08-10 08:41:10 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:41:20.651240502Z INFO 08-10 08:41:20 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:41:20.651257550Z INFO 08-10 08:41:20 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:41:30.651542468Z INFO 08-10 08:41:30 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:41:30.651592604Z INFO 08-10 08:41:30 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:41:40.651928391Z INFO 08-10 08:41:40 metrics.py:345] Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 1 reqs, Swapped: 0 reqs, Pending: 0 reqs, GPU KV cache usage: 0.0%, CPU KV cache usage: 0.0%.
+2026-08-10T08:41:40.651954767Z INFO 08-10 08:41:40 metrics.py:361] Prefix cache hit rate: GPU: 0.00%, CPU: 0.00%
+2026-08-10T08:41:44.645411839Z [1;36m(VllmWorkerProcess pid=30)[0;0m WARNING 08-10 08:41:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:41:44.645705135Z [1;36m(VllmWorkerProcess pid=32)[0;0m WARNING 08-10 08:41:44 shm_broadcast.py:397] No available block found in 60 second. 
+2026-08-10T08:41:44.645758691Z [1;36m(VllmWorkerProcess pid=31)[0;0m WARNING 08-10 08:41:44 shm_broadcast.py:397] No available block found in 60 second. 
