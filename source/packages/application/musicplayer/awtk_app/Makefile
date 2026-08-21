@@ -79,7 +79,11 @@ ifndef HOST_BUILD
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/mmisc/osal/include
-  # display.h → types.h dependency (from musicplayer.mk reference)
+  # display.h lives in kernel headers on 126 server
+  INC_FLAGS += -I$(TOPDIR)/source/kernel/kernel-3.18/include/media/atc
+  # types.h (included by display.h) lives in kernel driver headers
+  INC_FLAGS += -I$(TOPDIR)/source/kernel/kernel-3.18/drivers/misc/atc/inc
+  # directrender (may exist on some SDK versions)
   INC_FLAGS += -I$(TOPDIR)/source/packages/multimedia/directrender/include
   INC_FLAGS += -I$(TOPDIR)/source/packages/multimedia/directrender/src/utils
 endif
