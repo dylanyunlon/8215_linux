@@ -91,7 +91,7 @@ static inline int TypeName##_ensure(TypeName *a) {                             \
 /* 追加元素 (拷贝 *elem 到末尾) */                                                 \
 static inline int TypeName##_push(TypeName *a, const ElemType *elem) {         \
     if (TypeName##_ensure(a) != 0) return -1;                                  \
-    memcpy(&a->items[a->count], elem, sizeof(ElemType));                       \
+    memcpy(&a->items[a->count], (const void*)elem, sizeof(ElemType));          \
     a->count++;                                                                \
     return 0;                                                                  \
 }                                                                              \

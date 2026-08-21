@@ -13,10 +13,11 @@
  * Copyright (C) AutoChips Inc. All rights reserved.
  */
 
+#define _GNU_SOURCE  /* for strdup, strcasestr */
+
 #include "music_app.h"
 #include "favorite_manager.h"
 
-#define _GNU_SOURCE  /* for strcasestr */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -713,8 +714,7 @@ void music_app_stop(void) {
 #define PREV_NEXT_DEBOUNCE_MS 500
 
 void music_app_next(void) {
-    uint64_t now = timer_manager()->get_elapsed_ms
-        ? timer_manager()->get_elapsed_ms(timer_manager()) : 0;
+    uint64_t now = (uint64_t)time_now_ms();
     if (now > 0 && (now - s_app.last_prev_next_ms) < PREV_NEXT_DEBOUNCE_MS) {
         return; /* Debounce: ignore rapid repeated presses */
     }
@@ -725,8 +725,7 @@ void music_app_next(void) {
 }
 
 void music_app_prev(void) {
-    uint64_t now = timer_manager()->get_elapsed_ms
-        ? timer_manager()->get_elapsed_ms(timer_manager()) : 0;
+    uint64_t now = (uint64_t)time_now_ms();
     if (now > 0 && (now - s_app.last_prev_next_ms) < PREV_NEXT_DEBOUNCE_MS) {
         return;
     }
@@ -972,7 +971,7 @@ static void build_folder_cache(void) {
         if (!exists) {
             char* dup = strdup(dir);
             if (dup) {
-                StrPtrArray_push(&s_app.folder_paths, &dup);
+                StrPtrArray_push(&s_app.folder_paths, (const char**)&dup);
             }
         }
     }
