@@ -17,6 +17,14 @@
 #ifndef AWTK_STUB_H
 #define AWTK_STUB_H
 
+/* Required for usleep(), clock_gettime(), CLOCK_MONOTONIC on glibc */
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 199309L
+#endif
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -116,7 +124,6 @@ static pthread_mutex_t _stub_timer_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static void* _timer_thread_func(void* arg) {
     _stub_timer_t* st = (_stub_timer_t*)arg;
-    uint32_t id = st->id;
 
     do {
         usleep(st->interval_ms * 1000);
