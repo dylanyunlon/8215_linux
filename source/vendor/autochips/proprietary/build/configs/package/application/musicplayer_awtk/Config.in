@@ -1,0 +1,10 @@
+config BR2_PACKAGE_MUSICPLAYER_AWTK
+	bool "musicplayer_awtk"
+	depends on BR2_PACKAGE_AWTK
+	depends on BR2_PACKAGE_MUSICPLAYER
+	help
+	  AWTK 本地音乐播放器应用。
+	  提供触摸 UI 界面，支持 USB/SD 音乐文件扫描、播放、
+	  收藏管理、歌词显示、专辑封面等功能。
+
+	  编译输出: /usr/bin/music_player
