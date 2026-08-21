@@ -132,10 +132,10 @@ static inline void TypeName##_clear(TypeName *a) {                             \
                                                                                \
 /* 线性查找, 用自定义比较函数. 返回索引, -1=未找到 */                                   \
 static inline int TypeName##_find(TypeName *a,                                 \
-    int (*cmp)(const ElemType *a, const void *key), const void *key) {         \
+    int (*cmp)(const ElemType *elem, const void *key), const void *key) {      \
     int i;                                                                     \
     for (i = 0; i < a->count; i++) {                                           \
-        if (cmp(&a->items[i], key) == 0) return i;                             \
+        if (cmp((const ElemType *)&a->items[i], key) == 0) return i;           \
     }                                                                          \
     return -1;                                                                 \
 }                                                                              \

@@ -68,6 +68,11 @@ INC_FLAGS   += -I$(AWTK_DIR)/src
 INC_FLAGS   += -I$(AWTK_DIR)/src/ext_widgets
 INC_FLAGS   += -I$(AWTK_DIR)/3rd
 
+# AWTK Linux-FB port headers (main_loop_linux.h, lcd_linux_fb.h, etc.)
+AWTK_PORT_DIR ?= $(TOPDIR)/source/packages/cluster/awtk/awtk-linux-fb/awtk-port
+INC_FLAGS   += -I$(AWTK_PORT_DIR)
+INC_FLAGS   += -I$(AWTK_PORT_DIR)/input_thread
+
 ifndef HOST_BUILD
   INC_FLAGS += --sysroot=$(SYSROOT_DIR)
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/mediaplayerserver/include
