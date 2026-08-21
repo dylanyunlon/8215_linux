@@ -33,6 +33,11 @@ define MUSICPLAYER_BUILD_CMDS
 		-L$(@D) -lmusicplayer \
 		-L$(STAGING_DIR)/usr/lib -latcmediaplayer \
 		-lpthread -Wl,-rpath,/usr/lib
+	@echo "Building music_app_cli (full stack CLI test tool)..."
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) -f Makefile.cli \
+		TOPDIR=$(TOPDIR)/.. \
+		CROSS_COMPILE=$(TOPDIR)/../out/host/bin/arm-buildroot-linux-gnueabi- \
+		SYSROOT_DIR=$(TOPDIR)/../out/host/arm-buildroot-linux-gnueabi/sysroot
 endef
 
 define MUSICPLAYER_INSTALL_STAGING_CMDS
@@ -44,6 +49,7 @@ endef
 define MUSICPLAYER_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(STAGING_DIR)/usr/lib/libmusicplayer.so $(TARGET_DIR)/usr/lib/libmusicplayer.so
 	$(INSTALL) -m 0755 -D $(@D)/musicplayer_test $(TARGET_DIR)/usr/bin/musicplayer_test
+	$(INSTALL) -m 0755 -D $(@D)/music_app_cli $(TARGET_DIR)/usr/bin/music_app_cli
 	mkdir -p $(TARGET_DIR)/data/music
 endef
 

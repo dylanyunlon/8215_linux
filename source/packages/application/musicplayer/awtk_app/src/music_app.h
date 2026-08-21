@@ -29,7 +29,12 @@
 #ifndef MUSIC_APP_H
 #define MUSIC_APP_H
 
+#ifdef AWTK_STUB
+#include "awtk_stub.h"
+#else
 #include "awtk.h"
+#endif
+
 #include "music_scanner.h"
 #include "music_player.h"
 #include "usb_monitor.h"
@@ -278,6 +283,28 @@ int music_app_get_lyrics_line(int time_ms);
  * @return 0 on success, -1 if no album art found.
  */
 int music_app_get_album_art(const uint8_t** out_data, int* out_size);
+
+/* --- ACC lifecycle (Issue #32, mirrors Android LocalService ACC handling) --- */
+
+/**
+ * @brief Handle ACC OFF event — save state and stop playback.
+ * Should be called when the vehicle ignition is turned off.
+ */
+void music_app_on_acc_off(void);
+
+/**
+ * @brief Handle ACC ON event — restore state and optionally resume.
+ * Should be called when the vehicle ignition is turned on.
+ */
+void music_app_on_acc_on(void);
+
+/* --- Playlist restore (Issue #36, mirrors Android MusicPlaylistEx.mFirstPlaylistEx) --- */
+
+/**
+ * @brief Restore the full device playlist after folder/album/artist sub-list playback.
+ * This resets the player's playlist to the complete scan result of the current device.
+ */
+void music_app_restore_full_playlist(void);
 
 #ifdef __cplusplus
 }

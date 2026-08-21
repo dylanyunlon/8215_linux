@@ -243,6 +243,51 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
 }
 
 /*============================================================================
+ * Issue #38: Scan-done handler — runs on AWTK main thread.
+ * Called via idle_queue() from scan_thread_func after scan completes.
+ * Safely invokes player API (set_playlist/play/seek) from the main thread.
+ *==========================================================================*/
+typedef struct {
+    int dev_idx;
+    int resume_idx;
+    int resume_pos_ms;
+} scan_done_data_t;
+
+static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
+    scan_done_data_t* sd = (scan_done_data_t*)idle->ctx;
+    if (!sd) return RET_REMOVE;
+
+    int dev_idx = sd->dev_idx;
+    int resume_idx = sd->resume_idx;
+    int resume_pos_ms = sd->resume_pos_ms;
+    free(sd);
+
+    if (!s_app.player) return RET_REMOVE;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return RET_REMOVE;
+    if (dev_idx != s_app.state.current_device_idx) return RET_REMOVE;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list || dev->music_list->count == 0) return RET_REMOVE;
+
+    music_player_set_playlist(s_app.player, dev->music_list);
+    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+
+    if (resume_idx >= 0) {
+        printf("[music_app] Resuming on main thread: track %d, position %d ms\n",
+               resume_idx, resume_pos_ms);
+        music_player_play(s_app.player, resume_idx);
+        if (resume_pos_ms > 0) {
+            music_player_seek(s_app.player, resume_pos_ms);
+        }
+        /* Clear last_path so we don't re-seek on next scan */
+        s_app.state.last_path[0] = '\0';
+        s_app.state.last_position_ms = 0;
+    }
+
+    return RET_REMOVE;
+}
+
+/*============================================================================
  * Async scanning (runs in a background thread)
  *
  * Mirrors Android RemoteService's file scan + ID3 parse pipeline.
@@ -303,37 +348,36 @@ static void* scan_thread_func(void* arg) {
     /* Issue #1: Validate favorites against scan result — remove stale entries */
     favorite_validate(list);
 
-    /* Load playlist if this is the current device */
+    /* Issue #38 fix: Load playlist on the AWTK main thread.
+     * music_player_set_playlist/play/seek must NOT be called from the scan
+     * thread — the player internal data structures are not thread-safe, and
+     * concurrent access from scan thread + player callback thread = data race.
+     * We use idle_queue() to dispatch to the AWTK main loop. */
     pthread_mutex_lock(&s_app.mutex);
     bool is_current = (dev_idx == s_app.state.current_device_idx);
     pthread_mutex_unlock(&s_app.mutex);
 
-    if (is_current && list->count > 0 && s_app.player) {
-        music_player_set_playlist(s_app.player, list);
-        post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+    if (is_current && list->count > 0) {
+        /* Prepare resume info before dispatching to main thread */
+        scan_done_data_t* sd = (scan_done_data_t*)calloc(1, sizeof(scan_done_data_t));
+        if (sd) {
+            sd->dev_idx = dev_idx;
+            sd->resume_idx = -1;
+            sd->resume_pos_ms = 0;
 
-        /* [GAP-12] Try to resume last playing track at remembered position.
-         * Android: getLastMediaInfoPosition() + readMediaTime() + seekToTime() */
-        if (s_app.state.last_path[0] != '\0') {
-            int resume_idx = -1;
-            int i;
-            for (i = 0; i < list->count; i++) {
-                if (strcmp(list->items[i].filepath, s_app.state.last_path) == 0) {
-                    resume_idx = i;
-                    break;
+            /* [GAP-12] Find the resume track index on this thread (cheap string search) */
+            if (s_app.state.last_path[0] != '\0') {
+                int i;
+                for (i = 0; i < list->count; i++) {
+                    if (strcmp(list->items[i].filepath, s_app.state.last_path) == 0) {
+                        sd->resume_idx = i;
+                        sd->resume_pos_ms = s_app.state.last_position_ms;
+                        break;
+                    }
                 }
             }
-            if (resume_idx >= 0) {
-                printf("[music_app] Resuming: track %d, position %d ms\n",
-                       resume_idx, s_app.state.last_position_ms);
-                music_player_play(s_app.player, resume_idx);
-                if (s_app.state.last_position_ms > 0) {
-                    music_player_seek(s_app.player, s_app.state.last_position_ms);
-                }
-                /* Clear last_path so we don't re-seek on next scan */
-                s_app.state.last_path[0] = '\0';
-                s_app.state.last_position_ms = 0;
-            }
+
+            idle_queue(scan_done_main_thread_handler, sd);
         }
     }
 
@@ -456,15 +500,26 @@ static void on_player_state(PlayerState state, void* user_data) {
     idle_queue(player_state_idle_handler, (void*)(intptr_t)state);
 }
 
+/* Issue #37: Idle handler to load album art and lyrics on AWTK main thread.
+ * This avoids blocking the player callback thread with file I/O. */
+static ret_t track_changed_load_media_idle(const idle_info_t* idle) {
+    (void)idle;
+    load_album_art_for_current();
+    load_lyrics_for_current();
+    return RET_REMOVE;
+}
+
 static void on_player_track(int index, const MusicInfo* info, void* user_data) {
     (void)user_data;
     pthread_mutex_lock(&s_app.mutex);
     s_app.state.current_info = info;
     pthread_mutex_unlock(&s_app.mutex);
 
-    /* Issue #7,#8: Pre-load album art and lyrics for new track */
-    load_album_art_for_current();
-    load_lyrics_for_current();
+    /* Issue #37 fix: Dispatch album art and lyrics loading to the AWTK main
+     * thread. These functions perform file I/O (fopen/fread) which would
+     * block the player callback thread and delay state updates.
+     * Android loads album art asynchronously via BitmapCache. */
+    idle_queue(track_changed_load_media_idle, NULL);
 
     post_ui_event(APP_EVENT_TRACK_CHANGED, index);
 }
@@ -1510,4 +1565,80 @@ int music_app_get_album_art(const uint8_t** out_data, int* out_size) {
         return 0;
     }
     return -1;
+}
+
+/*============================================================================
+ * Issue #32: ACC OFF/ON lifecycle handling
+ * Mirrors Android LocalService.onAccOffBroadcastEvent() / onAccOnBroadcastEvent()
+ *
+ * ACC OFF: Save state + stop playback + stop time position update timer.
+ *          This prevents the amplifier from driving speakers while the
+ *          vehicle is off, and ensures state is persisted for next start.
+ *
+ * ACC ON:  Restore state. Actual resume is deferred until a storage device
+ *          is scanned — the scan_done handler will resume if last_path is set.
+ *==========================================================================*/
+
+void music_app_on_acc_off(void) {
+    printf("[music_app] ACC OFF — saving state and stopping playback\n");
+
+    /* Save current playback position */
+    music_app_save_state();
+
+    /* Stop playback */
+    if (s_app.player) {
+        PlayerState st = music_player_get_state(s_app.player);
+        if (st == PLAYER_STATE_PLAYING || st == PLAYER_STATE_PAUSED) {
+            /* Remember that we were playing, so ACC ON can auto-resume */
+            pthread_mutex_lock(&s_app.mutex);
+            if (s_app.state.current_info) {
+                snprintf(s_app.state.last_path, sizeof(s_app.state.last_path),
+                         "%s", s_app.state.current_info->filepath);
+                s_app.state.last_position_ms = s_app.state.current_position_ms;
+            }
+            pthread_mutex_unlock(&s_app.mutex);
+
+            music_app_stop();
+        }
+    }
+
+    /* Save state again with the remembered position */
+    music_app_save_state();
+}
+
+void music_app_on_acc_on(void) {
+    printf("[music_app] ACC ON — restoring state\n");
+
+    /* Restore state from disk. The actual resume playback will happen
+     * when a storage device is mounted and scanned — scan_thread_func
+     * checks last_path and auto-resumes. */
+    music_app_restore_state();
+}
+
+/*============================================================================
+ * Issue #36: Restore full device playlist
+ * Mirrors Android: switching back to "All Songs" tab resets the playlist
+ * to the complete device scan result (MusicPlaylistEx.mFirstPlaylistEx).
+ *==========================================================================*/
+
+void music_app_restore_full_playlist(void) {
+    if (!s_app.player) return;
+
+    int dev_idx = s_app.state.current_device_idx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list || dev->music_list->count == 0) return;
+
+    /* Re-set the full device list as the player's playlist */
+    music_player_set_playlist(s_app.player, dev->music_list);
+
+    /* Update playlist type */
+    pthread_mutex_lock(&s_app.mutex);
+    s_app.state.playlist_type = PLAYLIST_TYPE_DEVICE;
+    pthread_mutex_unlock(&s_app.mutex);
+
+    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+
+    printf("[music_app] Restored full playlist: %d tracks\n", dev->music_list->count);
 }

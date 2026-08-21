@@ -83,6 +83,10 @@ int main(int argc, char* argv[]) {
 
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
+    /* Issue #39: Prevent zombie child processes (e.g. from mount helpers).
+     * In single-process architecture (ref: 0314_ad008), any fork()ed
+     * child must be reaped. SIG_IGN auto-reaps on Linux. */
+    signal(SIGCHLD, SIG_IGN);
 
     printf("=== %s (AWTK Linux-FB) ===\n", APP_NAME);
 

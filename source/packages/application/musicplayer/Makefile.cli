@@ -1,0 +1,121 @@
+# Makefile.cli — Build music_app_cli (headless test tool)
+#
+# This builds the full music_app stack WITHOUT AWTK dependency.
+# Uses awtk_stub.h to replace AWTK's idle_queue/timer with pthread stubs.
+#
+# ============================================================================
+# Usage:
+#
+#   1) Cross-compile for AC8215 (on build server):
+#
+#      cd source/packages/application/musicplayer
+#      make -f Makefile.cli
+#
+#   2) Deploy to board:
+#
+#      adb push music_app_cli /usr/bin/
+#      adb shell chmod +x /usr/bin/music_app_cli
+#
+#   3) Run on board (insert USB with music first):
+#
+#      adb shell music_app_cli
+#
+#   4) Or specify scan path directly:
+#
+#      adb shell music_app_cli /mnt/usb0
+#
+# ============================================================================
+
+TOPDIR      ?= $(shell cd ../../../.. && pwd)
+
+# ===========================================================================
+# Toolchain
+# ===========================================================================
+CROSS_COMPILE ?= $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-
+CC            = $(CROSS_COMPILE)gcc
+CXX           = $(CROSS_COMPILE)g++
+SYSROOT_DIR  ?= $(TOPDIR)/out/host/arm-buildroot-linux-gnueabi/sysroot
+
+TARGET        = music_app_cli
+
+# ===========================================================================
+# Source files
+# ===========================================================================
+# CLI main
+CLI_SRC       = music_app_cli.c
+
+# music_app layer (the code under test)
+APP_C_SRCS    = awtk_app/src/music_app.c \
+                awtk_app/src/usb_monitor.c \
+                awtk_app/src/favorite_manager.c
+
+# Shared library sources
+LIB_C_SRCS    = music_scanner.c
+LIB_CPP_SRCS  = music_player.cpp
+
+# All sources
+C_SRCS        = $(CLI_SRC) $(APP_C_SRCS) $(LIB_C_SRCS)
+CPP_SRCS      = $(LIB_CPP_SRCS)
+
+C_OBJS        = $(C_SRCS:.c=.o)
+CPP_OBJS      = $(CPP_SRCS:.cpp=.o)
+OBJS          = $(C_OBJS) $(CPP_OBJS)
+
+# ===========================================================================
+# Flags
+# ===========================================================================
+# Key: -DAWTK_STUB makes music_app.h include awtk_stub.h instead of awtk.h
+COMMON_FLAGS  = -Wall -Wextra -Wno-unused-parameter -O2
+COMMON_FLAGS += -DAWTK_STUB
+
+INC_FLAGS     = -I. -Iawtk_app/src
+INC_FLAGS    += --sysroot=$(SYSROOT_DIR)
+INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/mediaplayerserver/include
+INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
+INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
+INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/mmisc/osal/include
+INC_FLAGS    += -I$(TOPDIR)/source/packages/multimedia/directrender/include
+INC_FLAGS    += -I$(TOPDIR)/source/packages/multimedia/directrender/src/utils
+
+CFLAGS        = $(COMMON_FLAGS) $(INC_FLAGS) -std=c11
+CXXFLAGS      = $(COMMON_FLAGS) $(INC_FLAGS) -std=c++11
+
+LDFLAGS       = --sysroot=$(SYSROOT_DIR)
+LDFLAGS      += -L$(SYSROOT_DIR)/usr/lib
+LDFLAGS      += -latcmediaplayer
+LDFLAGS      += -lpthread -lm -ldl
+LDFLAGS      += -Wl,-rpath,/usr/lib
+
+# ===========================================================================
+# Rules
+# ===========================================================================
+.PHONY: all clean
+
+all: $(TARGET)
+	@echo ""
+	@echo "============================================"
+	@echo " Built: $(TARGET)"
+	@echo ""
+	@echo " Deploy to board:"
+	@echo "   adb push $(TARGET) /usr/bin/"
+	@echo "   adb shell chmod +x /usr/bin/$(TARGET)"
+	@echo ""
+	@echo " Run:"
+	@echo "   adb shell $(TARGET)"
+	@echo "============================================"
+	@echo ""
+
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+
+# C files
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# C++ files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS) $(TARGET)
+	@echo "Cleaned."
