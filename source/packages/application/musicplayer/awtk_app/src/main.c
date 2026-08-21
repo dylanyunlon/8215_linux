@@ -77,6 +77,13 @@ static ret_t application_exit(void) {
 
 #include "main_loop_linux.h"
 
+/* Assets stub — in the SConscript build, assets are compiled via the AWTK
+ * resource packer. For standalone Makefile build, we create widgets in code
+ * (music_ui.c) so no prebuilt assets are needed. */
+ret_t assets_init(void) {
+    return RET_OK;
+}
+
 int main(int argc, char* argv[]) {
     (void)argc;
     (void)argv;
@@ -90,10 +97,11 @@ int main(int argc, char* argv[]) {
 
     printf("=== %s (AWTK Linux-FB) ===\n", APP_NAME);
 
-    /* AWTK init — lcd, input, fonts */
-    tk_init(APP_WIDTH, APP_HEIGHT, APP_FULL_SCREEN, APP_NAME, NULL);
+    /* AWTK init — lcd, input, fonts
+     * APP_MOBILE is defined via AWTK CCFLAGS (-DAPP_TYPE=APP_MOBILE) */
+    tk_init(APP_WIDTH, APP_HEIGHT, APP_MOBILE, APP_NAME, NULL);
 
-    /* Load resources */
+    /* Load resources (stub — we create widgets in code) */
     assets_init();
 
     /* App init */
@@ -112,10 +120,6 @@ int main(int argc, char* argv[]) {
 #else
 /* Desktop simulation build (for development/testing) */
 
-BEGIN_C_DECLS
-ret_t assets_init(void);
-END_C_DECLS
-
 int main(int argc, char* argv[]) {
     (void)argc;
     (void)argv;
@@ -125,9 +129,8 @@ int main(int argc, char* argv[]) {
 
     printf("=== %s (AWTK Desktop Sim) ===\n", APP_NAME);
 
-    tk_init(APP_WIDTH, APP_HEIGHT, APP_SIMULATOR, APP_NAME, NULL);
+    tk_init(APP_WIDTH, APP_HEIGHT, APP_MOBILE, APP_NAME, NULL);
 
-    assets_init();
     application_init();
 
     tk_run();
