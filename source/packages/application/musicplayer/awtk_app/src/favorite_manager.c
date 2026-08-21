@@ -13,6 +13,7 @@
  */
 
 #include "favorite_manager.h"
+#include "darray.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,12 +21,14 @@
 #include <pthread.h>
 #include <sys/stat.h>
 
+/* Define dynamic array type for favorites */
+DARRAY_DEFINE(FavArray, MusicInfo)
+
 /*============================================================================
  * Module state
  *==========================================================================*/
 static struct {
-    MusicInfo           items[FAVORITE_MAX_COUNT];
-    int                 count;
+    FavArray            arr;       /* was: MusicInfo items[128] */
     favorite_callback_t callback;
     pthread_mutex_t     mutex;
     bool                inited;
@@ -55,8 +58,8 @@ static bool reverse_path_equals(const char* a, const char* b) {
 static int find_by_path(const char* filepath) {
     if (filepath == NULL || filepath[0] == '\0') return -1;
     int i;
-    for (i = s_fav.count - 1; i >= 0; i--) {
-        if (reverse_path_equals(s_fav.items[i].filepath, filepath)) {
+    for (i = s_fav.arr.count - 1; i >= 0; i--) {
+        if (reverse_path_equals(s_fav.arr.items[i].filepath, filepath)) {
             return i;
         }
     }
@@ -79,15 +82,15 @@ static void load_from_db(void) {
     if (!fp) return;
 
     char line[2048];
-    while (fgets(line, sizeof(line), fp) && s_fav.count < FAVORITE_MAX_COUNT) {
+    while (fgets(line, sizeof(line), fp)) {
         char* nl = strchr(line, '\n');
         if (nl) *nl = '\0';
         if (line[0] == '\0') continue;
 
-        MusicInfo* item = &s_fav.items[s_fav.count];
-        memset(item, 0, sizeof(*item));
-        item->media_type = MEDIA_TYPE_MUSIC;
-        item->uid = s_fav.count;
+        MusicInfo item;
+        memset(&item, 0, sizeof(item));
+        item.media_type = MEDIA_TYPE_MUSIC;
+        item.uid = s_fav.arr.count;
 
         /* Parse: filepath\ttitle\tartist\talbum */
         char* p = line;
@@ -97,11 +100,11 @@ static void load_from_db(void) {
         tab = strchr(p, '\t');
         if (tab) {
             *tab = '\0';
-            snprintf(item->filepath, sizeof(item->filepath), "%s", p);
+            snprintf(item.filepath, sizeof(item.filepath), "%s", p);
             p = tab + 1;
         } else {
-            snprintf(item->filepath, sizeof(item->filepath), "%s", p);
-            s_fav.count++;
+            snprintf(item.filepath, sizeof(item.filepath), "%s", p);
+            FavArray_push(&s_fav.arr, &item);
             continue;
         }
 
@@ -109,11 +112,11 @@ static void load_from_db(void) {
         tab = strchr(p, '\t');
         if (tab) {
             *tab = '\0';
-            snprintf(item->title, sizeof(item->title), "%s", p);
+            snprintf(item.title, sizeof(item.title), "%s", p);
             p = tab + 1;
         } else {
-            snprintf(item->title, sizeof(item->title), "%s", p);
-            s_fav.count++;
+            snprintf(item.title, sizeof(item.title), "%s", p);
+            FavArray_push(&s_fav.arr, &item);
             continue;
         }
 
@@ -121,27 +124,27 @@ static void load_from_db(void) {
         tab = strchr(p, '\t');
         if (tab) {
             *tab = '\0';
-            snprintf(item->artist, sizeof(item->artist), "%s", p);
+            snprintf(item.artist, sizeof(item.artist), "%s", p);
             p = tab + 1;
         } else {
-            snprintf(item->artist, sizeof(item->artist), "%s", p);
-            s_fav.count++;
+            snprintf(item.artist, sizeof(item.artist), "%s", p);
+            FavArray_push(&s_fav.arr, &item);
             continue;
         }
 
         /* album */
-        snprintf(item->album, sizeof(item->album), "%s", p);
+        snprintf(item.album, sizeof(item.album), "%s", p);
 
         /* Extract filename from filepath */
-        const char* slash = strrchr(item->filepath, '/');
-        snprintf(item->filename, sizeof(item->filename), "%s",
-                 slash ? slash + 1 : item->filepath);
+        const char* slash = strrchr(item.filepath, '/');
+        snprintf(item.filename, sizeof(item.filename), "%s",
+                 slash ? slash + 1 : item.filepath);
 
-        s_fav.count++;
+        FavArray_push(&s_fav.arr, &item);
     }
 
     fclose(fp);
-    printf("[favorite] Loaded %d favorites from DB\n", s_fav.count);
+    printf("[favorite] Loaded %d favorites from DB\n", s_fav.arr.count);
 }
 
 /*============================================================================
@@ -152,6 +155,7 @@ int favorite_init(favorite_callback_t cb) {
     if (s_fav.inited) return -1;
 
     memset(&s_fav, 0, sizeof(s_fav));
+    FavArray_init(&s_fav.arr, 32);  /* start small, grows as needed */
     pthread_mutex_init(&s_fav.mutex, NULL);
     s_fav.callback = cb;
 
@@ -166,6 +170,7 @@ void favorite_deinit(void) {
     if (!s_fav.inited) return;
     favorite_save();
     pthread_mutex_destroy(&s_fav.mutex);
+    FavArray_destroy(&s_fav.arr);
     memset(&s_fav, 0, sizeof(s_fav));
 }
 
@@ -180,18 +185,21 @@ bool favorite_add(const MusicInfo* info) {
         return false;
     }
 
-    /* At limit? (Android: MAX_FAVORITE_INFO_THRESHOLD) */
-    if (s_fav.count >= FAVORITE_MAX_COUNT) {
+    /* Soft limit warning (Android: MAX_FAVORITE_INFO_THRESHOLD) */
+    if (s_fav.arr.count >= FAVORITE_SOFT_LIMIT) {
         pthread_mutex_unlock(&s_fav.mutex);
         notify(FAVORITE_OP_MAX_LIMIT, NULL, -1);
         return false;
     }
 
-    /* Copy into list */
-    int idx = s_fav.count;
-    s_fav.items[idx] = *info;
-    s_fav.items[idx].uid = idx;
-    s_fav.count++;
+    /* Copy into list via darray push (auto-grows if needed) */
+    MusicInfo copy = *info;
+    copy.uid = s_fav.arr.count;
+    if (FavArray_push(&s_fav.arr, &copy) != 0) {
+        pthread_mutex_unlock(&s_fav.mutex);
+        return false; /* OOM */
+    }
+    int idx = s_fav.arr.count - 1;
 
     pthread_mutex_unlock(&s_fav.mutex);
 
@@ -210,14 +218,10 @@ bool favorite_remove(const char* filepath) {
         return false;
     }
 
-    MusicInfo removed = s_fav.items[idx];
+    MusicInfo removed = s_fav.arr.items[idx];
 
-    /* Shift remaining items down */
-    int i;
-    for (i = idx; i < s_fav.count - 1; i++) {
-        s_fav.items[i] = s_fav.items[i + 1];
-    }
-    s_fav.count--;
+    /* Remove via darray (handles memmove internally) */
+    FavArray_remove(&s_fav.arr, idx);
 
     pthread_mutex_unlock(&s_fav.mutex);
 
@@ -245,27 +249,26 @@ bool favorite_toggle(const MusicInfo* info) {
 
     int idx = find_by_path(info->filepath);
     if (idx >= 0) {
-        /* Already favorited → remove (inline, lock already held) */
-        MusicInfo removed = s_fav.items[idx];
-        int i;
-        for (i = idx; i < s_fav.count - 1; i++) {
-            s_fav.items[i] = s_fav.items[i + 1];
-        }
-        s_fav.count--;
+        /* Already favorited → remove */
+        MusicInfo removed = s_fav.arr.items[idx];
+        FavArray_remove(&s_fav.arr, idx);
         pthread_mutex_unlock(&s_fav.mutex);
         notify(FAVORITE_OP_REMOVE, &removed, idx);
         return false;  /* Now un-favorited */
     } else {
-        /* Not favorited → add (inline, lock already held) */
-        if (s_fav.count >= FAVORITE_MAX_COUNT) {
+        /* Not favorited → add */
+        if (s_fav.arr.count >= FAVORITE_SOFT_LIMIT) {
             pthread_mutex_unlock(&s_fav.mutex);
             notify(FAVORITE_OP_MAX_LIMIT, NULL, -1);
             return false;
         }
-        int new_idx = s_fav.count;
-        s_fav.items[new_idx] = *info;
-        s_fav.items[new_idx].uid = new_idx;
-        s_fav.count++;
+        MusicInfo copy = *info;
+        copy.uid = s_fav.arr.count;
+        if (FavArray_push(&s_fav.arr, &copy) != 0) {
+            pthread_mutex_unlock(&s_fav.mutex);
+            return false;
+        }
+        int new_idx = s_fav.arr.count - 1;
         pthread_mutex_unlock(&s_fav.mutex);
         notify(FAVORITE_OP_ADD, info, new_idx);
         return true;   /* Now favorited */
@@ -273,8 +276,8 @@ bool favorite_toggle(const MusicInfo* info) {
 }
 
 const MusicInfo* favorite_get_list(int* out_count) {
-    if (out_count) *out_count = s_fav.count;
-    return s_fav.items;
+    if (out_count) *out_count = s_fav.arr.count;
+    return s_fav.arr.items;
 }
 
 void favorite_save(void) {
@@ -284,15 +287,15 @@ void favorite_save(void) {
 
     pthread_mutex_lock(&s_fav.mutex);
     int i;
-    for (i = 0; i < s_fav.count; i++) {
-        const MusicInfo* item = &s_fav.items[i];
+    for (i = 0; i < s_fav.arr.count; i++) {
+        const MusicInfo* item = &s_fav.arr.items[i];
         fprintf(fp, "%s\t%s\t%s\t%s\n",
                 item->filepath, item->title, item->artist, item->album);
     }
     pthread_mutex_unlock(&s_fav.mutex);
 
     fclose(fp);
-    printf("[favorite] Saved %d favorites\n", s_fav.count);
+    printf("[favorite] Saved %d favorites\n", s_fav.arr.count);
 }
 
 int favorite_validate(const MusicList* music_list) {
@@ -302,12 +305,12 @@ int favorite_validate(const MusicList* music_list) {
 
     int removed_count = 0;
     int i = 0;
-    while (i < s_fav.count) {
+    while (i < s_fav.arr.count) {
         /* Check if this favorite's file exists in the scan result */
         bool found = false;
         int j;
         for (j = 0; j < music_list->count; j++) {
-            if (reverse_path_equals(s_fav.items[i].filepath,
+            if (reverse_path_equals(s_fav.arr.items[i].filepath,
                                     music_list->items[j].filepath)) {
                 found = true;
                 break;
@@ -316,11 +319,7 @@ int favorite_validate(const MusicList* music_list) {
 
         if (!found) {
             /* File no longer exists — remove from favorites */
-            int k;
-            for (k = i; k < s_fav.count - 1; k++) {
-                s_fav.items[k] = s_fav.items[k + 1];
-            }
-            s_fav.count--;
+            FavArray_remove(&s_fav.arr, i);
             removed_count++;
             /* Don't increment i — re-check the item that shifted into this slot */
         } else {

@@ -242,6 +242,49 @@ int music_parse_id3v2(const char *filepath, MusicInfo *info)
  * hidden dirs and .nomedia. We add an explicit depth cap for safety. */
 #define MAX_SCAN_DEPTH 20
 
+/*
+ * Ensure the list has room for at least one more item.
+ * Grows by MUSIC_GROW_FACTOR (2x) via realloc, capped at MUSIC_MAX_FILES.
+ * Returns 0 on success, -1 on OOM or at ceiling.
+ *
+ * Design note: 为什么不用链表?
+ *   MusicInfo ~2.5KB/条, 播放列表的核心操作是按索引随机访问(UI列表滚动、
+ *   跳转播放、shuffle索引计算), 链表 O(N) 遍历在 512MB DDR 上 cache miss
+ *   严重。Android 也用 ArrayList(底层数组), 不用 LinkedList。
+ *   动态数组 realloc 策略兼顾了"无硬上限"和 O(1) 随机访问。
+ */
+static int music_list_ensure_capacity(MusicList *list)
+{
+    if (list->count < list->capacity) return 0;
+
+    if (list->capacity >= MUSIC_MAX_FILES) {
+        fprintf(stderr, "[MusicScanner] Safety ceiling reached: %d files\n",
+                MUSIC_MAX_FILES);
+        return -1;
+    }
+
+    int new_cap = list->capacity * MUSIC_GROW_FACTOR;
+    if (new_cap > MUSIC_MAX_FILES) new_cap = MUSIC_MAX_FILES;
+
+    MusicInfo *new_items = (MusicInfo *)realloc(list->items,
+                                                 new_cap * sizeof(MusicInfo));
+    if (!new_items) {
+        fprintf(stderr, "[MusicScanner] realloc failed: %d -> %d items "
+                "(%zu bytes)\n", list->capacity, new_cap,
+                (size_t)new_cap * sizeof(MusicInfo));
+        return -1;
+    }
+
+    /* Zero out the newly allocated portion */
+    memset(&new_items[list->capacity], 0,
+           (new_cap - list->capacity) * sizeof(MusicInfo));
+
+    list->items = new_items;
+    list->capacity = new_cap;
+    printf("[MusicScanner] List grown: capacity now %d\n", new_cap);
+    return 0;
+}
+
 /* Per-list UID counter — avoids global static which is not thread-safe
  * if two scans run on different MusicLists concurrently. */
 
@@ -301,11 +344,13 @@ static int scan_dir_recursive(MusicList *list, const char *dir_path,
             scan_dir_recursive(list, fullpath, device_name, depth + 1);
         } else if (S_ISREG(st.st_mode)) {
             if (!music_is_audio_file(entry->d_name)) continue;
-            if (list->count >= list->capacity) {
-                fprintf(stderr, "[MusicScanner] Capacity reached: %d\n",
-                        list->capacity);
+
+            /* Dynamic growth: ensure room for one more item */
+            if (music_list_ensure_capacity(list) != 0) {
+                fprintf(stderr, "[MusicScanner] Cannot grow list, "
+                        "stopping at %d files\n", list->count);
                 closedir(dir);
-                return 0; /* Not an error — capacity exhausted */
+                return 0;
             }
 
             MusicInfo *info = &list->items[list->count];
@@ -362,8 +407,10 @@ static int scan_dir_recursive(MusicList *list, const char *dir_path,
 
 MusicList *music_list_create(int capacity)
 {
-    if (capacity <= 0 || capacity > MUSIC_MAX_FILES)
-        capacity = MUSIC_MAX_FILES;
+    if (capacity <= 0)
+        capacity = MUSIC_INIT_CAPACITY;
+    /* No upper clamp here — realloc will grow as needed,
+     * MUSIC_MAX_FILES is enforced in ensure_capacity */
 
     MusicList *list = (MusicList *)calloc(1, sizeof(MusicList));
     if (!list) return NULL;
@@ -458,7 +505,13 @@ int music_db_load(MusicList *list, const char *db_path)
 
     while (fgets(line, sizeof(line), fp)) {
         if (line[0] == '#') continue; /* skip header */
-        if (list->count >= list->capacity) break;
+
+        /* Dynamic growth when loading from DB */
+        if (music_list_ensure_capacity(list) != 0) {
+            fprintf(stderr, "[MusicScanner] Cannot grow list during DB load, "
+                    "stopping at %d records\n", list->count);
+            break;
+        }
 
         MusicInfo *m = &list->items[list->count];
         memset(m, 0, sizeof(MusicInfo));

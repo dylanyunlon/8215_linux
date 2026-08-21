@@ -27,8 +27,10 @@
 extern "C" {
 #endif
 
-/* Max number of favorites (Android: MAX_FAVORITE_INFO_THRESHOLD = 128) */
-#define FAVORITE_MAX_COUNT  128
+/* Soft limit — Android: MAX_FAVORITE_INFO_THRESHOLD = 128.
+ * Now a warning threshold, not a hard cutoff.
+ * darray will grow beyond this if user insists. */
+#define FAVORITE_SOFT_LIMIT  128
 
 /* Persistence file path */
 #define FAVORITE_DB_PATH    "/data/music/favorites.db"

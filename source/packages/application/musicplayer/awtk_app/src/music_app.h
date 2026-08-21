@@ -213,7 +213,10 @@ int music_app_search(const char* keyword, const MusicInfo** results, int max_res
 /* --- Album/Artist classification (Issue #3, mirrors Android classifyMediaInfoList) --- */
 
 /** Max number of unique albums or artists */
-#define MUSIC_MAX_GROUPS  256
+#include "darray.h"
+
+/* Dynamic array of const MusicInfo pointers (used inside groups) */
+DARRAY_DEFINE(MusicPtrArray, const MusicInfo*)
 
 /**
  * @brief A group of tracks sharing the same album or artist key.
@@ -221,9 +224,14 @@ int music_app_search(const char* keyword, const MusicInfo** results, int max_res
  */
 typedef struct {
     char            key[MUSIC_MAX_TAG_LEN]; /* album or artist name */
-    const MusicInfo* items[MUSIC_MAX_FILES]; /* pointers into scan list */
-    int             count;
+    MusicPtrArray   items;                  /* was: const MusicInfo* items[2000] */
 } music_group_t;
+
+/* Dynamic array of music_group_t (replaces album_groups[256]) */
+DARRAY_DEFINE(GroupArray, music_group_t)
+
+/* Dynamic array of char* string pointers (replaces folder_paths[2000]) */
+DARRAY_DEFINE(StrPtrArray, char*)
 
 /**
  * @brief Get album groups from current device.

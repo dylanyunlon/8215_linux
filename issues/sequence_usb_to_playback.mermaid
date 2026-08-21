@@ -1,0 +1,95 @@
+sequenceDiagram
+    autonumber
+    participant K as Linux Kernel<br/>(uevent netlink)
+    participant U as usb_monitor<br/>(monitor thread)
+    participant A as music_app<br/>(coordinator)
+    participant S as scan_thread<br/>(pthread detached)
+    participant P as music_player<br/>(libatcmediaplayer)
+    participant M as AWTK Main Loop<br/>(idle_queue)
+    participant UI as music_ui<br/>(widget layer)
+
+    Note over K,UI: ═══ 阶段1: USB热插拔检测 ═══
+
+    K->>U: netlink uevent (block device add)
+    U->>U: 解析uevent, 检查/proc/mounts
+    U->>A: on_storage_event(MOUNTED, "/mnt/usb0")
+    Note right of A: mutex lock → add_device() → mutex unlock
+    A-->>M: idle_queue(APP_EVENT_STORAGE_MOUNTED)
+    M->>UI: music_ui_on_app_event(STORAGE_MOUNTED)
+    UI->>UI: 更新状态栏 + 重建设备切换按钮
+
+    Note over K,UI: ═══ 阶段2: 后台文件扫描 ═══
+
+    A->>S: pthread_create(scan_thread_func)
+    A-->>M: idle_queue(APP_EVENT_SCAN_STARTED)
+    M->>UI: music_ui_on_app_event(SCAN_STARTED)
+    UI->>UI: 显示 "Scanning..."
+
+    S->>S: music_scan_directory(mount_point)<br/>递归遍历目录 + ID3v2解析
+    S->>S: music_db_save(list, db_path)
+    S->>S: build_folder_cache()<br/>mutex lock → 构建文件夹索引 → unlock
+    S->>S: build_classification_cache()<br/>mutex lock → 按专辑/艺术家分组 → unlock
+    S->>S: favorite_validate(list)<br/>清理已删除文件的收藏记录
+
+    Note over K,UI: ═══ 阶段3: 主线程加载播放列表 (Issue #38修复: 禁止在扫描线程操作player) ═══
+
+    S-->>M: idle_queue(scan_done_main_thread_handler)
+    Note right of M: scan_done_data_t { dev_idx, resume_idx, resume_pos_ms }
+    M->>P: music_player_set_playlist(list)
+    M-->>UI: APP_EVENT_PLAYLIST_CHANGED → rebuild_playlist_view()
+    
+    alt 有last_path恢复记忆
+        M->>P: music_player_play(resume_idx)
+        M->>P: music_player_seek(resume_pos_ms)
+    end
+    
+    S-->>M: idle_queue(APP_EVENT_SCAN_FINISHED)
+    M->>UI: music_ui_on_app_event(SCAN_FINISHED)
+
+    Note over K,UI: ═══ 阶段4: 播放状态回调链 ═══
+
+    P-->>A: on_player_state(PLAYING) [player线程]
+    Note right of A: mutex lock → 更新state → unlock
+    A-->>M: idle_queue(player_state_idle_handler)
+    Note right of M: Issue #15/27修复: timer操作必须在主线程
+    M->>UI: APP_EVENT_STATE_CHANGED → 按钮变为"Pause"
+
+    P-->>A: on_player_track(idx, info) [player线程]
+    A-->>M: idle_queue(track_changed_load_media_idle)
+    Note right of M: Issue #37修复: 封面/歌词IO移到主线程
+    M->>M: load_album_art_for_current()
+    M->>M: load_lyrics_for_current()
+    M->>UI: APP_EVENT_TRACK_CHANGED → 更新标题/艺术家/收藏按钮
+
+    loop 每秒持续
+        P-->>A: on_player_position(pos_ms, dur_ms)
+        A-->>M: idle_queue(APP_EVENT_POSITION_CHANGED)
+        M->>UI: 更新slider + 时间标签 + 歌词行
+    end
+
+    Note over K,UI: ═══ 阶段5: 自然播放结束 → 自动切歌 ═══
+
+    P-->>A: on_player_state(STOPPED)
+    A-->>M: idle_queue(player_state_idle_handler)
+    Note right of M: GAP-9: timer_add(delayed_auto_next, 1000ms)
+    M->>P: music_player_next() [1秒延迟后执行]
+
+    Note over K,UI: ═══ 阶段6: USB拔出处理 ═══
+
+    K->>U: netlink uevent (block device remove)
+    U->>A: on_storage_event(UNMOUNTED, "/mnt/usb0")
+    Note right of A: GAP-2: 只有当前播放设备被拔出时才停止播放
+    A->>P: music_player_stop() [仅当前设备]
+    A->>A: remove_device(idx)
+    A-->>M: idle_queue(APP_EVENT_STORAGE_UNMOUNTED)
+    M->>UI: 清空列表, 显示"设备已移除"
+
+    Note over K,UI: ═══ 阶段7: ACC OFF/ON 车辆生命周期 (Issue #32) ═══
+
+    Note over A: music_app_on_acc_off()
+    A->>A: music_app_save_state() → /data/music/last_state.cfg
+    A->>P: music_player_stop()
+    
+    Note over A: music_app_on_acc_on()
+    A->>A: music_app_restore_state() → 读取last_path + position
+    Note right of A: 实际恢复播放在下次scan_done时自动触发

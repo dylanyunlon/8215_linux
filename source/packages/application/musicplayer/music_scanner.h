@@ -20,7 +20,10 @@ extern "C" {
 #endif
 
 /* Maximum counts */
-#define MUSIC_MAX_FILES       2000
+/* Initial capacity — grows dynamically via realloc (no hard limit) */
+#define MUSIC_INIT_CAPACITY   512
+#define MUSIC_GROW_FACTOR     2    /* double on each realloc */
+#define MUSIC_MAX_FILES       65536  /* safety ceiling to prevent OOM on 512MB DDR */
 #define MUSIC_MAX_PATH_LEN    512
 #define MUSIC_MAX_TAG_LEN     256
 #define MUSIC_DB_PATH         "/data/music/music.db"

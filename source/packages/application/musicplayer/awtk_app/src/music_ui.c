@@ -38,12 +38,37 @@
 #define W_LBL_COUNT   "lbl_count"
 #define W_BTN_FAV     "btn_fav"
 
+/* Issue #41: Storage device switch buttons */
+#define W_DEVICE_BAR  "bar_device"
+#define W_BTN_DEV_FMT "btn_dev_%d"   /* btn_dev_0, btn_dev_1, ... */
+
+/* Issue #42: Playlist type Tab buttons */
+#define W_TAB_BAR     "bar_tabs"
+#define W_BTN_TAB_ALL "btn_tab_all"
+#define W_BTN_TAB_FOLDER "btn_tab_folder"
+#define W_BTN_TAB_FAV "btn_tab_fav"
+#define W_BTN_TAB_ALBUM "btn_tab_album"
+#define W_BTN_TAB_ARTIST "btn_tab_artist"
+
+/* Issue #44: Lyrics display */
+#define W_LBL_LYRICS  "lbl_lyrics"
+
+/* Issue #42: Current active tab */
+typedef enum {
+    TAB_ALL     = 0,
+    TAB_FOLDER  = 1,
+    TAB_FAV     = 2,
+    TAB_ALBUM   = 3,
+    TAB_ARTIST  = 4,
+} tab_type_t;
+
 /*============================================================================
  * Module state
  *==========================================================================*/
 static widget_t* s_win = NULL;
 static bool s_slider_dragging = false;
 static int s_last_highlight_idx = -1; /* Issue #20: track last highlighted row */
+static tab_type_t s_active_tab = TAB_ALL; /* Issue #42: active playlist tab */
 
 /*============================================================================
  * Helper: find child widget by name
@@ -122,6 +147,247 @@ static ret_t on_btn_fav_click(void* ctx, event_t* e) {
     music_app_toggle_favorite();
     update_fav_button_text();
     return RET_OK;
+}
+
+/*============================================================================
+ * Issue #42: Tab click handlers — switch between playlist views
+ * Mirrors Android MusicViewPaperFragment Tab switching
+ *==========================================================================*/
+static void rebuild_folder_list_view(void);
+static void rebuild_album_list_view(void);
+static void rebuild_artist_list_view(void);
+static void rebuild_favorite_list_view(void);
+static void update_tab_highlight(tab_type_t active);
+
+static ret_t on_tab_all_click(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    s_active_tab = TAB_ALL;
+    music_app_restore_full_playlist();
+    update_tab_highlight(TAB_ALL);
+    return RET_OK;
+}
+
+static ret_t on_tab_folder_click(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    s_active_tab = TAB_FOLDER;
+    rebuild_folder_list_view();
+    update_tab_highlight(TAB_FOLDER);
+    return RET_OK;
+}
+
+static ret_t on_tab_fav_click(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    s_active_tab = TAB_FAV;
+    rebuild_favorite_list_view();
+    update_tab_highlight(TAB_FAV);
+    return RET_OK;
+}
+
+static ret_t on_tab_album_click(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    s_active_tab = TAB_ALBUM;
+    rebuild_album_list_view();
+    update_tab_highlight(TAB_ALBUM);
+    return RET_OK;
+}
+
+static ret_t on_tab_artist_click(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    s_active_tab = TAB_ARTIST;
+    rebuild_artist_list_view();
+    update_tab_highlight(TAB_ARTIST);
+    return RET_OK;
+}
+
+/* Issue #42: Update tab button visual state (highlight active tab) */
+static void update_tab_highlight(tab_type_t active) {
+    const char* tab_names[] = {
+        W_BTN_TAB_ALL, W_BTN_TAB_FOLDER, W_BTN_TAB_FAV,
+        W_BTN_TAB_ALBUM, W_BTN_TAB_ARTIST
+    };
+    int i;
+    for (i = 0; i < 5; i++) {
+        widget_t* btn = find(tab_names[i]);
+        if (btn) {
+            if (i == (int)active) {
+                widget_set_style_str(btn, "text_color", "#00E0FF");
+                widget_set_style_str(btn, "border_color", "#00E0FF");
+            } else {
+                widget_set_style_str(btn, "text_color", "#AAAAAA");
+                widget_set_style_str(btn, "border_color", "#444444");
+            }
+            widget_invalidate_force(btn, NULL);
+        }
+    }
+}
+
+/*============================================================================
+ * Issue #41: Device switch handler
+ * Mirrors Android MusicUI RadioButton rb_usb_bg / rb_sd_bg switching
+ *==========================================================================*/
+static ret_t on_device_btn_click(void* ctx, event_t* e) {
+    (void)ctx;
+    widget_t* btn = WIDGET(e->target);
+    if (btn) {
+        int dev_idx = widget_get_prop_int(btn, "dev_index", -1);
+        if (dev_idx >= 0) {
+            music_app_switch_device(dev_idx);
+            s_active_tab = TAB_ALL;
+            update_tab_highlight(TAB_ALL);
+        }
+    }
+    return RET_OK;
+}
+
+/*============================================================================
+ * Issue #42: Rebuild list view for folder/album/artist/favorite tabs
+ *==========================================================================*/
+
+/* Folder list click: play all songs in that folder */
+static ret_t on_folder_item_click(void* ctx, event_t* e) {
+    (void)ctx;
+    widget_t* item = WIDGET(e->target);
+    if (item) {
+        const char* path = widget_get_prop_str(item, "folder_path", NULL);
+        if (path) {
+            music_app_play_folder(path);
+        }
+    }
+    return RET_OK;
+}
+
+static void rebuild_folder_list_view(void) {
+    widget_t* list = find(W_LIST_VIEW);
+    if (!list) return;
+
+    widget_destroy_children(list);
+
+    const char** folders = NULL;
+    int count = 0;
+    music_app_get_folder_list(&folders, &count);
+
+    int item_h = 35;
+    int max_visible = count < 100 ? count : 100;
+    int i;
+    for (i = 0; i < max_visible; i++) {
+        /* Show just the last directory name for brevity */
+        const char* full_path = folders[i];
+        const char* display = strrchr(full_path, '/');
+        display = display ? display + 1 : full_path;
+
+        char text[512];
+        snprintf(text, sizeof(text), "   %s/", display);
+
+        widget_t* item = label_create(list, 0, i * item_h, 984, item_h);
+        widget_set_text_utf8(item, text);
+        widget_set_prop_str(item, "folder_path", full_path);
+        widget_set_style_str(item, "font_size", "16");
+        widget_set_style_str(item, "text_color", "#FFD700");
+        widget_on(item, EVT_CLICK, on_folder_item_click, NULL);
+    }
+
+    widget_t* lbl = find(W_LBL_COUNT);
+    if (lbl) {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "%d folders", count);
+        widget_set_text_utf8(lbl, buf);
+    }
+
+    widget_invalidate_force(list, NULL);
+}
+
+/* Album/artist group item click: play group starting at first track */
+static ret_t on_group_item_click(void* ctx, event_t* e) {
+    const music_group_t* group = (const music_group_t*)ctx;
+    widget_t* item = WIDGET(e->target);
+    if (item && group) {
+        int index = widget_get_prop_int(item, "item_index", 0);
+        music_app_play_group(group, index);
+    }
+    return RET_OK;
+}
+
+static void rebuild_group_list_view(const music_group_t* groups, int count,
+                                    const char* type_label) {
+    widget_t* list = find(W_LIST_VIEW);
+    if (!list) return;
+
+    widget_destroy_children(list);
+
+    int item_h = 35;
+    int max_visible = count < 100 ? count : 100;
+    int i;
+    for (i = 0; i < max_visible; i++) {
+        char text[512];
+        snprintf(text, sizeof(text), "   %s (%d)", groups[i].key, groups[i].count);
+
+        widget_t* item = label_create(list, 0, i * item_h, 984, item_h);
+        widget_set_text_utf8(item, text);
+        widget_set_prop_int(item, "item_index", 0);
+        widget_set_style_str(item, "font_size", "16");
+        widget_set_style_str(item, "text_color", "#80eee1");
+        /* Pass the group pointer as ctx for the click handler */
+        widget_on(item, EVT_CLICK, on_group_item_click, (void*)&groups[i]);
+    }
+
+    widget_t* lbl = find(W_LBL_COUNT);
+    if (lbl) {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "%d %s", count, type_label);
+        widget_set_text_utf8(lbl, buf);
+    }
+
+    widget_invalidate_force(list, NULL);
+}
+
+static void rebuild_album_list_view(void) {
+    const music_group_t* groups = NULL;
+    int count = 0;
+    music_app_get_album_list(&groups, &count);
+    rebuild_group_list_view(groups, count, "albums");
+}
+
+static void rebuild_artist_list_view(void) {
+    const music_group_t* groups = NULL;
+    int count = 0;
+    music_app_get_artist_list(&groups, &count);
+    rebuild_group_list_view(groups, count, "artists");
+}
+
+static void rebuild_favorite_list_view(void) {
+    widget_t* list = find(W_LIST_VIEW);
+    if (!list) return;
+
+    widget_destroy_children(list);
+
+    int count = 0;
+    const MusicInfo* favs = music_app_get_favorite_list(&count);
+
+    int item_h = 35;
+    int max_visible = count < 100 ? count : 100;
+    int i;
+    for (i = 0; i < max_visible; i++) {
+        char text[512];
+        const char* title = favs[i].title;
+        if (title[0] == '\0') title = favs[i].filename;
+        snprintf(text, sizeof(text), "   %d. %s - %s",
+                 i + 1, title, favs[i].artist[0] ? favs[i].artist : "--");
+
+        widget_t* item = label_create(list, 0, i * item_h, 984, item_h);
+        widget_set_text_utf8(item, text);
+        widget_set_style_str(item, "font_size", "16");
+        widget_set_style_str(item, "text_color", "#FF6B6B");
+        /* TODO: Click to play from favorites playlist */
+    }
+
+    widget_t* lbl = find(W_LBL_COUNT);
+    if (lbl) {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "%d favorites", count);
+        widget_set_text_utf8(lbl, buf);
+    }
+
+    widget_invalidate_force(list, NULL);
 }
 
 static ret_t on_slider_value_changed(void* ctx, event_t* e) {
@@ -286,12 +552,74 @@ ret_t music_ui_create(widget_t* win) {
     widget_set_style_str(lbl_count, "font_size", "14");
     widget_set_style_str(lbl_count, "text_color", "#888888");
 
+    /* === Issue #41: Device switch bar (top-right corner) === */
+    /* Shows USB0, USB1, SD0 etc. buttons for switching storage devices.
+     * Mirrors Android MusicUI rb_usb_bg / rb_sd_bg RadioButtons.
+     * Populated dynamically in music_ui_on_app_event(STORAGE_MOUNTED). */
+    /* Device bar is a container; buttons are added/removed dynamically */
+    widget_t* dev_bar = view_create(win, 760, 20, 244, 30);
+    widget_set_name(dev_bar, W_DEVICE_BAR);
+
+    /* === Issue #42: Playlist type Tab bar ===
+     * Mirrors Android MusicViewPaperFragment Tab (全部/文件夹/收藏/专辑/艺术家) */
+    {
+        int tab_y = 220;
+        int tab_w = 80;
+        int tab_h = 28;
+        int tab_gap = 8;
+        int tab_x = 20;
+
+        widget_t* t_all = button_create(win, tab_x, tab_y, tab_w, tab_h);
+        widget_set_name(t_all, W_BTN_TAB_ALL);
+        widget_set_text_utf8(t_all, "All");
+        widget_set_style_str(t_all, "font_size", "14");
+        widget_on(t_all, EVT_CLICK, on_tab_all_click, NULL);
+
+        tab_x += tab_w + tab_gap;
+        widget_t* t_folder = button_create(win, tab_x, tab_y, tab_w, tab_h);
+        widget_set_name(t_folder, W_BTN_TAB_FOLDER);
+        widget_set_text_utf8(t_folder, "Folder");
+        widget_set_style_str(t_folder, "font_size", "14");
+        widget_on(t_folder, EVT_CLICK, on_tab_folder_click, NULL);
+
+        tab_x += tab_w + tab_gap;
+        widget_t* t_fav = button_create(win, tab_x, tab_y, tab_w, tab_h);
+        widget_set_name(t_fav, W_BTN_TAB_FAV);
+        widget_set_text_utf8(t_fav, "Fav");
+        widget_set_style_str(t_fav, "font_size", "14");
+        widget_on(t_fav, EVT_CLICK, on_tab_fav_click, NULL);
+
+        tab_x += tab_w + tab_gap;
+        widget_t* t_album = button_create(win, tab_x, tab_y, tab_w, tab_h);
+        widget_set_name(t_album, W_BTN_TAB_ALBUM);
+        widget_set_text_utf8(t_album, "Album");
+        widget_set_style_str(t_album, "font_size", "14");
+        widget_on(t_album, EVT_CLICK, on_tab_album_click, NULL);
+
+        tab_x += tab_w + tab_gap;
+        widget_t* t_artist = button_create(win, tab_x, tab_y, tab_w, tab_h);
+        widget_set_name(t_artist, W_BTN_TAB_ARTIST);
+        widget_set_text_utf8(t_artist, "Artist");
+        widget_set_style_str(t_artist, "font_size", "14");
+        widget_on(t_artist, EVT_CLICK, on_tab_artist_click, NULL);
+
+        /* Set initial highlight on "All" tab */
+        update_tab_highlight(TAB_ALL);
+    }
+
+    /* === Issue #44: Lyrics display label === */
+    widget_t* lbl_lyrics = label_create(win, 760, 110, 244, 100);
+    widget_set_name(lbl_lyrics, W_LBL_LYRICS);
+    widget_set_text_utf8(lbl_lyrics, "");
+    widget_set_style_str(lbl_lyrics, "font_size", "14");
+    widget_set_style_str(lbl_lyrics, "text_color", "#80eee1");
+
     /* === Playlist area (bottom half) === */
     /* Note: For production, this should use a proper list_view with virtual
      * scrolling via AWTK's list_view_create(). Here we use a simple approach
      * suitable for the initial implementation. A full list_view with
      * custom item renderer will be added as a follow-up enhancement. */
-    widget_t* list = list_view_create(win, 20, 250, 984, 340);
+    widget_t* list = list_view_create(win, 20, 260, 984, 330);
     widget_set_name(list, W_LIST_VIEW);
 
     printf("[music_ui] UI created\n");
@@ -423,6 +751,43 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
                          dev->mount_point);
                 widget_set_text_utf8(lbl, buf);
             }
+
+            /* Issue #41: Rebuild device switch buttons.
+             * Mirrors Android MusicUI RadioButton creation for USB/SD devices. */
+            {
+                widget_t* dev_bar = find(W_DEVICE_BAR);
+                if (dev_bar) {
+                    widget_destroy_children(dev_bar);
+                    int dev_count = music_app_get_device_count();
+                    int btn_w = 60;
+                    int btn_gap = 4;
+                    int di;
+                    for (di = 0; di < dev_count && di < MAX_STORAGE_DEVICES; di++) {
+                        const storage_device_state_t* d = music_app_get_device(di);
+                        if (!d) continue;
+
+                        /* Extract short label from mount point (e.g. "usb0") */
+                        const char* mp = d->mount_point;
+                        const char* slash = strrchr(mp, '/');
+                        const char* label = slash ? slash + 1 : mp;
+
+                        widget_t* dbtn = button_create(dev_bar,
+                            di * (btn_w + btn_gap), 0, btn_w, 28);
+                        widget_set_text_utf8(dbtn, label);
+                        widget_set_prop_int(dbtn, "dev_index", di);
+                        widget_set_style_str(dbtn, "font_size", "12");
+                        widget_on(dbtn, EVT_CLICK, on_device_btn_click, NULL);
+
+                        const music_app_state_t* st = music_app_get_state();
+                        if (di == st->current_device_idx) {
+                            widget_set_style_str(dbtn, "text_color", "#00E0FF");
+                        } else {
+                            widget_set_style_str(dbtn, "text_color", "#AAAAAA");
+                        }
+                    }
+                    widget_invalidate_force(dev_bar, NULL);
+                }
+            }
             break;
         }
 
@@ -455,7 +820,25 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
         }
 
         case APP_EVENT_PLAYLIST_CHANGED: {
-            rebuild_playlist_view();
+            /* Issue #42 fix: When the playlist changes (e.g. user played a folder
+             * or album group), we should NOT blindly call rebuild_playlist_view()
+             * which would overwrite the current tab view. Instead:
+             * - If user is browsing a non-ALL tab (folder/album/artist list),
+             *   only update the count label but keep the tab view.
+             * - If user clicked a folder/album item which triggered playback,
+             *   the tab view stays; the playlist_view will rebuild when they
+             *   return to the ALL tab.
+             * - If the event came from a device scan (initial load), switch to ALL. */
+            {
+                const music_app_state_t* st = music_app_get_state();
+
+                /* If the playlist type matches ALL, rebuild the song list view */
+                if (st->playlist_type == PLAYLIST_TYPE_DEVICE ||
+                    s_active_tab == TAB_ALL) {
+                    rebuild_playlist_view();
+                }
+                /* Otherwise the user is in a sub-tab; keep their view intact */
+            }
 
             /* Issue #10: Update index/total count after playlist loads */
             {
@@ -579,6 +962,25 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             if (lbl_total && dur > 0) {
                 format_time(buf, sizeof(buf), dur);
                 widget_set_text_utf8(lbl_total, buf);
+            }
+
+            /* Issue #44: Update lyrics display if lyrics are available.
+             * Mirrors Android MusicInfoLayout.updateLrcRowList(). */
+            {
+                const lrc_data_t* lrc = music_app_get_lyrics();
+                widget_t* lbl_lrc = find(W_LBL_LYRICS);
+                if (lbl_lrc) {
+                    if (lrc && lrc->count > 0) {
+                        int line_idx = music_app_get_lyrics_line(pos);
+                        if (line_idx >= 0 && line_idx < lrc->count) {
+                            widget_set_text_utf8(lbl_lrc, lrc->lines[line_idx].text);
+                        } else {
+                            widget_set_text_utf8(lbl_lrc, "");
+                        }
+                    } else {
+                        widget_set_text_utf8(lbl_lrc, "");
+                    }
+                }
             }
             break;
         }

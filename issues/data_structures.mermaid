@@ -1,0 +1,198 @@
+classDiagram
+    direction TB
+
+    class MusicInfo {
+        <<music_scanner.h — 对应Android MediaInfo.java>>
+        +int uid
+        +MediaType media_type
+        +char title[256]
+        +char artist[256]
+        +char album[256]
+        +int duration_ms
+        +int track_num
+        +char filepath[512]
+        +char filename[256]
+        +char device_name[512]
+        +char folder_path[512]
+        +uint32_t file_size
+        +int folder_index
+    }
+
+    class MusicList {
+        <<music_scanner.h — 对应Android ArrayList~MusicInfo~>>
+        +MusicInfo* items
+        +int count
+        +int capacity
+        +ScanState state
+        +char scan_path[512]
+        music_list_create(capacity) MusicList*
+        music_list_destroy(list) void
+        music_scan_directory(list, path) int
+        music_parse_id3v2(filepath, info) int
+        music_db_save(list, db_path) int
+        music_db_load(list, db_path) int
+    }
+
+    class storage_device_state_t {
+        <<music_app.h — 对应Android StorageDeviceEx>>
+        +bool mounted
+        +bool scanning
+        +bool scan_done
+        +bool id3_done
+        +storage_type_t type
+        +char mount_point[256]
+        +MusicList* music_list
+    }
+
+    class music_app_state_t {
+        <<music_app.h — 对应Android AppGlobalData>>
+        +int current_device_idx
+        +PlayMode play_mode
+        +playlist_type_t playlist_type
+        +const MusicInfo* current_info
+        +int current_position_ms
+        +int current_duration_ms
+        +PlayerState player_state
+        +char last_path[512]
+        +int last_position_ms
+    }
+
+    class music_group_t {
+        <<music_app.h — 对应Android MusicKeyInfo>>
+        +char key[256]
+        +const MusicInfo* items[2000]
+        +int count
+    }
+
+    class lrc_line_t {
+        <<music_app.h — 对应Android LyricsRow>>
+        +int time_ms
+        +char text[256]
+    }
+
+    class lrc_data_t {
+        <<music_app.h — 对应Android LyricsManager>>
+        +lrc_line_t* lines
+        +int count
+        +int capacity
+    }
+
+    class storage_device_info_t {
+        <<usb_monitor.h — 对应Android FileStorageState>>
+        +storage_type_t type
+        +storage_event_t event
+        +char mount_point[256]
+        +char dev_node[256]
+    }
+
+    class MusicPlayerContext {
+        <<music_player.h 不透明结构体 — 对应Android MediaPlayerModel>>
+        music_player_create() MusicPlayerContext*
+        music_player_destroy(ctx) void
+        music_player_set_playlist(ctx, list) int
+        music_player_play(ctx, index) int
+        music_player_pause(ctx) int
+        music_player_resume(ctx) int
+        music_player_stop(ctx) int
+        music_player_next(ctx) int
+        music_player_prev(ctx) int
+        music_player_seek(ctx, pos_ms) int
+        music_player_set_mode(ctx, mode) void
+        music_player_get_state(ctx) PlayerState
+    }
+
+    class s_app {
+        <<music_app.c 模块静态变量 — 对应Android LocalService内部状态>>
+        +music_app_state_t state
+        +MusicPlayerContext* player
+        +storage_device_state_t devices[4]
+        +int device_count
+        +music_app_ui_callback_t ui_cb
+        +pthread_mutex_t mutex
+        +char* folder_paths[2000]
+        +int folder_count
+        +music_group_t album_groups[256]
+        +int album_group_count
+        +music_group_t artist_groups[256]
+        +int artist_group_count
+        +uint8_t* album_art_data
+        +lrc_data_t lyrics
+    }
+
+    class s_fav {
+        <<favorite_manager.c — 对应Android FavoriteManager + Room DB>>
+        +MusicInfo items[128]
+        +int count
+        +favorite_callback_t callback
+        +pthread_mutex_t mutex
+    }
+
+    class PlayMode {
+        <<枚举 music_player.h — 对应Android IConstant播放模式>>
+        SEQUENTIAL = 0
+        REPEAT_ALL = 1
+        REPEAT_ONE = 2
+        SHUFFLE = 3
+    }
+
+    class PlayerState {
+        <<枚举 music_player.h>>
+        IDLE = 0
+        PLAYING = 1
+        PAUSED = 2
+        STOPPED = 3
+        ERROR = 4
+    }
+
+    class playlist_type_t {
+        <<枚举 music_app.h — 对应Android IPlaylistType>>
+        DEVICE = 0
+        FOLDER = 1
+        FAVORITE = 2
+        ALBUM = 3
+        ARTIST = 4
+    }
+
+    class music_app_event_t {
+        <<枚举 music_app.h — 对应Android IMediaEvent>>
+        STORAGE_MOUNTED = 1
+        STORAGE_UNMOUNTED = 2
+        SCAN_STARTED = 3
+        SCAN_FINISHED = 4
+        TRACK_CHANGED = 5
+        STATE_CHANGED = 6
+        POSITION_CHANGED = 7
+        PLAYLIST_CHANGED = 8
+        ERROR = 9
+        FAVORITE_CHANGED = 10
+    }
+
+    class storage_type_t {
+        <<枚举 usb_monitor.h>>
+        USB = 0
+        SD = 1
+        FLASH = 2
+    }
+
+    %% 组合关系 — 拥有生命周期
+    MusicList "1" *-- "*" MusicInfo : items数组(堆分配)
+    storage_device_state_t "1" *-- "1" MusicList : music_list指针
+    s_app "1" *-- "4" storage_device_state_t : devices[MAX_STORAGE_DEVICES]
+    s_app "1" *-- "1" music_app_state_t : state
+    s_app "1" *-- "1" MusicPlayerContext : player指针
+    s_app "1" *-- "256" music_group_t : album_groups[] / artist_groups[]
+    s_app "1" *-- "1" lrc_data_t : lyrics
+    lrc_data_t "1" *-- "*" lrc_line_t : lines(realloc动态增长)
+    s_fav "1" *-- "128" MusicInfo : items[FAVORITE_MAX_COUNT]
+
+    %% 引用关系 — 不拥有生命周期
+    music_app_state_t --> MusicInfo : current_info (只读指针,不释放)
+    music_app_state_t --> PlayMode : play_mode
+    music_app_state_t --> PlayerState : player_state
+    music_app_state_t --> playlist_type_t : playlist_type
+    music_group_t --> MusicInfo : items[] (指针数组,指向scan结果)
+    storage_device_state_t --> storage_type_t : type
+
+    %% 依赖关系
+    MusicPlayerContext ..> MusicList : set_playlist(深拷贝items)
+    MusicPlayerContext ..> MusicInfo : 回调传出track信息

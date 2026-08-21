@@ -57,14 +57,11 @@ static struct {
     uint32_t                save_timer_id;
 
     /* Issue #2: Folder list cache for folder browsing */
-    char*                   folder_paths[MUSIC_MAX_FILES]; /* unique folder strings */
-    int                     folder_count;
+    StrPtrArray             folder_paths;  /* was: char* folder_paths[2000] */
 
     /* Issue #3: Album/Artist classification cache */
-    music_group_t           album_groups[MUSIC_MAX_GROUPS];
-    int                     album_group_count;
-    music_group_t           artist_groups[MUSIC_MAX_GROUPS];
-    int                     artist_group_count;
+    GroupArray              album_groups;   /* was: music_group_t album_groups[256] */
+    GroupArray              artist_groups;  /* was: music_group_t artist_groups[256] */
 
     /* Issue #7: Album art cache for current track */
     uint8_t*                album_art_data;
@@ -561,9 +558,14 @@ int music_app_init(music_app_ui_callback_t ui_cb) {
     s_app.save_timer_id = TK_INVALID_ID;
     s_app.error_count = 0;
     s_app.last_prev_next_ms = 0;
-    s_app.folder_count = 0;
-    s_app.album_group_count = 0;
-    s_app.artist_group_count = 0;
+    s_app.folder_paths.count = 0;
+    s_app.album_groups.count = 0;
+    s_app.artist_groups.count = 0;
+
+    /* Initialize darray containers */
+    StrPtrArray_init(&s_app.folder_paths, 64);
+    GroupArray_init(&s_app.album_groups, 32);
+    GroupArray_init(&s_app.artist_groups, 32);
     s_app.album_art_data = NULL;
     s_app.album_art_size = 0;
     s_app.album_art_path[0] = '\0';
@@ -642,14 +644,27 @@ void music_app_deinit(void) {
         s_app.lyrics.lines = NULL;
     }
 
-    /* Cleanup folder path cache (Issue #2) */
+    /* Cleanup folder path cache (Issue #2) — free each strdup'd string */
     {
         int fi;
-        for (fi = 0; fi < s_app.folder_count; fi++) {
-            free(s_app.folder_paths[fi]);
-            s_app.folder_paths[fi] = NULL;
+        for (fi = 0; fi < s_app.folder_paths.count; fi++) {
+            free(s_app.folder_paths.items[fi]);
         }
-        s_app.folder_count = 0;
+        StrPtrArray_destroy(&s_app.folder_paths);
+    }
+
+    /* Cleanup classification caches — destroy inner MusicPtrArrays */
+    {
+        int gi;
+        for (gi = 0; gi < s_app.album_groups.count; gi++) {
+            MusicPtrArray_destroy(&s_app.album_groups.items[gi].items);
+        }
+        GroupArray_destroy(&s_app.album_groups);
+
+        for (gi = 0; gi < s_app.artist_groups.count; gi++) {
+            MusicPtrArray_destroy(&s_app.artist_groups.items[gi].items);
+        }
+        GroupArray_destroy(&s_app.artist_groups);
     }
 
     int i;
@@ -908,13 +923,12 @@ static void build_folder_cache(void) {
      * runs on scan thread while UI thread may call get_folder_list(). */
     pthread_mutex_lock(&s_app.mutex);
 
-    /* Free old cache */
+    /* Free old cache — each element is a strdup'd string */
     int i;
-    for (i = 0; i < s_app.folder_count; i++) {
-        free(s_app.folder_paths[i]);
-        s_app.folder_paths[i] = NULL;
+    for (i = 0; i < s_app.folder_paths.count; i++) {
+        free(s_app.folder_paths.items[i]);
     }
-    s_app.folder_count = 0;
+    StrPtrArray_clear(&s_app.folder_paths);
 
     int dev_idx = s_app.state.current_device_idx;
     if (dev_idx < 0 || dev_idx >= s_app.device_count) {
@@ -929,7 +943,7 @@ static void build_folder_cache(void) {
     }
 
     MusicList* list = dev->music_list;
-    for (i = 0; i < list->count && s_app.folder_count < MUSIC_MAX_FILES; i++) {
+    for (i = 0; i < list->count; i++) {
         /* Extract directory from filepath */
         char dir[MUSIC_MAX_PATH_LEN];
         snprintf(dir, sizeof(dir), "%s", list->items[i].filepath);
@@ -948,29 +962,31 @@ static void build_folder_cache(void) {
         /* Check for duplicate */
         bool exists = false;
         int j;
-        for (j = 0; j < s_app.folder_count; j++) {
-            if (strcmp(s_app.folder_paths[j], dir) == 0) {
+        for (j = 0; j < s_app.folder_paths.count; j++) {
+            if (strcmp(s_app.folder_paths.items[j], dir) == 0) {
                 exists = true;
                 break;
             }
         }
 
         if (!exists) {
-            s_app.folder_paths[s_app.folder_count] = strdup(dir);
-            s_app.folder_count++;
+            char* dup = strdup(dir);
+            if (dup) {
+                StrPtrArray_push(&s_app.folder_paths, &dup);
+            }
         }
     }
 
-    printf("[music_app] Built folder cache: %d unique folders\n", s_app.folder_count);
+    printf("[music_app] Built folder cache: %d unique folders\n", s_app.folder_paths.count);
     pthread_mutex_unlock(&s_app.mutex);
 }
 
 void music_app_get_folder_list(const char*** out_folders, int* out_count) {
-    if (s_app.folder_count == 0) {
+    if (s_app.folder_paths.count == 0) {
         build_folder_cache();
     }
-    if (out_folders) *out_folders = (const char**)s_app.folder_paths;
-    if (out_count) *out_count = s_app.folder_count;
+    if (out_folders) *out_folders = (const char**)s_app.folder_paths.items;
+    if (out_count) *out_count = s_app.folder_paths.count;
 }
 
 void music_app_play_folder(const char* folder_path) {
@@ -1091,28 +1107,31 @@ int music_app_search(const char* keyword, const MusicInfo** results, int max_res
  *==========================================================================*/
 
 /**
- * Find or create a group by key in the given group array.
+ * Find or create a group by key in the given GroupArray.
+ * Returns pointer to the group (may be invalidated by next push if realloc happens).
  */
-static music_group_t* find_or_create_group(music_group_t* groups, int* count,
-                                           const char* key, int max_groups) {
+static music_group_t* find_or_create_group(GroupArray* arr, const char* key) {
     int i;
     /* Empty key → use placeholder */
     const char* effective_key = (key && key[0]) ? key : "Unknown";
 
-    for (i = 0; i < *count; i++) {
-        if (strcmp(groups[i].key, effective_key) == 0) {
-            return &groups[i];
+    for (i = 0; i < arr->count; i++) {
+        if (strcmp(arr->items[i].key, effective_key) == 0) {
+            return &arr->items[i];
         }
     }
 
-    if (*count >= max_groups) return NULL;
+    /* Create new group */
+    music_group_t new_group;
+    memset(&new_group, 0, sizeof(new_group));
+    snprintf(new_group.key, sizeof(new_group.key), "%s", effective_key);
+    MusicPtrArray_init(&new_group.items, 16);
 
-    music_group_t* g = &groups[*count];
-    memset(g, 0, sizeof(*g));
-    snprintf(g->key, sizeof(g->key), "%s", effective_key);
-    g->count = 0;
-    (*count)++;
-    return g;
+    if (GroupArray_push(arr, &new_group) != 0) {
+        MusicPtrArray_destroy(&new_group.items);
+        return NULL;
+    }
+    return &arr->items[arr->count - 1];
 }
 
 static void build_classification_cache(void) {
@@ -1120,8 +1139,17 @@ static void build_classification_cache(void) {
      * this runs on scan thread while UI thread may call get_album/artist_list(). */
     pthread_mutex_lock(&s_app.mutex);
 
-    s_app.album_group_count = 0;
-    s_app.artist_group_count = 0;
+    /* Destroy old groups' inner MusicPtrArrays before clearing */
+    int i;
+    for (i = 0; i < s_app.album_groups.count; i++) {
+        MusicPtrArray_destroy(&s_app.album_groups.items[i].items);
+    }
+    GroupArray_clear(&s_app.album_groups);
+
+    for (i = 0; i < s_app.artist_groups.count; i++) {
+        MusicPtrArray_destroy(&s_app.artist_groups.items[i].items);
+    }
+    GroupArray_clear(&s_app.artist_groups);
 
     int dev_idx = s_app.state.current_device_idx;
     if (dev_idx < 0 || dev_idx >= s_app.device_count) {
@@ -1136,63 +1164,60 @@ static void build_classification_cache(void) {
     }
 
     MusicList* list = dev->music_list;
-    int i;
     for (i = 0; i < list->count; i++) {
         const MusicInfo* info = &list->items[i];
 
         /* Album grouping */
         music_group_t* ag = find_or_create_group(
-            s_app.album_groups, &s_app.album_group_count,
-            info->album, MUSIC_MAX_GROUPS);
-        if (ag && ag->count < MUSIC_MAX_FILES) {
-            ag->items[ag->count++] = info;
+            &s_app.album_groups, info->album);
+        if (ag) {
+            MusicPtrArray_push(&ag->items, &info);
         }
 
         /* Artist grouping */
         music_group_t* rg = find_or_create_group(
-            s_app.artist_groups, &s_app.artist_group_count,
-            info->artist, MUSIC_MAX_GROUPS);
-        if (rg && rg->count < MUSIC_MAX_FILES) {
-            rg->items[rg->count++] = info;
+            &s_app.artist_groups, info->artist);
+        if (rg) {
+            MusicPtrArray_push(&rg->items, &info);
         }
     }
 
     printf("[music_app] Classification: %d albums, %d artists\n",
-           s_app.album_group_count, s_app.artist_group_count);
+           s_app.album_groups.count, s_app.artist_groups.count);
     pthread_mutex_unlock(&s_app.mutex);
 }
 
 void music_app_get_album_list(const music_group_t** out_groups, int* out_count) {
-    if (s_app.album_group_count == 0) {
+    if (s_app.album_groups.count == 0) {
         build_classification_cache();
     }
-    if (out_groups) *out_groups = s_app.album_groups;
-    if (out_count) *out_count = s_app.album_group_count;
+    if (out_groups) *out_groups = s_app.album_groups.items;
+    if (out_count) *out_count = s_app.album_groups.count;
 }
 
 void music_app_get_artist_list(const music_group_t** out_groups, int* out_count) {
-    if (s_app.artist_group_count == 0) {
+    if (s_app.artist_groups.count == 0) {
         build_classification_cache();
     }
-    if (out_groups) *out_groups = s_app.artist_groups;
-    if (out_count) *out_count = s_app.artist_group_count;
+    if (out_groups) *out_groups = s_app.artist_groups.items;
+    if (out_count) *out_count = s_app.artist_groups.count;
 }
 
 void music_app_play_group(const music_group_t* group, int index) {
-    if (!group || index < 0 || index >= group->count) return;
+    if (!group || index < 0 || index >= group->items.count) return;
     if (!s_app.player) return;
 
     /* Issue #17 fix: Build a sub-playlist from the group's items, then set it
      * as the player's playlist. This way next/prev stays within the album/artist.
      * Mirrors Android behavior where clicking a song in an album plays that
      * album as the current playlist. */
-    MusicList* group_list = music_list_create(group->count);
+    MusicList* group_list = music_list_create(group->items.count);
     if (!group_list) return;
 
     int i;
-    for (i = 0; i < group->count; i++) {
-        if (group->items[i] && group_list->count < group_list->capacity) {
-            group_list->items[group_list->count] = *(group->items[i]);
+    for (i = 0; i < group->items.count; i++) {
+        if (group->items.items[i] && group_list->count < group_list->capacity) {
+            group_list->items[group_list->count] = *(group->items.items[i]);
             group_list->count++;
         }
     }
@@ -1210,8 +1235,8 @@ void music_app_play_group(const music_group_t* group, int index) {
     pthread_mutex_lock(&s_app.mutex);
     /* Check if this group is in the artist_groups array */
     bool is_artist = false;
-    for (i = 0; i < s_app.artist_group_count; i++) {
-        if (&s_app.artist_groups[i] == group) {
+    for (i = 0; i < s_app.artist_groups.count; i++) {
+        if (&s_app.artist_groups.items[i] == group) {
             is_artist = true;
             break;
         }
