@@ -98,13 +98,13 @@ ifndef HOST_BUILD
   LDFLAGS  += --sysroot=$(SYSROOT_DIR)
   LDFLAGS  += -L$(SYSROOT_DIR)/usr/lib
   LDFLAGS  += -L$(AWTK_DIR)/lib
-  # libawtk.so 实际位置 (allmake 编译产物)
+  # libawtk.so / libtkc.so / libegl_devices.so (allmake 编译产物)
   LDFLAGS  += -L$(TOPDIR)/out/build/ac83xx/awtk-1.0/awtk-linux-fb/bin
   LDFLAGS  += -L$(TOPDIR)/out/target/ac83xx/usr/lib
   LDFLAGS  += -latcmediaplayer
 endif
 
-LDFLAGS    += -lawtk -lpthread -lm -ldl
+LDFLAGS    += -lawtk -ltkc -legl_devices -lEGL -lGLESv2 -lpthread -lm -ldl
 
 # ===========================================================================
 # Build rules
