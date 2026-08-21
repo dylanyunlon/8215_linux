@@ -319,7 +319,7 @@ static void rebuild_group_list_view(const music_group_t* groups, int count,
     int i;
     for (i = 0; i < max_visible; i++) {
         char text[512];
-        snprintf(text, sizeof(text), "   %s (%d)", groups[i].key, groups[i].count);
+        snprintf(text, sizeof(text), "   %s (%d)", groups[i].key, groups[i].items.count);
 
         widget_t* item = label_create(list, 0, i * item_h, 984, item_h);
         widget_set_text_utf8(item, text);
