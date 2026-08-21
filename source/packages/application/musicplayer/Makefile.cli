@@ -77,6 +77,13 @@ INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
 INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/mmisc/osal/include
 INC_FLAGS    += -I$(TOPDIR)/source/packages/multimedia/directrender/include
 INC_FLAGS    += -I$(TOPDIR)/source/packages/multimedia/directrender/src/utils
+# display.h, types.h, etc. (found via: find out -name "display.h")
+OUTDIR       ?= $(TOPDIR)/out
+INC_FLAGS    += -I$(OUTDIR)/build/ac83xx/linux-local/include/media/atc
+INC_FLAGS    += -I$(OUTDIR)/build/ac83xx/linux-local/drivers/misc/atc/inc
+INC_FLAGS    += -I$(OUTDIR)/build/ac83xx/directrender-1.0/src/utils
+INC_FLAGS    += -I$(OUTDIR)/build/ac83xx/directrender-1.0/include
+INC_FLAGS    += -I$(OUTDIR)/build/ac83xx/atcmultimedia-1.0/include
 
 CFLAGS        = $(COMMON_FLAGS) $(INC_FLAGS) -std=c11
 CXXFLAGS      = $(COMMON_FLAGS) $(INC_FLAGS) -std=c++11
