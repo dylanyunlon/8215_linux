@@ -67,6 +67,7 @@ OBJS          = $(C_OBJS) $(CPP_OBJS)
 # Key: -DAWTK_STUB makes music_app.h include awtk_stub.h instead of awtk.h
 COMMON_FLAGS  = -Wall -Wextra -Wno-unused-parameter -O2
 COMMON_FLAGS += -DAWTK_STUB
+COMMON_FLAGS += -D_GNU_SOURCE
 
 INC_FLAGS     = -I. -Iawtk_app/src
 INC_FLAGS    += --sysroot=$(SYSROOT_DIR)
