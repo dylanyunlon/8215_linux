@@ -22,9 +22,9 @@ TOPDIR      ?= $(shell cd ../../../.. && pwd)
 # Cross-compile toolchain (ARM, AC8215)
 # ===========================================================================
 ifndef HOST_BUILD
-  CC          ?= $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-gcc
-  CXX         ?= $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-g++
-  SYSROOT_DIR ?= $(TOPDIR)/out/host/arm-buildroot-linux-gnueabi/sysroot
+  CC           = $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-gcc
+  CXX          = $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-g++
+  SYSROOT_DIR  = $(TOPDIR)/out/host/arm-buildroot-linux-gnueabi/sysroot
   AWTK_DIR    ?= $(TOPDIR)/bsp/arm2/lib/libawtk/src/awtk-1.8
   TARGET      = music_player
 else
@@ -79,6 +79,9 @@ ifndef HOST_BUILD
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/mmisc/osal/include
+  # display.h → types.h dependency (from musicplayer.mk reference)
+  INC_FLAGS += -I$(TOPDIR)/source/packages/multimedia/directrender/include
+  INC_FLAGS += -I$(TOPDIR)/source/packages/multimedia/directrender/src/utils
 endif
 
 CFLAGS      = $(COMMON_FLAGS) $(INC_FLAGS) -std=c11
