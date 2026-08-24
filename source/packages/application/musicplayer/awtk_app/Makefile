@@ -45,12 +45,11 @@ APP_C_SRCS  = src/main.c \
               src/usb_monitor.c \
               src/favorite_manager.c
 
-# Shared library sources (from parent musicplayer dir)
-LIB_C_SRCS  = ../music_scanner.c
-LIB_CPP_SRCS = ../music_player.cpp
+# music_scanner.c and music_player.cpp are compiled into libmusicplayer.so
+# by the musicplayer package. We link against it, not compile them again.
 
-C_SRCS      = $(APP_C_SRCS) $(LIB_C_SRCS)
-CPP_SRCS    = $(LIB_CPP_SRCS)
+C_SRCS      = $(APP_C_SRCS)
+CPP_SRCS    =
 
 C_OBJS      = $(C_SRCS:.c=.o)
 CPP_OBJS    = $(CPP_SRCS:.cpp=.o)
@@ -64,7 +63,7 @@ COMMON_FLAGS += -DAWTK_LINUX_FB
 COMMON_FLAGS += -DWITH_FS_RES  # Load assets from filesystem, not compiled-in
 
 # Include paths
-INC_FLAGS    = -Isrc -I..
+INC_FLAGS    = -Isrc
 INC_FLAGS   += -I$(AWTK_DIR)/src
 INC_FLAGS   += -I$(AWTK_DIR)/src/ext_widgets
 INC_FLAGS   += -I$(AWTK_DIR)/3rd
@@ -76,6 +75,7 @@ INC_FLAGS   += -I$(AWTK_PORT_DIR)/input_thread
 
 ifndef HOST_BUILD
   INC_FLAGS += --sysroot=$(SYSROOT_DIR)
+  INC_FLAGS += -I$(SYSROOT_DIR)/usr/include
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/mediaplayerserver/include
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
   INC_FLAGS += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
@@ -102,7 +102,7 @@ ifndef HOST_BUILD
   # libawtk.so / libtkc.so / libegl_devices.so (allmake 编译产物)
   LDFLAGS  += -L$(TOPDIR)/out/build/ac83xx/awtk-1.0/awtk-linux-fb/bin
   LDFLAGS  += -L$(TOPDIR)/out/target/ac83xx/usr/lib
-  LDFLAGS  += -latcmediaplayer
+  LDFLAGS  += -lmusicplayer -latcmediaplayer
 endif
 
 LDFLAGS    += -lawtk -ltkc -legl_devices -lEGL -lGLESv2 -lpthread -lm -ldl
