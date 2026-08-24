@@ -539,7 +539,7 @@ int main(int argc, char* argv[]) {
             printf("\n=== Albums (%d) ===\n", gc);
             for (int i = 0; i < gc; i++) {
                 printf("  [%d] \"%s\" (%d tracks)\n",
-                       i, groups[i].key, groups[i].count);
+                       i, groups[i].key, groups[i].items.count);
             }
         }
         else if (strcmp(cmd, "artists") == 0) {
@@ -549,7 +549,7 @@ int main(int argc, char* argv[]) {
             printf("\n=== Artists (%d) ===\n", gc);
             for (int i = 0; i < gc; i++) {
                 printf("  [%d] \"%s\" (%d tracks)\n",
-                       i, groups[i].key, groups[i].count);
+                       i, groups[i].key, groups[i].items.count);
             }
         }
         else if (strcmp(cmd, "playalbum") == 0) {
