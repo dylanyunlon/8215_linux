@@ -292,11 +292,13 @@ static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
  *==========================================================================*/
 typedef struct {
     int dev_idx;
+    int scan_generation;   /* Issue #51: generation at time of dispatch */
 } scan_task_t;
 
 static void* scan_thread_func(void* arg) {
     scan_task_t* task = (scan_task_t*)arg;
     int dev_idx = task->dev_idx;
+    int my_generation = task->scan_generation;  /* Issue #51 */
     free(task);
 
     pthread_mutex_lock(&s_app.mutex);
@@ -306,6 +308,16 @@ static void* scan_thread_func(void* arg) {
     }
 
     storage_device_state_t* dev = &s_app.devices[dev_idx];
+
+    /* Issue #51: If a newer scan was already requested, exit immediately.
+     * This handles the case where the user rapidly unplugs/replugs USB. */
+    if (dev->scan_generation != my_generation) {
+        printf("[music_app] Scan thread superseded (gen %d vs %d), exiting\n",
+               my_generation, dev->scan_generation);
+        pthread_mutex_unlock(&s_app.mutex);
+        return NULL;
+    }
+
     dev->scanning = true;
     dev->scan_done = false;
     dev->id3_done = false;
@@ -317,8 +329,21 @@ static void* scan_thread_func(void* arg) {
 
     post_ui_event(APP_EVENT_SCAN_STARTED, dev_idx);
 
-    printf("[music_app] Scanning %s ...\n", path);
+    printf("[music_app] Scanning %s (gen=%d) ...\n", path, my_generation);
     music_scan_directory(list, path);
+
+    /* Issue #51: After scan completes, check if we've been superseded.
+     * If a newer scan was started while we were scanning, discard our results. */
+    pthread_mutex_lock(&s_app.mutex);
+    if (dev_idx < s_app.device_count &&
+        s_app.devices[dev_idx].scan_generation != my_generation) {
+        printf("[music_app] Scan results discarded (superseded gen %d vs %d)\n",
+               my_generation, s_app.devices[dev_idx].scan_generation);
+        s_app.devices[dev_idx].scanning = false;
+        pthread_mutex_unlock(&s_app.mutex);
+        return NULL;
+    }
+    pthread_mutex_unlock(&s_app.mutex);
 
     /* Save to cache DB */
     char db_path[MUSIC_MAX_PATH_LEN];
@@ -388,6 +413,17 @@ static void scan_device_async(int dev_idx) {
     if (!task) return;
 
     task->dev_idx = dev_idx;
+
+    /* Issue #51: Increment scan generation. Any older scan thread for this
+     * device will detect the mismatch and exit early, preventing data races
+     * when the user rapidly unplugs/replugs USB.
+     * Mirrors Android MediaFilePathScan.mLoadingIndex.incrementAndGet(). */
+    pthread_mutex_lock(&s_app.mutex);
+    if (dev_idx >= 0 && dev_idx < s_app.device_count) {
+        s_app.devices[dev_idx].scan_generation++;
+        task->scan_generation = s_app.devices[dev_idx].scan_generation;
+    }
+    pthread_mutex_unlock(&s_app.mutex);
 
     pthread_t t;
     pthread_attr_t attr;
@@ -588,7 +624,13 @@ int music_app_init(music_app_ui_callback_t ui_cb) {
     }
 
     /* Start USB monitor */
-    usb_monitor_start(on_storage_event, NULL);
+    /* Issue #61: Check return value — if netlink socket creation fails
+     * (e.g. insufficient permissions), log a warning but continue.
+     * The app can still function if devices are manually specified. */
+    if (usb_monitor_start(on_storage_event, NULL) != 0) {
+        fprintf(stderr, "[music_app] WARNING: USB monitor failed to start. "
+                "Hot-plug detection will not work. Check permissions.\n");
+    }
 
     /* Discover already-mounted devices */
     usb_monitor_scan_existing(on_storage_event, NULL);
@@ -913,6 +955,14 @@ const MusicInfo* music_app_get_favorite_list(int* out_count) {
  * Mirrors Android FolderListLayout + MediaFilePathScan
  *==========================================================================*/
 
+/* Issue #55: qsort comparator for char** (pointer-to-string) arrays.
+ * qsort passes pointers to array elements, so a/b are char**. */
+static int str_ptr_cmp(const void* a, const void* b) {
+    const char* sa = *(const char* const*)a;
+    const char* sb = *(const char* const*)b;
+    return strcmp(sa, sb);
+}
+
 /**
  * Build unique folder list from the current device's scanned files.
  * Extracts dirname(filepath) for each file and deduplicates.
@@ -942,6 +992,16 @@ static void build_folder_cache(void) {
     }
 
     MusicList* list = dev->music_list;
+
+    /* Issue #55: O(n*log(n)) approach — collect all dirs, sort, dedup.
+     * Android uses HashMap O(1) lookup; we use sort+unique which is simpler
+     * in C and still much better than the O(n*m) linear scan.
+     * For 10000 files with 500 folders: O(n*m)=5M strcmp vs O(n*log(n))=~130K. */
+
+    /* Phase 1: Extract all directory paths (with duplicates) */
+    char** all_dirs = (char**)malloc(list->count * sizeof(char*));
+    int dir_count = 0;
+
     for (i = 0; i < list->count; i++) {
         /* Extract directory from filepath */
         char dir[MUSIC_MAX_PATH_LEN];
@@ -953,28 +1013,34 @@ static void build_folder_cache(void) {
             continue;
         }
 
-        /* Also populate folder_path in the MusicInfo */
+        /* Populate folder_path in the MusicInfo */
         snprintf(list->items[i].folder_path, sizeof(list->items[i].folder_path),
                  "%s", dir);
-        list->items[i].folder_index = i; /* file entry, not a folder */
+        list->items[i].folder_index = i;
 
-        /* Check for duplicate */
-        bool exists = false;
-        int j;
-        for (j = 0; j < s_app.folder_paths.count; j++) {
-            if (strcmp(s_app.folder_paths.items[j], dir) == 0) {
-                exists = true;
-                break;
-            }
-        }
-
-        if (!exists) {
-            char* dup = strdup(dir);
-            if (dup) {
-                StrPtrArray_push(&s_app.folder_paths, (const char**)&dup);
-            }
+        if (all_dirs) {
+            all_dirs[dir_count] = strdup(dir);
+            if (all_dirs[dir_count]) dir_count++;
         }
     }
+
+    /* Phase 2: Sort all directory paths */
+    if (all_dirs && dir_count > 1) {
+        qsort(all_dirs, dir_count, sizeof(char*), str_ptr_cmp);
+    }
+
+    /* Phase 3: Deduplicate — adjacent equal entries collapse */
+    for (i = 0; i < dir_count; i++) {
+        if (i == 0 || strcmp(all_dirs[i], all_dirs[i - 1]) != 0) {
+            /* Unique entry — transfer ownership to folder_paths */
+            StrPtrArray_push(&s_app.folder_paths, (const char**)&all_dirs[i]);
+        } else {
+            /* Duplicate — free */
+            free(all_dirs[i]);
+        }
+    }
+
+    free(all_dirs);
 
     printf("[music_app] Built folder cache: %d unique folders\n", s_app.folder_paths.count);
     pthread_mutex_unlock(&s_app.mutex);

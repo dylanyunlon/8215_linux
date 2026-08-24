@@ -296,14 +296,72 @@ static void rebuild_folder_list_view(void) {
     widget_invalidate_force(list, NULL);
 }
 
-/* Album/artist group item click: play group starting at first track */
+/* Issue #58 fix: Album/artist group item click uses index-based lookup
+ * instead of storing a direct pointer to the group. The pointer could become
+ * dangling if GroupArray reallocs during a background rescan.
+ * We store the group_array_index in the widget prop and look up at click time. */
 static ret_t on_group_item_click(void* ctx, event_t* e) {
-    const music_group_t* group = (const music_group_t*)ctx;
+    (void)ctx;
     widget_t* item = WIDGET(e->target);
-    if (item && group) {
-        int index = widget_get_prop_int(item, "item_index", 0);
-        music_app_play_group(group, index);
+    if (!item) return RET_OK;
+
+    int group_idx = widget_get_prop_int(item, "group_index", -1);
+    int is_artist = widget_get_prop_int(item, "is_artist", 0);
+    int item_index = widget_get_prop_int(item, "item_index", 0);
+
+    if (group_idx < 0) return RET_OK;
+
+    /* Look up the group from the current (possibly reallocated) array */
+    const music_group_t* groups = NULL;
+    int count = 0;
+    if (is_artist) {
+        music_app_get_artist_list(&groups, &count);
+    } else {
+        music_app_get_album_list(&groups, &count);
     }
+
+    if (group_idx < count) {
+        music_app_play_group(&groups[group_idx], item_index);
+    }
+    return RET_OK;
+}
+
+/* Issue #52: Favorite list item click handler.
+ * Searches for the favorite song in the full device playlist and plays it.
+ * Mirrors Android FavoriteManager list item click → play behavior. */
+static ret_t on_fav_item_click(void* ctx, event_t* e) {
+    (void)ctx;
+    widget_t* item = WIDGET(e->target);
+    if (!item) return RET_OK;
+
+    const char* fpath = widget_get_prop_str(item, "fav_filepath", NULL);
+    if (!fpath) return RET_OK;
+
+    /* Find this file's index in the current playlist */
+    int total = music_app_get_playlist_count();
+    int i;
+    for (i = 0; i < total; i++) {
+        const MusicInfo* info = music_app_get_track_info(i);
+        if (info && strcmp(info->filepath, fpath) == 0) {
+            /* Restore full playlist first (in case we're in a sub-playlist) */
+            music_app_restore_full_playlist();
+            music_app_play(i);
+            return RET_OK;
+        }
+    }
+
+    /* Not found in current playlist — try restoring full playlist then search */
+    music_app_restore_full_playlist();
+    total = music_app_get_playlist_count();
+    for (i = 0; i < total; i++) {
+        const MusicInfo* info = music_app_get_track_info(i);
+        if (info && strcmp(info->filepath, fpath) == 0) {
+            music_app_play(i);
+            return RET_OK;
+        }
+    }
+
+    printf("[music_ui] Favorite file not found in playlist: %s\n", fpath);
     return RET_OK;
 }
 
@@ -314,6 +372,9 @@ static void rebuild_group_list_view(const music_group_t* groups, int count,
 
     widget_destroy_children(list);
 
+    /* Issue #58: Determine if this is artist or album for safe lookup later */
+    int is_artist = (strcmp(type_label, "artists") == 0) ? 1 : 0;
+
     int item_h = 35;
     int max_visible = count < 100 ? count : 100;
     int i;
@@ -323,11 +384,13 @@ static void rebuild_group_list_view(const music_group_t* groups, int count,
 
         widget_t* item = label_create(list, 0, i * item_h, 984, item_h);
         widget_set_text_utf8(item, text);
+        /* Issue #58: Store index + type in props, NOT a raw pointer */
+        widget_set_prop_int(item, "group_index", i);
+        widget_set_prop_int(item, "is_artist", is_artist);
         widget_set_prop_int(item, "item_index", 0);
         widget_set_style_str(item, "font_size", "16");
         widget_set_style_str(item, "text_color", "#80eee1");
-        /* Pass the group pointer as ctx for the click handler */
-        widget_on(item, EVT_CLICK, on_group_item_click, (void*)&groups[i]);
+        widget_on(item, EVT_CLICK, on_group_item_click, NULL);
     }
 
     widget_t* lbl = find(W_LBL_COUNT);
@@ -377,7 +440,9 @@ static void rebuild_favorite_list_view(void) {
         widget_set_text_utf8(item, text);
         widget_set_style_str(item, "font_size", "16");
         widget_set_style_str(item, "text_color", "#FF6B6B");
-        /* TODO: Click to play from favorites playlist */
+        /* Issue #52: Store filepath for click-to-play from favorites */
+        widget_set_prop_str(item, "fav_filepath", favs[i].filepath);
+        widget_on(item, EVT_CLICK, on_fav_item_click, NULL);
     }
 
     widget_t* lbl = find(W_LBL_COUNT);

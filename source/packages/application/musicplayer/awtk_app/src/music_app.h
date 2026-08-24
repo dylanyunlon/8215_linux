@@ -58,6 +58,12 @@ typedef struct {
     storage_type_t  type;
     char            mount_point[STORAGE_PATH_MAX];
     MusicList*      music_list;     /* scan results */
+    /* Issue #51: Scan generation counter for cancellation protection.
+     * Incremented on each scan_device_async() call. The scan thread checks
+     * this periodically; if it has changed (a newer scan was requested),
+     * the older thread exits early.
+     * Mirrors Android MediaFilePathScan.mLoadingIndex atomic counter. */
+    volatile int    scan_generation;
 } storage_device_state_t;
 
 /*============================================================================
