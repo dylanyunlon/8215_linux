@@ -76,11 +76,32 @@ static ret_t application_exit(void) {
 /* Linux framebuffer build — uses awtk-linux-fb main_loop */
 
 #include "main_loop_linux.h"
+#include "base/assets_manager.h"
+#include "base/locale_info.h"
 
-/* Assets stub — in the SConscript build, assets are compiled via the AWTK
- * resource packer. For standalone Makefile build, we create widgets in code
- * (music_ui.c) so no prebuilt assets are needed. */
+/**
+ * Load AWTK assets from file system.
+ *
+ * AWTK looks for: {app_root}/assets/default/raw/{styles,fonts,strings,...}
+ * The resource files (.bin, .ttf) must be pre-compiled by AWTK's resource
+ * packer (packaged in the SDK build).
+ *
+ * For the standalone Makefile build, we copy them from
+ * out/build/ac83xx/awtk-1.0/awtk/res/assets/ to /tmp/res/assets/ on the board.
+ */
 ret_t assets_init(void) {
+    /* Tell assets_manager to load from file system instead of compiled-in data */
+    assets_manager_set_res_root(assets_manager(), "");
+
+    /* Load the default theme style */
+    assets_manager_load(assets_manager(), ASSET_TYPE_STYLE, "default");
+
+    /* Load default font */
+    assets_manager_load(assets_manager(), ASSET_TYPE_FONT, "default");
+
+    /* Load Chinese strings if available */
+    locale_info_change(locale_info(), "zh", "CN");
+
     return RET_OK;
 }
 
