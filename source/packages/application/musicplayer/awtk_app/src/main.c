@@ -76,32 +76,22 @@ static ret_t application_exit(void) {
 /* Linux framebuffer build — uses awtk-linux-fb main_loop */
 
 #include "main_loop_linux.h"
-#include "base/assets_manager.h"
-#include "base/locale_info.h"
 
 /**
  * Load AWTK assets from file system.
  *
- * AWTK looks for: {app_root}/assets/default/raw/{styles,fonts,strings,...}
- * The resource files (.bin, .ttf) must be pre-compiled by AWTK's resource
- * packer (packaged in the SDK build).
+ * Mirrors __assets_default.inc WITH_FS_RES mode:
+ *   assets_manager_set_theme(am, "default");
+ *   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
  *
- * For the standalone Makefile build, we copy them from
- * out/build/ac83xx/awtk-1.0/awtk/res/assets/ to /tmp/res/assets/ on the board.
+ * AWTK looks for: {app_root}/assets/default/raw/styles/default.bin
+ *                  {app_root}/assets/default/raw/fonts/default.ttf
  */
 ret_t assets_init(void) {
-    /* Tell assets_manager to load from file system instead of compiled-in data */
-    assets_manager_set_res_root(assets_manager(), "");
-
-    /* Load the default theme style */
-    assets_manager_load(assets_manager(), ASSET_TYPE_STYLE, "default");
-
-    /* Load default font */
-    assets_manager_load(assets_manager(), ASSET_TYPE_FONT, "default");
-
-    /* Load Chinese strings if available */
-    locale_info_change(locale_info(), "zh", "CN");
-
+    assets_manager_t* am = assets_manager();
+    assets_manager_set_theme(am, "default");
+    assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
+    assets_manager_preload(am, ASSET_TYPE_FONT, "default");
     return RET_OK;
 }
 

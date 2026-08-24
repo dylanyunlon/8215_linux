@@ -61,6 +61,7 @@ OBJS        = $(C_OBJS) $(CPP_OBJS)
 # ===========================================================================
 COMMON_FLAGS = -Wall -Wextra -Wno-unused-parameter -O2 -fPIC
 COMMON_FLAGS += -DAWTK_LINUX_FB
+COMMON_FLAGS += -DWITH_FS_RES  # Load assets from filesystem, not compiled-in
 
 # Include paths
 INC_FLAGS    = -Isrc -I..
