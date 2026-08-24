@@ -23,6 +23,14 @@
 #include <string.h>
 #include <strings.h>
 #include <pthread.h>
+#include <time.h>
+
+/* Monotonic millisecond timestamp for debounce logic */
+static uint64_t time_now_ms(void) {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (uint64_t)ts.tv_sec * 1000 + (uint64_t)ts.tv_nsec / 1000000;
+}
 #include <unistd.h>
 #include <sys/stat.h>
 #include <ctype.h>
