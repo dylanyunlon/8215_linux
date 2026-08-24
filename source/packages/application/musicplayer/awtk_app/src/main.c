@@ -92,6 +92,7 @@ ret_t assets_init(void) {
     assets_manager_set_theme(am, "default");
     assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
     assets_manager_preload(am, ASSET_TYPE_FONT, "default");
+    tk_init_assets();
     return RET_OK;
 }
 
