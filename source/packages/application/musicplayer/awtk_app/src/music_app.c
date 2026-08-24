@@ -25,12 +25,15 @@
 #include <pthread.h>
 #include <time.h>
 
-/* Monotonic millisecond timestamp for debounce logic */
+/* time_now_ms() is provided by AWTK (tkc/time_now.h, included via awtk.h).
+ * For non-AWTK builds (e.g. music_app_cli), provide a fallback. */
+#ifndef AWTK_LINUX_FB
 static uint64_t time_now_ms(void) {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
     return (uint64_t)ts.tv_sec * 1000 + (uint64_t)ts.tv_nsec / 1000000;
 }
+#endif
 #include <unistd.h>
 #include <sys/stat.h>
 #include <ctype.h>
