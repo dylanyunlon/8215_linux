@@ -18,6 +18,17 @@
 #include <errno.h>
 #include <unistd.h>
 
+/*
+ * Issue #67: When USE_CMUS_ID3 is defined, the ID3 parser delegates to
+ * cmus_bridge_parse_tags() for proper UTF-16→UTF-8 decoding.
+ * Issue #68: CUE sheet files are detected and expanded into track entries.
+ *
+ * To enable: add -DUSE_CMUS_ID3 to CFLAGS and link cmus_bridge.c + cmus/*.c
+ */
+#ifdef USE_CMUS_ID3
+#include "cmus_bridge.h"
+#endif
+
 /* ---------- Utility helpers ---------- */
 
 static const char *get_filename(const char *path)
@@ -150,6 +161,10 @@ static void extract_text_frame(const uint8_t *data, uint32_t size,
 
 int music_parse_id3v2(const char *filepath, MusicInfo *info)
 {
+#ifdef USE_CMUS_ID3
+    /* Delegate to cmus full ID3 parser — supports UTF-16, ID3v1 fallback, genre table */
+    return cmus_bridge_parse_tags(filepath, info);
+#else
     FILE *fp = fopen(filepath, "rb");
     if (!fp) return -1;
 
@@ -233,6 +248,7 @@ int music_parse_id3v2(const char *filepath, MusicInfo *info)
 
     free(tag_data);
     return 0;
+#endif /* USE_CMUS_ID3 */
 }
 
 /* ---------- Directory scanner ---------- */
@@ -343,6 +359,15 @@ static int scan_dir_recursive(MusicList *list, const char *dir_path,
             /* Recurse into subdirectory */
             scan_dir_recursive(list, fullpath, device_name, depth + 1);
         } else if (S_ISREG(st.st_mode)) {
+#ifdef USE_CMUS_ID3
+            /* Issue #68: CUE sheet detection — expand .cue files into track entries */
+            if (cmus_bridge_is_cue(entry->d_name)) {
+                int added = cmus_bridge_scan_cue(fullpath, dir_path, list);
+                if (added > 0)
+                    printf("[MusicScanner] CUE: %d tracks from %s\n", added, entry->d_name);
+                continue;
+            }
+#endif
             if (!music_is_audio_file(entry->d_name)) continue;
 
             /* Dynamic growth: ensure room for one more item */

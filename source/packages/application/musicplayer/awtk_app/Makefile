@@ -43,12 +43,16 @@ APP_C_SRCS  = src/main.c \
               src/music_app.c \
               src/music_ui.c \
               src/usb_monitor.c \
-              src/favorite_manager.c
+              src/favorite_manager.c \
+              src/cmus_bridge.c
+
+# cmus ported modules (id3/cue/charset — excludes test file)
+CMUS_C_SRCS = $(filter-out src/cmus/test_cmus_port.c, $(wildcard src/cmus/*.c))
 
 # music_scanner.c and music_player.cpp are compiled into libmusicplayer.so
 # by the musicplayer package. We link against it, not compile them again.
 
-C_SRCS      = $(APP_C_SRCS)
+C_SRCS      = $(APP_C_SRCS) $(CMUS_C_SRCS)
 CPP_SRCS    =
 
 C_OBJS      = $(C_SRCS:.c=.o)
@@ -61,9 +65,11 @@ OBJS        = $(C_OBJS) $(CPP_OBJS)
 COMMON_FLAGS = -Wall -Wextra -Wno-unused-parameter -O2 -fPIC
 COMMON_FLAGS += -DAWTK_LINUX_FB
 COMMON_FLAGS += -DWITH_FS_RES  # Load assets from filesystem, not compiled-in
+COMMON_FLAGS += -DUSE_CMUS_ID3 # Enable cmus id3/cue parser via cmus_bridge
 
 # Include paths
 INC_FLAGS    = -Isrc
+INC_FLAGS   += -Isrc/cmus
 INC_FLAGS   += -I$(AWTK_DIR)/src
 INC_FLAGS   += -I$(AWTK_DIR)/src/ext_widgets
 INC_FLAGS   += -I$(AWTK_DIR)/3rd

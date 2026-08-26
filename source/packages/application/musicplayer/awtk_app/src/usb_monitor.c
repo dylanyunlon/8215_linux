@@ -32,13 +32,11 @@
 #include <linux/netlink.h>
 
 /*============================================================================
- * Mount-point prefixes (aligned with Android IConstant paths)
- *
  * The actual AC8215 Linux system uses /mnt/usb0, /mnt/usb1, etc.
  * Some builds also use /media/usb*. We check both.
  *==========================================================================*/
 static const char* USB_PREFIXES[] = {
-    "/mnt/usb", "/media/usb", "/run/media/", "/tmp/mnt/usb", NULL
+    "/mnt/usb", "/media/udisk", "/run/media/", "/tmp/mnt/usb", NULL
 };
 static const char* SD_PREFIXES[] = {
     "/mnt/sd", "/media/sd", "/mnt/ext_sd", "/media/ext_sd", NULL
