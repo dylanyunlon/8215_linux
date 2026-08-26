@@ -477,6 +477,216 @@ int music_scan_directory(MusicList *list, const char *dir_path)
     return ret;
 }
 
+/*============================================================================
+ * Cancellable scan — production solution for:
+ *   1. 一万首歌曲怎么解决 → incremental progress callback
+ *   2. 扫到一半拔U盘怎么解决 → cancel_flag + mount-point liveness check
+ *==========================================================================*/
+
+/**
+ * Check if mount point is still accessible (U盘没被拔掉).
+ * Cheap check: stat the mount point directory itself.
+ * Returns true if still mounted, false if gone.
+ */
+static bool is_mount_alive(const char *mount_point) {
+    struct stat st;
+    if (stat(mount_point, &st) != 0) return false;
+    return S_ISDIR(st.st_mode);
+}
+
+/**
+ * Internal recursive scan with cancellation support.
+ * Returns: 0=ok, -1=error, -2=cancelled
+ */
+static int scan_dir_recursive_cancellable(
+        MusicList *list,
+        const char *dir_path,
+        const char *device_name,
+        int depth,
+        const char *mount_root,
+        const volatile int *cancel_flag,
+        int expected_gen,
+        scan_progress_fn progress_cb,
+        void *cb_ctx)
+{
+    if (depth > MAX_SCAN_DEPTH) return 0;
+
+    /* 每进入一个新目录就检查: U盘还在吗? scan被取消了吗? */
+    if (cancel_flag && *cancel_flag != expected_gen) {
+        printf("[MusicScanner] Scan cancelled (gen mismatch) at %s\n", dir_path);
+        return -2;
+    }
+    if (!is_mount_alive(mount_root)) {
+        printf("[MusicScanner] Mount gone during scan: %s\n", mount_root);
+        return -2;
+    }
+
+    DIR *dir = opendir(dir_path);
+    if (!dir) {
+        /* opendir 失败可能是 U 盘刚被拔掉 */
+        if (errno == ENOENT || errno == EACCES || errno == EIO) {
+            fprintf(stderr, "[MusicScanner] Dir inaccessible (device removed?): %s\n",
+                    dir_path);
+            return -2;  /* treat as cancelled, not error */
+        }
+        return -1;
+    }
+
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        /* Skip . .. and hidden */
+        if (entry->d_name[0] == '.') continue;
+
+        /* 每 SCAN_PROGRESS_INTERVAL 个文件检查一次取消和U盘存活 */
+        if (list->count > 0 && (list->count % SCAN_PROGRESS_INTERVAL) == 0) {
+            if (cancel_flag && *cancel_flag != expected_gen) {
+                closedir(dir);
+                return -2;
+            }
+            if (!is_mount_alive(mount_root)) {
+                closedir(dir);
+                return -2;
+            }
+            /* 通知上层进度 */
+            if (progress_cb) {
+                int cb_ret = progress_cb(list->count, cb_ctx);
+                if (cb_ret != 0) {
+                    closedir(dir);
+                    return -2;
+                }
+            }
+        }
+
+        char fullpath[MUSIC_MAX_PATH_LEN];
+        snprintf(fullpath, sizeof(fullpath), "%s/%s", dir_path, entry->d_name);
+
+        struct stat st;
+        if (lstat(fullpath, &st) != 0) {
+            /* lstat 失败 = 文件在扫描过程中被删除/U盘被拔，跳过继续 */
+            if (errno == EIO || errno == ENOENT) continue;
+            continue;
+        }
+
+        if (S_ISLNK(st.st_mode)) continue;
+
+        if (S_ISDIR(st.st_mode)) {
+            if (strstr(fullpath, "/Android") ||
+                strstr(fullpath, "/LOST.DIR") ||
+                strstr(fullpath, "/System Volume Information") ||
+                strstr(fullpath, "/DCIM")) {
+                continue;
+            }
+
+            char nomedia[MUSIC_MAX_PATH_LEN];
+            snprintf(nomedia, sizeof(nomedia), "%s/.nomedia", fullpath);
+            struct stat nm_st;
+            if (stat(nomedia, &nm_st) == 0) continue;
+
+            int ret = scan_dir_recursive_cancellable(
+                list, fullpath, device_name, depth + 1,
+                mount_root, cancel_flag, expected_gen,
+                progress_cb, cb_ctx);
+            if (ret == -2) {
+                closedir(dir);
+                return -2;  /* propagate cancellation up */
+            }
+        } else if (S_ISREG(st.st_mode)) {
+#ifdef USE_CMUS_ID3
+            if (cmus_bridge_is_cue(entry->d_name)) {
+                int added = cmus_bridge_scan_cue(fullpath, dir_path, list);
+                if (added > 0)
+                    printf("[MusicScanner] CUE: %d tracks from %s\n", added, entry->d_name);
+                continue;
+            }
+#endif
+            if (!music_is_audio_file(entry->d_name)) continue;
+
+            if (music_list_ensure_capacity(list) != 0) {
+                fprintf(stderr, "[MusicScanner] Cannot grow list, "
+                        "stopping at %d files\n", list->count);
+                closedir(dir);
+                return 0;
+            }
+
+            MusicInfo *info = &list->items[list->count];
+            memset(info, 0, sizeof(MusicInfo));
+
+            info->uid = list->count + 1;
+            info->media_type = MEDIA_TYPE_MUSIC;
+            info->file_size = (uint32_t)st.st_size;
+            strncpy(info->filepath, fullpath, MUSIC_MAX_PATH_LEN - 1);
+            strncpy(info->filename, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+            strncpy(info->device_name, device_name, MUSIC_MAX_PATH_LEN - 1);
+
+            /* ID3 parse */
+            char ext[16];
+            str_to_lower(ext, get_extension(entry->d_name), sizeof(ext));
+
+            if (strcmp(ext, MUSIC_EXT_MP3) == 0) {
+                if (music_parse_id3v2(fullpath, info) != 0) {
+                    strncpy(info->title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                    char *dot = strrchr(info->title, '.');
+                    if (dot) *dot = '\0';
+                }
+            } else {
+                strncpy(info->title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                char *dot = strrchr(info->title, '.');
+                if (dot) *dot = '\0';
+            }
+
+            if (info->title[0] == '\0') {
+                strncpy(info->title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                char *dot = strrchr(info->title, '.');
+                if (dot) *dot = '\0';
+            }
+
+            if (info->artist[0] == '\0')
+                strncpy(info->artist, "Unknown", MUSIC_MAX_TAG_LEN - 1);
+            if (info->album[0] == '\0')
+                strncpy(info->album, "Unknown", MUSIC_MAX_TAG_LEN - 1);
+
+            list->count++;
+        }
+    }
+
+    closedir(dir);
+    return 0;
+}
+
+int music_scan_directory_cancellable(
+        MusicList *list,
+        const char *dir_path,
+        const volatile int *cancel_flag,
+        int expected_gen,
+        scan_progress_fn progress_cb,
+        void *cb_ctx)
+{
+    if (!list || !dir_path) return -1;
+
+    list->state = SCAN_SCANNING;
+    list->count = 0;
+    strncpy(list->scan_path, dir_path, MUSIC_MAX_PATH_LEN - 1);
+
+    printf("[MusicScanner] Start cancellable scan: %s (gen=%d)\n",
+           dir_path, expected_gen);
+
+    int ret = scan_dir_recursive_cancellable(
+        list, dir_path, dir_path, 0,
+        dir_path,  /* mount_root for liveness check */
+        cancel_flag, expected_gen,
+        progress_cb, cb_ctx);
+
+    if (ret == -2) {
+        list->state = SCAN_IDLE;
+        printf("[MusicScanner] Scan cancelled at %d files\n", list->count);
+        return -2;
+    }
+
+    list->state = (ret == 0) ? SCAN_DONE : SCAN_ERROR;
+    printf("[MusicScanner] Scan complete: %d files found\n", list->count);
+    return list->count;
+}
+
 /* ---------- Simple flat-file database ---------- */
 
 int music_db_save(const MusicList *list, const char *db_path)

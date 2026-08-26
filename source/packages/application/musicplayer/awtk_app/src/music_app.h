@@ -161,6 +161,11 @@ void music_app_prev(void);
 void music_app_seek(int position_ms);
 void music_app_toggle_play_pause(void);
 
+/* --- Issue #A3: Fast-forward / rewind (Android onSeekRewind/onFastForward) --- */
+#define MUSIC_APP_SEEK_STEP_MS  5000  /* 5 seconds, matches Android SEEK_STEP */
+void music_app_seek_forward(int step_ms);
+void music_app_seek_backward(int step_ms);
+
 /* --- Play mode --- */
 void music_app_set_play_mode(PlayMode mode);
 void music_app_cycle_play_mode(void);
@@ -174,6 +179,9 @@ int              music_app_get_current_index(void);
 int  music_app_get_device_count(void);
 const storage_device_state_t* music_app_get_device(int idx);
 void music_app_switch_device(int idx);
+
+/* --- Issue #A4: Player lock query (Android mIsMediaPlayerLocked) --- */
+bool music_app_is_player_locked(void);
 
 /* --- Force re-scan current device --- */
 void music_app_rescan(void);

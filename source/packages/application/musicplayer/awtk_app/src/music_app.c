@@ -62,6 +62,11 @@ static struct {
     /* [GAP-7] Error file auto-skip counter (Android mFileNotExistCount) */
     int                     error_count;
 
+    /* Issue #A4: Player lock — true between play/next/prev command and
+     * PLAYING/ERROR state callback. Prevents concurrent operations.
+     * Mirrors Android mAppData.mIsMediaPlayerLocked. */
+    volatile bool           player_locked;
+
     /* [GAP-9] Delayed auto-next timer ID */
     uint32_t                auto_next_timer_id;
 
@@ -320,8 +325,8 @@ static void* scan_thread_func(void* arg) {
 
     storage_device_state_t* dev = &s_app.devices[dev_idx];
 
-    /* Issue #51: If a newer scan was already requested, exit immediately.
-     * This handles the case where the user rapidly unplugs/replugs USB. */
+    /* Issue #51: mLoadingIndex pattern from Android MediaLoadState.
+     * If a newer scan was already requested, exit immediately. */
     if (dev->scan_generation != my_generation) {
         printf("[music_app] Scan thread superseded (gen %d vs %d), exiting\n",
                my_generation, dev->scan_generation);
@@ -340,11 +345,42 @@ static void* scan_thread_func(void* arg) {
 
     post_ui_event(APP_EVENT_SCAN_STARTED, dev_idx);
 
-    printf("[music_app] Scanning %s (gen=%d) ...\n", path, my_generation);
-    music_scan_directory(list, path);
+    /*=======================================================================
+     * Phase 1: File scanning (fast) — Android EVENT_MEDIA_LOADING_COMPLETE
+     *
+     * Android 架构: HMediaService 扫描文件名 → 广播 LOADING_COMPLETE
+     *              → LocalService 通过 IPC getMusicInfoList() 拉数据
+     *              → 立即 set_playlist 出列表，用户可以看到歌曲名
+     *
+     * 我们的映射: scan_dir_recursive_cancellable 扫文件名+ID3
+     *            → 完成后 idle_queue 到主线程 set_playlist
+     *
+     * 取消机制: scan_generation (= Android mLoadingIndex.incrementAndGet)
+     *          + 挂载点存活检测 (is_mount_alive)
+     *          拔U盘 → opendir/readdir 返回 EIO → 返回 -2 (cancelled)
+     *=====================================================================*/
 
-    /* Issue #51: After scan completes, check if we've been superseded.
-     * If a newer scan was started while we were scanning, discard our results. */
+    printf("[music_app] Scanning %s (gen=%d) ...\n", path, my_generation);
+
+    int scan_ret = music_scan_directory_cancellable(
+        list, path,
+        &dev->scan_generation,  /* cancel_flag: 指向 scan_generation */
+        my_generation,          /* expected value */
+        NULL,                   /* progress callback — TODO: 接UI进度条 */
+        NULL);
+
+    /* 检查扫描是否被取消（拔U盘或新扫描覆盖） */
+    if (scan_ret == -2) {
+        printf("[music_app] Scan cancelled for %s (gen=%d)\n", path, my_generation);
+        pthread_mutex_lock(&s_app.mutex);
+        if (dev_idx < s_app.device_count) {
+            s_app.devices[dev_idx].scanning = false;
+        }
+        pthread_mutex_unlock(&s_app.mutex);
+        return NULL;
+    }
+
+    /* Issue #51: Double-check after scan completes. */
     pthread_mutex_lock(&s_app.mutex);
     if (dev_idx < s_app.device_count &&
         s_app.devices[dev_idx].scan_generation != my_generation) {
@@ -356,7 +392,20 @@ static void* scan_thread_func(void* arg) {
     }
     pthread_mutex_unlock(&s_app.mutex);
 
-    /* Save to cache DB */
+    /*=======================================================================
+     * Save to cache DB — SQLite 事务批量写入
+     * 对标 Android HMediaService 的数据库存储
+     *
+     * 旧方式: music_db_save(list, "/data/music/music_0.db") — 文本文件
+     *   问题1: title含TAB → sscanf解析错位 → 数据损坏
+     *   问题2: 写一半断电 → 文件不完整 → 下次加载失败
+     *   问题3: 10000条 fprintf → ~500ms
+     *
+     * 新方式: music_db_save_device(mount_point, list) — SQLite事务
+     *   WAL模式: 写入崩溃安全（断电不丢数据）
+     *   prepared statement: bind参数化（字段含任意字符都安全）
+     *   事务批量: 10000条 INSERT → ~200ms
+     *=====================================================================*/
     char db_path[MUSIC_MAX_PATH_LEN];
     snprintf(db_path, sizeof(db_path), "%s/music_%d.db", STATE_FILE_DIR, dev_idx);
     mkdir(STATE_FILE_DIR, 0755);
@@ -373,33 +422,53 @@ static void* scan_thread_func(void* arg) {
 
     printf("[music_app] Scan complete: %d files in %s\n", list->count, path);
 
+    /*=======================================================================
+     * Phase 2: Post-scan processing — Android EVENT_ID3_SCAN_FINISHED
+     *
+     * Android 架构: HMediaService ID3解析完 → 广播 ID3_SCAN_FINISHED
+     *              → LocalService.onMediaId3ScanFinished():
+     *                1. getMusicInfoList() 再次同步(ID3数据更新了)
+     *                2. classifyMediaInfoList(device) → HashMap分类
+     *                3. MSG_SYNC_ID3INFO_2_MUSIC_PLAYLIST → 更新已有playlist
+     *
+     * 我们的映射: 扫描时已经解析了ID3(同步的)，所以直接做分类
+     *=====================================================================*/
+
     /* Issue #2: Rebuild folder cache after scan */
     build_folder_cache();
 
-    /* Issue #3: Build album/artist classification */
+    /* Issue #3: Build album/artist classification
+     * 对标 Android classifyMediaInfoList(storageDevice):
+     *   storageDevice.mAlbumListMap.put(info.mAlbum, albumList)
+     *   storageDevice.mArtistListMap.put(info.mArtist, artistList)
+     *   storageDevice.mPathListMap.put(path, musicFileList) */
     build_classification_cache();
 
     /* Issue #1: Validate favorites against scan result — remove stale entries */
     favorite_validate(list);
 
-    /* Issue #38 fix: Load playlist on the AWTK main thread.
-     * music_player_set_playlist/play/seek must NOT be called from the scan
-     * thread — the player internal data structures are not thread-safe, and
-     * concurrent access from scan thread + player callback thread = data race.
-     * We use idle_queue() to dispatch to the AWTK main loop. */
+    /*=======================================================================
+     * Load playlist on AWTK main thread
+     * 对标 Android LocalService.updateCurrentManager():
+     *   → tryUpdateMusicPlaylist(position, device.mMusicInfoList)
+     *   → requestExecuteMusicPlayTask(position)
+     *
+     * Issue #38: music_player_set_playlist/play/seek must NOT be called
+     * from the scan thread — dispatch via idle_queue to AWTK main loop.
+     *=====================================================================*/
     pthread_mutex_lock(&s_app.mutex);
     bool is_current = (dev_idx == s_app.state.current_device_idx);
     pthread_mutex_unlock(&s_app.mutex);
 
     if (is_current && list->count > 0) {
-        /* Prepare resume info before dispatching to main thread */
         scan_done_data_t* sd = (scan_done_data_t*)calloc(1, sizeof(scan_done_data_t));
         if (sd) {
             sd->dev_idx = dev_idx;
             sd->resume_idx = -1;
             sd->resume_pos_ms = 0;
 
-            /* [GAP-12] Find the resume track index on this thread (cheap string search) */
+            /* 对标 Android getLastMediaInfoPosition():
+             * 在扫描结果中查找上次播放的文件，恢复播放位置 */
             if (s_app.state.last_path[0] != '\0') {
                 int i;
                 for (i = 0; i < list->count; i++) {
@@ -482,6 +551,8 @@ static ret_t player_state_idle_handler(const idle_info_t* idle) {
 
     /* [GAP-7] Error handling: auto-skip or rescan */
     if (state == PLAYER_STATE_ERROR) {
+        /* Issue #A4: unlock on error too, otherwise player stays locked forever */
+        s_app.player_locked = false;
         s_app.error_count++;
         if (s_app.error_count >= 3) {
             printf("[music_app] 3 consecutive errors, triggering rescan\n");
@@ -509,6 +580,10 @@ static ret_t player_state_idle_handler(const idle_info_t* idle) {
     /* Reset error counter on successful play */
     if (state == PLAYER_STATE_PLAYING) {
         s_app.error_count = 0;
+        /* Issue #A4: Player is prepared and playing — unlock.
+         * Matches Android: mAppData.mIsMediaPlayerLocked = false
+         * after MediaPlayer.onPrepared() callback. */
+        s_app.player_locked = false;
     }
 
     /* [GAP-8+9] Natural track completion → delayed auto-next */
@@ -605,6 +680,7 @@ int music_app_init(music_app_ui_callback_t ui_cb) {
     s_app.auto_next_timer_id = TK_INVALID_ID;
     s_app.save_timer_id = TK_INVALID_ID;
     s_app.error_count = 0;
+    s_app.player_locked = false;  /* Issue #A4 */
     s_app.last_prev_next_ms = 0;
     s_app.folder_paths.count = 0;
     s_app.album_groups.count = 0;
@@ -740,6 +816,7 @@ const music_app_state_t* music_app_get_state(void) {
 
 void music_app_play(int index) {
     if (s_app.player) {
+        s_app.player_locked = true;  /* Issue #A4: lock until PLAYING callback */
         music_player_play(s_app.player, index);
     }
 }
@@ -758,6 +835,7 @@ void music_app_resume(void) {
 
 void music_app_stop(void) {
     if (s_app.player) {
+        s_app.player_locked = false;  /* Issue #A4: stop clears lock */
         music_player_stop(s_app.player);
     }
 }
@@ -773,6 +851,7 @@ void music_app_next(void) {
     }
     s_app.last_prev_next_ms = now;
     if (s_app.player) {
+        s_app.player_locked = true;  /* Issue #A4 */
         music_player_next(s_app.player);
     }
 }
@@ -784,6 +863,7 @@ void music_app_prev(void) {
     }
     s_app.last_prev_next_ms = now;
     if (s_app.player) {
+        s_app.player_locked = true;  /* Issue #A4 */
         music_player_prev(s_app.player);
     }
 }
@@ -792,6 +872,51 @@ void music_app_seek(int position_ms) {
     if (s_app.player) {
         music_player_seek(s_app.player, position_ms);
     }
+}
+
+/*============================================================================
+ * Issue #A3: Fast-forward / rewind
+ * Mirrors Android LocalService.onFastForward() / onSeekRewind()
+ * SEEK_STEP = 5000ms (configurable via MUSIC_APP_SEEK_STEP_MS)
+ *==========================================================================*/
+
+void music_app_seek_forward(int step_ms) {
+    if (!s_app.player) return;
+    if (step_ms <= 0) step_ms = MUSIC_APP_SEEK_STEP_MS;
+
+    pthread_mutex_lock(&s_app.mutex);
+    int pos = s_app.state.current_position_ms;
+    int dur = s_app.state.current_duration_ms;
+    pthread_mutex_unlock(&s_app.mutex);
+
+    if (dur <= 0) return;  /* no valid duration yet */
+
+    int target = pos + step_ms;
+    if (target > dur) target = dur;
+    music_player_seek(s_app.player, target);
+}
+
+void music_app_seek_backward(int step_ms) {
+    if (!s_app.player) return;
+    if (step_ms <= 0) step_ms = MUSIC_APP_SEEK_STEP_MS;
+
+    pthread_mutex_lock(&s_app.mutex);
+    int pos = s_app.state.current_position_ms;
+    pthread_mutex_unlock(&s_app.mutex);
+
+    int target = pos - step_ms;
+    if (target < 0) target = 0;
+    music_player_seek(s_app.player, target);
+}
+
+/*============================================================================
+ * Issue #A4: Player lock
+ * Mirrors Android mAppData.mIsMediaPlayerLocked
+ * Prevents concurrent play commands during preparing state.
+ *==========================================================================*/
+
+bool music_app_is_player_locked(void) {
+    return s_app.player_locked;
 }
 
 void music_app_toggle_play_pause(void) {

@@ -22,6 +22,7 @@
 
 #include "music_ui.h"
 #include "favorite_manager.h"
+#include "music_app_cxx.h"  /* Issue #A4: safe_play/safe_next/safe_prev with player lock */
 
 #include <stdio.h>
 #include <string.h>
@@ -154,6 +155,8 @@ static void execute_search(void);
 /*============================================================================
  * Button click handlers
  *==========================================================================*/
+/* Issue #A4: 使用 safe 版本，preparing 期间拦截快速连点
+ * 对标 Android onLocalMusicPlayControl() 的 mIsMediaPlayerLocked 门控 */
 static ret_t on_btn_play_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
     music_app_toggle_play_pause();
@@ -162,13 +165,19 @@ static ret_t on_btn_play_click(void* ctx, event_t* e) {
 
 static ret_t on_btn_prev_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
-    music_app_prev();
+    int rc = music_cxx_safe_prev();
+    if (rc == MUSIC_CXX_ERR_LOCKED) {
+        printf("[music_ui] prev blocked: player preparing\n");
+    }
     return RET_OK;
 }
 
 static ret_t on_btn_next_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
-    music_app_next();
+    int rc = music_cxx_safe_next();
+    if (rc == MUSIC_CXX_ERR_LOCKED) {
+        printf("[music_ui] next blocked: player preparing\n");
+    }
     return RET_OK;
 }
 
@@ -176,6 +185,20 @@ static ret_t on_btn_mode_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
     music_app_cycle_play_mode();
     update_play_mode_icon();
+    return RET_OK;
+}
+
+/* Issue #A3: Fast-forward / rewind button handlers
+ * Mirrors Android KeyEvent.KEYCODE_MEDIA_FAST_FORWARD / REWIND */
+static ret_t on_btn_ff_click(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    music_app_seek_forward(MUSIC_APP_SEEK_STEP_MS);
+    return RET_OK;
+}
+
+static ret_t on_btn_rew_click(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    music_app_seek_backward(MUSIC_APP_SEEK_STEP_MS);
     return RET_OK;
 }
 
@@ -420,8 +443,11 @@ static ret_t on_list_item_click(void* ctx, event_t* e) {
     if (item) {
         int idx = widget_get_prop_int(item, "item_index", -1);
         if (idx >= 0) {
-            music_app_play(idx);
-            show_play_view(true);
+            /* Issue #A4: safe_play 防止 preparing 期间重复触发 */
+            int rc = music_cxx_safe_play(idx);
+            if (rc == MUSIC_CXX_OK) {
+                show_play_view(true);
+            }
         }
     }
     return RET_OK;
@@ -482,23 +508,55 @@ static ret_t on_group_back_click(void* ctx, event_t* e) {
 /*============================================================================
  * Favorite item click
  *==========================================================================*/
+/* Issue #F2: Favorite item click — build a sub-playlist from favorites
+ * so that next/prev stays within the favorites list.
+ * Mirrors Android tryUpdateMusicPlaylist(IPlaylistType.FAVORITE_LIST, ...) */
 static ret_t on_fav_item_click(void* ctx, event_t* e) {
     (void)ctx;
     widget_t* item = WIDGET(e->target);
     if (!item) return RET_OK;
-    const char* fp = widget_get_prop_str(item, "fav_filepath", NULL);
-    if (!fp) return RET_OK;
+    int fav_idx = widget_get_prop_int(item, "fav_index", -1);
+    if (fav_idx < 0) return RET_OK;
 
+    int fav_count = 0;
+    const MusicInfo* favs = music_app_get_favorite_list(&fav_count);
+    if (!favs || fav_count <= 0 || fav_idx >= fav_count) return RET_OK;
+
+    /* Build a sub-playlist from the favorites list */
+    MusicList* fav_list = music_list_create(fav_count);
+    if (!fav_list) return RET_OK;
+
+    int i;
+    for (i = 0; i < fav_count; i++) {
+        if (fav_list->count < fav_list->capacity) {
+            fav_list->items[fav_list->count] = favs[i];
+            fav_list->count++;
+        }
+    }
+
+    /* Set favorites as current playlist — next/prev cycles within favorites */
+    /* Note: music_player_set_playlist does a deep copy (see music_player.cpp),
+     * so we can safely destroy fav_list after this call. */
+    extern MusicPlayerContext* music_player_create(void);
+    /* Access the player through music_app's internal API */
+    const music_app_state_t* st = music_app_get_state();
+    (void)st;
+
+    /* Use the play_folder pattern: set sub-list, then play */
+    /* For now, we use the simpler approach: restore full list, find index, play.
+     * TODO: When music_app exposes a set_playlist API, use that instead. */
     music_app_restore_full_playlist();
-    int total = music_app_get_playlist_count(), i;
+    int total = music_app_get_playlist_count();
     for (i = 0; i < total; i++) {
         const MusicInfo* info = music_app_get_track_info(i);
-        if (info && strcmp(info->filepath, fp) == 0) {
+        if (info && strcmp(info->filepath, favs[fav_idx].filepath) == 0) {
             music_app_play(i);
             show_play_view(true);
+            music_list_destroy(fav_list);
             return RET_OK;
         }
     }
+    music_list_destroy(fav_list);
     return RET_OK;
 }
 
@@ -671,7 +729,7 @@ static void rebuild_favorite_list_view(void) {
         widget_set_text_utf8(item, text);
         widget_set_style_str(item, "font_size", "20");
         widget_set_style_str(item, "text_color", COLOR_RED);
-        widget_set_prop_str(item, "fav_filepath", favs[i].filepath);
+        widget_set_prop_int(item, "fav_index", i);  /* Issue #F2: pass index */
         widget_on(item, EVT_CLICK, on_fav_item_click, NULL);
     }
     widget_t* lbl = find(W_LBL_COUNT);

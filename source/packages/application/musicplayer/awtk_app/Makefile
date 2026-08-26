@@ -53,7 +53,11 @@ CMUS_C_SRCS = $(filter-out src/cmus/test_cmus_port.c, $(wildcard src/cmus/*.c))
 # by the musicplayer package. We link against it, not compile them again.
 
 C_SRCS      = $(APP_C_SRCS) $(CMUS_C_SRCS)
-CPP_SRCS    =
+
+# C++ sources (bt_cxx pattern: extern "C" wrapper + STL business logic)
+# Issue #A1: C++ adapter layer for music app
+CPP_SRCS    = src/music_app_cxx.cpp \
+              src/music_app_impl.cpp
 
 C_OBJS      = $(C_SRCS:.c=.o)
 CPP_OBJS    = $(CPP_SRCS:.cpp=.o)
@@ -71,6 +75,9 @@ COMMON_FLAGS += -DUSE_CMUS_ID3 # Enable cmus id3/cue parser via cmus_bridge
 INC_FLAGS    = -Isrc
 INC_FLAGS   += -Isrc/cmus
 INC_FLAGS   += -I$(AWTK_DIR)/src
+# OSAL C++ wrappers — 等 lib_mw.a 链入后启用
+# INC_FLAGS   += -I$(TOPDIR)/middleware/hal/osal
+# INC_FLAGS   += -I$(TOPDIR)/middleware/common/log
 INC_FLAGS   += -I$(AWTK_DIR)/src/ext_widgets
 INC_FLAGS   += -I$(AWTK_DIR)/3rd
 
@@ -96,7 +103,8 @@ ifndef HOST_BUILD
 endif
 
 CFLAGS      = $(COMMON_FLAGS) $(INC_FLAGS) -std=c11
-CXXFLAGS    = $(COMMON_FLAGS) $(INC_FLAGS) -std=c++11
+# -fexceptions -funwind-tables: ARM32 异常展开必须显式保证（与 middleware bt_cxx 一致）
+CXXFLAGS    = $(COMMON_FLAGS) $(INC_FLAGS) -std=c++14 -fexceptions -funwind-tables
 
 # Linker flags
 LDFLAGS     =
@@ -111,7 +119,7 @@ ifndef HOST_BUILD
   LDFLAGS  += -lmusicplayer -latcmediaplayer
 endif
 
-LDFLAGS    += -lawtk -ltkc -legl_devices -lEGL -lGLESv2 -lpthread -lm -ldl
+LDFLAGS    += -lawtk -ltkc -legl_devices -lEGL -lGLESv2 -lpthread -lm -ldl -lstdc++
 
 # ===========================================================================
 # Build rules

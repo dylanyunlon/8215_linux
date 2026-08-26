@@ -98,6 +98,37 @@ void music_list_destroy(MusicList *list);
  * Blocks until scan completes. Thread-safe if different lists used. */
 int music_scan_directory(MusicList *list, const char *dir_path);
 
+/**
+ * Cancellable scan with incremental progress callback.
+ *
+ * Solves two production problems:
+ *   1. "一万首歌怎么办" — callback fires every N files so UI can show progress
+ *   2. "扫到一半拔U盘"  — cancel_flag checked every iteration + mount check
+ *
+ * @param list          Output list (will be cleared first)
+ * @param dir_path      Root scan path (e.g. "/mnt/usb0")
+ * @param cancel_flag   Pointer to volatile int; set non-zero to abort scan.
+ *                      Typically points to storage_device_state_t.scan_generation
+ *                      — if it changes, scan was superseded.
+ * @param expected_gen  The scan_generation value at dispatch time.
+ *                      Scan aborts if *cancel_flag != expected_gen.
+ * @param progress_cb   Called every SCAN_PROGRESS_INTERVAL files (may be NULL).
+ *                      Receives current file count. Return non-zero to abort.
+ * @param cb_ctx        Opaque context passed to progress_cb.
+ * @return  Number of files found, or -1 on error, -2 on cancelled.
+ */
+#define SCAN_PROGRESS_INTERVAL  50  /* report every 50 files */
+
+typedef int (*scan_progress_fn)(int current_count, void *ctx);
+
+int music_scan_directory_cancellable(
+        MusicList *list,
+        const char *dir_path,
+        const volatile int *cancel_flag,
+        int expected_gen,
+        scan_progress_fn progress_cb,
+        void *cb_ctx);
+
 /* Check if a filename has a supported audio extension. */
 bool music_is_audio_file(const char *filename);
 
