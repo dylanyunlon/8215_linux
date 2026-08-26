@@ -1,0 +1,24 @@
+# ---- build output ----
+build/
+
+# ---- compiler / object / 静态库 artifacts ----
+*.obj
+*.o
+*.a
+
+# ---- C++ sources (本仓库纯 C，不入库) ----
+*.cc
+
+# ---- scons 签名库 ----
+*.dblite
+.sconsign.dblite
+
+# ---- python 缓存 ----
+__pycache__/
+*.pyc
+
+# ---- 编辑器 / 系统残留 ----
+*~
+*.bak
+*.swp
+.DS_Store

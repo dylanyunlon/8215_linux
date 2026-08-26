@@ -1,0 +1,55 @@
+# -*- coding: utf-8 -*-
+import os
+import sys
+import platform
+
+env = DefaultEnvironment().Clone()
+BIN_DIR = os.environ['BIN_DIR']
+LIB_DIR = os.environ['LIB_DIR'];
+
+# ---------------------------------------------------------------------------
+# HCN 集成：链接中间件 lib_mw.a 与 vehicle_services 静态库
+# 路径由 buildroot 包 hcn-application.mk 通过环境变量传入；独立调试时留空=不链接
+#   MW_INC : $(STAGING_DIR)/usr/include   -> #include <mw/vehicle_param.h>
+#   MW_LIB : $(STAGING_DIR)/usr/lib       -> lib_mw.a
+#   VS_INC : ../vehicle_services          -> #include "vehicle_services.h"
+#   VS_LIB : vehicle_services 构建目录      -> libvehicle_services.a
+# ---------------------------------------------------------------------------
+MW_INC = os.environ.get('MW_INC', '')
+MW_LIB = os.environ.get('MW_LIB', '')
+VS_INC = os.environ.get('VS_INC', '')
+VS_LIB = os.environ.get('VS_LIB', '')
+
+cpppath = []
+if MW_INC:
+    cpppath += [MW_INC]
+if VS_INC:
+    cpppath += [VS_INC]
+
+libpath = [LIB_DIR]
+libs    = list(env['LIBS'])
+if MW_LIB:
+    libpath += [MW_LIB]
+if VS_LIB:
+    libpath += [VS_LIB]
+# 链接顺序：vehicle_services 依赖 lib_mw 符号，故 -lvehicle_services 在 -l_mw 之前
+if VS_LIB:
+    libs += ['vehicle_services']
+if MW_LIB:
+    # C++ 适配层（lib_mw_cxx.a，路线A）：可调用 lib_mw 符号，须在 -l_mw 之前
+    libs += ['_mw_cxx']
+    libs += ['_mw']
+    # lib_mw.a 引用 pthread/m/rt（OSAL 互斥/线程），须在 -l_mw 之后再出现，
+    # 规避静态库链接顺序导致的 undefined reference to pthread_* / math 符号
+    libs += ['pthread', 'm', 'rt']
+    # C++ 运行时：必须在所有 C++ 对象/库之后（gcc driver 不自动带，
+    # 缺失则链接报 __cxa_* / _ZTSSi 等 undefined reference）
+    libs += ['stdc++']
+
+if cpppath:
+    env.AppendUnique(CPPPATH=cpppath)
+env.AppendUnique(LIBPATH=libpath)
+
+sources = Glob('**/*.c') + Glob('*.c')
+
+env.Program(os.path.join(BIN_DIR, 'demo'), sources, LIBS = libs)

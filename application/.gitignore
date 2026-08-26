@@ -1,0 +1,22 @@
+# ---- build output ----
+build/
+
+# ---- compiler / object artifacts ----
+*.obj
+*.o
+*.a
+
+# ---- AWTK Designer / scons 签名库 ----
+*.dblite
+.sconsign.dblite
+design/
+
+# ---- python 缓存 ----
+__pycache__/
+*.pyc
+
+# ---- 编辑器 / 系统残留 ----
+*~
+*.bak
+*.swp
+.DS_Store
