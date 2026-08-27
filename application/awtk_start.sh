@@ -1,16 +1,18 @@
 #! /bin/bash
 #
-# HCN application (awtk demo 二进制)
+# Music Player (AWTK Linux-FB)
 #
 
 start() {
-	echo "hcn application start"
-	/usr/bin/awtk/release/bin/demo &
+	echo "musicplayer start"
+	mkdir -p /data/music
+	cd /usr/lib/awtk/image
+	/usr/bin/music_player &
 }
 
 stop() {
-	echo "hcn application stop"
-	killall demo
+	echo "musicplayer stop"
+	killall music_player
 }
 
 case "$1" in
@@ -22,6 +24,7 @@ case "$1" in
 	;;
   restart)
 	stop
+	sleep 1
 	start
 	;;
   status)
