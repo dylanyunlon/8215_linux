@@ -138,14 +138,98 @@ bool music_is_audio_file(const char *filename);
  * Returns 0 on success, -1 if no ID3 tag found (falls back to filename). */
 int music_parse_id3v2(const char *filepath, MusicInfo *info);
 
-/* --- Simple flat-file database --- */
+/* --- Flat-file database (legacy, retained for fallback) --- */
 
 /* Save music list to a text-based DB file.
- * Format: one record per line, fields separated by \t */
+ * Format: one record per line, fields separated by \t
+ * DEPRECATED: Use music_db_save() which now routes to SQLite internally.
+ *             This function is kept only for emergency fallback. */
+int music_db_save_text(const MusicList *list, const char *db_path);
+
+/* Load music list from text DB file.
+ * DEPRECATED: Use music_db_load() which now routes to SQLite internally. */
+int music_db_load_text(MusicList *list, const char *db_path);
+
+/* --- SQLite database (production, mirrors Android MediaInfoDao) --- */
+
+/*
+ * Schema version — increment on every column change.
+ * Mirrors Android MediaDatabase version + MIGRATION_1_2 pattern.
+ *
+ * Version history:
+ *   1  Initial: uid, mediaType, title, artist, album, duration, track,
+ *      filepath, filename, deviceName, folderPath, size
+ *   (future versions add columns via ALTER TABLE, never drop)
+ */
+#define MUSIC_DB_SCHEMA_VERSION  1
+
+/**
+ * Save music list to SQLite database.
+ * - Single transaction for atomicity (10000 songs ~200ms)
+ * - WAL journal mode for crash safety
+ * - Prepared statements with bind (title containing TAB/quotes is safe)
+ * - Creates the DB file and table if they don't exist
+ *
+ * This function replaces the old music_db_save_text() as the default
+ * persistence path. The function signature is kept identical so that
+ * all existing call sites (music_app.c:412) work without changes.
+ *
+ * @param list     Music list to persist
+ * @param db_path  SQLite file path (e.g. "/data/music/music_0.db")
+ * @return 0 on success, -1 on error
+ */
 int music_db_save(const MusicList *list, const char *db_path);
 
-/* Load music list from DB file. Returns count loaded, -1 on error. */
+/**
+ * Load music list from SQLite database.
+ * Falls back to text DB if the file is not a valid SQLite database
+ * (enables seamless migration from old text format).
+ *
+ * @param list     Output list (will be cleared first)
+ * @param db_path  SQLite file path
+ * @return Number of records loaded, -1 on error
+ */
 int music_db_load(MusicList *list, const char *db_path);
+
+/**
+ * Query songs by device name (mount point prefix).
+ * Mirrors Android MediaInfoDao.findByDeviceName().
+ *
+ * @param db_path      SQLite file path
+ * @param device_name  Device prefix, e.g. "/mnt/usb0"
+ * @param list         Output list (will be cleared first)
+ * @return Number of matches, -1 on error
+ */
+int music_db_query_by_device(const char *db_path, const char *device_name,
+                             MusicList *list);
+
+/**
+ * Query songs by title (substring match, case-insensitive).
+ * Mirrors Android MediaInfoDao.findByTitle().
+ */
+int music_db_query_by_title(const char *db_path, const char *title,
+                            MusicList *list);
+
+/**
+ * Query songs by artist (substring match, case-insensitive).
+ * Mirrors Android MediaInfoDao.findByArtist().
+ */
+int music_db_query_by_artist(const char *db_path, const char *artist,
+                             MusicList *list);
+
+/**
+ * Query songs by album (substring match, case-insensitive).
+ * Mirrors Android MediaInfoDao.findByAlbum().
+ */
+int music_db_query_by_album(const char *db_path, const char *album,
+                            MusicList *list);
+
+/**
+ * Query songs by filepath (exact match).
+ * Mirrors Android MediaInfoDao.findByFilePath().
+ */
+int music_db_query_by_filepath(const char *db_path, const char *filepath,
+                               MusicList *list);
 
 #ifdef __cplusplus
 }

@@ -28,6 +28,8 @@ CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mmisc/osal/include
 CFLAGS     += -I$(TOPDIR)/source/packages/multimedia/directrender/include
 CFLAGS     += -I$(TOPDIR)/source/packages/multimedia/directrender/src/utils
+# SQLite3 header (amalgamation header shipped in awtk_app/src/sqlite3/)
+CFLAGS     += -I$(TOPDIR)/source/packages/application/musicplayer/awtk_app/src/sqlite3
 CFLAGS     += --sysroot=$(SYSROOT_DIR)
 
 CXXFLAGS    = $(CFLAGS) -std=c++11
@@ -37,6 +39,7 @@ LDFLAGS    += --sysroot=$(SYSROOT_DIR)
 LDFLAGS    += -L$(SYSROOT_DIR)/usr/lib
 LDFLAGS    += -latcmediaplayer
 LDFLAGS    += -lpthread
+LDFLAGS    += -lsqlite3
 
 # Rules
 all: $(TARGET)
