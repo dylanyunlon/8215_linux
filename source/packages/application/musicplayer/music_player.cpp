@@ -178,7 +178,11 @@ MusicPlayerContext *music_player_create(void)
 
     if (!ctx->player->setup()) {
         fprintf(stderr, "[MusicPlayer] MediaPlayer setup failed\n");
-        delete ctx->player;
+        /* Do NOT delete ctx->player here — MediaPlayer destructor may block
+         * (codec teardown deadlock) when setup() left it half-initialized.
+         * Leak is acceptable: single-instance embedded system, and the app
+         * continues in UI-only mode without playback. */
+        ctx->player = NULL;
         delete ctx;
         return NULL;
     }
