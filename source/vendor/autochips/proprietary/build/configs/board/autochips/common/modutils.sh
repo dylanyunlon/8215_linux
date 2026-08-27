@@ -9,7 +9,7 @@ start() {
 	#Install drivers
 	modprobe mtz_drv.ko
 	modprobe adec.ko
-#	modprobe gt9xx.ko
+	modprobe gt9xx.ko
 	modprobe arm2system_service.ko
 }
 
