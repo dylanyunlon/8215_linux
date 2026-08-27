@@ -827,6 +827,7 @@ static int feed_song_to_mpd(mpd_db_t *db, const MusicInfo *m)
         si.mtime = st.st_mtime;
 
     si.duration_ms = m->duration_ms;
+    si.id3_parsed = m->id3_parsed;
 
     char track_str[16];
     if (m->track_num > 0) {
@@ -884,6 +885,7 @@ static int mpd_to_musiclist_visitor(const mpd_song_info_t *song, void *user_data
         m->folder_path[0] = '\0';
 
     m->duration_ms = song->duration_ms;
+    m->id3_parsed = song->id3_parsed;
 
     if (song->tags[MPD_TAG_TITLE] && song->tags[MPD_TAG_TITLE][0])
         strncpy(m->title, song->tags[MPD_TAG_TITLE], MUSIC_MAX_TAG_LEN - 1);
@@ -1044,8 +1046,9 @@ static void query_row_to_musicinfo(sqlite3_stmt *stmt, MusicInfo *m)
     if (v) strncpy(m->filename, v, MUSIC_MAX_TAG_LEN - 1);
 
     m->duration_ms = sqlite3_column_int(stmt, 2); /* duration_ms */
+    m->id3_parsed = sqlite3_column_int(stmt, 3); /* id3_parsed */
 
-    v = (const char *)sqlite3_column_text(stmt, 3); /* tag_title */
+    v = (const char *)sqlite3_column_text(stmt, 4); /* tag_title */
     if (v && v[0])
         strncpy(m->title, v, MUSIC_MAX_TAG_LEN - 1);
     else {
@@ -1054,19 +1057,19 @@ static void query_row_to_musicinfo(sqlite3_stmt *stmt, MusicInfo *m)
         if (dot) *dot = '\0';
     }
 
-    v = (const char *)sqlite3_column_text(stmt, 4); /* tag_artist */
+    v = (const char *)sqlite3_column_text(stmt, 5); /* tag_artist */
     if (v && v[0])
         strncpy(m->artist, v, MUSIC_MAX_TAG_LEN - 1);
     else
         strncpy(m->artist, "Unknown", MUSIC_MAX_TAG_LEN - 1);
 
-    v = (const char *)sqlite3_column_text(stmt, 5); /* tag_album */
+    v = (const char *)sqlite3_column_text(stmt, 6); /* tag_album */
     if (v && v[0])
         strncpy(m->album, v, MUSIC_MAX_TAG_LEN - 1);
     else
         strncpy(m->album, "Unknown", MUSIC_MAX_TAG_LEN - 1);
 
-    v = (const char *)sqlite3_column_text(stmt, 6); /* tag_track */
+    v = (const char *)sqlite3_column_text(stmt, 7); /* tag_track */
     if (v && v[0])
         m->track_num = atoi(v);
 
@@ -1124,7 +1127,7 @@ int music_db_query_by_device(const char *db_path, const char *device_name,
 {
     /* Device = URI prefix match (mount point is the path prefix) */
     static const char *sql =
-        "SELECT uri, filename, duration_ms, tag_title, tag_artist, tag_album, tag_track "
+        "SELECT uri, filename, duration_ms, id3_parsed, tag_title, tag_artist, tag_album, tag_track "
         "FROM songs WHERE uri LIKE ? ORDER BY uri";
     char pattern[MUSIC_MAX_PATH_LEN + 4];
     snprintf(pattern, sizeof(pattern), "%s%%", device_name ? device_name : "");
@@ -1135,7 +1138,7 @@ int music_db_query_by_title(const char *db_path, const char *title,
                             MusicList *list)
 {
     static const char *sql =
-        "SELECT uri, filename, duration_ms, tag_title, tag_artist, tag_album, tag_track "
+        "SELECT uri, filename, duration_ms, id3_parsed, tag_title, tag_artist, tag_album, tag_track "
         "FROM songs WHERE tag_title LIKE ? ORDER BY uri";
     char pattern[MUSIC_MAX_TAG_LEN + 4];
     snprintf(pattern, sizeof(pattern), "%%%s%%", title ? title : "");
@@ -1146,7 +1149,7 @@ int music_db_query_by_artist(const char *db_path, const char *artist,
                              MusicList *list)
 {
     static const char *sql =
-        "SELECT uri, filename, duration_ms, tag_title, tag_artist, tag_album, tag_track "
+        "SELECT uri, filename, duration_ms, id3_parsed, tag_title, tag_artist, tag_album, tag_track "
         "FROM songs WHERE tag_artist LIKE ? ORDER BY uri";
     char pattern[MUSIC_MAX_TAG_LEN + 4];
     snprintf(pattern, sizeof(pattern), "%%%s%%", artist ? artist : "");
@@ -1157,7 +1160,7 @@ int music_db_query_by_album(const char *db_path, const char *album,
                             MusicList *list)
 {
     static const char *sql =
-        "SELECT uri, filename, duration_ms, tag_title, tag_artist, tag_album, tag_track "
+        "SELECT uri, filename, duration_ms, id3_parsed, tag_title, tag_artist, tag_album, tag_track "
         "FROM songs WHERE tag_album LIKE ? ORDER BY uri";
     char pattern[MUSIC_MAX_TAG_LEN + 4];
     snprintf(pattern, sizeof(pattern), "%%%s%%", album ? album : "");
@@ -1168,7 +1171,307 @@ int music_db_query_by_filepath(const char *db_path, const char *filepath,
                                MusicList *list)
 {
     static const char *sql =
-        "SELECT uri, filename, duration_ms, tag_title, tag_artist, tag_album, tag_track "
+        "SELECT uri, filename, duration_ms, id3_parsed, tag_title, tag_artist, tag_album, tag_track "
         "FROM songs WHERE uri = ? LIMIT 1";
     return _sqlite_query(db_path, sql, filepath, list);
+}
+/*============================================================================
+ * Direct scan → MPD tree (requirement #1: no MusicList intermediate)
+ *
+ * Each discovered audio file is parsed for ID3 tags and immediately
+ * fed to mpd_db_add_song(). No malloc/realloc of a flat MusicInfo array.
+ * MPD's C++ STL (std::unique_ptr<Song>, IntrusiveList) manages all memory.
+ *==========================================================================*/
+
+struct scan_to_mpd_ctx {
+    mpd_db_t *db;
+    const char *device_name;
+    int count;
+    int errors;
+};
+
+static int scan_dir_to_mpd_recursive(struct scan_to_mpd_ctx *ctx,
+                                      const char *dir_path, int depth)
+{
+    if (depth > MAX_SCAN_DEPTH) return 0;
+
+    DIR *dir = opendir(dir_path);
+    if (!dir) return -1;
+
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_name[0] == '.') continue;
+
+        char fullpath[MUSIC_MAX_PATH_LEN];
+        snprintf(fullpath, sizeof(fullpath), "%s/%s", dir_path, entry->d_name);
+
+        struct stat st;
+        if (lstat(fullpath, &st) != 0) continue;
+        if (S_ISLNK(st.st_mode)) continue;
+
+        if (S_ISDIR(st.st_mode)) {
+            if (strstr(fullpath, "/Android") ||
+                strstr(fullpath, "/LOST.DIR") ||
+                strstr(fullpath, "/System Volume Information") ||
+                strstr(fullpath, "/DCIM")) {
+                continue;
+            }
+
+            char nomedia[MUSIC_MAX_PATH_LEN];
+            snprintf(nomedia, sizeof(nomedia), "%s/.nomedia", fullpath);
+            struct stat nm_st;
+            if (stat(nomedia, &nm_st) == 0) continue;
+
+            scan_dir_to_mpd_recursive(ctx, fullpath, depth + 1);
+        } else if (S_ISREG(st.st_mode)) {
+            if (!music_is_audio_file(entry->d_name)) continue;
+
+            /* Parse ID3 into a temporary MusicInfo on the stack — no heap alloc */
+            MusicInfo info;
+            memset(&info, 0, sizeof(info));
+            strncpy(info.filepath, fullpath, MUSIC_MAX_PATH_LEN - 1);
+            strncpy(info.filename, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+            info.file_size = (uint32_t)st.st_size;
+
+            char ext[16];
+            str_to_lower(ext, get_extension(entry->d_name), sizeof(ext));
+
+            if (strcmp(ext, MUSIC_EXT_MP3) == 0) {
+                if (music_parse_id3v2(fullpath, &info) == 0) {
+#ifdef USE_CMUS_ID3
+                    info.id3_parsed = 2;
+#else
+                    info.id3_parsed = 1;
+#endif
+                } else {
+                    strncpy(info.title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                    char *dot = strrchr(info.title, '.');
+                    if (dot) *dot = '\0';
+                }
+            } else {
+                strncpy(info.title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                char *dot = strrchr(info.title, '.');
+                if (dot) *dot = '\0';
+            }
+
+            if (info.title[0] == '\0') {
+                strncpy(info.title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                char *dot = strrchr(info.title, '.');
+                if (dot) *dot = '\0';
+            }
+            if (info.artist[0] == '\0')
+                strncpy(info.artist, "Unknown", MUSIC_MAX_TAG_LEN - 1);
+            if (info.album[0] == '\0')
+                strncpy(info.album, "Unknown", MUSIC_MAX_TAG_LEN - 1);
+
+            /* Feed directly to MPD tree — no MusicList intermediate */
+            mpd_song_info_t si;
+            memset(&si, 0, sizeof(si));
+            si.uri = info.filepath;
+            si.mtime = st.st_mtime;
+            si.duration_ms = info.duration_ms;
+            si.id3_parsed = info.id3_parsed;
+
+            char track_str[16];
+            if (info.track_num > 0) {
+                snprintf(track_str, sizeof(track_str), "%d", info.track_num);
+                si.tags[MPD_TAG_TRACK] = track_str;
+            }
+            si.tags[MPD_TAG_TITLE]  = info.title;
+            si.tags[MPD_TAG_ARTIST] = info.artist;
+            si.tags[MPD_TAG_ALBUM]  = info.album;
+
+            if (mpd_db_add_song(ctx->db, &si) == 0) {
+                ctx->count++;
+                printf("[MusicScanner] [%d] %s - %s (%s) id3=%d\n",
+                       ctx->count, info.artist, info.title, info.filepath,
+                       info.id3_parsed);
+            } else {
+                ctx->errors++;
+            }
+        }
+    }
+
+    closedir(dir);
+    return 0;
+}
+
+int music_scan_to_mpd_db(mpd_db_t *db, const char *dir_path)
+{
+    if (!db || !dir_path) return -1;
+
+    printf("[MusicScanner] Direct scan → MPD tree: %s\n", dir_path);
+
+    struct scan_to_mpd_ctx ctx;
+    ctx.db = db;
+    ctx.device_name = dir_path;
+    ctx.count = 0;
+    ctx.errors = 0;
+
+    int ret = scan_dir_to_mpd_recursive(&ctx, dir_path, 0);
+    if (ret != 0) return -1;
+
+    printf("[MusicScanner] Scan complete: %d songs added, %d errors\n",
+           ctx.count, ctx.errors);
+    return ctx.count;
+}
+
+/*--- Cancellable version ---*/
+
+static int scan_dir_to_mpd_cancellable_recursive(
+        struct scan_to_mpd_ctx *ctx,
+        const char *dir_path, int depth,
+        const char *mount_root,
+        const volatile int *cancel_flag,
+        int expected_gen,
+        scan_progress_fn progress_cb,
+        void *cb_ctx)
+{
+    if (depth > MAX_SCAN_DEPTH) return 0;
+
+    if (cancel_flag && *cancel_flag != expected_gen) return -2;
+    if (!is_mount_alive(mount_root)) return -2;
+
+    DIR *dir = opendir(dir_path);
+    if (!dir) {
+        if (errno == ENOENT || errno == EACCES || errno == EIO) return -2;
+        return -1;
+    }
+
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_name[0] == '.') continue;
+
+        if (ctx->count > 0 && (ctx->count % SCAN_PROGRESS_INTERVAL) == 0) {
+            if (cancel_flag && *cancel_flag != expected_gen) {
+                closedir(dir); return -2;
+            }
+            if (!is_mount_alive(mount_root)) {
+                closedir(dir); return -2;
+            }
+            if (progress_cb && progress_cb(ctx->count, cb_ctx) != 0) {
+                closedir(dir); return -2;
+            }
+        }
+
+        char fullpath[MUSIC_MAX_PATH_LEN];
+        snprintf(fullpath, sizeof(fullpath), "%s/%s", dir_path, entry->d_name);
+
+        struct stat st;
+        if (lstat(fullpath, &st) != 0) continue;
+        if (S_ISLNK(st.st_mode)) continue;
+
+        if (S_ISDIR(st.st_mode)) {
+            if (strstr(fullpath, "/Android") ||
+                strstr(fullpath, "/LOST.DIR") ||
+                strstr(fullpath, "/System Volume Information") ||
+                strstr(fullpath, "/DCIM")) {
+                continue;
+            }
+            char nomedia[MUSIC_MAX_PATH_LEN];
+            snprintf(nomedia, sizeof(nomedia), "%s/.nomedia", fullpath);
+            struct stat nm_st;
+            if (stat(nomedia, &nm_st) == 0) continue;
+
+            int ret = scan_dir_to_mpd_cancellable_recursive(
+                ctx, fullpath, depth + 1,
+                mount_root, cancel_flag, expected_gen,
+                progress_cb, cb_ctx);
+            if (ret == -2) { closedir(dir); return -2; }
+        } else if (S_ISREG(st.st_mode)) {
+            if (!music_is_audio_file(entry->d_name)) continue;
+
+            MusicInfo info;
+            memset(&info, 0, sizeof(info));
+            strncpy(info.filepath, fullpath, MUSIC_MAX_PATH_LEN - 1);
+            strncpy(info.filename, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+            info.file_size = (uint32_t)st.st_size;
+
+            char ext[16];
+            str_to_lower(ext, get_extension(entry->d_name), sizeof(ext));
+
+            if (strcmp(ext, MUSIC_EXT_MP3) == 0) {
+                if (music_parse_id3v2(fullpath, &info) == 0) {
+#ifdef USE_CMUS_ID3
+                    info.id3_parsed = 2;
+#else
+                    info.id3_parsed = 1;
+#endif
+                } else {
+                    strncpy(info.title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                    char *dot = strrchr(info.title, '.'); if (dot) *dot = '\0';
+                }
+            } else {
+                strncpy(info.title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                char *dot = strrchr(info.title, '.'); if (dot) *dot = '\0';
+            }
+
+            if (info.title[0] == '\0') {
+                strncpy(info.title, entry->d_name, MUSIC_MAX_TAG_LEN - 1);
+                char *dot = strrchr(info.title, '.'); if (dot) *dot = '\0';
+            }
+            if (info.artist[0] == '\0')
+                strncpy(info.artist, "Unknown", MUSIC_MAX_TAG_LEN - 1);
+            if (info.album[0] == '\0')
+                strncpy(info.album, "Unknown", MUSIC_MAX_TAG_LEN - 1);
+
+            mpd_song_info_t si;
+            memset(&si, 0, sizeof(si));
+            si.uri = info.filepath;
+            si.mtime = st.st_mtime;
+            si.duration_ms = info.duration_ms;
+            si.id3_parsed = info.id3_parsed;
+
+            char track_str[16];
+            if (info.track_num > 0) {
+                snprintf(track_str, sizeof(track_str), "%d", info.track_num);
+                si.tags[MPD_TAG_TRACK] = track_str;
+            }
+            si.tags[MPD_TAG_TITLE]  = info.title;
+            si.tags[MPD_TAG_ARTIST] = info.artist;
+            si.tags[MPD_TAG_ALBUM]  = info.album;
+
+            if (mpd_db_add_song(ctx->db, &si) == 0)
+                ctx->count++;
+            else
+                ctx->errors++;
+        }
+    }
+
+    closedir(dir);
+    return 0;
+}
+
+int music_scan_to_mpd_db_cancellable(
+        mpd_db_t *db,
+        const char *dir_path,
+        const volatile int *cancel_flag,
+        int expected_gen,
+        scan_progress_fn progress_cb,
+        void *cb_ctx)
+{
+    if (!db || !dir_path) return -1;
+
+    printf("[MusicScanner] Direct cancellable scan → MPD tree: %s (gen=%d)\n",
+           dir_path, expected_gen);
+
+    struct scan_to_mpd_ctx ctx;
+    ctx.db = db;
+    ctx.device_name = dir_path;
+    ctx.count = 0;
+    ctx.errors = 0;
+
+    int ret = scan_dir_to_mpd_cancellable_recursive(
+        &ctx, dir_path, 0,
+        dir_path, cancel_flag, expected_gen,
+        progress_cb, cb_ctx);
+
+    if (ret == -2) {
+        printf("[MusicScanner] Scan cancelled at %d songs\n", ctx.count);
+        return -2;
+    }
+
+    printf("[MusicScanner] Scan complete: %d songs, %d errors\n",
+           ctx.count, ctx.errors);
+    return ctx.count;
 }

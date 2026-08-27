@@ -150,6 +150,7 @@ int mpd_db_add_song(mpd_db_t *db, const mpd_song_info_t *info)
         /* Create the song */
         auto song = std::make_unique<Song>(std::string(filename), *dir);
         song->tag = tag_builder.Commit();
+        song->id3_parsed = info->id3_parsed;
 
         if (info->mtime > 0)
             song->mtime = std::chrono::system_clock::from_time_t(info->mtime);
@@ -213,6 +214,7 @@ static void visit_directory_songs(const Directory &dir,
         memset(&ctx->info, 0, sizeof(ctx->info));
         ctx->info.uri = ctx->uri_buf.c_str();
         ctx->info.mtime = std::chrono::system_clock::to_time_t(song.mtime);
+        ctx->info.id3_parsed = song.id3_parsed;
 
         if (!song.tag.duration.IsNegative())
             ctx->info.duration_ms = song.tag.duration.ToMS();

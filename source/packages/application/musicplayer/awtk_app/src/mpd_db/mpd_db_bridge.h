@@ -29,6 +29,7 @@ typedef struct {
     const char *uri;
     time_t mtime;
     int duration_ms;
+    int id3_parsed;    /* 0=not parsed, 1=ID3v2(software), 2=cmus(hardware-assisted) */
     const char *tags[MPD_TAG_COUNT];
 } mpd_song_info_t;
 

@@ -225,6 +225,31 @@ int music_db_query_by_album(const char *db_path, const char *album,
 int music_db_query_by_filepath(const char *db_path, const char *filepath,
                                MusicList *list);
 
+/* --- Direct scan → MPD tree (no MusicList intermediate) --- */
+
+/**
+ * Scan directory and feed results directly into MPD database tree.
+ * No MusicList intermediate array — each discovered song is immediately
+ * passed to mpd_db_add_song(). Memory is managed by MPD's C++ STL internals.
+ *
+ * @param db           MPD database handle (from mpd_db_open)
+ * @param dir_path     Root scan path (e.g. "/mnt/usb0")
+ * @return Number of songs added, -1 on error
+ */
+int music_scan_to_mpd_db(mpd_db_t *db, const char *dir_path);
+
+/**
+ * Cancellable version of music_scan_to_mpd_db.
+ * Same semantics as music_scan_directory_cancellable but feeds MPD tree directly.
+ */
+int music_scan_to_mpd_db_cancellable(
+        mpd_db_t *db,
+        const char *dir_path,
+        const volatile int *cancel_flag,
+        int expected_gen,
+        scan_progress_fn progress_cb,
+        void *cb_ctx);
+
 #ifdef __cplusplus
 }
 #endif

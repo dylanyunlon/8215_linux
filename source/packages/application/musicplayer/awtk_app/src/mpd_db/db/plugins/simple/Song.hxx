@@ -92,6 +92,14 @@ struct Song : IntrusiveListHook<> {
 	 */
 	bool mark;
 
+	/**
+	 * ID3 parse status:
+	 *   0 = not parsed
+	 *   1 = ID3v2 (built-in software parser)
+	 *   2 = cmus (hardware-assisted / full charset)
+	 */
+	int id3_parsed = 0;
+
 	template<typename F>
 	Song(F &&_filename, Directory &_parent) noexcept
 		:parent(_parent), filename(std::forward<F>(_filename)) {}

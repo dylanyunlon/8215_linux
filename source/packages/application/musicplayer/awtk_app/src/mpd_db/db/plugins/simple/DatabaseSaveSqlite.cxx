@@ -50,6 +50,7 @@ static const char *SQL_CREATE =
     "  mtime     INTEGER DEFAULT 0,"
     "  added     INTEGER DEFAULT 0,"
     "  duration_ms INTEGER DEFAULT -1,"
+    "  id3_parsed INTEGER DEFAULT 0,"
     "  tag_artist  TEXT DEFAULT '',"
     "  tag_album   TEXT DEFAULT '',"
     "  tag_title   TEXT DEFAULT '',"
@@ -62,17 +63,20 @@ static const char *SQL_CREATE =
     "  tag_album_artist TEXT DEFAULT ''"
     ");"
     "CREATE INDEX IF NOT EXISTS idx_songs_dir ON songs(dir_path);"
-    "CREATE INDEX IF NOT EXISTS idx_songs_uri ON songs(uri);";
+    "CREATE INDEX IF NOT EXISTS idx_songs_uri ON songs(uri);"
+    "CREATE INDEX IF NOT EXISTS idx_songs_title ON songs(tag_title);"
+    "CREATE INDEX IF NOT EXISTS idx_songs_artist ON songs(tag_artist);"
+    "CREATE INDEX IF NOT EXISTS idx_songs_album ON songs(tag_album);";
 
 static const char *SQL_INSERT =
     "INSERT OR REPLACE INTO songs "
-    "(uri, dir_path, filename, mtime, added, duration_ms, "
+    "(uri, dir_path, filename, mtime, added, duration_ms, id3_parsed, "
     " tag_artist, tag_album, tag_title, tag_track, tag_genre, "
     " tag_date, tag_composer, tag_disc, tag_comment, tag_album_artist) "
-    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 static const char *SQL_SELECT_ALL =
-    "SELECT uri, dir_path, filename, mtime, added, duration_ms, "
+    "SELECT uri, dir_path, filename, mtime, added, duration_ms, id3_parsed, "
     "       tag_artist, tag_album, tag_title, tag_track, tag_genre, "
     "       tag_date, tag_composer, tag_disc, tag_comment, tag_album_artist "
     "FROM songs ORDER BY uri";
@@ -174,17 +178,20 @@ save_directory_recursive(sqlite3_stmt *stmt, const Directory &dir,
         int dur_ms = song.tag.duration.IsNegative() ? -1 : song.tag.duration.ToMS();
         sqlite3_bind_int(stmt, 6, dur_ms);
 
-        /* 7-16: tags */
-        sqlite3_bind_text(stmt, 7,  get_tag(song.tag, TAG_ARTIST), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 8,  get_tag(song.tag, TAG_ALBUM), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 9,  get_tag(song.tag, TAG_TITLE), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 10, get_tag(song.tag, TAG_TRACK), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 11, get_tag(song.tag, TAG_GENRE), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 12, get_tag(song.tag, TAG_DATE), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 13, get_tag(song.tag, TAG_COMPOSER), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 14, get_tag(song.tag, TAG_DISC), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 15, get_tag(song.tag, TAG_COMMENT), -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(stmt, 16, get_tag(song.tag, TAG_ALBUM_ARTIST), -1, SQLITE_TRANSIENT);
+        /* 7: id3_parsed */
+        sqlite3_bind_int(stmt, 7, song.id3_parsed);
+
+        /* 8-17: tags */
+        sqlite3_bind_text(stmt, 8,  get_tag(song.tag, TAG_ARTIST), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 9,  get_tag(song.tag, TAG_ALBUM), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 10, get_tag(song.tag, TAG_TITLE), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 11, get_tag(song.tag, TAG_TRACK), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 12, get_tag(song.tag, TAG_GENRE), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 13, get_tag(song.tag, TAG_DATE), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 14, get_tag(song.tag, TAG_COMPOSER), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 15, get_tag(song.tag, TAG_DISC), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 16, get_tag(song.tag, TAG_COMMENT), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 17, get_tag(song.tag, TAG_ALBUM_ARTIST), -1, SQLITE_TRANSIENT);
 
         sqlite3_step(stmt);
     }
@@ -261,6 +268,7 @@ db_load_sqlite(const char *db_path, Directory &root)
         int64_t mtime_val    = sqlite3_column_int64(stmt, 3);
         int64_t added_val    = sqlite3_column_int64(stmt, 4);
         int dur_ms           = sqlite3_column_int(stmt, 5);
+        int id3_parsed_val   = sqlite3_column_int(stmt, 6);
 
         if (!uri || !filename) continue;
 
@@ -290,23 +298,26 @@ db_load_sqlite(const char *db_path, Directory &root)
         if (added_val > 0)
             song->added = std::chrono::system_clock::from_time_t((time_t)added_val);
 
+        /* id3_parsed */
+        song->id3_parsed = id3_parsed_val;
+
         /* 构建 Tag */
         TagBuilder tag_builder;
         if (dur_ms >= 0)
             tag_builder.SetDuration(SignedSongTime::FromMS(dur_ms));
 
-        /* 读取各 tag 列 */
+        /* 读取各 tag 列 (shifted +1 due to id3_parsed at col 6) */
         struct { int col; TagType type; } tag_cols[] = {
-            {6,  TAG_ARTIST},
-            {7,  TAG_ALBUM},
-            {8,  TAG_TITLE},
-            {9,  TAG_TRACK},
-            {10, TAG_GENRE},
-            {11, TAG_DATE},
-            {12, TAG_COMPOSER},
-            {13, TAG_DISC},
-            {14, TAG_COMMENT},
-            {15, TAG_ALBUM_ARTIST},
+            {7,  TAG_ARTIST},
+            {8,  TAG_ALBUM},
+            {9,  TAG_TITLE},
+            {10, TAG_TRACK},
+            {11, TAG_GENRE},
+            {12, TAG_DATE},
+            {13, TAG_COMPOSER},
+            {14, TAG_DISC},
+            {15, TAG_COMMENT},
+            {16, TAG_ALBUM_ARTIST},
         };
 
         for (const auto &tc : tag_cols) {
