@@ -1560,3 +1560,24 @@ int music_db_get_total_count(mpd_db_t *db)
 }
 
 #endif /* USE_MPD_DB */
+
+/*============================================================================
+ * Fallback stubs when USE_MPD_DB is NOT defined.
+ *
+ * The header unconditionally declares music_db_save() / music_db_load(),
+ * so we must provide an implementation even without the MPD bridge.
+ * These simply delegate to the legacy text-file functions.
+ *==========================================================================*/
+#ifndef USE_MPD_DB
+
+int music_db_save(const MusicList *list, const char *db_path)
+{
+    return music_db_save_text(list, db_path);
+}
+
+int music_db_load(MusicList *list, const char *db_path)
+{
+    return music_db_load_text(list, db_path);
+}
+
+#endif /* !USE_MPD_DB */
