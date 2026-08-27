@@ -32,6 +32,9 @@ CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mmisc/osal/include
 CFLAGS     += -I$(TOPDIR)/source/packages/multimedia/directrender/include
 CFLAGS     += -I$(TOPDIR)/source/packages/multimedia/directrender/src/utils
+# display.h (included by atcmediaplayer.h) and types.h (included by display.h)
+CFLAGS     += -I$(TOPDIR)/source/kernel/kernel-3.18/include/media/atc
+CFLAGS     += -I$(TOPDIR)/source/kernel/kernel-3.18/drivers/misc/atc/inc
 # SQLite3 header (query functions in music_scanner.c use sqlite3 directly)
 CFLAGS     += -I$(TOPDIR)/source/packages/application/musicplayer/awtk_app/src/sqlite3
 CFLAGS     += --sysroot=$(SYSROOT_DIR)
