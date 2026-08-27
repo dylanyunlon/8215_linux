@@ -299,7 +299,6 @@ static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
     int resume_pos_ms = sd->resume_pos_ms;
     free(sd);
 
-    if (!s_app.player) return RET_REMOVE;
     if (dev_idx < 0 || dev_idx >= s_app.device_count) return RET_REMOVE;
     if (dev_idx != s_app.state.current_device_idx) return RET_REMOVE;
 
@@ -307,11 +306,15 @@ static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
     if (!dev->music_list || dev->music_list->count == 0) return RET_REMOVE;
 
     /* Set lightweight TrackRef playlist — player only stores filepath+uid.
-     * Full MusicInfo stays in dev->music_list, queried on-demand. */
-    set_player_playlist_from_list(dev->music_list);
+     * Full MusicInfo stays in dev->music_list, queried on-demand.
+     * Note: set playlist even when player is NULL (setup failed) so the
+     * UI can still display the song list in browse-only mode. */
+    if (s_app.player) {
+        set_player_playlist_from_list(dev->music_list);
+    }
     post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
 
-    if (resume_idx >= 0) {
+    if (resume_idx >= 0 && s_app.player) {
         printf("[music_app] Resuming on main thread: track %d, position %d ms\n",
                resume_idx, resume_pos_ms);
         music_player_play(s_app.player, resume_idx);
