@@ -1,7 +1,7 @@
 # Makefile for musicplayer library
 #
 # Build: libmusicplayer.so
-# Dependencies: libatcmediaplayer.so (prebuild)
+# Dependencies: libatcmediaplayer.so (prebuild), libmpd_db_bridge.so
 #
 # Follows the same build pattern as other AC8317 packages.
 
@@ -9,6 +9,8 @@
 TOPDIR      ?= $(shell cd ../../../.. && pwd)
 CC          ?= $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-g++
 SYSROOT_DIR ?= $(TOPDIR)/out/host/arm-buildroot-linux-gnueabi/sysroot
+
+MPD_DB_DIR   = $(TOPDIR)/source/packages/application/musicplayer/awtk_app/src/mpd_db
 
 TARGET      = libmusicplayer.so
 
@@ -22,13 +24,15 @@ OBJS        = $(C_OBJS) $(CPP_OBJS)
 
 # Compiler flags
 CFLAGS      = -Wall -Wextra -fPIC -O2
+# mpd_db_bridge.h is under mpd_db/, include its parent so #include "mpd_db/mpd_db_bridge.h" works
+CFLAGS     += -I$(TOPDIR)/source/packages/application/musicplayer/awtk_app/src
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mediaplayerserver/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mmisc/osal/include
 CFLAGS     += -I$(TOPDIR)/source/packages/multimedia/directrender/include
 CFLAGS     += -I$(TOPDIR)/source/packages/multimedia/directrender/src/utils
-# SQLite3 header (amalgamation header shipped in awtk_app/src/sqlite3/)
+# SQLite3 header (query functions in music_scanner.c use sqlite3 directly)
 CFLAGS     += -I$(TOPDIR)/source/packages/application/musicplayer/awtk_app/src/sqlite3
 CFLAGS     += --sysroot=$(SYSROOT_DIR)
 
@@ -39,7 +43,10 @@ LDFLAGS    += --sysroot=$(SYSROOT_DIR)
 LDFLAGS    += -L$(SYSROOT_DIR)/usr/lib
 LDFLAGS    += -latcmediaplayer
 LDFLAGS    += -lpthread
+# SQLite3 for query_by_* functions
 LDFLAGS    += -lsqlite3
+# MPD DB bridge for save/load via MPD tree
+LDFLAGS    += -L$(MPD_DB_DIR) -lmpd_db_bridge
 
 # Rules
 all: $(TARGET)

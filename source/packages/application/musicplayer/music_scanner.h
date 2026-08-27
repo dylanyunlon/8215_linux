@@ -72,6 +72,7 @@ typedef struct {
     char         folder_path[MUSIC_MAX_PATH_LEN]; /* parent directory path */
     uint32_t     file_size;                     /* bytes */
     int          folder_index;  /* -1 = this is a folder entry, >=0 = file */
+    int          id3_parsed;    /* 0=not parsed, 1=ID3v2(software), 2=cmus(hardware-assisted) */
 } MusicInfo;
 
 /*
@@ -150,38 +151,31 @@ int music_db_save_text(const MusicList *list, const char *db_path);
  * DEPRECATED: Use music_db_load() which now routes to SQLite internally. */
 int music_db_load_text(MusicList *list, const char *db_path);
 
-/* --- SQLite database (production, mirrors Android MediaInfoDao) --- */
-
-/*
- * Schema version — increment on every column change.
- * Mirrors Android MediaDatabase version + MIGRATION_1_2 pattern.
- *
- * Version history:
- *   1  Initial: uid, mediaType, title, artist, album, duration, track,
- *      filepath, filename, deviceName, folderPath, size
- *   (future versions add columns via ALTER TABLE, never drop)
- */
-#define MUSIC_DB_SCHEMA_VERSION  1
+/* --- Database (via MPD bridge + SQLite backend) --- */
 
 /**
- * Save music list to SQLite database.
+ * Save music list to database via MPD bridge.
+ *
+ * Data path: MusicList → mpd_db_add_song() → MPD tree
+ *                      → mpd_db_save() → DatabaseSaveSqlite → SQLite
+ *
  * - Single transaction for atomicity (10000 songs ~200ms)
  * - WAL journal mode for crash safety
  * - Prepared statements with bind (title containing TAB/quotes is safe)
  * - Creates the DB file and table if they don't exist
  *
- * This function replaces the old music_db_save_text() as the default
- * persistence path. The function signature is kept identical so that
- * all existing call sites (music_app.c:412) work without changes.
+ * The function signature is kept identical to the previous raw-SQL
+ * version so that all existing call sites (music_app.c:412) work
+ * without changes.
  *
  * @param list     Music list to persist
- * @param db_path  SQLite file path (e.g. "/data/music/music_0.db")
+ * @param db_path  Database file path (e.g. "/data/music/music_0.db")
  * @return 0 on success, -1 on error
  */
 int music_db_save(const MusicList *list, const char *db_path);
 
 /**
- * Load music list from SQLite database.
+ * Load music list from database via MPD bridge.
  * Falls back to text DB if the file is not a valid SQLite database
  * (enables seamless migration from old text format).
  *
