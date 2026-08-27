@@ -1028,14 +1028,23 @@ void music_app_cycle_play_mode(void) {
 }
 
 int music_app_get_playlist_count(void) {
-    return s_app.player ? music_player_get_playlist_count(s_app.player) : 0;
+    /* When player is available, use its playlist count.
+     * When player is NULL (setup failed), fall back to device music_list
+     * so the UI can still display the song list in browse-only mode. */
+    if (s_app.player) {
+        return music_player_get_playlist_count(s_app.player);
+    }
+    int dev_idx = s_app.state.current_device_idx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return 0;
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    return (dev->music_list) ? dev->music_list->count : 0;
 }
 
 const MusicInfo* music_app_get_track_info(int index) {
     /* Player now stores TrackRef (no full MusicInfo).
      * Resolve from device's music_list. For DEVICE playlist, index maps 1:1.
-     * For sub-playlists, look up by filepath from the player's TrackRef. */
-    if (!s_app.player) return NULL;
+     * For sub-playlists, look up by filepath from the player's TrackRef.
+     * When player is NULL (setup failed), read directly from device list. */
 
     int dev_idx = s_app.state.current_device_idx;
     if (dev_idx < 0 || dev_idx >= s_app.device_count) return NULL;
