@@ -54,14 +54,12 @@ CMUS_C_SRCS = $(filter-out src/cmus/test_cmus_port.c, $(wildcard src/cmus/*.c))
 
 C_SRCS      = $(APP_C_SRCS) $(CMUS_C_SRCS)
 
-# C++ sources (bt_cxx pattern: extern "C" wrapper + STL business logic)
-# Issue #A1: C++ adapter layer for music app
-CPP_SRCS    = src/music_app_cxx.cpp \
-              src/music_app_impl.cpp
+# C++ sources: none — C++ 业务逻辑已下沉到 middleware/module/mediaplayer/
+# music_player.cpp 由 libmusicplayer.so (musicplayer/Makefile) 编译
+CPP_SRCS    =
 
 C_OBJS      = $(C_SRCS:.c=.o)
-CPP_OBJS    = $(CPP_SRCS:.cpp=.o)
-OBJS        = $(C_OBJS) $(CPP_OBJS)
+OBJS        = $(C_OBJS)
 
 # ===========================================================================
 # Compiler & linker flags

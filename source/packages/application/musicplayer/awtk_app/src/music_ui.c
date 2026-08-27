@@ -22,7 +22,7 @@
 
 #include "music_ui.h"
 #include "favorite_manager.h"
-#include "music_app_cxx.h"  /* Issue #A4: safe_play/safe_next/safe_prev with player lock */
+/* music_app.h provides music_app_safe_play/next/prev with player lock check */
 
 #include <stdio.h>
 #include <string.h>
@@ -165,8 +165,8 @@ static ret_t on_btn_play_click(void* ctx, event_t* e) {
 
 static ret_t on_btn_prev_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
-    int rc = music_cxx_safe_prev();
-    if (rc == MUSIC_CXX_ERR_LOCKED) {
+    int rc = music_app_safe_prev();
+    if (rc != 0) {
         printf("[music_ui] prev blocked: player preparing\n");
     }
     return RET_OK;
@@ -174,8 +174,8 @@ static ret_t on_btn_prev_click(void* ctx, event_t* e) {
 
 static ret_t on_btn_next_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
-    int rc = music_cxx_safe_next();
-    if (rc == MUSIC_CXX_ERR_LOCKED) {
+    int rc = music_app_safe_next();
+    if (rc != 0) {
         printf("[music_ui] next blocked: player preparing\n");
     }
     return RET_OK;
@@ -444,8 +444,8 @@ static ret_t on_list_item_click(void* ctx, event_t* e) {
         int idx = widget_get_prop_int(item, "item_index", -1);
         if (idx >= 0) {
             /* Issue #A4: safe_play 防止 preparing 期间重复触发 */
-            int rc = music_cxx_safe_play(idx);
-            if (rc == MUSIC_CXX_OK) {
+            int rc = music_app_safe_play(idx);
+            if (rc == 0) {
                 show_play_view(true);
             }
         }

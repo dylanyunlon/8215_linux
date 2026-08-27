@@ -183,6 +183,12 @@ void music_app_switch_device(int idx);
 /* --- Issue #A4: Player lock query (Android mIsMediaPlayerLocked) --- */
 bool music_app_is_player_locked(void);
 
+/* --- Issue #A4: Safe play/next/prev with player lock check --- */
+/* Returns 0 on success, -1 if player is locked (preparing). */
+int music_app_safe_play(int index);
+int music_app_safe_next(void);
+int music_app_safe_prev(void);
+
 /* --- Force re-scan current device --- */
 void music_app_rescan(void);
 

@@ -919,6 +919,24 @@ bool music_app_is_player_locked(void) {
     return s_app.player_locked;
 }
 
+int music_app_safe_play(int index) {
+    if (s_app.player_locked) return -1;
+    music_app_play(index);
+    return 0;
+}
+
+int music_app_safe_next(void) {
+    if (s_app.player_locked) return -1;
+    music_app_next();
+    return 0;
+}
+
+int music_app_safe_prev(void) {
+    if (s_app.player_locked) return -1;
+    music_app_prev();
+    return 0;
+}
+
 void music_app_toggle_play_pause(void) {
     if (!s_app.player) return;
     PlayerState st = music_player_get_state(s_app.player);
