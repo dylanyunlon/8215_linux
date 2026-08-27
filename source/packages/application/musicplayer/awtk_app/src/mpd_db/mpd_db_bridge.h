@@ -12,7 +12,10 @@
 extern "C" {
 #endif
 
+#ifndef MPD_DB_TYPE_DEFINED
+#define MPD_DB_TYPE_DEFINED
 typedef struct mpd_db mpd_db_t;
+#endif
 
 typedef enum {
     MPD_TAG_ARTIST = 0, MPD_TAG_ARTIST_SORT, MPD_TAG_ALBUM, MPD_TAG_ALBUM_SORT,

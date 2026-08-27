@@ -19,6 +19,12 @@
 extern "C" {
 #endif
 
+/* Forward declaration — full definition in mpd_db_bridge.h */
+#ifndef MPD_DB_TYPE_DEFINED
+#define MPD_DB_TYPE_DEFINED
+typedef struct mpd_db mpd_db_t;
+#endif
+
 /* Maximum counts */
 /* Initial capacity — grows dynamically via realloc (no hard limit) */
 #define MUSIC_INIT_CAPACITY   512
