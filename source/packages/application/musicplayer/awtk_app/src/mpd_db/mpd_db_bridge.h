@@ -42,6 +42,20 @@ int mpd_db_add_song(mpd_db_t *db, const mpd_song_info_t *info);
 int mpd_db_remove_song(mpd_db_t *db, const char *uri);
 int mpd_db_visit_all(mpd_db_t *db, mpd_song_visitor_fn visitor, void *user_data);
 int mpd_db_visit_directory(mpd_db_t *db, const char *dir_uri, mpd_song_visitor_fn visitor, void *user_data);
+
+/**
+ * Page-based visit — skip first (page * page_size) songs, then visit at most page_size.
+ *
+ * @param db         MPD database handle
+ * @param page       0-based page index
+ * @param page_size  songs per page (e.g. 20)
+ * @param visitor    callback for each song on this page
+ * @param user_data  opaque context
+ * @return number of songs visited on this page (0 = past end), -1 on error
+ */
+int mpd_db_visit_page(mpd_db_t *db, int page, int page_size,
+                      mpd_song_visitor_fn visitor, void *user_data);
+
 int mpd_db_song_count(mpd_db_t *db);
 time_t mpd_db_get_mtime(mpd_db_t *db);
 void mpd_db_clear(mpd_db_t *db);

@@ -286,6 +286,81 @@ int mpd_db_visit_directory(mpd_db_t *db, const char *dir_uri,
     }
 }
 
+/* Page-based visit: skip + limit traversal of the song tree */
+struct page_visit_context {
+    mpd_song_visitor_fn visitor;
+    void *user_data;
+    int skip;       /* remaining songs to skip */
+    int remaining;  /* remaining songs to visit */
+    int visited;    /* songs visited so far */
+    mpd_song_info_t info;
+    std::string uri_buf;
+};
+
+static bool visit_page_directory(const Directory &dir, struct page_visit_context *ctx)
+{
+    for (const auto &song : dir.songs) {
+        if (ctx->remaining <= 0) return false; /* done */
+
+        if (ctx->skip > 0) {
+            ctx->skip--;
+            continue;
+        }
+
+        ctx->uri_buf = song.GetURI();
+        memset(&ctx->info, 0, sizeof(ctx->info));
+        ctx->info.uri = ctx->uri_buf.c_str();
+        ctx->info.mtime = std::chrono::system_clock::to_time_t(song.mtime);
+        ctx->info.id3_parsed = song.id3_parsed;
+
+        if (!song.tag.duration.IsNegative())
+            ctx->info.duration_ms = song.tag.duration.ToMS();
+        else
+            ctx->info.duration_ms = -1;
+
+        for (int i = 0; i < MPD_TAG_COUNT; i++) {
+            TagType tt = bridge_tag_to_mpd((mpd_tag_type_t)i);
+            if (tt < TAG_NUM_OF_ITEM_TYPES)
+                ctx->info.tags[i] = song.tag.GetValue(tt);
+        }
+
+        ctx->visited++;
+        ctx->remaining--;
+        if (ctx->visitor(&ctx->info, ctx->user_data) != 0)
+            return false;
+    }
+
+    for (const auto &child : dir.children) {
+        if (ctx->remaining <= 0) return false;
+        if (!visit_page_directory(child, ctx))
+            return false;
+    }
+    return true;
+}
+
+int mpd_db_visit_page(mpd_db_t *db, int page, int page_size,
+                      mpd_song_visitor_fn visitor, void *user_data)
+{
+    if (!db || !visitor || page < 0 || page_size <= 0) return -1;
+
+    try {
+        const ScopeDatabaseLock protect;
+        Directory &root = db->db->GetRoot();
+
+        struct page_visit_context ctx;
+        ctx.visitor = visitor;
+        ctx.user_data = user_data;
+        ctx.skip = page * page_size;
+        ctx.remaining = page_size;
+        ctx.visited = 0;
+
+        visit_page_directory(root, &ctx);
+        return ctx.visited;
+    } catch (...) {
+        return -1;
+    }
+}
+
 int mpd_db_song_count(mpd_db_t *db)
 {
     if (!db) return 0;

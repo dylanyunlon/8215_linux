@@ -1475,3 +1475,92 @@ int music_scan_to_mpd_db_cancellable(
            ctx.count, ctx.errors);
     return ctx.count;
 }
+
+/*============================================================================
+ * Page-based loading: MPD tree → MusicList (one page at a time)
+ *
+ * 翻页设计:
+ *   - UI 请求第 N 页 → music_db_load_page(db, N, 20, list)
+ *   - MPD 树内部 skip 前 N*20 首, 取 20 首通过 visitor 回调
+ *   - MusicList 只持有当前页的 20 首 (capacity=page_size)
+ *   - 翻到下一页时, list->count 重置为 0, 复用同一个 MusicList
+ *
+ * 内存占用: 20 * sizeof(MusicInfo) ≈ 50KB, 而非 10000 * 2.5KB = 25MB
+ *==========================================================================*/
+
+static int page_visitor(const mpd_song_info_t *song, void *user_data)
+{
+    MusicList *list = (MusicList *)user_data;
+
+    if (list->count >= list->capacity)
+        return -1; /* page full, stop */
+
+    MusicInfo *m = &list->items[list->count];
+    memset(m, 0, sizeof(MusicInfo));
+
+    m->uid = list->count + 1;
+    m->media_type = MEDIA_TYPE_MUSIC;
+
+    if (song->uri)
+        strncpy(m->filepath, song->uri, MUSIC_MAX_PATH_LEN - 1);
+
+    const char *fn = get_filename(m->filepath);
+    if (fn)
+        strncpy(m->filename, fn, MUSIC_MAX_TAG_LEN - 1);
+
+    strncpy(m->device_name, "device1", MUSIC_MAX_PATH_LEN - 1);
+
+    /* folder_path = filepath truncated at last '/' */
+    strncpy(m->folder_path, m->filepath, MUSIC_MAX_PATH_LEN - 1);
+    char *last_slash = strrchr(m->folder_path, '/');
+    if (last_slash) *last_slash = '\0';
+    else m->folder_path[0] = '\0';
+
+    m->duration_ms = song->duration_ms;
+    m->id3_parsed = song->id3_parsed;
+
+    if (song->tags[MPD_TAG_TITLE] && song->tags[MPD_TAG_TITLE][0])
+        strncpy(m->title, song->tags[MPD_TAG_TITLE], MUSIC_MAX_TAG_LEN - 1);
+    else {
+        strncpy(m->title, m->filename, MUSIC_MAX_TAG_LEN - 1);
+        char *dot = strrchr(m->title, '.');
+        if (dot) *dot = '\0';
+    }
+
+    if (song->tags[MPD_TAG_ARTIST] && song->tags[MPD_TAG_ARTIST][0])
+        strncpy(m->artist, song->tags[MPD_TAG_ARTIST], MUSIC_MAX_TAG_LEN - 1);
+    else
+        strncpy(m->artist, "Unknown", MUSIC_MAX_TAG_LEN - 1);
+
+    if (song->tags[MPD_TAG_ALBUM] && song->tags[MPD_TAG_ALBUM][0])
+        strncpy(m->album, song->tags[MPD_TAG_ALBUM], MUSIC_MAX_TAG_LEN - 1);
+    else
+        strncpy(m->album, "Unknown", MUSIC_MAX_TAG_LEN - 1);
+
+    if (song->tags[MPD_TAG_TRACK] && song->tags[MPD_TAG_TRACK][0])
+        m->track_num = atoi(song->tags[MPD_TAG_TRACK]);
+
+    list->count++;
+    return 0;
+}
+
+int music_db_load_page(mpd_db_t *db, int page, int page_size, MusicList *list)
+{
+    if (!db || !list || page < 0 || page_size <= 0) return -1;
+
+    /* Reset count but keep the existing items buffer */
+    list->count = 0;
+
+    int visited = mpd_db_visit_page(db, page, page_size, page_visitor, list);
+
+    list->state = SCAN_DONE;
+    printf("[MusicScanner] Page %d loaded: %d songs (page_size=%d)\n",
+           page, list->count, page_size);
+    return visited;
+}
+
+int music_db_get_total_count(mpd_db_t *db)
+{
+    if (!db) return 0;
+    return mpd_db_song_count(db);
+}

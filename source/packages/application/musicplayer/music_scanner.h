@@ -250,6 +250,29 @@ int music_scan_to_mpd_db_cancellable(
         scan_progress_fn progress_cb,
         void *cb_ctx);
 
+/* --- Page-based list loading (no full MusicList malloc) --- */
+
+#define MUSIC_PAGE_SIZE  20  /* default songs per page */
+
+/**
+ * Load one page of songs from MPD database into a MusicList.
+ *
+ * The MusicList should be pre-allocated with capacity = page_size.
+ * Only this page's songs are in memory; previous pages are not retained.
+ *
+ * @param db         MPD database handle (already opened)
+ * @param page       0-based page index
+ * @param page_size  songs per page
+ * @param list       Output list (count will be set to actual songs on this page)
+ * @return songs on this page (0 = past end), -1 on error
+ */
+int music_db_load_page(mpd_db_t *db, int page, int page_size, MusicList *list);
+
+/**
+ * Get total song count in database (for calculating total pages).
+ */
+int music_db_get_total_count(mpd_db_t *db);
+
 #ifdef __cplusplus
 }
 #endif
