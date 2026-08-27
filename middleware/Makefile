@@ -111,6 +111,8 @@ SRCS := \
 CPPSRCS := \
     module/bt/bt_cxx.cpp \
     module/bt/bt_device_manager.cpp \
+    module/mediaplayer/mediaplayer_cxx.cpp \
+    module/mediaplayer/mediaplayer_manager.cpp \
 
 # ---------- 2b. 产物形态（MW_BUILD）----------
 # lib (默认) : 仅 lib_mw.a，行为与历史版本完全一致（Buildroot 走此路径）
