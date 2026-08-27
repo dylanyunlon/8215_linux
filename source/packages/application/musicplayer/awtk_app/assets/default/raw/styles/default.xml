@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<styles version="0.1.0">
+  <style name="default">
+    <normal bg_color="#111318" text_color="#FFFFFF" font_size="20" />
+    <pressed bg_color="#333333" text_color="#00FCFF" />
+    <focused bg_color="#222222" text_color="#00FCFF" />
+    <disable bg_color="#111318" text_color="#666666" />
+  </style>
+</styles>

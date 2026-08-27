@@ -33,7 +33,11 @@ endef
 define MUSICPLAYER_AWTK_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/music_player $(TARGET_DIR)/usr/bin/music_player
 	mkdir -p $(TARGET_DIR)/data/music
-	@echo "[musicplayer_awtk] Installed to /usr/bin/music_player"
+	mkdir -p $(TARGET_DIR)/usr/lib/awtk/image/assets/default/raw
+	cp -r $(@D)/assets/default/raw/images $(TARGET_DIR)/usr/lib/awtk/image/assets/default/raw/
+	cp -r $(@D)/assets/default/raw/styles $(TARGET_DIR)/usr/lib/awtk/image/assets/default/raw/
+	cp -r $(@D)/assets/default/raw/fonts  $(TARGET_DIR)/usr/lib/awtk/image/assets/default/raw/
+	@echo "[musicplayer_awtk] Installed binary + assets"
 endef
 
 define MUSICPLAYER_AWTK_UNINSTALL_TARGET_CMDS

@@ -21,6 +21,9 @@ start() {
     # 确保数据目录存在
     mkdir -p /data/music
 
+    # cd 到 AWTK 资源目录 (app_root=./ 需要在 assets/ 所在目录启动)
+    cd /usr/lib/awtk/image
+
     # 启动音乐播放器 (后台运行)
     $MUSIC_PLAYER &
 
