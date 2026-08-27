@@ -794,17 +794,11 @@ int music_db_load_text(MusicList *list, const char *db_path)
 /*============================================================================
  * MPD bridge: MusicList ←→ mpd_db_t
  *
- * GAP-1 回退: scanner不再拥有任何SQLite代码。
- * 数据路径:
- *   scan → MusicList → music_db_save() → mpd_db_add_song() → MPD树
- *                                       → mpd_db_save() → DatabaseSaveSqlite
- *   load:  mpd_db_open() → mpd_db_visit_all() → MusicList
- *
- * 这和Android的架构完全对齐:
- *   Android: HMediaService扫描 → ContentProvider → Room/SQLite
- *   我们:    scanner扫描 → mpd_db_bridge → MPD树 → SQLite
+ * Conditionally compiled: requires -DUSE_MPD_DB, libmpd_db_bridge.so, libsqlite3.
+ * Not used by the AWTK music player app (music_app.c uses scan-to-MusicList path).
  *==========================================================================*/
 
+#ifdef USE_MPD_DB
 #include "mpd_db/mpd_db_bridge.h"
 
 /**
@@ -1564,3 +1558,5 @@ int music_db_get_total_count(mpd_db_t *db)
     if (!db) return 0;
     return mpd_db_song_count(db);
 }
+
+#endif /* USE_MPD_DB */

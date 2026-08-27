@@ -5,6 +5,7 @@
 
 #include "Cast.hxx"
 #include "Concepts.hxx"
+
 #include "IntrusiveHookMode.hxx" // IWYU pragma: export
 #include "MemberPointer.hxx"
 #include "OptionalCounter.hxx"
@@ -296,11 +297,13 @@ public:
 	 *
 	 * The disposer is not allowed to destruct the list.
 	 */
+#ifndef MPD_NO_CONCEPTS
 	void clear_and_dispose(Disposer<value_type> auto disposer) noexcept {
 		while (!empty()) {
 			disposer(&pop_front());
 		}
 	}
+#endif
 
 	/**
 	 * Remove all items matching the given predicate and invoke
@@ -312,6 +315,7 @@ public:
 	 * @return the number of removed items
 	 */
 	std::size_t remove_and_dispose_if(std::predicate<const_reference> auto pred,
+#ifndef MPD_NO_CONCEPTS
 					  Disposer<value_type> auto dispose) noexcept {
 		std::size_t result = 0;
 
@@ -335,6 +339,7 @@ public:
 	const_reference front() const noexcept {
 		return *Cast(head.next);
 	}
+#endif
 
 	reference front() noexcept {
 		return *Cast(head.next);
@@ -347,10 +352,12 @@ public:
 		return i;
 	}
 
+#ifndef MPD_NO_CONCEPTS
 	void pop_front_and_dispose(Disposer<value_type> auto disposer) noexcept {
 		auto &i = pop_front();
 		disposer(&i);
 	}
+#endif
 
 	const_reference back() const noexcept {
 		return *Cast(head.prev);
@@ -550,11 +557,13 @@ public:
 	 * @return an iterator to the item following the specified one
 	 */
 	iterator erase_and_dispose(iterator i,
+#ifndef MPD_NO_CONCEPTS
 				   Disposer<value_type> auto disposer) noexcept {
 		auto result = erase(i);
 		disposer(&*i);
 		return result;
 	}
+#endif
 
 	iterator push_front(reference t) noexcept {
 		return insert(begin(), t);

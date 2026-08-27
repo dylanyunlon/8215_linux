@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Concepts.hxx"
+
 #include "IntrusiveList.hxx"
 
 #include <algorithm> // for std::all_of()
@@ -228,12 +229,14 @@ public:
 		counter.reset();
 	}
 
+#ifndef MPD_NO_CONCEPTS
 	constexpr void clear_and_dispose(Disposer<value_type> auto disposer) noexcept {
 		for (auto &i : table)
 			i.clear_and_dispose(disposer);
 
 		counter.reset();
 	}
+#endif
 
 	/**
 	 * Remove and dispose all items matching the given predicate.
@@ -241,6 +244,7 @@ public:
 	 * @return the number of removed items
 	 */
 	std::size_t remove_and_dispose_if(std::predicate<const_reference> auto pred,
+#ifndef MPD_NO_CONCEPTS
 				   Disposer<value_type> auto disposer) noexcept {
 		std::size_t n = 0;
 		for (auto &bucket : table)
@@ -263,9 +267,11 @@ public:
 		counter -= n;
 		return n;
 	}
+#endif
 
 	constexpr std::size_t remove_and_dispose_key_if(const auto &key,
 							std::predicate<const_reference> auto pred,
+#ifndef MPD_NO_CONCEPTS
 							Disposer<value_type> auto disposer) noexcept {
 		auto &bucket = GetBucket(key);
 		std::size_t n = bucket.remove_and_dispose_if([this, &key, &pred](const auto &item){
@@ -274,6 +280,7 @@ public:
 		counter -= n;
 		return n;
 	}
+#endif
 
 	[[nodiscard]]
 	static constexpr bucket_iterator iterator_to(reference item) noexcept {
@@ -349,11 +356,13 @@ public:
 	}
 
 	constexpr bucket_iterator erase_and_dispose(bucket_iterator i,
+#ifndef MPD_NO_CONCEPTS
 						    Disposer<value_type> auto disposer) noexcept {
 		auto result = erase(i);
 		disposer(&*i);
 		return result;
 	}
+#endif
 
 	[[nodiscard]] [[gnu::pure]]
 	constexpr bucket_iterator find(const auto &key) noexcept {
@@ -408,6 +417,7 @@ public:
 	[[nodiscard]] [[gnu::pure]]
 	constexpr bucket_iterator expire_find_if(const auto &key,
 						 std::predicate<const_reference> auto expired_pred,
+#ifndef MPD_NO_CONCEPTS
 						 Disposer<value_type> auto disposer,
 						 std::predicate<const_reference> auto match_pred) noexcept {
 		auto &bucket = GetBucket(key);
@@ -429,6 +439,7 @@ public:
 	constexpr bucket_iterator end() noexcept {
 		return table.front().end();
 	}
+#endif
 
 	constexpr const_bucket_iterator end() const noexcept {
 		return table.front().end();

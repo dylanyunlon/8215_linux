@@ -46,10 +46,6 @@ LDFLAGS    += --sysroot=$(SYSROOT_DIR)
 LDFLAGS    += -L$(SYSROOT_DIR)/usr/lib
 LDFLAGS    += -latcmediaplayer
 LDFLAGS    += -lpthread
-# SQLite3 for query_by_* functions
-LDFLAGS    += -lsqlite3
-# MPD DB bridge for save/load via MPD tree
-LDFLAGS    += -L$(MPD_DB_DIR) -lmpd_db_bridge
 
 # Rules
 all: $(TARGET)

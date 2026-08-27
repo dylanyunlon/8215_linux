@@ -9,7 +9,7 @@ MUSICPLAYER_SITE = $(TOPDIR)/../source/packages/application/musicplayer
 MUSICPLAYER_SITE_METHOD = local
 MUSICPLAYER_ALWAYS_BUILD = YES
 MUSICPLAYER_INSTALL_STAGING = YES
-MUSICPLAYER_DEPENDENCIES += atcmediaplayer sqlite
+MUSICPLAYER_DEPENDENCIES += atcmediaplayer
 
 MUSICPLAYER_MAKE_OPTS = \
 	TOPDIR=$(TOPDIR)/.. \
@@ -17,12 +17,6 @@ MUSICPLAYER_MAKE_OPTS = \
 	SYSROOT_DIR=$(TOPDIR)/../out/host/arm-buildroot-linux-gnueabi/sysroot
 
 define MUSICPLAYER_BUILD_CMDS
-	@echo "Building mpd_db_bridge first..."
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/awtk_app/src/mpd_db \
-		TOPDIR=$(TOPDIR)/.. \
-		CXX=$(TOPDIR)/../out/host/bin/arm-buildroot-linux-gnueabi-g++ \
-		SYSROOT_DIR=$(TOPDIR)/../out/host/arm-buildroot-linux-gnueabi/sysroot \
-		all
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) $(MUSICPLAYER_MAKE_OPTS) all
 	@echo "Building musicplayer test binary..."
 	$(TOPDIR)/../out/host/bin/arm-buildroot-linux-gnueabi-g++ \
@@ -48,14 +42,12 @@ endef
 
 define MUSICPLAYER_INSTALL_STAGING_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/libmusicplayer.so $(STAGING_DIR)/usr/lib/libmusicplayer.so
-	$(INSTALL) -m 0755 -D $(@D)/awtk_app/src/mpd_db/libmpd_db_bridge.so $(STAGING_DIR)/usr/lib/libmpd_db_bridge.so
 	$(INSTALL) -m 0644 -D $(@D)/music_scanner.h $(STAGING_DIR)/usr/include/music_scanner.h
 	$(INSTALL) -m 0644 -D $(@D)/music_player.h $(STAGING_DIR)/usr/include/music_player.h
 endef
 
 define MUSICPLAYER_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(STAGING_DIR)/usr/lib/libmusicplayer.so $(TARGET_DIR)/usr/lib/libmusicplayer.so
-	$(INSTALL) -m 0755 -D $(STAGING_DIR)/usr/lib/libmpd_db_bridge.so $(TARGET_DIR)/usr/lib/libmpd_db_bridge.so
 	$(INSTALL) -m 0755 -D $(@D)/musicplayer_test $(TARGET_DIR)/usr/bin/musicplayer_test
 	$(INSTALL) -m 0755 -D $(@D)/music_app_cli $(TARGET_DIR)/usr/bin/music_app_cli
 	mkdir -p $(TARGET_DIR)/data/music

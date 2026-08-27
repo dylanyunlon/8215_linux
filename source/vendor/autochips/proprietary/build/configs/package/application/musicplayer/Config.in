@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MUSICPLAYER
 	bool "musicplayer"
-	select BR2_PACKAGE_SQLITE
 	help
 	  Local music player service with ID3 tag parsing
 	  and playlist management. Uses libatcmediaplayer
