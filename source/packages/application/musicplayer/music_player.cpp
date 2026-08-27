@@ -11,12 +11,14 @@
 #include "music_player.h"
 #include "atcmediaplayer.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <vector>
+#include <mutex>
 #include <pthread.h>
 #include <unistd.h>
-#include <time.h>
+#include <ctime>
 
 /* --- Internal context structure --- */
 
@@ -25,19 +27,16 @@ struct MusicPlayerContext {
     MediaPlayer         *player;
     bool                 player_ready;
 
-    /* Playlist (copied from MusicList) */
-    MusicInfo           *playlist;
-    int                  playlist_count;
-    int                  current_index;
+    /* Playlist — lightweight refs only (filepath + uid).
+     * std::vector manages memory automatically — no calloc/free.
+     * 10000 songs × 516 bytes ≈ 5 MB (was 25 MB with MusicInfo). */
+    std::vector<TrackRef>  playlist;
+    int                    current_index;
 
     /* Issue #19: Shuffle consumption pool (mirrors Android mRandomPositionList).
      * Pool contains indices not yet played. Each next() picks randomly from
      * the pool and removes it, guaranteeing every track plays exactly once. */
-    int                 *shuffle_pool;
-    int                  shuffle_pool_count;
-
-    /* Legacy shuffle_order kept for compatibility (used by set_mode) */
-    int                 *shuffle_order;
+    std::vector<int>       shuffle_pool;
 
     /* State */
     PlayerState          state;
@@ -55,108 +54,65 @@ struct MusicPlayerContext {
     pthread_t            poll_thread;
     bool                 poll_running;
 
-    pthread_mutex_t      mutex;
+    std::mutex           mtx;  /* replaces pthread_mutex_t */
 };
 
 /* --- State callback from MediaPlayer --- */
 
-static void media_state_callback(int new_state, void *user_data)
+static void media_state_callback_wrapper(int new_state, void *user_data)
 {
     MusicPlayerContext *ctx = (MusicPlayerContext *)user_data;
     if (!ctx) return;
 
-    pthread_mutex_lock(&ctx->mutex);
+    PlayerState s;
+    on_state_changed_fn cb;
+    void *data;
 
-    switch (new_state) {
-    case MediaPlayer::PlayingState:
-        ctx->state = PLAYER_STATE_PLAYING;
-        break;
-    case MediaPlayer::PausedState:
-        ctx->state = PLAYER_STATE_PAUSED;
-        break;
-    case MediaPlayer::StoppedState:
-        /* Issue #26 fix: Do NOT call music_player_next() here.
-         * Auto-next is now handled exclusively by music_app.c's
-         * on_player_state() callback, which posts a delayed timer on the
-         * AWTK main thread. Calling next() here caused a "double-jump" bug:
-         * once from this callback, once from the delayed timer.
-         *
-         * We just set the state and let the callback chain handle it:
-         *   MediaPlayer → media_state_callback → on_player_state (user cb)
-         *   → idle_queue → player_state_idle_handler → timer_add(1000ms)
-         *   → delayed_auto_next_cb → music_player_next()
-         */
-        ctx->state = PLAYER_STATE_STOPPED;
-        break;
-    case MediaPlayer::ErrorState:
-        ctx->state = PLAYER_STATE_ERROR;
-        break;
+    {
+        std::lock_guard<std::mutex> lock(ctx->mtx);
+
+        switch (new_state) {
+        case MediaPlayer::PlayingState:  ctx->state = PLAYER_STATE_PLAYING; break;
+        case MediaPlayer::PausedState:   ctx->state = PLAYER_STATE_PAUSED;  break;
+        case MediaPlayer::StoppedState:  ctx->state = PLAYER_STATE_STOPPED; break;
+        case MediaPlayer::ErrorState:    ctx->state = PLAYER_STATE_ERROR;   break;
+        }
+
+        s = ctx->state;
+        cb = ctx->state_cb;
+        data = ctx->state_cb_data;
     }
-
-    PlayerState s = ctx->state;
-    on_state_changed_fn cb = ctx->state_cb;
-    void *data = ctx->state_cb_data;
-
-    pthread_mutex_unlock(&ctx->mutex);
 
     if (cb) cb(s, data);
 }
 
-/* --- Shuffle helper (Issue #19: consumption pool) --- */
+/* --- Shuffle helpers (Issue #19: consumption pool with std::vector) --- */
 
-/**
- * Rebuild the shuffle consumption pool with all track indices.
- * Mirrors Android MusicPlaylistEx.updateRandomPositionList().
- */
 static void rebuild_shuffle_pool(MusicPlayerContext *ctx)
 {
-    if (!ctx->shuffle_pool || ctx->playlist_count <= 0) return;
-
-    for (int i = 0; i < ctx->playlist_count; i++)
+    int n = (int)ctx->playlist.size();
+    ctx->shuffle_pool.resize(n);
+    for (int i = 0; i < n; i++)
         ctx->shuffle_pool[i] = i;
-    ctx->shuffle_pool_count = ctx->playlist_count;
 }
 
-/**
- * Remove a specific index from the shuffle pool.
- * Mirrors Android MusicPlaylistEx.removeFromRandomPositionList().
- */
-static void shuffle_pool_remove(MusicPlayerContext *ctx, int track_index)
-{
-    for (int i = 0; i < ctx->shuffle_pool_count; i++) {
-        if (ctx->shuffle_pool[i] == track_index) {
-            /* Swap with last element and shrink */
-            ctx->shuffle_pool[i] = ctx->shuffle_pool[ctx->shuffle_pool_count - 1];
-            ctx->shuffle_pool_count--;
-            return;
-        }
-    }
-}
-
-/**
- * Pick a random index from the shuffle pool without replacement.
- * Mirrors Android MusicPlaylistEx.getNextRandomPosition().
- * If pool is empty, rebuilds it (new cycle — all tracks played once).
- */
 static int shuffle_pool_pick_next(MusicPlayerContext *ctx)
 {
-    if (ctx->shuffle_pool_count <= 0) {
+    if (ctx->shuffle_pool.empty()) {
         rebuild_shuffle_pool(ctx);
     }
+    if (ctx->shuffle_pool.empty()) return 0;
 
-    if (ctx->shuffle_pool_count <= 0) return 0;
-
-    int pick = rand() % ctx->shuffle_pool_count;
+    int pick = rand() % (int)ctx->shuffle_pool.size();
     int result = ctx->shuffle_pool[pick];
 
-    /* Remove picked item (swap with last) */
-    ctx->shuffle_pool[pick] = ctx->shuffle_pool[ctx->shuffle_pool_count - 1];
-    ctx->shuffle_pool_count--;
+    /* Swap with last and pop — O(1) removal */
+    ctx->shuffle_pool[pick] = ctx->shuffle_pool.back();
+    ctx->shuffle_pool.pop_back();
 
     return result;
 }
 
-/* Legacy generate_shuffle — kept for set_mode compatibility, rebuilds pool */
 static void generate_shuffle(MusicPlayerContext *ctx)
 {
     srand((unsigned)time(NULL));
@@ -172,19 +128,20 @@ static void *position_poll_func(void *arg)
     while (ctx->poll_running) {
         usleep(500000); /* 500ms polling interval */
 
-        pthread_mutex_lock(&ctx->mutex);
-        if (ctx->state == PLAYER_STATE_PLAYING && ctx->player && ctx->position_cb) {
-            double pos = ctx->player->getPosition();
-            on_position_changed_fn cb = ctx->position_cb;
-            void *data = ctx->position_cb_data;
-            pthread_mutex_unlock(&ctx->mutex);
+        on_position_changed_fn cb = nullptr;
+        void *data = nullptr;
+        int pos = 0;
 
-            /* duration not easily available from MediaPlayer API,
-             * pass -1 for now; UI can use MusicInfo.duration_ms */
-            cb((int)pos, -1, data);
-        } else {
-            pthread_mutex_unlock(&ctx->mutex);
+        {
+            std::lock_guard<std::mutex> lock(ctx->mtx);
+            if (ctx->state == PLAYER_STATE_PLAYING && ctx->player && ctx->position_cb) {
+                pos = (int)ctx->player->getPosition();
+                cb = ctx->position_cb;
+                data = ctx->position_cb_data;
+            }
         }
+
+        if (cb) cb(pos, -1, data);
     }
     return NULL;
 }
@@ -198,17 +155,10 @@ MusicPlayerContext *music_player_create(void)
     MusicPlayerContext *ctx = new (std::nothrow) MusicPlayerContext();
     if (!ctx) return NULL;
 
-    /* Zero-initialize all POD members safely. The struct is POD-like,
-     * but using memset after new is technically UB in C++ if there are
-     * non-trivial members. We explicitly init each field instead. */
+    /* vectors are default-constructed (empty). Init POD fields only. */
     ctx->player = NULL;
     ctx->player_ready = false;
-    ctx->playlist = NULL;
-    ctx->playlist_count = 0;
     ctx->current_index = -1;
-    ctx->shuffle_order = NULL;
-    ctx->shuffle_pool = NULL;
-    ctx->shuffle_pool_count = 0;
     ctx->state = PLAYER_STATE_IDLE;
     ctx->mode = PLAY_MODE_SEQUENTIAL;
     ctx->state_cb = NULL;
@@ -219,8 +169,6 @@ MusicPlayerContext *music_player_create(void)
     ctx->position_cb_data = NULL;
     ctx->poll_running = false;
     ctx->poll_thread = 0;
-
-    pthread_mutex_init(&ctx->mutex, NULL);
 
     ctx->player = new (std::nothrow) MediaPlayer();
     if (!ctx->player) {
@@ -235,11 +183,8 @@ MusicPlayerContext *music_player_create(void)
         return NULL;
     }
 
-    ctx->player->setStateCallback(media_state_callback, ctx);
+    ctx->player->setStateCallback(media_state_callback_wrapper, ctx);
     ctx->player_ready = true;
-    ctx->current_index = -1;
-    ctx->state = PLAYER_STATE_IDLE;
-    ctx->mode = PLAY_MODE_SEQUENTIAL;
 
     /* Start position polling thread */
     ctx->poll_running = true;
@@ -257,72 +202,78 @@ void music_player_destroy(MusicPlayerContext *ctx)
     ctx->poll_running = false;
     pthread_join(ctx->poll_thread, NULL);
 
-    /* Stop playback regardless of state */
+    /* Stop playback */
     if (ctx->player && (ctx->state == PLAYER_STATE_PLAYING ||
                         ctx->state == PLAYER_STATE_PAUSED)) {
         ctx->player->stop();
     }
 
     delete ctx->player;
-    free(ctx->playlist);
-    free(ctx->shuffle_order);
-    free(ctx->shuffle_pool);
-    pthread_mutex_destroy(&ctx->mutex);
+    /* vectors and std::mutex are cleaned up by ~MusicPlayerContext() */
     delete ctx;
 
     printf("[MusicPlayer] Destroyed\n");
 }
 
-int music_player_set_playlist(MusicPlayerContext *ctx, const MusicList *list)
+int music_player_set_playlist_refs(MusicPlayerContext *ctx,
+                                   const TrackRef *refs, int count)
 {
-    if (!ctx || !list) return -1;
+    if (!ctx || !refs || count <= 0) return -1;
 
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
 
     /* Stop current playback */
     if (ctx->state == PLAYER_STATE_PLAYING && ctx->player) {
         ctx->player->stop();
     }
 
-    /* Free old playlist */
-    free(ctx->playlist);
-    free(ctx->shuffle_order);
-    free(ctx->shuffle_pool);
-
-    /* Copy new playlist */
-    ctx->playlist_count = list->count;
-    ctx->playlist = (MusicInfo *)calloc(list->count, sizeof(MusicInfo));
-    ctx->shuffle_order = (int *)calloc(list->count, sizeof(int));
-    ctx->shuffle_pool = (int *)calloc(list->count, sizeof(int));
-    ctx->shuffle_pool_count = 0;
-
-    if (!ctx->playlist || !ctx->shuffle_order || !ctx->shuffle_pool) {
-        ctx->playlist_count = 0;
-        pthread_mutex_unlock(&ctx->mutex);
-        return -1;
-    }
-
-    memcpy(ctx->playlist, list->items, list->count * sizeof(MusicInfo));
+    /* Replace playlist — vector handles alloc/dealloc */
+    ctx->playlist.assign(refs, refs + count);
     ctx->current_index = -1;
     ctx->state = PLAYER_STATE_IDLE;
 
     generate_shuffle(ctx);
 
-    pthread_mutex_unlock(&ctx->mutex);
-
-    printf("[MusicPlayer] Playlist set: %d tracks\n", list->count);
+    printf("[MusicPlayer] Playlist set: %d tracks, %.1f KB\n",
+           count, (double)ctx->playlist.size() * sizeof(TrackRef) / 1024.0);
     return 0;
+}
+
+int music_player_set_playlist(MusicPlayerContext *ctx, const MusicList *list)
+{
+    if (!ctx || !list || list->count <= 0) return -1;
+
+    /* Convert MusicList → vector<TrackRef>, then delegate.
+     * For sub-playlists (folder/album/group) where count is small. */
+    std::vector<TrackRef> refs(list->count);
+    for (int i = 0; i < list->count; i++) {
+        refs[i].uid = list->items[i].uid;
+        strncpy(refs[i].filepath, list->items[i].filepath,
+                sizeof(refs[i].filepath) - 1);
+        refs[i].filepath[sizeof(refs[i].filepath) - 1] = '\0';
+    }
+
+    return music_player_set_playlist_refs(ctx, refs.data(), (int)refs.size());
 }
 
 int music_player_get_playlist_count(MusicPlayerContext *ctx)
 {
-    return ctx ? ctx->playlist_count : 0;
+    return ctx ? (int)ctx->playlist.size() : 0;
+}
+
+const TrackRef *music_player_get_track_ref(MusicPlayerContext *ctx, int index)
+{
+    if (!ctx || index < 0 || index >= (int)ctx->playlist.size()) return NULL;
+    return &ctx->playlist[index];
 }
 
 const MusicInfo *music_player_get_track_info(MusicPlayerContext *ctx, int index)
 {
-    if (!ctx || index < 0 || index >= ctx->playlist_count) return NULL;
-    return &ctx->playlist[index];
+    /* DEPRECATED: playlist now stores TrackRef, not MusicInfo.
+     * Always returns NULL. Use music_app_get_track_info() which queries
+     * SQLite on-demand, or music_player_get_track_ref() for filepath. */
+    (void)ctx; (void)index;
+    return NULL;
 }
 
 int music_player_get_current_index(MusicPlayerContext *ctx)
@@ -334,61 +285,49 @@ int music_player_play(MusicPlayerContext *ctx, int index)
 {
     if (!ctx || !ctx->player_ready) return -1;
 
-    pthread_mutex_lock(&ctx->mutex);
+    std::unique_lock<std::mutex> lock(ctx->mtx);
 
     if (index == -1) {
         if (ctx->current_index >= 0 && ctx->state == PLAYER_STATE_PAUSED) {
-            /* Resume from pause */
             ctx->player->resume();
             ctx->state = PLAYER_STATE_PLAYING;
 
             PlayerState s = ctx->state;
             on_state_changed_fn cb = ctx->state_cb;
             void *data = ctx->state_cb_data;
-            pthread_mutex_unlock(&ctx->mutex);
+            lock.unlock();
             if (cb) cb(s, data);
             return 0;
         }
-        /* If stopped or idle, (re)start from current or track 0 */
         index = (ctx->current_index >= 0) ? ctx->current_index : 0;
     }
 
-    if (index < 0 || index >= ctx->playlist_count) {
-        pthread_mutex_unlock(&ctx->mutex);
+    if (index < 0 || index >= (int)ctx->playlist.size()) {
         return -1;
     }
 
-    /* Issue #18 fix: Use the index directly — do NOT apply shuffle mapping.
-     * In Android (MusicPlaylistEx), shuffle only affects adjustPlayPosition()
-     * (auto-next/prev), NOT user-initiated play. When a user clicks a song
-     * in the list, they expect THAT song to play, not a random one.
-     *
-     * The shuffle_order is only consumed by music_player_next/prev. */
     int actual = index;
 
-    /* Stop current if playing */
     if (ctx->state == PLAYER_STATE_PLAYING) {
         ctx->player->stop();
     }
 
     ctx->current_index = index;
-    const MusicInfo *info = &ctx->playlist[actual];
+    const TrackRef &ref = ctx->playlist[actual];
 
-    printf("[MusicPlayer] Playing [%d/%d]: %s - %s\n",
-           index + 1, ctx->playlist_count, info->artist, info->title);
+    printf("[MusicPlayer] Playing [%d/%d]: %s\n",
+           index + 1, (int)ctx->playlist.size(), ref.filepath);
 
-    /* Use MediaPlayer to play the file */
-    std::string path(info->filepath);
+    std::string path(ref.filepath);
     ctx->player->play(path);
     ctx->state = PLAYER_STATE_PLAYING;
 
-    /* Notify track change */
     on_track_changed_fn cb = ctx->track_cb;
     void *data = ctx->track_cb_data;
 
-    pthread_mutex_unlock(&ctx->mutex);
+    lock.unlock();
 
-    if (cb) cb(actual, info, data);
+    if (cb) cb(actual, NULL, data);
 
     return 0;
 }
@@ -396,84 +335,77 @@ int music_player_play(MusicPlayerContext *ctx, int index)
 int music_player_pause(MusicPlayerContext *ctx)
 {
     if (!ctx || !ctx->player) return -1;
-
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
     if (ctx->state == PLAYER_STATE_PLAYING) {
         ctx->player->pause();
         ctx->state = PLAYER_STATE_PAUSED;
     }
-    pthread_mutex_unlock(&ctx->mutex);
     return 0;
 }
 
 int music_player_resume(MusicPlayerContext *ctx)
 {
     if (!ctx || !ctx->player) return -1;
-
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
     if (ctx->state == PLAYER_STATE_PAUSED) {
         ctx->player->resume();
         ctx->state = PLAYER_STATE_PLAYING;
     }
-    pthread_mutex_unlock(&ctx->mutex);
     return 0;
 }
 
 int music_player_stop(MusicPlayerContext *ctx)
 {
     if (!ctx || !ctx->player) return -1;
-
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
     ctx->player->stop();
     ctx->state = PLAYER_STATE_STOPPED;
-    pthread_mutex_unlock(&ctx->mutex);
     return 0;
 }
 
 int music_player_next(MusicPlayerContext *ctx)
 {
-    if (!ctx || ctx->playlist_count <= 0) return -1;
+    if (!ctx || ctx->playlist.empty()) return -1;
 
-    pthread_mutex_lock(&ctx->mutex);
+    int next;
+    {
+        std::lock_guard<std::mutex> lock(ctx->mtx);
+        next = ctx->current_index;
+        int count = (int)ctx->playlist.size();
 
-    int next = ctx->current_index;
-
-    switch (ctx->mode) {
-    case PLAY_MODE_REPEAT_ONE:
-        /* Stay on same track */
-        break;
-    case PLAY_MODE_SEQUENTIAL:
-        next++;
-        if (next >= ctx->playlist_count) {
-            /* End of list */
-            ctx->player->stop();
-            ctx->state = PLAYER_STATE_STOPPED;
-            pthread_mutex_unlock(&ctx->mutex);
-            return 0;
+        switch (ctx->mode) {
+        case PLAY_MODE_REPEAT_ONE:
+            break;
+        case PLAY_MODE_SEQUENTIAL:
+            next++;
+            if (next >= count) {
+                ctx->player->stop();
+                ctx->state = PLAYER_STATE_STOPPED;
+                return 0;
+            }
+            break;
+        case PLAY_MODE_REPEAT_ALL:
+            next = (next + 1) % count;
+            break;
+        case PLAY_MODE_SHUFFLE:
+            next = shuffle_pool_pick_next(ctx);
+            break;
         }
-        break;
-    case PLAY_MODE_REPEAT_ALL:
-        next = (next + 1) % ctx->playlist_count;
-        break;
-    case PLAY_MODE_SHUFFLE:
-        /* Issue #19 fix: Use consumption pool (Android mRandomPositionList).
-         * Pick a random unplayed track. Pool auto-refills when exhausted. */
-        next = shuffle_pool_pick_next(ctx);
-        break;
     }
 
-    pthread_mutex_unlock(&ctx->mutex);
     return music_player_play(ctx, next);
 }
 
 int music_player_prev(MusicPlayerContext *ctx)
 {
-    if (!ctx || ctx->playlist_count <= 0) return -1;
+    if (!ctx || ctx->playlist.empty()) return -1;
 
-    pthread_mutex_lock(&ctx->mutex);
-    int prev = ctx->current_index - 1;
-    if (prev < 0) prev = ctx->playlist_count - 1;
-    pthread_mutex_unlock(&ctx->mutex);
+    int prev;
+    {
+        std::lock_guard<std::mutex> lock(ctx->mtx);
+        prev = ctx->current_index - 1;
+        if (prev < 0) prev = (int)ctx->playlist.size() - 1;
+    }
 
     return music_player_play(ctx, prev);
 }
@@ -481,21 +413,18 @@ int music_player_prev(MusicPlayerContext *ctx)
 int music_player_seek(MusicPlayerContext *ctx, int position_ms)
 {
     if (!ctx || !ctx->player) return -1;
-
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
     ctx->player->seek((double)position_ms);
-    pthread_mutex_unlock(&ctx->mutex);
     return 0;
 }
 
 void music_player_set_mode(MusicPlayerContext *ctx, PlayMode mode)
 {
     if (!ctx) return;
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
     ctx->mode = mode;
     if (mode == PLAY_MODE_SHUFFLE)
         generate_shuffle(ctx);
-    pthread_mutex_unlock(&ctx->mutex);
 }
 
 PlayMode music_player_get_mode(MusicPlayerContext *ctx)
@@ -518,30 +447,27 @@ void music_player_set_state_callback(MusicPlayerContext *ctx,
                                      on_state_changed_fn cb, void *user_data)
 {
     if (!ctx) return;
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
     ctx->state_cb = cb;
     ctx->state_cb_data = user_data;
-    pthread_mutex_unlock(&ctx->mutex);
 }
 
 void music_player_set_track_callback(MusicPlayerContext *ctx,
                                      on_track_changed_fn cb, void *user_data)
 {
     if (!ctx) return;
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
     ctx->track_cb = cb;
     ctx->track_cb_data = user_data;
-    pthread_mutex_unlock(&ctx->mutex);
 }
 
 void music_player_set_position_callback(MusicPlayerContext *ctx,
                                         on_position_changed_fn cb, void *user_data)
 {
     if (!ctx) return;
-    pthread_mutex_lock(&ctx->mutex);
+    std::lock_guard<std::mutex> lock(ctx->mtx);
     ctx->position_cb = cb;
     ctx->position_cb_data = user_data;
-    pthread_mutex_unlock(&ctx->mutex);
 }
 
 } /* extern "C" */

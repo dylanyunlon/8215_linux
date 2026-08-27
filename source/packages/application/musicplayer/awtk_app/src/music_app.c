@@ -103,6 +103,29 @@ static void build_classification_cache(void);
 static void load_lyrics_for_current(void);
 static void load_album_art_for_current(void);
 
+/**
+ * Helper: build TrackRef array from MusicList and set as player's playlist.
+ * Avoids duplicating the conversion logic at every call site.
+ * Returns 0 on success, -1 on failure.
+ */
+static int set_player_playlist_from_list(const MusicList* list) {
+    if (!s_app.player || !list || list->count <= 0) return -1;
+
+    TrackRef* refs = (TrackRef*)calloc(list->count, sizeof(TrackRef));
+    if (!refs) return -1;
+
+    int i;
+    for (i = 0; i < list->count; i++) {
+        refs[i].uid = list->items[i].uid;
+        strncpy(refs[i].filepath, list->items[i].filepath,
+                sizeof(refs[i].filepath) - 1);
+    }
+
+    int ret = music_player_set_playlist_refs(s_app.player, refs, list->count);
+    free(refs);
+    return ret;
+}
+
 /*============================================================================
  * AWTK main-thread dispatch helpers
  *
@@ -283,7 +306,9 @@ static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
     storage_device_state_t* dev = &s_app.devices[dev_idx];
     if (!dev->music_list || dev->music_list->count == 0) return RET_REMOVE;
 
-    music_player_set_playlist(s_app.player, dev->music_list);
+    /* Set lightweight TrackRef playlist — player only stores filepath+uid.
+     * Full MusicInfo stays in dev->music_list, queried on-demand. */
+    set_player_playlist_from_list(dev->music_list);
     post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
 
     if (resume_idx >= 0) {
@@ -631,8 +656,43 @@ static ret_t track_changed_load_media_idle(const idle_info_t* idle) {
 
 static void on_player_track(int index, const MusicInfo* info, void* user_data) {
     (void)user_data;
+    (void)info;  /* Now always NULL — player only stores TrackRef */
+
     pthread_mutex_lock(&s_app.mutex);
-    s_app.state.current_info = info;
+
+    /* Resolve full MusicInfo from device's music_list by index.
+     * The player's playlist indices correspond 1:1 with the device list
+     * when playlist_type == PLAYLIST_TYPE_DEVICE. For sub-playlists
+     * (folder/album/artist), we look up by filepath from the TrackRef. */
+    s_app.state.current_info = NULL;
+    if (s_app.player) {
+        const TrackRef* ref = music_player_get_track_ref(s_app.player, index);
+        if (ref) {
+            /* Try direct index first (fast path for full device playlist) */
+            int dev_idx = s_app.state.current_device_idx;
+            if (dev_idx >= 0 && dev_idx < s_app.device_count) {
+                storage_device_state_t* dev = &s_app.devices[dev_idx];
+                if (dev->music_list) {
+                    /* For DEVICE playlist, index matches directly */
+                    if (s_app.state.playlist_type == PLAYLIST_TYPE_DEVICE &&
+                        index >= 0 && index < dev->music_list->count) {
+                        s_app.state.current_info = &dev->music_list->items[index];
+                    } else {
+                        /* Sub-playlist: linear search by filepath */
+                        int i;
+                        for (i = 0; i < dev->music_list->count; i++) {
+                            if (strcmp(dev->music_list->items[i].filepath,
+                                       ref->filepath) == 0) {
+                                s_app.state.current_info = &dev->music_list->items[i];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     pthread_mutex_unlock(&s_app.mutex);
 
     /* Issue #37 fix: Dispatch album art and lyrics loading to the AWTK main
@@ -969,7 +1029,36 @@ int music_app_get_playlist_count(void) {
 }
 
 const MusicInfo* music_app_get_track_info(int index) {
-    return s_app.player ? music_player_get_track_info(s_app.player, index) : NULL;
+    /* Player now stores TrackRef (no full MusicInfo).
+     * Resolve from device's music_list. For DEVICE playlist, index maps 1:1.
+     * For sub-playlists, look up by filepath from the player's TrackRef. */
+    if (!s_app.player) return NULL;
+
+    int dev_idx = s_app.state.current_device_idx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return NULL;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list) return NULL;
+
+    if (s_app.state.playlist_type == PLAYLIST_TYPE_DEVICE) {
+        /* Fast path: direct index */
+        if (index >= 0 && index < dev->music_list->count) {
+            return &dev->music_list->items[index];
+        }
+        return NULL;
+    }
+
+    /* Sub-playlist: resolve via TrackRef filepath */
+    const TrackRef* ref = music_player_get_track_ref(s_app.player, index);
+    if (!ref) return NULL;
+
+    int i;
+    for (i = 0; i < dev->music_list->count; i++) {
+        if (strcmp(dev->music_list->items[i].filepath, ref->filepath) == 0) {
+            return &dev->music_list->items[i];
+        }
+    }
+    return NULL;
 }
 
 int music_app_get_current_index(void) {
@@ -998,9 +1087,10 @@ void music_app_switch_device(int idx) {
     /* Stop current playback */
     music_app_stop();
 
-    /* If scan done, load playlist */
+    /* If scan done, load playlist using lightweight refs */
     if (dev->scan_done && dev->music_list && dev->music_list->count > 0) {
-        music_player_set_playlist(s_app.player, dev->music_list);
+        set_player_playlist_from_list(dev->music_list);
+        s_app.state.playlist_type = PLAYLIST_TYPE_DEVICE;
         post_ui_event(APP_EVENT_PLAYLIST_CHANGED, idx);
     } else if (!dev->scanning) {
         /* Trigger scan if not already running */
@@ -1874,8 +1964,8 @@ void music_app_restore_full_playlist(void) {
     storage_device_state_t* dev = &s_app.devices[dev_idx];
     if (!dev->music_list || dev->music_list->count == 0) return;
 
-    /* Re-set the full device list as the player's playlist */
-    music_player_set_playlist(s_app.player, dev->music_list);
+    /* Re-set the full device list as the player's playlist (lightweight refs) */
+    set_player_playlist_from_list(dev->music_list);
 
     /* Update playlist type */
     pthread_mutex_lock(&s_app.mutex);

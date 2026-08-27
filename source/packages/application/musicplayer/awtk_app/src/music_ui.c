@@ -105,6 +105,12 @@ static bool s_slider_dragging = false;
 static int  s_last_highlight_idx = -1;
 static tab_type_t s_active_tab = TAB_ALL;
 
+/* Paging state for playlist view (musikcube-style: only one page of
+ * MusicInfo in memory at a time, ~50 KB per page vs 25 MB full list) */
+#define PAGE_SIZE  (LIST_H / LIST_ITEM_H)  /* visible rows = 510/60 = 8 */
+static int s_page_offset = 0;    /* first visible track index */
+static int s_page_count  = 0;    /* items currently shown */
+
 /*============================================================================
  * Helpers
  *==========================================================================*/
@@ -310,7 +316,7 @@ static ret_t on_device_btn_click(void* ctx, event_t* e) {
 /*============================================================================
  * Tab handlers
  *==========================================================================*/
-static ret_t on_tab_all(void* c, event_t* e)     { (void)c;(void)e; s_active_tab=TAB_ALL;    show_search_ui(false); music_app_restore_full_playlist(); update_tab_highlight(TAB_ALL);    return RET_OK; }
+static ret_t on_tab_all(void* c, event_t* e)     { (void)c;(void)e; s_active_tab=TAB_ALL;    show_search_ui(false); s_page_offset=0; music_app_restore_full_playlist(); update_tab_highlight(TAB_ALL);    return RET_OK; }
 static ret_t on_tab_folder(void* c, event_t* e)  { (void)c;(void)e; s_active_tab=TAB_FOLDER; show_search_ui(false); rebuild_folder_list_view();        update_tab_highlight(TAB_FOLDER); return RET_OK; }
 static ret_t on_tab_fav(void* c, event_t* e)     { (void)c;(void)e; s_active_tab=TAB_FAV;    show_search_ui(false); rebuild_favorite_list_view();      update_tab_highlight(TAB_FAV);    return RET_OK; }
 static ret_t on_tab_album(void* c, event_t* e)   { (void)c;(void)e; s_active_tab=TAB_ALBUM;  show_search_ui(false); rebuild_album_list_view();         update_tab_highlight(TAB_ALBUM);  return RET_OK; }
@@ -563,42 +569,110 @@ static ret_t on_fav_item_click(void* ctx, event_t* e) {
 /*============================================================================
  * List rebuild functions — Issue #50: no 100-item cap
  *==========================================================================*/
+/* Page navigation handlers (rebuild_playlist_view is forward-declared above) */
+
+static ret_t on_page_prev(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    if (s_page_offset > 0) {
+        s_page_offset -= PAGE_SIZE;
+        if (s_page_offset < 0) s_page_offset = 0;
+        rebuild_playlist_view();
+    }
+    return RET_OK;
+}
+
+static ret_t on_page_next(void* ctx, event_t* e) {
+    (void)ctx; (void)e;
+    int total = music_app_get_playlist_count();
+    if (s_page_offset + PAGE_SIZE < total) {
+        s_page_offset += PAGE_SIZE;
+        rebuild_playlist_view();
+    }
+    return RET_OK;
+}
+
+/**
+ * Rebuild playlist view — PAGED version.
+ *
+ * Only creates widgets for one page of tracks (PAGE_SIZE items, ~8 rows).
+ * Each row fetches MusicInfo on-demand via music_app_get_track_info().
+ * Prev/Next page buttons at top/bottom for navigation.
+ *
+ * Memory: PAGE_SIZE × MusicInfo fetches (each ~2.5 KB, not retained)
+ * vs old: N × label widgets where N = total track count (OOM at 10000).
+ */
 static void rebuild_playlist_view(void) {
     widget_t* list = find(W_LIST_VIEW);
     if (!list) return;
     widget_destroy_children(list);
 
-    int count = music_app_get_playlist_count();
+    int total = music_app_get_playlist_count();
     int cur = music_app_get_current_index();
+    int y = 0;
+
+    /* Clamp page_offset */
+    if (s_page_offset < 0) s_page_offset = 0;
+    if (s_page_offset >= total) s_page_offset = (total > 0) ? total - 1 : 0;
+
+    /* Page up button */
+    if (s_page_offset > 0) {
+        widget_t* btn_up = button_create(list, 0, y, LIST_W, LIST_ITEM_H / 2);
+        char up_text[64];
+        snprintf(up_text, sizeof(up_text), "▲ Previous (%d-%d)",
+                 (s_page_offset - PAGE_SIZE + 1 > 0) ? s_page_offset - PAGE_SIZE + 1 : 1,
+                 s_page_offset);
+        widget_set_text_utf8(btn_up, up_text);
+        widget_set_style_str(btn_up, "font_size", "16");
+        widget_set_style_str(btn_up, "text_color", COLOR_GRAY);
+        widget_on(btn_up, EVT_CLICK, on_page_prev, NULL);
+        y += LIST_ITEM_H / 2;
+    }
+
+    /* Visible page items */
+    int end = s_page_offset + PAGE_SIZE;
+    if (end > total) end = total;
+    s_page_count = end - s_page_offset;
+
     int i;
-    for (i = 0; i < count; i++) {
+    for (i = s_page_offset; i < end; i++) {
         const MusicInfo* info = music_app_get_track_info(i);
         if (!info) continue;
         char tbuf[MUSIC_MAX_TAG_LEN];
         const char* title = safe_title(info, tbuf, sizeof(tbuf));
         char text[512];
         snprintf(text, sizeof(text), "%s%d. %s - %s",
-                 (i == cur) ? "▶ " : "  ", i+1, title, safe_field(info->artist));
+                 (i == cur) ? "▶ " : "  ", i + 1, title, safe_field(info->artist));
 
-        widget_t* item = label_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
+        widget_t* item = label_create(list, 0, y, LIST_W, LIST_ITEM_H);
         widget_set_text_utf8(item, text);
         widget_set_prop_int(item, "item_index", i);
         widget_set_style_str(item, "font_size", "20");
         widget_set_style_str(item, "text_color", (i == cur) ? COLOR_CYAN : COLOR_WHITE);
         widget_on(item, EVT_CLICK, on_list_item_click, NULL);
+        y += LIST_ITEM_H;
     }
 
+    /* Page down button */
+    if (end < total) {
+        widget_t* btn_dn = button_create(list, 0, y, LIST_W, LIST_ITEM_H / 2);
+        char dn_text[64];
+        snprintf(dn_text, sizeof(dn_text), "▼ Next (%d-%d of %d)",
+                 end + 1, (end + PAGE_SIZE < total) ? end + PAGE_SIZE : total, total);
+        widget_set_text_utf8(btn_dn, dn_text);
+        widget_set_style_str(btn_dn, "font_size", "16");
+        widget_set_style_str(btn_dn, "text_color", COLOR_GRAY);
+        widget_on(btn_dn, EVT_CLICK, on_page_next, NULL);
+    }
+
+    /* Count label */
     widget_t* lbl = find(W_LBL_COUNT);
-    if (lbl) { char b[64]; snprintf(b, sizeof(b), "%d tracks", count); widget_set_text_utf8(lbl, b); }
+    if (lbl) {
+        char b[64];
+        snprintf(b, sizeof(b), "%d-%d / %d", s_page_offset + 1, end, total);
+        widget_set_text_utf8(lbl, b);
+    }
     s_last_highlight_idx = cur;
     widget_invalidate_force(list, NULL);
-
-    /* Scroll to current track */
-    if (cur >= 0) {
-        int target = cur * LIST_ITEM_H - LIST_H / 2 + LIST_ITEM_H / 2;
-        if (target < 0) target = 0;
-        widget_set_prop_int(list, WIDGET_PROP_YOFFSET, target);
-    }
 }
 
 static void rebuild_folder_list_view(void) {
@@ -741,12 +815,31 @@ static void rebuild_favorite_list_view(void) {
  * Lightweight highlight update (Issue #20)
  *==========================================================================*/
 static void update_playlist_highlight(int new_idx) {
+    /* With paged view, if the new track isn't on the current page,
+     * auto-navigate to the page containing it. */
+    if (new_idx >= 0 && s_active_tab == TAB_ALL) {
+        if (new_idx < s_page_offset || new_idx >= s_page_offset + PAGE_SIZE) {
+            /* Jump to the page containing the new track */
+            s_page_offset = (new_idx / PAGE_SIZE) * PAGE_SIZE;
+            rebuild_playlist_view();
+            s_last_highlight_idx = new_idx;
+            return;
+        }
+    }
+
+    /* Track is on current page — do lightweight in-place highlight update */
     widget_t* list = find(W_LIST_VIEW);
     if (!list) return;
-    int cc = widget_count_children(list);
 
-    if (s_last_highlight_idx >= 0 && s_last_highlight_idx < cc) {
-        widget_t* old = widget_get_child(list, s_last_highlight_idx);
+    /* Compute widget child index from global track index.
+     * Child 0 might be the "▲ Previous" button if page_offset > 0. */
+    int btn_offset = (s_page_offset > 0) ? 1 : 0;
+
+    /* Un-highlight old */
+    if (s_last_highlight_idx >= s_page_offset &&
+        s_last_highlight_idx < s_page_offset + s_page_count) {
+        int child_idx = (s_last_highlight_idx - s_page_offset) + btn_offset;
+        widget_t* old = widget_get_child(list, child_idx);
         if (old) {
             widget_set_style_str(old, "text_color", COLOR_WHITE);
             const MusicInfo* info = music_app_get_track_info(s_last_highlight_idx);
@@ -754,14 +847,19 @@ static void update_playlist_highlight(int new_idx) {
                 char tbuf[MUSIC_MAX_TAG_LEN];
                 const char* t = safe_title(info, tbuf, sizeof(tbuf));
                 char text[512];
-                snprintf(text, sizeof(text), "  %d. %s - %s", s_last_highlight_idx+1, t, safe_field(info->artist));
+                snprintf(text, sizeof(text), "  %d. %s - %s",
+                         s_last_highlight_idx + 1, t, safe_field(info->artist));
                 widget_set_text_utf8(old, text);
             }
             widget_invalidate_force(old, NULL);
         }
     }
-    if (new_idx >= 0 && new_idx < cc) {
-        widget_t* nw = widget_get_child(list, new_idx);
+
+    /* Highlight new */
+    if (new_idx >= s_page_offset &&
+        new_idx < s_page_offset + s_page_count) {
+        int child_idx = (new_idx - s_page_offset) + btn_offset;
+        widget_t* nw = widget_get_child(list, child_idx);
         if (nw) {
             widget_set_style_str(nw, "text_color", COLOR_CYAN);
             const MusicInfo* info = music_app_get_track_info(new_idx);
@@ -769,12 +867,14 @@ static void update_playlist_highlight(int new_idx) {
                 char tbuf[MUSIC_MAX_TAG_LEN];
                 const char* t = safe_title(info, tbuf, sizeof(tbuf));
                 char text[512];
-                snprintf(text, sizeof(text), "▶ %d. %s - %s", new_idx+1, t, safe_field(info->artist));
+                snprintf(text, sizeof(text), "▶ %d. %s - %s",
+                         new_idx + 1, t, safe_field(info->artist));
                 widget_set_text_utf8(nw, text);
             }
             widget_invalidate_force(nw, NULL);
         }
     }
+
     s_last_highlight_idx = new_idx;
 }
 

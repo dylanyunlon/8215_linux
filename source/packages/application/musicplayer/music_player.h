@@ -22,6 +22,17 @@
 extern "C" {
 #endif
 
+/*
+ * TrackRef — lightweight playlist entry (filepath + uid only).
+ * Full playlist: 10000 × 516 bytes = 4.9 MB  (vs MusicInfo 10000 × 2.5 KB = 24.7 MB)
+ * The player only needs the filepath to call MediaPlayer::play().
+ * Full MusicInfo is fetched on-demand from SQLite via music_app layer.
+ */
+typedef struct {
+    int   uid;
+    char  filepath[MUSIC_MAX_PATH_LEN];
+} TrackRef;
+
 /* Play mode (aligned with Android IConstant play modes) */
 typedef enum {
     PLAY_MODE_SEQUENTIAL = 0,   /* play list in order, stop at end */
@@ -62,14 +73,27 @@ void music_player_destroy(MusicPlayerContext *ctx);
 
 /* --- Playlist --- */
 
-/* Set the playlist from a MusicList (copies data).
- * This replaces any existing playlist. */
+/* Set playlist from lightweight TrackRef array (preferred — low memory).
+ * Copies only filepath+uid per track. 10000 songs ≈ 5 MB vs 25 MB.
+ * This is the primary API; use this for the full device playlist. */
+int music_player_set_playlist_refs(MusicPlayerContext *ctx,
+                                   const TrackRef *refs, int count);
+
+/* Set the playlist from a MusicList (copies full MusicInfo — legacy).
+ * Internally converts to TrackRef. Kept for sub-playlists (folder/album)
+ * where the full list is small. */
 int music_player_set_playlist(MusicPlayerContext *ctx, const MusicList *list);
 
 /* Get current playlist count. */
 int music_player_get_playlist_count(MusicPlayerContext *ctx);
 
-/* Get info for a track at index. Returns NULL if out of range. */
+/* Get TrackRef at index. Returns NULL if out of range. */
+const TrackRef *music_player_get_track_ref(MusicPlayerContext *ctx, int index);
+
+/* Get info for a track at index. Returns NULL if out of range.
+ * DEPRECATED for large playlists — returns NULL when playlist was set
+ * via set_playlist_refs (no full MusicInfo available in player).
+ * Use music_app_get_track_info() which queries SQLite on-demand. */
 const MusicInfo *music_player_get_track_info(MusicPlayerContext *ctx, int index);
 
 /* Get current track index. Returns -1 if nothing playing. */
