@@ -64,7 +64,7 @@ LDFLAGS    += -L$(SYSROOT_DIR)/usr/lib
 LDFLAGS    += -latcmediaplayer
 LDFLAGS    += -lavformat -lavcodec -lavutil -lswresample
 LDFLAGS    += -lasound
-LDFLAGS    += -lpthread -lm -ldl -lz
+LDFLAGS    += -lpthread -lm -ldl -lz -latomic
 
 # Rules
 all: $(TARGET)
