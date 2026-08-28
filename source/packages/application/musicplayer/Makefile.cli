@@ -50,8 +50,8 @@ APP_C_SRCS    = awtk_app/src/music_app.c \
                 awtk_app/src/favorite_manager.c
 
 # Shared library sources
-LIB_C_SRCS    = music_scanner.c
-LIB_CPP_SRCS  = music_player.cpp
+LIB_C_SRCS    =
+LIB_CPP_SRCS  = music_scanner.cpp music_player.cpp
 
 # All sources
 C_SRCS        = $(CLI_SRC) $(APP_C_SRCS) $(LIB_C_SRCS)
