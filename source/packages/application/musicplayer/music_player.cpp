@@ -10,7 +10,27 @@
 
 #include "music_player.h"
 #include "atcmediaplayer.h"
+
+/* Software decoder (FFmpeg+ALSA) — enabled when USE_SOFT_PLAYER is defined.
+ * Until FFmpeg is built in the BSP, leave this off so libmusicplayer.so
+ * links without soft_player_* symbols. */
+#ifdef USE_SOFT_PLAYER
 #include "musikcube/soft_player.h"
+#else
+/* Stubs: all soft_player_* calls compile to harmless no-ops */
+typedef void SoftPlayerContext;
+static inline SoftPlayerContext* soft_player_create(void) { return NULL; }
+static inline void  soft_player_destroy(SoftPlayerContext*) {}
+static inline int   soft_player_play(SoftPlayerContext*, const char*) { return -1; }
+static inline int   soft_player_stop(SoftPlayerContext*) { return -1; }
+static inline int   soft_player_pause(SoftPlayerContext*) { return -1; }
+static inline int   soft_player_resume(SoftPlayerContext*) { return -1; }
+static inline int   soft_player_seek(SoftPlayerContext*, double) { return -1; }
+static inline double soft_player_get_position(SoftPlayerContext*) { return 0.0; }
+static inline double soft_player_get_duration(SoftPlayerContext*) { return 0.0; }
+static inline void  soft_player_set_volume(SoftPlayerContext*, double) {}
+static inline void  soft_player_set_state_callback(SoftPlayerContext*, void*, void*) {}
+#endif
 
 #include <cstdio>
 #include <cstdlib>
@@ -193,6 +213,7 @@ MusicPlayerContext *music_player_create(void)
         fprintf(stderr, "[MusicPlayer] MediaPlayer setup failed, falling back to soft decoder\n");
         ctx->player = NULL;  /* leak intentional: destructor may deadlock */
 
+#ifdef USE_SOFT_PLAYER
         ctx->soft = soft_player_create();
         if (!ctx->soft) {
             fprintf(stderr, "[MusicPlayer] soft_player_create also failed!\n");
@@ -202,6 +223,12 @@ MusicPlayerContext *music_player_create(void)
         ctx->use_soft = true;
         ctx->player_ready = true;  /* soft player is ready */
         printf("[MusicPlayer] Created with software decoder (FFmpeg+ALSA)\n");
+#else
+        /* No soft player compiled in — continue in UI-only mode */
+        ctx->use_soft = false;
+        ctx->player_ready = false;
+        printf("[MusicPlayer] No soft decoder available, UI-only mode\n");
+#endif
     }
 
     /* Start position polling thread */
@@ -247,8 +274,12 @@ int music_player_set_playlist_refs(MusicPlayerContext *ctx,
     std::lock_guard<std::mutex> lock(ctx->mtx);
 
     /* Stop current playback */
-    if (ctx->state == PLAYER_STATE_PLAYING && ctx->player) {
-        ctx->player->stop();
+    if (ctx->state == PLAYER_STATE_PLAYING) {
+        if (ctx->use_soft) {
+            soft_player_stop(ctx->soft);
+        } else if (ctx->player) {
+            ctx->player->stop();
+        }
     }
 
     /* Replace playlist — vector handles alloc/dealloc */
@@ -428,7 +459,11 @@ int music_player_next(MusicPlayerContext *ctx)
         case PLAY_MODE_SEQUENTIAL:
             next++;
             if (next >= count) {
-                ctx->player->stop();
+                if (ctx->use_soft) {
+                    soft_player_stop(ctx->soft);
+                } else if (ctx->player) {
+                    ctx->player->stop();
+                }
                 ctx->state = PLAYER_STATE_STOPPED;
                 return 0;
             }

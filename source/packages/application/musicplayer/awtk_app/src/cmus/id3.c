@@ -670,6 +670,17 @@ static char *decode_str(const char *buf, int len, int encoding)
 	case ID3_ENCODING_ISO_8859_1:
 		in = xstrndup(buf, len);
 		utf8_encode(in, id3_default_charset, &out);
+		if (!out) {
+			/*
+			 * utf8_encode from ISO-8859-1 failed (iconv unavailable
+			 * or data isn't real Latin-1). Very common in Chinese MP3
+			 * files: tagger writes GBK bytes but marks as ISO-8859-1.
+			 * Try GBK → UTF-8, then GB18030, then raw copy.
+			 */
+			if (utf8_encode(in, "GBK", &out) != 0)
+				if (utf8_encode(in, "GB18030", &out) != 0)
+					out = xstrndup(in, len); /* raw copy, last resort */
+		}
 		free(in);
 		break;
 	case ID3_ENCODING_UTF_8:
@@ -677,7 +688,11 @@ static char *decode_str(const char *buf, int len, int encoding)
 		if (u_is_valid(in)) {
 			out = in;
 		} else {
+			/* Not valid UTF-8 — likely GBK mislabeled as UTF-8 */
 			utf8_encode(in, id3_default_charset, &out);
+			if (!out)
+				if (utf8_encode(in, "GBK", &out) != 0)
+					out = xstrndup(in, len);
 			free(in);
 		}
 		break;
@@ -1238,9 +1253,15 @@ static char *v1_get_str(const char *buf, int len)
 	in[i + 1] = 0;
 	if (u_is_valid(in))
 		return xstrdup(in);
-	if (utf8_encode(in, id3_default_charset, &out))
-		return NULL;
-	return out;
+	if (utf8_encode(in, id3_default_charset, &out) == 0)
+		return out;
+	/* id3_default_charset failed — try GBK (Chinese ID3v1 tags) */
+	if (utf8_encode(in, "GBK", &out) == 0)
+		return out;
+	if (utf8_encode(in, "GB18030", &out) == 0)
+		return out;
+	/* last resort: return raw bytes */
+	return xstrdup(in);
 }
 
 char *id3_get_comment(struct id3tag *id3, enum id3_key key)

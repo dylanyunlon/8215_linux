@@ -27,6 +27,34 @@
 #include <string.h>
 #include <errno.h>
 
+/*
+ * Pure-C fallback: ISO-8859-1 (Latin-1) → UTF-8.
+ * Each byte 0x00-0x7F stays one byte; 0x80-0xFF becomes two bytes.
+ * No iconv needed — the mapping is defined by Unicode (U+0000..U+00FF).
+ */
+static ssize_t latin1_to_utf8(const char *inbuf, ssize_t inbuf_size, char **outbuf)
+{
+	if (inbuf_size < 0)
+		inbuf_size = strlen(inbuf);
+
+	/* worst case: every byte is 0x80-0xFF → 2 bytes each */
+	char *buf = xnew(char, inbuf_size * 2 + 1);
+	ssize_t j = 0;
+
+	for (ssize_t i = 0; i < inbuf_size; i++) {
+		unsigned char ch = (unsigned char)inbuf[i];
+		if (ch < 0x80) {
+			buf[j++] = ch;
+		} else {
+			buf[j++] = (char)(0xC0 | (ch >> 6));
+			buf[j++] = (char)(0x80 | (ch & 0x3F));
+		}
+	}
+	buf[j] = '\0';
+	*outbuf = buf;
+	return j;
+}
+
 ssize_t convert(const char *inbuf, ssize_t inbuf_size,
 		char **outbuf, ssize_t outbuf_estimate,
 		const char *tocode, const char *fromcode)
@@ -39,8 +67,21 @@ ssize_t convert(const char *inbuf, ssize_t inbuf_size,
 	int finished = 0, err_save;
 
 	cd = iconv_open(tocode, fromcode);
-	if (cd == (iconv_t) -1)
+	if (cd == (iconv_t) -1) {
+		/*
+		 * iconv_open failed — embedded systems often have no locale
+		 * data for ISO-8859-1. Fall back to pure-C converter when the
+		 * request is Latin-1 → UTF-8 (the only path id3.c uses).
+		 */
+		if (strcmp(tocode, "UTF-8") == 0 &&
+		    (strcmp(fromcode, "ISO-8859-1") == 0 ||
+		     strcmp(fromcode, "iso-8859-1") == 0 ||
+		     strcmp(fromcode, "LATIN1") == 0 ||
+		     strcmp(fromcode, "latin1") == 0)) {
+			return latin1_to_utf8(inbuf, inbuf_size, outbuf);
+		}
 		return -1;
+	}
 
 	if (inbuf_size < 0)
 		inbuf_size = strlen(inbuf);
@@ -81,9 +122,26 @@ error:
 	*outbuf = NULL;
 	iconv_close(cd);
 	errno = err_save;
+	/* iconv conversion failed — try pure-C Latin-1 fallback */
+	if (strcmp(tocode, "UTF-8") == 0 &&
+	    (strcmp(fromcode, "ISO-8859-1") == 0 ||
+	     strcmp(fromcode, "iso-8859-1") == 0 ||
+	     strcmp(fromcode, "LATIN1") == 0 ||
+	     strcmp(fromcode, "latin1") == 0)) {
+		return latin1_to_utf8(inbuf, inbuf_size, outbuf);
+	}
 	return -1;
 
 #else
+	/* No iconv at all — use pure-C Latin-1→UTF-8 when applicable */
+	if (strcmp(tocode, "UTF-8") == 0 &&
+	    (strcmp(fromcode, "ISO-8859-1") == 0 ||
+	     strcmp(fromcode, "iso-8859-1") == 0 ||
+	     strcmp(fromcode, "LATIN1") == 0 ||
+	     strcmp(fromcode, "latin1") == 0)) {
+		return latin1_to_utf8(inbuf, inbuf_size, outbuf);
+	}
+	/* unknown encoding without iconv — copy raw bytes as last resort */
 	if (inbuf_size < 0)
 		inbuf_size = strlen(inbuf);
 	*outbuf = xnew(char, inbuf_size + 1);
