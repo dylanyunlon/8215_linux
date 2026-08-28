@@ -47,14 +47,18 @@ CLI_SRC       = music_app_cli.c
 # music_app layer (the code under test)
 APP_C_SRCS    = awtk_app/src/music_app.c \
                 awtk_app/src/usb_monitor.c \
-                awtk_app/src/favorite_manager.c
+                awtk_app/src/favorite_manager.c \
+                awtk_app/src/cmus_bridge.c
+
+# cmus ported modules (id3/cue/charset)
+CMUS_C_SRCS   = $(filter-out awtk_app/src/cmus/test_cmus_port.c, $(wildcard awtk_app/src/cmus/*.c))
 
 # Shared library sources
 LIB_C_SRCS    =
 LIB_CPP_SRCS  = music_scanner.cpp music_player.cpp
 
 # All sources
-C_SRCS        = $(CLI_SRC) $(APP_C_SRCS) $(LIB_C_SRCS)
+C_SRCS        = $(CLI_SRC) $(APP_C_SRCS) $(CMUS_C_SRCS) $(LIB_C_SRCS)
 CPP_SRCS      = $(LIB_CPP_SRCS)
 
 C_OBJS        = $(C_SRCS:.c=.o)
@@ -67,9 +71,10 @@ OBJS          = $(C_OBJS) $(CPP_OBJS)
 # Key: -DAWTK_STUB makes music_app.h include awtk_stub.h instead of awtk.h
 COMMON_FLAGS  = -Wall -Wextra -Wno-unused-parameter -O2
 COMMON_FLAGS += -DAWTK_STUB
+COMMON_FLAGS += -DUSE_CMUS_ID3
 COMMON_FLAGS += -D_GNU_SOURCE
 
-INC_FLAGS     = -I. -Iawtk_app/src
+INC_FLAGS     = -I. -Iawtk_app/src -Iawtk_app/src/cmus
 INC_FLAGS    += --sysroot=$(SYSROOT_DIR)
 INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/mediaplayerserver/include
 INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
