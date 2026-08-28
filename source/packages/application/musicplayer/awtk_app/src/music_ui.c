@@ -976,8 +976,9 @@ ret_t music_ui_create(widget_t* win) {
     widget_set_style_str(lbl_count, "font_size", "14");
     widget_set_style_str(lbl_count, "text_color", COLOR_DIM);
 
-    /* Main list view */
-    widget_t* lv = list_view_create(win, LIST_X, LIST_Y, LIST_W, LIST_H);
+    /* Main list area (plain view — not list_view, which has an internal
+     * scroll_view that swallows touch events from directly-added children) */
+    widget_t* lv = view_create(win, LIST_X, LIST_Y, LIST_W, LIST_H);
     widget_set_name(lv, W_LIST_VIEW);
     widget_set_style_str(lv, "bg_color", COLOR_BG);
 

@@ -12,25 +12,39 @@ CC_C        ?= $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-gcc
 SYSROOT_DIR ?= $(TOPDIR)/out/host/arm-buildroot-linux-gnueabi/sysroot
 
 AWTK_APP_SRC = $(TOPDIR)/source/packages/application/musicplayer/awtk_app/src
+MUSIKCUBE_SRC = $(AWTK_APP_SRC)/musikcube
 
 TARGET      = libmusicplayer.so
 
 # Source files (both are now C++)
 CPP_SRCS    = music_scanner.cpp music_player.cpp
 
+# musikcube soft player sources (FFmpeg decode + ALSA output)
+SOFT_CPP_SRCS = $(MUSIKCUBE_SRC)/soft_player.cpp \
+                $(MUSIKCUBE_SRC)/audio/Buffer.cpp \
+                $(MUSIKCUBE_SRC)/io/LocalFileStream.cpp \
+                $(MUSIKCUBE_SRC)/plugins/ffmpegdecoder/FfmpegDecoder.cpp \
+                $(MUSIKCUBE_SRC)/plugins/ffmpegdecoder/plugin.cpp \
+                $(MUSIKCUBE_SRC)/plugins/alsaout/AlsaOut.cpp \
+                $(MUSIKCUBE_SRC)/plugins/alsaout/alsaout_plugin.cpp
+
 # cmus ID3/CUE parser sources (proper UTF-16/GBK support)
 CMUS_C_SRCS = $(AWTK_APP_SRC)/cmus_bridge.c \
               $(filter-out $(AWTK_APP_SRC)/cmus/test_cmus_port.c, $(wildcard $(AWTK_APP_SRC)/cmus/*.c))
 
 CPP_OBJS    = $(CPP_SRCS:.cpp=.o)
+SOFT_OBJS   = $(notdir $(SOFT_CPP_SRCS:.cpp=.o))
 CMUS_OBJS   = $(notdir $(CMUS_C_SRCS:.c=.o))
-OBJS        = $(CPP_OBJS) $(CMUS_OBJS)
+OBJS        = $(CPP_OBJS) $(SOFT_OBJS) $(CMUS_OBJS)
 
 # Compiler flags
 CFLAGS      = -Wall -Wextra -Wno-unused-parameter -fPIC -O2
 CFLAGS     += -DUSE_CMUS_ID3
+CFLAGS     += -DUSE_SOFT_PLAYER
 CFLAGS     += -I$(AWTK_APP_SRC)
 CFLAGS     += -I$(AWTK_APP_SRC)/cmus
+CFLAGS     += -I$(MUSIKCUBE_SRC)
+CFLAGS     += -I$(MUSIKCUBE_SRC)/sdk
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mediaplayerserver/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
@@ -44,13 +58,15 @@ CFLAGS     += -I$(TOPDIR)/source/kernel/kernel-3.18/drivers/misc/atc/inc
 CFLAGS     += -I$(AWTK_APP_SRC)/sqlite3
 CFLAGS     += --sysroot=$(SYSROOT_DIR)
 
-CXXFLAGS    = $(CFLAGS) -std=c++11
+CXXFLAGS    = $(CFLAGS) -std=c++14 -fexceptions
 
 LDFLAGS     = -shared -fPIC
 LDFLAGS    += --sysroot=$(SYSROOT_DIR)
 LDFLAGS    += -L$(SYSROOT_DIR)/usr/lib
 LDFLAGS    += -latcmediaplayer
-LDFLAGS    += -lpthread
+LDFLAGS    += -lavformat -lavcodec -lavutil -lswresample
+LDFLAGS    += -lasound
+LDFLAGS    += -lpthread -lm -ldl -lz
 
 # Rules
 all: $(TARGET)
@@ -60,6 +76,22 @@ $(TARGET): $(OBJS)
 	@echo "[musicplayer] Built: $@"
 
 %.o: %.cpp
+	$(CC) $(CXXFLAGS) -c $< -o $@
+
+# musikcube C++ sources from various subdirectories — compile to flat .o in build dir
+%.o: $(MUSIKCUBE_SRC)/%.cpp
+	$(CC) $(CXXFLAGS) -c $< -o $@
+
+%.o: $(MUSIKCUBE_SRC)/audio/%.cpp
+	$(CC) $(CXXFLAGS) -c $< -o $@
+
+%.o: $(MUSIKCUBE_SRC)/io/%.cpp
+	$(CC) $(CXXFLAGS) -c $< -o $@
+
+%.o: $(MUSIKCUBE_SRC)/plugins/ffmpegdecoder/%.cpp
+	$(CC) $(CXXFLAGS) -c $< -o $@
+
+%.o: $(MUSIKCUBE_SRC)/plugins/alsaout/%.cpp
 	$(CC) $(CXXFLAGS) -c $< -o $@
 
 # cmus C sources live in awtk_app/src/cmus/ — must use gcc (not g++)
