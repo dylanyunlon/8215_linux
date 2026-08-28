@@ -57,9 +57,16 @@ CMUS_C_SRCS   = $(filter-out awtk_app/src/cmus/test_cmus_port.c, $(wildcard awtk
 LIB_C_SRCS    =
 LIB_CPP_SRCS  = music_scanner.cpp music_player.cpp
 
+# musikcube soft player sources
+SOFT_CPP_SRCS = awtk_app/src/musikcube/soft_player.cpp \
+                awtk_app/src/musikcube/audio/Buffer.cpp \
+                awtk_app/src/musikcube/io/LocalFileStream.cpp \
+                awtk_app/src/musikcube/plugins/ffmpegdecoder/FfmpegDecoder.cpp \
+                awtk_app/src/musikcube/plugins/alsaout/AlsaOut.cpp
+
 # All sources
 C_SRCS        = $(CLI_SRC) $(APP_C_SRCS) $(CMUS_C_SRCS) $(LIB_C_SRCS)
-CPP_SRCS      = $(LIB_CPP_SRCS)
+CPP_SRCS      = $(LIB_CPP_SRCS) $(SOFT_CPP_SRCS)
 
 C_OBJS        = $(C_SRCS:.c=.o)
 CPP_OBJS      = $(CPP_SRCS:.cpp=.o)
@@ -72,9 +79,12 @@ OBJS          = $(C_OBJS) $(CPP_OBJS)
 COMMON_FLAGS  = -Wall -Wextra -Wno-unused-parameter -O2
 COMMON_FLAGS += -DAWTK_STUB
 COMMON_FLAGS += -DUSE_CMUS_ID3
+COMMON_FLAGS += -DUSE_SOFT_PLAYER
 COMMON_FLAGS += -D_GNU_SOURCE
 
 INC_FLAGS     = -I. -Iawtk_app/src -Iawtk_app/src/cmus
+INC_FLAGS    += -Iawtk_app/src/musikcube
+INC_FLAGS    += -Iawtk_app/src/musikcube/sdk
 INC_FLAGS    += --sysroot=$(SYSROOT_DIR)
 INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/mediaplayerserver/include
 INC_FLAGS    += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
@@ -91,12 +101,14 @@ INC_FLAGS    += -I$(OUTDIR)/build/ac83xx/directrender-1.0/include
 INC_FLAGS    += -I$(OUTDIR)/build/ac83xx/atcmultimedia-1.0/include
 
 CFLAGS        = $(COMMON_FLAGS) $(INC_FLAGS) -std=c11
-CXXFLAGS      = $(COMMON_FLAGS) $(INC_FLAGS) -std=c++11
+CXXFLAGS      = $(COMMON_FLAGS) $(INC_FLAGS) -std=c++14 -fexceptions -Wno-unused-variable -Wno-reorder -Wno-sign-compare
 
 LDFLAGS       = --sysroot=$(SYSROOT_DIR)
 LDFLAGS      += -L$(SYSROOT_DIR)/usr/lib
 LDFLAGS      += -latcmediaplayer
-LDFLAGS      += -lpthread -lm -ldl
+LDFLAGS      += -lavformat -lavcodec -lavutil -lswresample
+LDFLAGS      += -lasound
+LDFLAGS      += -lpthread -lm -ldl -lz
 LDFLAGS      += -Wl,-rpath,/usr/lib
 
 # ===========================================================================
