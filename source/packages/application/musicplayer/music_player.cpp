@@ -10,6 +10,7 @@
 
 #include "music_player.h"
 #include "atcmediaplayer.h"
+#include "musikcube/soft_player.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -23,9 +24,13 @@
 /* --- Internal context structure --- */
 
 struct MusicPlayerContext {
-    /* The underlying ATC media player */
+    /* The underlying ATC media player (硬解) */
     MediaPlayer         *player;
     bool                 player_ready;
+
+    /* Software decoder fallback (软解, musikcube engine) */
+    SoftPlayerContext   *soft;
+    bool                 use_soft;
 
     /* Playlist — lightweight refs only (filepath + uid).
      * std::vector manages memory automatically — no calloc/free.
@@ -134,8 +139,12 @@ static void *position_poll_func(void *arg)
 
         {
             std::lock_guard<std::mutex> lock(ctx->mtx);
-            if (ctx->state == PLAYER_STATE_PLAYING && ctx->player && ctx->position_cb) {
-                pos = (int)ctx->player->getPosition();
+            if (ctx->state == PLAYER_STATE_PLAYING && ctx->player_ready && ctx->position_cb) {
+                if (ctx->use_soft) {
+                    pos = (int)(soft_player_get_position(ctx->soft) * 1000.0);
+                } else if (ctx->player) {
+                    pos = (int)ctx->player->getPosition();
+                }
                 cb = ctx->position_cb;
                 data = ctx->position_cb_data;
             }
@@ -158,6 +167,8 @@ MusicPlayerContext *music_player_create(void)
     /* vectors are default-constructed (empty). Init POD fields only. */
     ctx->player = NULL;
     ctx->player_ready = false;
+    ctx->soft = NULL;
+    ctx->use_soft = false;
     ctx->current_index = -1;
     ctx->state = PLAYER_STATE_IDLE;
     ctx->mode = PLAY_MODE_SEQUENTIAL;
@@ -170,31 +181,33 @@ MusicPlayerContext *music_player_create(void)
     ctx->poll_running = false;
     ctx->poll_thread = 0;
 
+    /* Try hardware decoder first */
     ctx->player = new (std::nothrow) MediaPlayer();
-    if (!ctx->player) {
-        delete ctx;
-        return NULL;
-    }
+    if (ctx->player && ctx->player->setup()) {
+        ctx->player->setStateCallback(media_state_callback_wrapper, ctx);
+        ctx->player_ready = true;
+        ctx->use_soft = false;
+        printf("[MusicPlayer] Created with hardware decoder (MediaPlayer)\n");
+    } else {
+        /* Hardware decoder failed — fallback to software decoder */
+        fprintf(stderr, "[MusicPlayer] MediaPlayer setup failed, falling back to soft decoder\n");
+        ctx->player = NULL;  /* leak intentional: destructor may deadlock */
 
-    if (!ctx->player->setup()) {
-        fprintf(stderr, "[MusicPlayer] MediaPlayer setup failed\n");
-        /* Do NOT delete ctx->player here — MediaPlayer destructor may block
-         * (codec teardown deadlock) when setup() left it half-initialized.
-         * Leak is acceptable: single-instance embedded system, and the app
-         * continues in UI-only mode without playback. */
-        ctx->player = NULL;
-        delete ctx;
-        return NULL;
+        ctx->soft = soft_player_create();
+        if (!ctx->soft) {
+            fprintf(stderr, "[MusicPlayer] soft_player_create also failed!\n");
+            delete ctx;
+            return NULL;
+        }
+        ctx->use_soft = true;
+        ctx->player_ready = true;  /* soft player is ready */
+        printf("[MusicPlayer] Created with software decoder (FFmpeg+ALSA)\n");
     }
-
-    ctx->player->setStateCallback(media_state_callback_wrapper, ctx);
-    ctx->player_ready = true;
 
     /* Start position polling thread */
     ctx->poll_running = true;
     pthread_create(&ctx->poll_thread, NULL, position_poll_func, ctx);
 
-    printf("[MusicPlayer] Created successfully\n");
     return ctx;
 }
 
@@ -204,15 +217,22 @@ void music_player_destroy(MusicPlayerContext *ctx)
 
     /* Stop polling */
     ctx->poll_running = false;
-    pthread_join(ctx->poll_thread, NULL);
-
-    /* Stop playback */
-    if (ctx->player && (ctx->state == PLAYER_STATE_PLAYING ||
-                        ctx->state == PLAYER_STATE_PAUSED)) {
-        ctx->player->stop();
+    if (ctx->poll_thread) {
+        pthread_join(ctx->poll_thread, NULL);
     }
 
-    delete ctx->player;
+    /* Stop playback */
+    if (ctx->use_soft) {
+        soft_player_destroy(ctx->soft);
+        ctx->soft = NULL;
+    } else if (ctx->player) {
+        if (ctx->state == PLAYER_STATE_PLAYING ||
+            ctx->state == PLAYER_STATE_PAUSED) {
+            ctx->player->stop();
+        }
+        delete ctx->player;
+    }
+
     /* vectors and std::mutex are cleaned up by ~MusicPlayerContext() */
     delete ctx;
 
@@ -293,7 +313,11 @@ int music_player_play(MusicPlayerContext *ctx, int index)
 
     if (index == -1) {
         if (ctx->current_index >= 0 && ctx->state == PLAYER_STATE_PAUSED) {
-            ctx->player->resume();
+            if (ctx->use_soft) {
+                soft_player_resume(ctx->soft);
+            } else {
+                ctx->player->resume();
+            }
             ctx->state = PLAYER_STATE_PLAYING;
 
             PlayerState s = ctx->state;
@@ -313,17 +337,26 @@ int music_player_play(MusicPlayerContext *ctx, int index)
     int actual = index;
 
     if (ctx->state == PLAYER_STATE_PLAYING) {
-        ctx->player->stop();
+        if (ctx->use_soft) {
+            soft_player_stop(ctx->soft);
+        } else {
+            ctx->player->stop();
+        }
     }
 
     ctx->current_index = index;
     const TrackRef &ref = ctx->playlist[actual];
 
-    printf("[MusicPlayer] Playing [%d/%d]: %s\n",
-           index + 1, (int)ctx->playlist.size(), ref.filepath);
+    printf("[MusicPlayer] Playing [%d/%d]: %s (%s)\n",
+           index + 1, (int)ctx->playlist.size(), ref.filepath,
+           ctx->use_soft ? "soft" : "hw");
 
-    std::string path(ref.filepath);
-    ctx->player->play(path);
+    if (ctx->use_soft) {
+        soft_player_play(ctx->soft, ref.filepath);
+    } else {
+        std::string path(ref.filepath);
+        ctx->player->play(path);
+    }
     ctx->state = PLAYER_STATE_PLAYING;
 
     on_track_changed_fn cb = ctx->track_cb;
@@ -338,10 +371,14 @@ int music_player_play(MusicPlayerContext *ctx, int index)
 
 int music_player_pause(MusicPlayerContext *ctx)
 {
-    if (!ctx || !ctx->player) return -1;
+    if (!ctx || !ctx->player_ready) return -1;
     std::lock_guard<std::mutex> lock(ctx->mtx);
     if (ctx->state == PLAYER_STATE_PLAYING) {
-        ctx->player->pause();
+        if (ctx->use_soft) {
+            soft_player_pause(ctx->soft);
+        } else {
+            ctx->player->pause();
+        }
         ctx->state = PLAYER_STATE_PAUSED;
     }
     return 0;
@@ -349,10 +386,14 @@ int music_player_pause(MusicPlayerContext *ctx)
 
 int music_player_resume(MusicPlayerContext *ctx)
 {
-    if (!ctx || !ctx->player) return -1;
+    if (!ctx || !ctx->player_ready) return -1;
     std::lock_guard<std::mutex> lock(ctx->mtx);
     if (ctx->state == PLAYER_STATE_PAUSED) {
-        ctx->player->resume();
+        if (ctx->use_soft) {
+            soft_player_resume(ctx->soft);
+        } else {
+            ctx->player->resume();
+        }
         ctx->state = PLAYER_STATE_PLAYING;
     }
     return 0;
@@ -360,9 +401,13 @@ int music_player_resume(MusicPlayerContext *ctx)
 
 int music_player_stop(MusicPlayerContext *ctx)
 {
-    if (!ctx || !ctx->player) return -1;
+    if (!ctx || !ctx->player_ready) return -1;
     std::lock_guard<std::mutex> lock(ctx->mtx);
-    ctx->player->stop();
+    if (ctx->use_soft) {
+        soft_player_stop(ctx->soft);
+    } else {
+        ctx->player->stop();
+    }
     ctx->state = PLAYER_STATE_STOPPED;
     return 0;
 }
@@ -416,9 +461,13 @@ int music_player_prev(MusicPlayerContext *ctx)
 
 int music_player_seek(MusicPlayerContext *ctx, int position_ms)
 {
-    if (!ctx || !ctx->player) return -1;
+    if (!ctx || !ctx->player_ready) return -1;
     std::lock_guard<std::mutex> lock(ctx->mtx);
-    ctx->player->seek((double)position_ms);
+    if (ctx->use_soft) {
+        soft_player_seek(ctx->soft, (double)position_ms / 1000.0);
+    } else {
+        ctx->player->seek((double)position_ms);
+    }
     return 0;
 }
 
@@ -443,7 +492,10 @@ PlayerState music_player_get_state(MusicPlayerContext *ctx)
 
 int music_player_get_position(MusicPlayerContext *ctx)
 {
-    if (!ctx || !ctx->player) return 0;
+    if (!ctx || !ctx->player_ready) return 0;
+    if (ctx->use_soft) {
+        return (int)(soft_player_get_position(ctx->soft) * 1000.0);
+    }
     return (int)ctx->player->getPosition();
 }
 
