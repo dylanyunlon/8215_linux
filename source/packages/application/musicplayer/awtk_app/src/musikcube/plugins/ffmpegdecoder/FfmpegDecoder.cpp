@@ -372,12 +372,17 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
             probeData.buf_size = count;
             probeData.filename = "";
 
+            fprintf(stderr, "[ffmpegdecoder] probe read %d bytes from stream (size=%ld)\n", count, (long)stream->Length());
+
             this->formatContext->iformat = av_probe_input_format(&probeData, 1);
 
             if (this->formatContext->iformat) {
+                fprintf(stderr, "[ffmpegdecoder] probed format: %s\n", this->formatContext->iformat->name);
                 if (avformat_open_input(&this->formatContext, "", nullptr, nullptr) == 0) {
                     AVCodecCompat* codec = nullptr;
-                    if (avformat_find_stream_info(this->formatContext, nullptr) >= 0) {
+                    int fsi = avformat_find_stream_info(this->formatContext, nullptr);
+                    fprintf(stderr, "[ffmpegdecoder] find_stream_info=%d, nb_streams=%u\n", fsi, this->formatContext->nb_streams);
+                    if (fsi >= 0) {
                         this->streamId = av_find_best_stream(
                             this->formatContext,
                             AVMEDIA_TYPE_AUDIO,
