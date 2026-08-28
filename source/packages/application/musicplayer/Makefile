@@ -56,7 +56,7 @@ CFLAGS     += -I$(TOPDIR)/source/kernel/kernel-3.18/drivers/misc/atc/inc
 CFLAGS     += -I$(AWTK_APP_SRC)/sqlite3
 CFLAGS     += --sysroot=$(SYSROOT_DIR)
 
-CXXFLAGS    = $(CFLAGS) -std=c++14 -fexceptions -Wno-unused-variable
+CXXFLAGS    = $(CFLAGS) -std=c++14 -fexceptions -Wno-unused-variable -Wno-reorder -Wno-sign-compare
 
 LDFLAGS     = -shared -fPIC
 LDFLAGS    += --sysroot=$(SYSROOT_DIR)
