@@ -24,9 +24,7 @@ SOFT_CPP_SRCS = $(MUSIKCUBE_SRC)/soft_player.cpp \
                 $(MUSIKCUBE_SRC)/audio/Buffer.cpp \
                 $(MUSIKCUBE_SRC)/io/LocalFileStream.cpp \
                 $(MUSIKCUBE_SRC)/plugins/ffmpegdecoder/FfmpegDecoder.cpp \
-                $(MUSIKCUBE_SRC)/plugins/ffmpegdecoder/plugin.cpp \
-                $(MUSIKCUBE_SRC)/plugins/alsaout/AlsaOut.cpp \
-                $(MUSIKCUBE_SRC)/plugins/alsaout/alsaout_plugin.cpp
+                $(MUSIKCUBE_SRC)/plugins/alsaout/AlsaOut.cpp
 
 # cmus ID3/CUE parser sources (proper UTF-16/GBK support)
 CMUS_C_SRCS = $(AWTK_APP_SRC)/cmus_bridge.c \
