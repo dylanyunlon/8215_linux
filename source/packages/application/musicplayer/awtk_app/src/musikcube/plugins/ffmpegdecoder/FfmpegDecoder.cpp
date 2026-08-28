@@ -46,7 +46,6 @@
 
 #define DEFAULT_FRAME_SIZE 4096
 #define BUFFER_SIZE 4096
-#define PROBE_SIZE (256 * 1024)  /* 256KB: cover large ID3v2 tags with embedded album art */
 
 #if LIBAVUTIL_VERSION_MAJOR >= 59
 #define USE_FFMPEG7_CHANNEL_LAYOUT
@@ -362,108 +361,120 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
             this->formatContext->pb = this->ioContext;
             this->formatContext->flags = AVFMT_FLAG_CUSTOM_IO;
 
-            unsigned char* probe = (unsigned char*)av_malloc(PROBE_SIZE);
-            memset(probe, 0, PROBE_SIZE);
-            int count = stream->Read(probe, PROBE_SIZE - AVPROBE_PADDING_SIZE);
-            stream->SetPosition(0);
+            fprintf(stderr, "[ffmpegdecoder] stream size=%ld, opening via avformat_open_input...\n",
+                    (long)stream->Length());
 
-            AVProbeData probeData = { 0 };
-            probeData.buf = probe;
-            probeData.buf_size = count;
-            probeData.filename = "";
+            /* Let FFmpeg probe the format itself through our avio callbacks.
+             * This works reliably on FFmpeg 3.4.5 (AC8215 BSP) where the manual
+             * av_probe_input_format() with a static buffer consistently fails —
+             * even on trivial WAV files. avformat_open_input with iformat=NULL
+             * does its own internal probe via the avio layer with proper seeking. */
+            int openRet = avformat_open_input(&this->formatContext, "", nullptr, nullptr);
+            if (openRet < 0) {
+                std::string err = "avformat_open_input failed: " + getAvError(openRet);
+                fprintf(stderr, "[ffmpegdecoder] %s\n", err.c_str());
+                ::debug->Error(TAG, err.c_str());
+                goto reset_and_fail;
+            }
 
-            fprintf(stderr, "[ffmpegdecoder] probe read %d bytes from stream (size=%ld)\n", count, (long)stream->Length());
+            fprintf(stderr, "[ffmpegdecoder] format detected: %s\n",
+                    this->formatContext->iformat ? this->formatContext->iformat->name : "?");
 
-            this->formatContext->iformat = av_probe_input_format(&probeData, 1);
+            {
+                AVCodecCompat* codec = nullptr;
+                int fsi = avformat_find_stream_info(this->formatContext, nullptr);
+                fprintf(stderr, "[ffmpegdecoder] find_stream_info=%d, nb_streams=%u\n",
+                        fsi, this->formatContext->nb_streams);
 
-            if (this->formatContext->iformat) {
-                fprintf(stderr, "[ffmpegdecoder] probed format: %s\n", this->formatContext->iformat->name);
-                if (avformat_open_input(&this->formatContext, "", nullptr, nullptr) == 0) {
-                    AVCodecCompat* codec = nullptr;
-                    int fsi = avformat_find_stream_info(this->formatContext, nullptr);
-                    fprintf(stderr, "[ffmpegdecoder] find_stream_info=%d, nb_streams=%u\n", fsi, this->formatContext->nb_streams);
-                    if (fsi >= 0) {
-                        this->streamId = av_find_best_stream(
-                            this->formatContext,
-                            AVMEDIA_TYPE_AUDIO,
-                            -1,
-                            -1,
-                            &codec,
-                            0);
+                if (fsi >= 0) {
+                    for (unsigned i = 0; i < this->formatContext->nb_streams; i++) {
+                        AVStream* s = this->formatContext->streams[i];
+                        fprintf(stderr, "[ffmpegdecoder]   stream[%u]: type=%d codec_id=%d\n",
+                                i, s->codecpar->codec_type, s->codecpar->codec_id);
                     }
 
-                    if (this->streamId != -1 && codec != nullptr) {
-                        ::debug->Info(TAG, "found audio stream!");
-                        this->codecContext = avcodec_alloc_context3(codec);
-                        if (codecContext) {
-                            this->codecContext->request_sample_fmt = AV_SAMPLE_FMT_FLT;
-                            if (codec) {
-                                int error = avcodec_parameters_to_context(
-                                    this->codecContext,
-                                    formatContext->streams[this->streamId]->codecpar);
-                                if (error < 0) {
-                                    logAvError("avcodec_parameters_to_context", error);
-                                    goto reset_and_fail;
-                                }
+                    this->streamId = av_find_best_stream(
+                        this->formatContext,
+                        AVMEDIA_TYPE_AUDIO,
+                        -1,
+                        -1,
+                        &codec,
+                        0);
+                }
 
-                                error = avcodec_open2(codecContext, codec, nullptr);
-                                if (error < 0) {
-                                    logAvError("avcodec_open2", error);
-                                    goto reset_and_fail;
-                                }
+                if (this->streamId != -1 && codec != nullptr) {
+                    ::debug->Info(TAG, "found audio stream!");
+                    fprintf(stderr, "[ffmpegdecoder] audio stream idx=%d, codec=%s\n",
+                            this->streamId, codec->name ? codec->name : "?");
 
-                                std::string codecName =
-                                    std::string("resolved codec: ") +
-                                    std::string(codec->long_name);
-                                ::debug->Info(TAG, codecName.c_str());
-                            }
-                            else {
-                                ::debug->Error(TAG, "couldn't find a codec.");
-                                goto reset_and_fail;
-                            }
+                    this->codecContext = avcodec_alloc_context3(codec);
+                    if (codecContext) {
+                        this->codecContext->request_sample_fmt = AV_SAMPLE_FMT_FLT;
 
-#ifdef USE_FFMPEG7_CHANNEL_LAYOUT
-                            if (this->codecContext->ch_layout.nb_channels == 0) {
-                                this->codecContext->ch_layout =
-                                    resolveChannelLayout(this->codecContext->ch_layout.nb_channels);
-#else
-                            if (this->codecContext->channel_layout == 0) {
-                                this->codecContext->channel_layout =
-                                    av_get_default_channel_layout(this->codecContext->channels);
-#endif
-                            }
-
-                            this->preferredFrameSize = this->codecContext->frame_size
-                                ? this->codecContext->frame_size
-                                : DEFAULT_FRAME_SIZE;
-
-                            this->disableInvalidPacketDetection =
-                                ignoreInvalidPacketCodecs.find(this->codecContext->codec_id) !=
-                                ignoreInvalidPacketCodecs.end();
-                        }
-
-                        auto stream = this->formatContext->streams[this->streamId];
-                        this->rate = stream->codecpar->sample_rate;
-#ifdef USE_FFMPEG7_CHANNEL_LAYOUT
-                        this->channels = stream->codecpar->ch_layout.nb_channels;
-#else
-                        this->channels = stream->codecpar->channels;
-#endif
-                        this->duration = (double) this->formatContext->duration / (double) AV_TIME_BASE;
-                        this->outputFifo = av_audio_fifo_alloc(AV_SAMPLE_FMT_FLT, channels, 1);
-
-                        if (!this->outputFifo) {
-                            logError("av_audio_fifo_alloc");
-                            av_free(probe);
+                        int error = avcodec_parameters_to_context(
+                            this->codecContext,
+                            formatContext->streams[this->streamId]->codecpar);
+                        if (error < 0) {
+                            logAvError("avcodec_parameters_to_context", error);
                             goto reset_and_fail;
                         }
 
-                        av_free(probe);
-                        return true;
+                        error = avcodec_open2(codecContext, codec, nullptr);
+                        if (error < 0) {
+                            logAvError("avcodec_open2", error);
+                            goto reset_and_fail;
+                        }
+
+                        std::string codecName =
+                            std::string("resolved codec: ") +
+                            std::string(codec->long_name);
+                        ::debug->Info(TAG, codecName.c_str());
+
+#ifdef USE_FFMPEG7_CHANNEL_LAYOUT
+                        if (this->codecContext->ch_layout.nb_channels == 0) {
+                            this->codecContext->ch_layout =
+                                resolveChannelLayout(this->codecContext->ch_layout.nb_channels);
+#else
+                        if (this->codecContext->channel_layout == 0) {
+                            this->codecContext->channel_layout =
+                                av_get_default_channel_layout(this->codecContext->channels);
+#endif
+                        }
+
+                        this->preferredFrameSize = this->codecContext->frame_size
+                            ? this->codecContext->frame_size
+                            : DEFAULT_FRAME_SIZE;
+
+                        this->disableInvalidPacketDetection =
+                            ignoreInvalidPacketCodecs.find(this->codecContext->codec_id) !=
+                            ignoreInvalidPacketCodecs.end();
                     }
-                    else {
-                        ::debug->Error(TAG, "audio stream not found in input data.");
+
+                    auto audioStream = this->formatContext->streams[this->streamId];
+                    this->rate = audioStream->codecpar->sample_rate;
+#ifdef USE_FFMPEG7_CHANNEL_LAYOUT
+                    this->channels = audioStream->codecpar->ch_layout.nb_channels;
+#else
+                    this->channels = audioStream->codecpar->channels;
+#endif
+                    this->duration = (double) this->formatContext->duration / (double) AV_TIME_BASE;
+
+                    fprintf(stderr, "[ffmpegdecoder] rate=%d ch=%d dur=%.1fs\n",
+                            this->rate, this->channels, this->duration);
+
+                    this->outputFifo = av_audio_fifo_alloc(AV_SAMPLE_FMT_FLT, channels, 1);
+
+                    if (!this->outputFifo) {
+                        logError("av_audio_fifo_alloc");
+                        goto reset_and_fail;
                     }
+
+                    return true;
+                }
+                else {
+                    fprintf(stderr, "[ffmpegdecoder] streamId=%d codec=%p — no audio stream\n",
+                            this->streamId, (void*)codec);
+                    ::debug->Error(TAG, "audio stream not found in input data.");
                 }
             }
         }
