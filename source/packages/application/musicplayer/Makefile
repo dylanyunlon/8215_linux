@@ -10,20 +10,26 @@ TOPDIR      ?= $(shell cd ../../../.. && pwd)
 CC          ?= $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-g++
 SYSROOT_DIR ?= $(TOPDIR)/out/host/arm-buildroot-linux-gnueabi/sysroot
 
-MPD_DB_DIR   = $(TOPDIR)/source/packages/application/musicplayer/awtk_app/src/mpd_db
+AWTK_APP_SRC = $(TOPDIR)/source/packages/application/musicplayer/awtk_app/src
 
 TARGET      = libmusicplayer.so
 
 # Source files (both are now C++)
 CPP_SRCS    = music_scanner.cpp music_player.cpp
 
+# cmus ID3/CUE parser sources (proper UTF-16/GBK support)
+CMUS_C_SRCS = $(AWTK_APP_SRC)/cmus_bridge.c \
+              $(filter-out $(AWTK_APP_SRC)/cmus/test_cmus_port.c, $(wildcard $(AWTK_APP_SRC)/cmus/*.c))
+
 CPP_OBJS    = $(CPP_SRCS:.cpp=.o)
-OBJS        = $(CPP_OBJS)
+CMUS_OBJS   = $(notdir $(CMUS_C_SRCS:.c=.o))
+OBJS        = $(CPP_OBJS) $(CMUS_OBJS)
 
 # Compiler flags
-CFLAGS      = -Wall -Wextra -fPIC -O2
-# mpd_db_bridge.h is under mpd_db/, include its parent so #include "mpd_db/mpd_db_bridge.h" works
-CFLAGS     += -I$(TOPDIR)/source/packages/application/musicplayer/awtk_app/src
+CFLAGS      = -Wall -Wextra -Wno-unused-parameter -fPIC -O2
+CFLAGS     += -DUSE_CMUS_ID3
+CFLAGS     += -I$(AWTK_APP_SRC)
+CFLAGS     += -I$(AWTK_APP_SRC)/cmus
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mediaplayerserver/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/libatcmultimedia/include
 CFLAGS     += -I$(TOPDIR)/prebuild/multimedia/mmisc/include
@@ -34,7 +40,7 @@ CFLAGS     += -I$(TOPDIR)/source/packages/multimedia/directrender/src/utils
 CFLAGS     += -I$(TOPDIR)/source/kernel/kernel-3.18/include/media/atc
 CFLAGS     += -I$(TOPDIR)/source/kernel/kernel-3.18/drivers/misc/atc/inc
 # SQLite3 header (query functions in music_scanner.c use sqlite3 directly)
-CFLAGS     += -I$(TOPDIR)/source/packages/application/musicplayer/awtk_app/src/sqlite3
+CFLAGS     += -I$(AWTK_APP_SRC)/sqlite3
 CFLAGS     += --sysroot=$(SYSROOT_DIR)
 
 CXXFLAGS    = $(CFLAGS) -std=c++11
@@ -52,11 +58,15 @@ $(TARGET): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 	@echo "[musicplayer] Built: $@"
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
 %.o: %.cpp
 	$(CC) $(CXXFLAGS) -c $< -o $@
+
+# cmus C sources live in awtk_app/src/cmus/ — compile with C flags
+%.o: $(AWTK_APP_SRC)/cmus/%.c
+	$(CC) $(CFLAGS) -std=c11 -c $< -o $@
+
+%.o: $(AWTK_APP_SRC)/%.c
+	$(CC) $(CFLAGS) -std=c11 -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)
