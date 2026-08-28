@@ -420,7 +420,7 @@ static void execute_search(void) {
         char text[512];
         snprintf(text, sizeof(text), "  %d. %s - %s", i+1, title, safe_field(info->artist));
 
-        widget_t* item = label_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
+        widget_t* item = button_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
         widget_set_text_utf8(item, text);
         widget_set_style_str(item, "font_size", "20");
         widget_set_style_str(item, "text_color", COLOR_TEAL);
@@ -643,7 +643,7 @@ static void rebuild_playlist_view(void) {
         snprintf(text, sizeof(text), "%s%d. %s - %s",
                  (i == cur) ? "▶ " : "  ", i + 1, title, safe_field(info->artist));
 
-        widget_t* item = label_create(list, 0, y, LIST_W, LIST_ITEM_H);
+        widget_t* item = button_create(list, 0, y, LIST_W, LIST_ITEM_H);
         widget_set_text_utf8(item, text);
         widget_set_prop_int(item, "item_index", i);
         widget_set_style_str(item, "font_size", "20");
@@ -688,7 +688,7 @@ static void rebuild_folder_list_view(void) {
         disp = disp ? disp + 1 : folders[i];
         char text[512];
         snprintf(text, sizeof(text), "  📁 %s", disp);
-        widget_t* item = label_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
+        widget_t* item = button_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
         widget_set_text_utf8(item, text);
         widget_set_prop_str(item, "folder_path", folders[i]);
         widget_set_style_str(item, "font_size", "20");
@@ -709,7 +709,7 @@ static void rebuild_group_list_view(const music_group_t* groups, int count, cons
     for (i = 0; i < count; i++) {
         char text[512];
         snprintf(text, sizeof(text), "  %s  (%d)", groups[i].key, groups[i].items.count);
-        widget_t* item = label_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
+        widget_t* item = button_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
         widget_set_text_utf8(item, text);
         widget_set_prop_int(item, "group_index", i);
         widget_set_prop_int(item, "is_artist", is_artist);
@@ -773,7 +773,7 @@ static void rebuild_group_songs_view(int group_idx, int is_artist) {
         const char* title = safe_title(info, tbuf, sizeof(tbuf));
         char text[512];
         snprintf(text, sizeof(text), "  %d. %s", i+1, title);
-        widget_t* item = label_create(list, 0, y, LIST_W, LIST_ITEM_H);
+        widget_t* item = button_create(list, 0, y, LIST_W, LIST_ITEM_H);
         widget_set_text_utf8(item, text);
         widget_set_prop_int(item, "group_index", group_idx);
         widget_set_prop_int(item, "is_artist", is_artist);
@@ -800,7 +800,7 @@ static void rebuild_favorite_list_view(void) {
         const char* title = safe_title(&favs[i], tbuf, sizeof(tbuf));
         char text[512];
         snprintf(text, sizeof(text), "  %d. ★ %s - %s", i+1, title, safe_field(favs[i].artist));
-        widget_t* item = label_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
+        widget_t* item = button_create(list, 0, i*LIST_ITEM_H, LIST_W, LIST_ITEM_H);
         widget_set_text_utf8(item, text);
         widget_set_style_str(item, "font_size", "20");
         widget_set_style_str(item, "text_color", COLOR_RED);
