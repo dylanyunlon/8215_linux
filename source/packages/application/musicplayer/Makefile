@@ -8,6 +8,7 @@
 # Variables from build system (passed via .mk)
 TOPDIR      ?= $(shell cd ../../../.. && pwd)
 CC          ?= $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-g++
+CC_C        ?= $(TOPDIR)/out/host/bin/arm-buildroot-linux-gnueabi-gcc
 SYSROOT_DIR ?= $(TOPDIR)/out/host/arm-buildroot-linux-gnueabi/sysroot
 
 AWTK_APP_SRC = $(TOPDIR)/source/packages/application/musicplayer/awtk_app/src
@@ -61,12 +62,13 @@ $(TARGET): $(OBJS)
 %.o: %.cpp
 	$(CC) $(CXXFLAGS) -c $< -o $@
 
-# cmus C sources live in awtk_app/src/cmus/ — compile with C flags
+# cmus C sources live in awtk_app/src/cmus/ — must use gcc (not g++)
+# because cmus_bridge.c uses GCC nested functions (auto void flush_track)
 %.o: $(AWTK_APP_SRC)/cmus/%.c
-	$(CC) $(CFLAGS) -std=c11 -c $< -o $@
+	$(CC_C) $(CFLAGS) -std=c11 -c $< -o $@
 
 %.o: $(AWTK_APP_SRC)/%.c
-	$(CC) $(CFLAGS) -std=c11 -c $< -o $@
+	$(CC_C) $(CFLAGS) -std=c11 -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)
