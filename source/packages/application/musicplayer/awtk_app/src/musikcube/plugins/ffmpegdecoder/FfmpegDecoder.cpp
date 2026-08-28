@@ -46,7 +46,7 @@
 
 #define DEFAULT_FRAME_SIZE 4096
 #define BUFFER_SIZE 4096
-#define PROBE_SIZE 32768
+#define PROBE_SIZE (256 * 1024)  /* 256KB: cover large ID3v2 tags with embedded album art */
 
 #if LIBAVUTIL_VERSION_MAJOR >= 59
 #define USE_FFMPEG7_CHANNEL_LAYOUT
@@ -362,7 +362,7 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
             this->formatContext->pb = this->ioContext;
             this->formatContext->flags = AVFMT_FLAG_CUSTOM_IO;
 
-            unsigned char probe[PROBE_SIZE];
+            unsigned char* probe = (unsigned char*)av_malloc(PROBE_SIZE);
             memset(probe, 0, PROBE_SIZE);
             int count = stream->Read(probe, PROBE_SIZE - AVPROBE_PADDING_SIZE);
             stream->SetPosition(0);
@@ -454,9 +454,11 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
 
                         if (!this->outputFifo) {
                             logError("av_audio_fifo_alloc");
+                            av_free(probe);
                             goto reset_and_fail;
                         }
 
+                        av_free(probe);
                         return true;
                     }
                     else {
