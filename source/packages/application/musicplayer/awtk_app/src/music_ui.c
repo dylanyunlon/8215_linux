@@ -647,7 +647,8 @@ static void rebuild_playlist_view(void) {
         widget_set_text_utf8(item, text);
         widget_set_prop_int(item, "item_index", i);
         widget_set_style_str(item, "font_size", "20");
-        widget_set_style_str(item, "text_color", (i == cur) ? COLOR_CYAN : COLOR_WHITE);
+        widget_set_style_str(item, "text_color", (i == cur) ? COLOR_CYAN : COLOR_GRAY);
+        widget_set_style_str(item, "bg_color", COLOR_BG);
         widget_on(item, EVT_CLICK, on_list_item_click, NULL);
         y += LIST_ITEM_H;
     }
@@ -978,6 +979,7 @@ ret_t music_ui_create(widget_t* win) {
     /* Main list view */
     widget_t* lv = list_view_create(win, LIST_X, LIST_Y, LIST_W, LIST_H);
     widget_set_name(lv, W_LIST_VIEW);
+    widget_set_style_str(lv, "bg_color", COLOR_BG);
 
     /* ================================================================
      * LAYER 2: Play view window (overlay, initially hidden)

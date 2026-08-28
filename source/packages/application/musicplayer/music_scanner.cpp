@@ -1,8 +1,9 @@
 /*
- * music_scanner.c - Local music file scanner with ID3v2 tag parsing
+ * music_scanner.cpp - Local music file scanner with ID3v2 tag parsing
  *
- * Pure C implementation, no external library dependencies.
- * Parses ID3v2.3/2.4 headers for title (TIT2), artist (TPE1), album (TALB).
+ * C++ implementation. MusicList uses std::vector<MusicInfo> for automatic
+ * memory management (replaces manual realloc). External API remains
+ * extern "C" compatible.
  *
  * Architecture (GAP-1 回退 — raw SQL removed):
  *   scanner → mpd_db_add_song() → MPD Directory/Song tree
@@ -16,13 +17,14 @@
 
 #include "music_scanner.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <new>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <ctype.h>
-#include <errno.h>
+#include <cctype>
+#include <cerrno>
 #include <unistd.h>
 
 /*
@@ -267,39 +269,32 @@ int music_parse_id3v2(const char *filepath, MusicInfo *info)
 
 /*
  * Ensure the list has room for at least one more item.
- * Grows by MUSIC_GROW_FACTOR (2x) via realloc, capped at MUSIC_MAX_FILES.
- * Returns 0 on success, -1 on OOM or at ceiling.
+ * vector handles growth automatically; we only enforce MUSIC_MAX_FILES ceiling.
+ * Returns 0 on success, -1 at safety ceiling.
  */
 static int music_list_ensure_capacity(MusicList *list)
 {
-    if (list->count < list->capacity) return 0;
-
-    if (list->capacity >= MUSIC_MAX_FILES) {
+    if (static_cast<int>(list->vec.size()) >= MUSIC_MAX_FILES) {
         fprintf(stderr, "[MusicScanner] Safety ceiling reached: %d files\n",
                 MUSIC_MAX_FILES);
         return -1;
     }
-
-    int new_cap = list->capacity * MUSIC_GROW_FACTOR;
-    if (new_cap > MUSIC_MAX_FILES) new_cap = MUSIC_MAX_FILES;
-
-    MusicInfo *new_items = (MusicInfo *)realloc(list->items,
-                                                 new_cap * sizeof(MusicInfo));
-    if (!new_items) {
-        fprintf(stderr, "[MusicScanner] realloc failed: %d -> %d items "
-                "(%zu bytes)\n", list->capacity, new_cap,
-                (size_t)new_cap * sizeof(MusicInfo));
-        return -1;
-    }
-
-    /* Zero out the newly allocated portion */
-    memset(&new_items[list->capacity], 0,
-           (new_cap - list->capacity) * sizeof(MusicInfo));
-
-    list->items = new_items;
-    list->capacity = new_cap;
-    printf("[MusicScanner] List grown: capacity now %d\n", new_cap);
     return 0;
+}
+
+/*
+ * Append a zeroed MusicInfo to the list and return a pointer to it.
+ * Replaces the old pattern of &list->items[list->count] + list->count++.
+ * Caller fills the returned MusicInfo; sync_view() is called automatically.
+ */
+static MusicInfo *music_list_append(MusicList *list)
+{
+    if (music_list_ensure_capacity(list) != 0) return nullptr;
+
+    list->vec.emplace_back();
+    memset(&list->vec.back(), 0, sizeof(MusicInfo));
+    list->sync_view();
+    return &list->vec.back();
 }
 
 /* Per-list UID counter — avoids global static which is not thread-safe
@@ -371,18 +366,16 @@ static int scan_dir_recursive(MusicList *list, const char *dir_path,
 #endif
             if (!music_is_audio_file(entry->d_name)) continue;
 
-            /* Dynamic growth: ensure room for one more item */
-            if (music_list_ensure_capacity(list) != 0) {
+            /* Append a new entry (vector grows automatically) */
+            MusicInfo *info = music_list_append(list);
+            if (!info) {
                 fprintf(stderr, "[MusicScanner] Cannot grow list, "
                         "stopping at %d files\n", list->count);
                 closedir(dir);
                 return 0;
             }
 
-            MusicInfo *info = &list->items[list->count];
-            memset(info, 0, sizeof(MusicInfo));
-
-            info->uid = list->count + 1; /* per-list 1-based UID */
+            info->uid = list->count; /* 1-based: count was already incremented by append */
             info->media_type = MEDIA_TYPE_MUSIC;
             info->file_size = (uint32_t)st.st_size;
             strncpy(info->filepath, fullpath, MUSIC_MAX_PATH_LEN - 1);
@@ -427,7 +420,7 @@ static int scan_dir_recursive(MusicList *list, const char *dir_path,
             if (info->album[0] == '\0')
                 strncpy(info->album, "Unknown", MUSIC_MAX_TAG_LEN - 1);
 
-            list->count++;
+            /* count already updated by music_list_append → sync_view */
             printf("[MusicScanner] [%d] %s - %s (%s) id3=%d\n",
                    info->uid, info->artist, info->title, info->filepath,
                    info->id3_parsed);
@@ -442,29 +435,20 @@ MusicList *music_list_create(int capacity)
 {
     if (capacity <= 0)
         capacity = MUSIC_INIT_CAPACITY;
-    /* No upper clamp here — realloc will grow as needed,
-     * MUSIC_MAX_FILES is enforced in ensure_capacity */
 
-    MusicList *list = (MusicList *)calloc(1, sizeof(MusicList));
-    if (!list) return NULL;
+    MusicList *list = new (std::nothrow) MusicList();
+    if (!list) return nullptr;
 
-    list->items = (MusicInfo *)calloc(capacity, sizeof(MusicInfo));
-    if (!list->items) {
-        free(list);
-        return NULL;
-    }
-
-    list->capacity = capacity;
-    list->count = 0;
+    list->vec.reserve(capacity);
     list->state = SCAN_IDLE;
+    list->scan_path[0] = '\0';
+    list->sync_view();
     return list;
 }
 
 void music_list_destroy(MusicList *list)
 {
-    if (!list) return;
-    free(list->items);
-    free(list);
+    delete list;  /* vector destructor frees all MusicInfo storage */
 }
 
 int music_scan_directory(MusicList *list, const char *dir_path)
@@ -472,7 +456,8 @@ int music_scan_directory(MusicList *list, const char *dir_path)
     if (!list || !dir_path) return -1;
 
     list->state = SCAN_SCANNING;
-    list->count = 0;
+    list->vec.clear();
+    list->sync_view();
     strncpy(list->scan_path, dir_path, MUSIC_MAX_PATH_LEN - 1);
 
     printf("[MusicScanner] Start scanning: %s\n", dir_path);
@@ -611,8 +596,8 @@ static int scan_dir_recursive_cancellable(
                 return 0;
             }
 
-            MusicInfo *info = &list->items[list->count];
-            memset(info, 0, sizeof(MusicInfo));
+            MusicInfo *info = music_list_append(list);
+            if (!info) break;
 
             info->uid = list->count + 1;
             info->media_type = MEDIA_TYPE_MUSIC;
@@ -654,7 +639,7 @@ static int scan_dir_recursive_cancellable(
             if (info->album[0] == '\0')
                 strncpy(info->album, "Unknown", MUSIC_MAX_TAG_LEN - 1);
 
-            list->count++;
+            /* count updated by music_list_append/sync_view */
         }
     }
 
@@ -673,7 +658,8 @@ int music_scan_directory_cancellable(
     if (!list || !dir_path) return -1;
 
     list->state = SCAN_SCANNING;
-    list->count = 0;
+    list->vec.clear();
+    list->sync_view();
     strncpy(list->scan_path, dir_path, MUSIC_MAX_PATH_LEN - 1);
 
     printf("[MusicScanner] Start cancellable scan: %s (gen=%d)\n",
@@ -743,7 +729,8 @@ int music_db_load_text(MusicList *list, const char *db_path)
     if (!fp) return -1;
 
     char line[2048];
-    list->count = 0;
+    list->vec.clear();
+    list->sync_view();
 
     while (fgets(line, sizeof(line), fp)) {
         if (line[0] == '#') continue;
@@ -754,8 +741,8 @@ int music_db_load_text(MusicList *list, const char *db_path)
             break;
         }
 
-        MusicInfo *m = &list->items[list->count];
-        memset(m, 0, sizeof(MusicInfo));
+        MusicInfo *m = music_list_append(list);
+        if (!m) break;
 
         int tmp_type = 0;
         int n = sscanf(line, "%d\t%d\t", &m->uid, &tmp_type);
@@ -781,7 +768,7 @@ int music_db_load_text(MusicList *list, const char *db_path)
             strncpy(m->filename, fields[8], MUSIC_MAX_TAG_LEN - 1);
             strncpy(m->device_name, fields[9], MUSIC_MAX_PATH_LEN - 1);
             m->file_size = (uint32_t)strtoul(fields[10], NULL, 10);
-            list->count++;
+            /* count updated by music_list_append/sync_view */
         }
     }
 
@@ -852,13 +839,10 @@ static int mpd_to_musiclist_visitor(const mpd_song_info_t *song, void *user_data
     struct load_ctx *ctx = (struct load_ctx *)user_data;
     MusicList *list = ctx->list;
 
-    if (music_list_ensure_capacity(list) != 0)
-        return -1;
+    MusicInfo *m = music_list_append(list);
+    if (!m) return -1;  /* safety ceiling or OOM */
 
-    MusicInfo *m = &list->items[list->count];
-    memset(m, 0, sizeof(MusicInfo));
-
-    m->uid = list->count + 1;
+    m->uid = list->count;
     m->media_type = MEDIA_TYPE_MUSIC;
 
     if (song->uri)
@@ -905,7 +889,7 @@ static int mpd_to_musiclist_visitor(const mpd_song_info_t *song, void *user_data
     /* file_size stays 0 if device is not mounted — that's fine,
      * UI shows "未识别到" when no device is present. */
 
-    list->count++;
+    /* count updated by music_list_append/sync_view */
     return 0;
 }
 
@@ -995,7 +979,8 @@ int music_db_load(MusicList *list, const char *db_path)
         return -1;
     }
 
-    list->count = 0;
+    list->vec.clear();
+    list->sync_view();
 
     struct load_ctx ctx;
     ctx.list = list;
@@ -1100,15 +1085,17 @@ static int _sqlite_query(const char *db_path, const char *sql,
     if (param)
         sqlite3_bind_text(stmt, 1, param, -1, SQLITE_TRANSIENT);
 
-    list->count = 0;
+    list->vec.clear();
+    list->sync_view();
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         if (music_list_ensure_capacity(list) != 0)
             break;
-        MusicInfo *m = &list->items[list->count];
-        m->uid = list->count + 1;
+        MusicInfo *m = music_list_append(list);
+        if (!m) break;
+        m->uid = list->count;
         query_row_to_musicinfo(stmt, m);
-        m->uid = list->count + 1; /* re-set after memset in query_row_to_musicinfo */
-        list->count++;
+        m->uid = list->count;
+        /* count updated by music_list_append/sync_view */
     }
 
     sqlite3_finalize(stmt);
@@ -1486,13 +1473,13 @@ static int page_visitor(const mpd_song_info_t *song, void *user_data)
 {
     MusicList *list = (MusicList *)user_data;
 
-    if (list->count >= list->capacity)
+    if (list->count >= list->capacity())
         return -1; /* page full, stop */
 
-    MusicInfo *m = &list->items[list->count];
-    memset(m, 0, sizeof(MusicInfo));
+    MusicInfo *m = music_list_append(list);
+    if (!m) return -1;
 
-    m->uid = list->count + 1;
+    m->uid = list->count;
     m->media_type = MEDIA_TYPE_MUSIC;
 
     if (song->uri)
@@ -1534,7 +1521,7 @@ static int page_visitor(const mpd_song_info_t *song, void *user_data)
     if (song->tags[MPD_TAG_TRACK] && song->tags[MPD_TAG_TRACK][0])
         m->track_num = atoi(song->tags[MPD_TAG_TRACK]);
 
-    list->count++;
+    /* count updated by music_list_append/sync_view */
     return 0;
 }
 
@@ -1543,7 +1530,8 @@ int music_db_load_page(mpd_db_t *db, int page, int page_size, MusicList *list)
     if (!db || !list || page < 0 || page_size <= 0) return -1;
 
     /* Reset count but keep the existing items buffer */
-    list->count = 0;
+    list->vec.clear();
+    list->sync_view();
 
     int visited = mpd_db_visit_page(db, page, page_size, page_visitor, list);
 

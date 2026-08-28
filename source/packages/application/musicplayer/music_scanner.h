@@ -26,9 +26,11 @@ typedef struct mpd_db mpd_db_t;
 #endif
 
 /* Maximum counts */
-/* Initial capacity — grows dynamically via realloc (no hard limit) */
+/* MUSIC_INIT_CAPACITY / MUSIC_GROW_FACTOR: used by std::vector::reserve()
+ * as the initial hint.  The vector grows automatically beyond this.
+ * MUSIC_MAX_FILES remains as a safety ceiling for 512MB DDR. */
 #define MUSIC_INIT_CAPACITY   512
-#define MUSIC_GROW_FACTOR     2    /* double on each realloc */
+#define MUSIC_GROW_FACTOR     2    /* legacy — vector grows automatically */
 #define MUSIC_MAX_FILES       65536  /* safety ceiling to prevent OOM on 512MB DDR */
 #define MUSIC_MAX_PATH_LEN    512
 #define MUSIC_MAX_TAG_LEN     256
@@ -83,7 +85,49 @@ typedef struct {
 
 /*
  * MusicList - scan result container
+ *
+ * C++ builds: backed by std::vector<MusicInfo>.
+ *   - `items` and `count` are kept in sync with the vector so that
+ *     existing code using `list->items[i]` / `list->count` still compiles.
+ *   - push_back / clear / reserve go through the vector; do NOT write
+ *     to items/count directly (use the helpers below).
+ *
+ * Pure-C builds: original POD layout (items/count/capacity managed manually).
+ *   Only used if a .c file needs the struct definition without C++ support;
+ *   all production source files are now .cpp.
  */
+#ifdef __cplusplus
+} /* temporarily close extern "C" for C++ class content */
+
+#include <vector>
+
+struct MusicList {
+    /* ---- compatibility layer ----
+     * These two fields mirror vec.data() / vec.size() so that legacy code
+     * using list->items[i] and list->count continues to work unchanged.
+     * They are updated by sync_view() after every mutation. */
+    MusicInfo   *items;
+    int          count;
+
+    /* ---- the real storage ---- */
+    std::vector<MusicInfo>  vec;
+
+    ScanState    state;
+    char         scan_path[MUSIC_MAX_PATH_LEN];
+
+    /* Sync the C-visible fields from the vector.
+     * Must be called after any push_back / clear / resize / reserve. */
+    void sync_view() {
+        items = vec.empty() ? nullptr : vec.data();
+        count = static_cast<int>(vec.size());
+    }
+
+    int capacity() const { return static_cast<int>(vec.capacity()); }
+};
+
+extern "C" { /* re-open extern "C" */
+#else
+/* Pure-C fallback (struct-only — no methods, no vector) */
 typedef struct {
     MusicInfo   *items;
     int          count;
@@ -91,6 +135,7 @@ typedef struct {
     ScanState    state;
     char         scan_path[MUSIC_MAX_PATH_LEN];
 } MusicList;
+#endif
 
 /* --- Scanner API --- */
 

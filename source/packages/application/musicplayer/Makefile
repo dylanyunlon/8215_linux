@@ -14,13 +14,11 @@ MPD_DB_DIR   = $(TOPDIR)/source/packages/application/musicplayer/awtk_app/src/mp
 
 TARGET      = libmusicplayer.so
 
-# Source files
-C_SRCS      = music_scanner.c
-CPP_SRCS    = music_player.cpp
+# Source files (both are now C++)
+CPP_SRCS    = music_scanner.cpp music_player.cpp
 
-C_OBJS      = $(C_SRCS:.c=.o)
 CPP_OBJS    = $(CPP_SRCS:.cpp=.o)
-OBJS        = $(C_OBJS) $(CPP_OBJS)
+OBJS        = $(CPP_OBJS)
 
 # Compiler flags
 CFLAGS      = -Wall -Wextra -fPIC -O2
