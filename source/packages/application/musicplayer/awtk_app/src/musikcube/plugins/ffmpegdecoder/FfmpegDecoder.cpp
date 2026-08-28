@@ -356,6 +356,7 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
             seekCallback);
 
         if (this->ioContext != nullptr) {
+            this->ioContext->seekable = AVIO_SEEKABLE_NORMAL;
             this->streamId = -1;
             this->formatContext = avformat_alloc_context();
             this->formatContext->pb = this->ioContext;
