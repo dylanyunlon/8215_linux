@@ -123,13 +123,12 @@ class AlsaDeviceList : public musik::core::sdk::IDeviceList {
 };
 
 extern "C" void SetPreferences(musik::core::sdk::IPreferences* prefs) {
-    ::prefs = prefs;
-    prefs->GetString(PREF_DEVICE_ID, nullptr, 0, "");
-    prefs->Save();
+    /* No preferences on embedded — always use ALSA "default" device */
+    (void)prefs;
 }
 
 static std::string getDeviceId() {
-    return getPreferenceString<std::string>(prefs, PREF_DEVICE_ID, "");
+    return "";  /* empty = use "default" ALSA device */
 }
 
 AlsaOut::AlsaOut()
@@ -179,7 +178,9 @@ musik::core::sdk::IDevice* AlsaOut::GetDefaultDevice() {
 }
 
 bool AlsaOut::SetDefaultDevice(const char* deviceId) {
-    return setDefaultDevice<IPreferences, AlsaDevice, IOutput>(prefs, this, PREF_DEVICE_ID, deviceId);
+    /* No preferences on embedded — ignore */
+    (void)deviceId;
+    return true;
 }
 
 IDeviceList* AlsaOut::GetDeviceList() {
