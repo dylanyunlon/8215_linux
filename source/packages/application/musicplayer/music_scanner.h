@@ -169,7 +169,7 @@ int music_scan_directory(MusicList *list, const char *dir_path);
  * @param cb_ctx        Opaque context passed to progress_cb.
  * @return  Number of files found, or -1 on error, -2 on cancelled.
  */
-#define SCAN_PROGRESS_INTERVAL  50  /* report every 50 files */
+#define SCAN_PROGRESS_INTERVAL  8   /* report every 8 files — fill first screen fast */
 
 typedef int (*scan_progress_fn)(int current_count, void *ctx);
 

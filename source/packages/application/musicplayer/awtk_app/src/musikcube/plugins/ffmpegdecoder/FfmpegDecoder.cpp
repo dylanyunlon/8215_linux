@@ -107,14 +107,30 @@ static AVChannelLayout resolveChannelLayout(size_t channelCount) {
 }
 #endif
 
+static int s_read_call_count = 0;
+
 static int readCallback(void* opaque, uint8_t* buffer, int bufferSize) {
     FfmpegDecoder* decoder = static_cast<FfmpegDecoder*>(opaque);
     if (decoder && decoder->Stream()) {
+        long pos_before = (long)decoder->Stream()->Position();
         auto count = decoder->Stream()->Read(buffer, (PositionType) bufferSize);
+        s_read_call_count++;
+        if (s_read_call_count <= 20) {
+            fprintf(stderr, "[avio] read #%d: pos=%ld req=%d got=%ld",
+                    s_read_call_count, pos_before, bufferSize, (long)count);
+            if (count > 0) {
+                fprintf(stderr, " data=[%02x %02x %02x %02x]",
+                        buffer[0], buffer[1],
+                        count > 2 ? buffer[2] : 0,
+                        count > 3 ? buffer[3] : 0);
+            }
+            fprintf(stderr, "\n");
+        }
         if (count > 0) {
             return count;
         }
     }
+    fprintf(stderr, "[avio] read: returning EOF\n");
     return AVERROR_EOF;
 }
 
@@ -130,42 +146,60 @@ static int64_t seekCallback(void* opaque, int64_t offset, int whence) {
     FfmpegDecoder* decoder = static_cast<FfmpegDecoder*>(opaque);
     if (decoder && decoder->Stream()) {
         IDataStream* stream = decoder->Stream();
+        const char* whence_str = "?";
+        switch (whence) {
+            case AVSEEK_SIZE: whence_str = "SIZE"; break;
+            case SEEK_SET: whence_str = "SET"; break;
+            case SEEK_CUR: whence_str = "CUR"; break;
+            case SEEK_END: whence_str = "END"; break;
+        }
+        fprintf(stderr, "[avio] seek: whence=%s offset=%lld pos_before=%ld len=%ld\n",
+                whence_str, (long long)offset, (long)stream->Position(), (long)stream->Length());
+
         switch (whence) {
             case AVSEEK_SIZE:
                 return stream->Length();
             case SEEK_SET: {
-                if (offset >= stream->Length()) {
-                    debug->Error(TAG, "SEEK_SET requested offset beyond EOF");
+                if (offset < 0 || offset > stream->Length()) {
+                    fprintf(stderr, "[avio] seek SET rejected: %lld > %ld\n",
+                            (long long)offset, (long)stream->Length());
                     return AVERROR(EINVAL);
                 }
                 if (!stream->SetPosition((PositionType) offset)) {
-                    debug->Error(TAG, "SEEK_SET failed");
+                    fprintf(stderr, "[avio] seek SET failed\n");
+                    return AVERROR(EIO);
                 }
                 break;
             }
             case SEEK_CUR: {
-                if (stream->Position() + offset >= stream->Length()) {
-                    debug->Error(TAG, "SEEK_CUR requested offset beyond EOF");
+                int64_t newPos = stream->Position() + offset;
+                if (newPos < 0 || newPos > stream->Length()) {
                     return AVERROR(EINVAL);
                 }
-                if (!stream->SetPosition(stream->Position() + (PositionType) offset)) {
-                    debug->Error(TAG, "SEEK_CUR failed");
+                if (!stream->SetPosition((PositionType) newPos)) {
+                    return AVERROR(EIO);
                 }
                 break;
             }
-            case SEEK_END:
-                if (!stream->SetPosition(stream->Length() - 1)) {
-                    debug->Error(TAG, "SEEK_END failed");
+            case SEEK_END: {
+                int64_t newPos = stream->Length() + offset;
+                if (newPos < 0 || newPos > stream->Length()) {
+                    return AVERROR(EINVAL);
+                }
+                if (!stream->SetPosition((PositionType) newPos)) {
+                    return AVERROR(EIO);
                 }
                 break;
+            }
             default:
-                debug->Error(TAG, "unknown seek type!");
-                break;
+                return AVERROR(EINVAL);
         }
 
-        return stream->Position();
+        int64_t result = stream->Position();
+        fprintf(stderr, "[avio] seek result: pos=%lld\n", (long long)result);
+        return result;
     }
-    return 0;
+    return AVERROR(EINVAL);
 }
 
 FfmpegDecoder::FfmpegDecoder() {
@@ -338,6 +372,7 @@ bool FfmpegDecoder::InitializeResampler() {
 }
 
 bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
+    s_read_call_count = 0;
     if (stream->Seekable() && this->ioContext == nullptr) {
         ::debug->Info(TAG, "parsing data stream...");
 
@@ -362,15 +397,44 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
             this->formatContext->pb = this->ioContext;
             this->formatContext->flags = AVFMT_FLAG_CUSTOM_IO;
 
-            fprintf(stderr, "[ffmpegdecoder] stream size=%ld, opening via avformat_open_input...\n",
-                    (long)stream->Length());
+            /* Build a fake filename from the URI so FFmpeg can use the
+             * extension (.mp3, .flac, .wav, ...) to boost probe scores.
+             * The original code used probeData.filename = "" which gave
+             * zero extension bonus, causing probe failures on FFmpeg 3.4.5. */
+            const char* uri = stream->Uri();
+            const char* filename = (uri && uri[0]) ? uri : "stream.mp3";
+            fprintf(stderr, "[ffmpegdecoder] stream size=%ld, uri=%s\n",
+                    (long)stream->Length(), filename);
 
-            /* Let FFmpeg probe the format itself through our avio callbacks.
-             * This works reliably on FFmpeg 3.4.5 (AC8215 BSP) where the manual
-             * av_probe_input_format() with a static buffer consistently fails —
-             * even on trivial WAV files. avformat_open_input with iformat=NULL
-             * does its own internal probe via the avio layer with proper seeking. */
-            int openRet = avformat_open_input(&this->formatContext, "", nullptr, nullptr);
+            /* Strategy 1: manual probe with filename hint.
+             * Read a chunk into a buffer, feed to av_probe_input_format.
+             * The filename extension provides score bonus in FFmpeg's probe. */
+            const int probeSize = 64 * 1024;  /* 64KB — enough for headers */
+            unsigned char* probe = (unsigned char*)av_malloc(probeSize + AVPROBE_PADDING_SIZE);
+            memset(probe, 0, probeSize + AVPROBE_PADDING_SIZE);
+            int count = stream->Read(probe, probeSize);
+            stream->SetPosition(0);
+
+            AVProbeData probeData = { 0 };
+            probeData.buf = probe;
+            probeData.buf_size = count;
+            probeData.filename = filename;  /* KEY: extension helps probe scoring */
+
+            this->formatContext->iformat = av_probe_input_format(&probeData, 1);
+            av_free(probe);
+
+            if (this->formatContext->iformat) {
+                fprintf(stderr, "[ffmpegdecoder] probed format: %s\n",
+                        this->formatContext->iformat->name);
+            } else {
+                fprintf(stderr, "[ffmpegdecoder] probe returned NULL, "
+                        "letting avformat_open_input auto-detect\n");
+            }
+
+            /* Open input — if iformat was found, FFmpeg uses it directly.
+             * If NULL, FFmpeg does its own internal probe via avio + filename. */
+            stream->SetPosition(0);
+            int openRet = avformat_open_input(&this->formatContext, filename, nullptr, nullptr);
             if (openRet < 0) {
                 std::string err = "avformat_open_input failed: " + getAvError(openRet);
                 fprintf(stderr, "[ffmpegdecoder] %s\n", err.c_str());
@@ -378,7 +442,7 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
                 goto reset_and_fail;
             }
 
-            fprintf(stderr, "[ffmpegdecoder] format detected: %s\n",
+            fprintf(stderr, "[ffmpegdecoder] format opened: %s\n",
                     this->formatContext->iformat ? this->formatContext->iformat->name : "?");
 
             {

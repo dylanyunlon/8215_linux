@@ -339,6 +339,48 @@ typedef struct {
     int scan_generation;   /* Issue #51: generation at time of dispatch */
 } scan_task_t;
 
+/*============================================================================
+ * Incremental playlist push — "扫到一批出一批"
+ *
+ * progress callback 每 SCAN_PROGRESS_INTERVAL(8) 首触发一次,
+ * 把当前已扫到的歌曲立即推到 player playlist + UI.
+ * 用户不用等全扫完就能看到歌、点播.
+ *==========================================================================*/
+typedef struct {
+    int dev_idx;
+    bool first_batch_sent;  /* 第一批是否已推过 */
+} scan_progress_ctx_t;
+
+static ret_t incremental_playlist_handler(const idle_info_t* idle) {
+    int dev_idx = (int)(intptr_t)idle->ctx;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) return RET_REMOVE;
+    if (dev_idx != s_app.state.current_device_idx) return RET_REMOVE;
+
+    storage_device_state_t* dev = &s_app.devices[dev_idx];
+    if (!dev->music_list || dev->music_list->count == 0) return RET_REMOVE;
+
+    if (s_app.player) {
+        set_player_playlist_from_list(dev->music_list);
+    }
+    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+    return RET_REMOVE;
+}
+
+static int scan_progress_cb(int current_count, void *ctx) {
+    scan_progress_ctx_t *pctx = (scan_progress_ctx_t *)ctx;
+    if (!pctx) return 0;
+
+    /* 推 playlist 到主线程 */
+    idle_queue(incremental_playlist_handler, (void*)(intptr_t)pctx->dev_idx);
+
+    if (!pctx->first_batch_sent) {
+        pctx->first_batch_sent = true;
+        printf("[music_app] First %d tracks pushed to UI\n", current_count);
+    }
+
+    return 0;  /* 0 = continue scanning */
+}
+
 static void* scan_thread_func(void* arg) {
     scan_task_t* task = (scan_task_t*)arg;
     int dev_idx = task->dev_idx;
@@ -390,12 +432,16 @@ static void* scan_thread_func(void* arg) {
 
     printf("[music_app] Scanning %s (gen=%d) ...\n", path, my_generation);
 
+    scan_progress_ctx_t progress_ctx;
+    progress_ctx.dev_idx = dev_idx;
+    progress_ctx.first_batch_sent = false;
+
     int scan_ret = music_scan_directory_cancellable(
         list, path,
         &dev->scan_generation,  /* cancel_flag: 指向 scan_generation */
         my_generation,          /* expected value */
-        NULL,                   /* progress callback — TODO: 接UI进度条 */
-        NULL);
+        scan_progress_cb,       /* 每8首推一次playlist到UI */
+        &progress_ctx);
 
     /* 检查扫描是否被取消（拔U盘或新扫描覆盖） */
     if (scan_ret == -2) {
