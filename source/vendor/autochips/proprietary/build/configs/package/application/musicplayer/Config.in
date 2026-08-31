@@ -1,6 +1,8 @@
 config BR2_PACKAGE_MUSICPLAYER
 	bool "musicplayer"
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_ALSA_LIB
 	help
 	  Local music player service with ID3 tag parsing
-	  and playlist management. Uses libatcmediaplayer
-	  for audio playback.
+	  and playlist management. Hardware decode via
+	  libatcmediaplayer with FFmpeg+ALSA software fallback.
