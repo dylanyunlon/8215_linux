@@ -311,7 +311,7 @@ void FfmpegDecoder::Reset() {
     }
     if (this->formatContext) {
         avformat_close_input(&this->formatContext);
-        avformat_free_context(this->formatContext);
+        /* avformat_close_input already frees and NULLs formatContext */
         this->formatContext = nullptr;
     }
     if (this->outputFifo) {
@@ -373,6 +373,19 @@ bool FfmpegDecoder::InitializeResampler() {
 
 bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
     s_read_call_count = 0;
+
+    /* FFmpeg 3.4 (libavformat < 58) does NOT auto-register demuxers.
+     * Without this, av_find_input_format("mp3") returns NULL and
+     * avformat_open_input cannot detect any format. Safe to call repeatedly. */
+#if LIBAVFORMAT_VERSION_INT < AV_VERSION_INT(58, 0, 0)
+    static bool s_registered = false;
+    if (!s_registered) {
+        av_register_all();
+        s_registered = true;
+        fprintf(stderr, "[ffmpegdecoder] av_register_all() called\n");
+    }
+#endif
+
     if (stream->Seekable() && this->ioContext == nullptr) {
         ::debug->Info(TAG, "parsing data stream...");
 
@@ -406,10 +419,10 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
             fprintf(stderr, "[ffmpegdecoder] stream size=%ld, uri=%s\n",
                     (long)stream->Length(), filename);
 
-            /* Strategy 1: manual probe with filename hint.
-             * Read a chunk into a buffer, feed to av_probe_input_format.
+            /* Manual probe: read a chunk, feed to av_probe_input_format.
+             * 256KB handles MP3s with large ID3v2 + album art (e.g. 18KB APIC).
              * The filename extension provides score bonus in FFmpeg's probe. */
-            const int probeSize = 64 * 1024;  /* 64KB — enough for headers */
+            const int probeSize = 256 * 1024;
             unsigned char* probe = (unsigned char*)av_malloc(probeSize + AVPROBE_PADDING_SIZE);
             memset(probe, 0, probeSize + AVPROBE_PADDING_SIZE);
             int count = stream->Read(probe, probeSize);
@@ -418,28 +431,64 @@ bool FfmpegDecoder::Open(musik::core::sdk::IDataStream *stream) {
             AVProbeData probeData = { 0 };
             probeData.buf = probe;
             probeData.buf_size = count;
-            probeData.filename = filename;  /* KEY: extension helps probe scoring */
+            probeData.filename = filename;
 
-            this->formatContext->iformat = av_probe_input_format(&probeData, 1);
+            /* Try av_probe_input_format3 with a low score threshold.
+             * av_probe_input_format (is_opened=1) requires score >= 25,
+             * but MP3 with large ID3v2+APIC on FFmpeg 3.4 can score below that. */
+            int probeScore = 0;
+            this->formatContext->iformat = av_probe_input_format3(&probeData, 1, &probeScore);
+            fprintf(stderr, "[ffmpegdecoder] probe score=%d\n", probeScore);
+
+            if (!this->formatContext->iformat) {
+                /* Fallback: force format from file extension */
+                const char* ext = strrchr(filename, '.');
+                if (ext) {
+                    ext++; /* skip the dot */
+                    fprintf(stderr, "[ffmpegdecoder] probe failed, trying extension: %s\n", ext);
+                    this->formatContext->iformat = av_find_input_format(ext);
+                }
+                /* Last resort: check ID3 header -> mp3 */
+                if (!this->formatContext->iformat && count >= 3 &&
+                    probe[0] == 'I' && probe[1] == 'D' && probe[2] == '3') {
+                    fprintf(stderr, "[ffmpegdecoder] ID3 header detected, forcing mp3\n");
+                    this->formatContext->iformat = av_find_input_format("mp3");
+                }
+            }
             av_free(probe);
 
             if (this->formatContext->iformat) {
-                fprintf(stderr, "[ffmpegdecoder] probed format: %s\n",
+                fprintf(stderr, "[ffmpegdecoder] format: %s\n",
                         this->formatContext->iformat->name);
             } else {
-                fprintf(stderr, "[ffmpegdecoder] probe returned NULL, "
-                        "letting avformat_open_input auto-detect\n");
+                fprintf(stderr, "[ffmpegdecoder] WARNING: no format detected\n");
             }
 
-            /* Open input — if iformat was found, FFmpeg uses it directly.
-             * If NULL, FFmpeg does its own internal probe via avio + filename. */
+            /* Open with iformat pre-set and custom AVIO pb.
+             * Pass NULL as url — our AVIO callbacks handle all I/O. */
             stream->SetPosition(0);
-            int openRet = avformat_open_input(&this->formatContext, filename, nullptr, nullptr);
+            int openRet = avformat_open_input(&this->formatContext, NULL, NULL, NULL);
             if (openRet < 0) {
-                std::string err = "avformat_open_input failed: " + getAvError(openRet);
-                fprintf(stderr, "[ffmpegdecoder] %s\n", err.c_str());
-                ::debug->Error(TAG, err.c_str());
-                goto reset_and_fail;
+                fprintf(stderr, "[ffmpegdecoder] AVIO open failed (%s), "
+                        "trying direct file open: %s\n",
+                        getAvError(openRet).c_str(), uri);
+
+                /* avformat_open_input frees formatContext on failure.
+                 * Reallocate and try opening the file directly by path,
+                 * bypassing custom AVIO entirely. This works because the
+                 * file is on local disk. */
+                this->formatContext = avformat_alloc_context();
+                stream->SetPosition(0);
+                openRet = avformat_open_input(&this->formatContext, uri, NULL, NULL);
+                if (openRet < 0) {
+                    std::string err = "direct open also failed: " + getAvError(openRet);
+                    fprintf(stderr, "[ffmpegdecoder] %s\n", err.c_str());
+                    ::debug->Error(TAG, err.c_str());
+                    /* formatContext is freed by avformat_open_input on failure */
+                    this->formatContext = nullptr;
+                    goto reset_and_fail;
+                }
+                fprintf(stderr, "[ffmpegdecoder] direct file open OK\n");
             }
 
             fprintf(stderr, "[ffmpegdecoder] format opened: %s\n",

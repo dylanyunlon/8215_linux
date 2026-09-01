@@ -36,13 +36,19 @@
 
 #include "../sdk/constants.h"
 #include "../sdk/IPreferences.h"
+#include <cstdint>
 
 static musik::core::sdk::IPreferences* prefs;
 
 #define BUFFER_COUNT 16
 #define PCM_ACCESS_TYPE SND_PCM_ACCESS_RW_INTERLEAVED
-#define PCM_FORMAT SND_PCM_FORMAT_FLOAT_LE
 #define PREF_DEVICE_ID "device_id"
+
+/* AC83xx only supports S8/U8/S16_LE/U16_LE natively.
+ * Try FLOAT first via plughw (auto-converts), fall back to S16_LE
+ * with manual float->s16 conversion in WriteLoop. */
+static snd_pcm_format_t s_pcmFormat = SND_PCM_FORMAT_FLOAT_LE;
+static bool s_needFloatToS16 = false;
 
 #define LOCK(x) \
     /*std::cerr << "locking " << x << "\n";*/ \
@@ -128,12 +134,12 @@ extern "C" void SetPreferences(musik::core::sdk::IPreferences* prefs) {
 }
 
 static std::string getDeviceId() {
-    return "";  /* empty = use "default" ALSA device */
+    return "";  /* empty = use default device set in constructor */
 }
 
 AlsaOut::AlsaOut()
 : pcmHandle(nullptr)
-, device("default")
+, device("plughw:0,0")
 , channels(2)
 , rate(44100)
 , volume(1.0)
@@ -266,9 +272,20 @@ void AlsaOut::InitDevice() {
         goto error;
     }
 
-    if ((err = snd_pcm_hw_params_set_format(pcmHandle, hardware, PCM_FORMAT)) < 0) {
-        std::cerr << "AlsaOut: cannot set sample format " << snd_strerror(err) << std::endl;
-        goto error;
+    /* Try FLOAT_LE first (musikcube internal format). If the device rejects
+     * it (AC83xx only supports S16_LE), fall back to S16_LE and convert
+     * float->s16 in WriteLoop before snd_pcm_writei. */
+    s_pcmFormat = SND_PCM_FORMAT_FLOAT_LE;
+    s_needFloatToS16 = false;
+    if ((err = snd_pcm_hw_params_set_format(pcmHandle, hardware, SND_PCM_FORMAT_FLOAT_LE)) < 0) {
+        std::cerr << "AlsaOut: FLOAT_LE not supported, trying S16_LE\n";
+        if ((err = snd_pcm_hw_params_set_format(pcmHandle, hardware, SND_PCM_FORMAT_S16_LE)) < 0) {
+            std::cerr << "AlsaOut: cannot set sample format " << snd_strerror(err) << std::endl;
+            goto error;
+        }
+        s_pcmFormat = SND_PCM_FORMAT_S16_LE;
+        s_needFloatToS16 = true;
+        std::cerr << "AlsaOut: using S16_LE with float->s16 conversion\n";
     }
 
     if ((err = snd_pcm_hw_params_set_rate_near(pcmHandle, hardware, &rate, 0)) < 0) {
@@ -317,9 +334,10 @@ double AlsaOut::Latency() {
             snd_pcm_get_params(this->pcmHandle, &bufferSize, &periodSize);
 
             if (bufferSize) {
+                size_t sampleSize = s_needFloatToS16 ? sizeof(int16_t) : sizeof(float);
                 this->latency =
                 (double) bufferSize /
-                (double) (this->rate * this->channels * sizeof(float));
+                (double) (this->rate * this->channels * sampleSize);
             }
         }
     }
@@ -408,9 +426,7 @@ void AlsaOut::WriteLoop() {
                 size_t samplesPerChannel = samples / channels;
                 float volume = (float) this->volume;
 
-                /* software volume; alsa doesn't support this internally. this is about
-                as terrible as an algorithm can be -- it's just a linear ramp. */
-                //std::cerr << "volume=" << volume << std::endl;
+                /* software volume */
                 if (volume != 1.0f) {
                     float *buffer = next->buffer->BufferPointer();
                     for (size_t i = 0; i < samples; i++) {
@@ -422,12 +438,39 @@ void AlsaOut::WriteLoop() {
                 {
                     LOCK("WRITE_BUFFER()");
                     if (this->pcmHandle) {
-                        WRITE_BUFFER(this->pcmHandle, next, samplesPerChannel); /* sets 'err' */
+                        if (s_needFloatToS16) {
+                            /* Convert float [-1.0, 1.0] -> S16_LE [-32768, 32767] */
+                            float* src = next->buffer->BufferPointer();
+                            std::vector<int16_t> s16buf(samples);
+                            for (size_t i = 0; i < samples; i++) {
+                                float s = src[i];
+                                if (s > 1.0f) s = 1.0f;
+                                if (s < -1.0f) s = -1.0f;
+                                s16buf[i] = (int16_t)(s * 32767.0f);
+                            }
+                            err = snd_pcm_writei(this->pcmHandle, s16buf.data(), samplesPerChannel);
+                            if (err < 0) { PRINT_ERROR(err); }
+                        } else {
+                            WRITE_BUFFER(this->pcmHandle, next, samplesPerChannel);
+                        }
 
                         if (err == -EINTR || err == -EPIPE || err == -ESTRPIPE) {
                             if (!snd_pcm_recover(this->pcmHandle, err, 1)) {
-                                /* try one more time... */
-                                WRITE_BUFFER(this->pcmHandle, next, samplesPerChannel);
+                                /* try one more time */
+                                if (s_needFloatToS16) {
+                                    float* src = next->buffer->BufferPointer();
+                                    std::vector<int16_t> s16buf(samples);
+                                    for (size_t i = 0; i < samples; i++) {
+                                        float s = src[i];
+                                        if (s > 1.0f) s = 1.0f;
+                                        if (s < -1.0f) s = -1.0f;
+                                        s16buf[i] = (int16_t)(s * 32767.0f);
+                                    }
+                                    err = snd_pcm_writei(this->pcmHandle, s16buf.data(), samplesPerChannel);
+                                    if (err < 0) { PRINT_ERROR(err); }
+                                } else {
+                                    WRITE_BUFFER(this->pcmHandle, next, samplesPerChannel);
+                                }
                             }
                         }
                     }
@@ -503,7 +546,7 @@ void AlsaOut::SetFormat(IBuffer *buffer) {
         if (this->pcmHandle) {
             int err = snd_pcm_set_params(
                 this->pcmHandle,
-                PCM_FORMAT,
+                s_pcmFormat,
                 PCM_ACCESS_TYPE,
                 this->channels,
                 this->rate,
