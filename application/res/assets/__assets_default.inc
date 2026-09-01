@@ -1,139 +1,447 @@
 #include "awtk.h"
 #include "base/assets_manager.h"
-#ifdef STATIC_LOAD_RES
 #ifndef WITH_FS_RES
+#include "default/inc/ui/component.data"
+#include "default/inc/ui/device_page.data"
 #include "default/inc/ui/home_page.data"
+#include "default/inc/ui/link_page.data"
+#include "default/inc/ui/update_page.data"
 #include "default/inc/strings/en_US.data"
 #include "default/inc/strings/zh_CN.data"
 #include "default/inc/styles/default.data"
-#include "default/inc/styles/home_page.data"
 #ifdef WITH_STB_IMAGE
-#include "default/inc/images/abs_r.res"
-#include "default/inc/images/background.res"
-#include "default/inc/images/big_0.res"
-#include "default/inc/images/big_1.res"
-#include "default/inc/images/big_2.res"
-#include "default/inc/images/big_3.res"
-#include "default/inc/images/big_4.res"
-#include "default/inc/images/big_5.res"
-#include "default/inc/images/big_6.res"
-#include "default/inc/images/big_7.res"
-#include "default/inc/images/big_8.res"
-#include "default/inc/images/big_9.res"
-#include "default/inc/images/engine_oil_r.res"
-#include "default/inc/images/engine_warn_r.res"
-#include "default/inc/images/fuel.res"
-#include "default/inc/images/fuel_r.res"
-#include "default/inc/images/hazard_r.res"
-#include "default/inc/images/high_light_y.res"
-#include "default/inc/images/hot_r.res"
-#include "default/inc/images/left_gs_0.res"
-#include "default/inc/images/left_gs_1.res"
-#include "default/inc/images/left_gs_2.res"
-#include "default/inc/images/left_gs_3.res"
-#include "default/inc/images/left_gs_4.res"
-#include "default/inc/images/left_gs_5.res"
-#include "default/inc/images/left_y.res"
-#include "default/inc/images/low_light_y.res"
-#include "default/inc/images/right_gs_0.res"
-#include "default/inc/images/right_gs_1.res"
-#include "default/inc/images/right_gs_2.res"
-#include "default/inc/images/right_gs_3.res"
-#include "default/inc/images/right_gs_4.res"
-#include "default/inc/images/right_gs_5.res"
-#include "default/inc/images/right_y.res"
-#include "default/inc/images/small_0.res"
-#include "default/inc/images/small_1.res"
-#include "default/inc/images/small_2.res"
-#include "default/inc/images/small_3.res"
-#include "default/inc/images/small_4.res"
-#include "default/inc/images/small_5.res"
-#include "default/inc/images/small_6.res"
-#include "default/inc/images/small_7.res"
-#include "default/inc/images/small_8.res"
-#include "default/inc/images/small_9.res"
-#include "default/inc/images/temp.res"
-#include "default/inc/images/temp_r.res"
+#include "default/inc/images/bg_center.res"
+#include "default/inc/images/bg_cricle.res"
+#include "default/inc/images/bg_halo_0.res"
+#include "default/inc/images/bg_halo_1.res"
+#include "default/inc/images/bg_halo_2.res"
+#include "default/inc/images/box.res"
+#include "default/inc/images/box_power_level_100_.res"
+#include "default/inc/images/box_power_level_10_.res"
+#include "default/inc/images/box_power_level_25_.res"
+#include "default/inc/images/box_power_level_50_.res"
+#include "default/inc/images/box_power_level_75_.res"
+#include "default/inc/images/box_power_pointer.res"
+#include "default/inc/images/box_power_progress_n.res"
+#include "default/inc/images/box_power_progress_p.res"
+#include "default/inc/images/call_huang.res"
+#include "default/inc/images/call_pick.res"
+#include "default/inc/images/dashboard_progress_0.res"
+#include "default/inc/images/dashboard_progress_1.res"
+#include "default/inc/images/dashboard_progress_2.res"
+#include "default/inc/images/dock_bluetooth_n.res"
+#include "default/inc/images/dock_bluetooth_p.res"
+#include "default/inc/images/dock_instrument_n.res"
+#include "default/inc/images/dock_instrument_p.res"
+#include "default/inc/images/dock_music_n.res"
+#include "default/inc/images/dock_music_p.res"
+#include "default/inc/images/dock_navi_n.res"
+#include "default/inc/images/dock_navi_p.res"
+#include "default/inc/images/dock_settings_n.res"
+#include "default/inc/images/dock_settings_p.res"
+#include "default/inc/images/dog.res"
+#include "default/inc/images/drv_mode_0.res"
+#include "default/inc/images/drv_mode_1.res"
+#include "default/inc/images/drv_mode_2.res"
+#include "default/inc/images/gear_d_n.res"
+#include "default/inc/images/gear_d_p.res"
+#include "default/inc/images/gear_n_n.res"
+#include "default/inc/images/gear_n_p.res"
+#include "default/inc/images/gear_r_n.res"
+#include "default/inc/images/gear_r_p.res"
+#include "default/inc/images/icon_answer.res"
+#include "default/inc/images/icon_call.res"
+#include "default/inc/images/icon_incoming_call.res"
+#include "default/inc/images/icon_media_cover_n.res"
+#include "default/inc/images/icon_nav_0.res"
+#include "default/inc/images/icon_nav_1.res"
+#include "default/inc/images/icon_nav_10.res"
+#include "default/inc/images/icon_nav_11.res"
+#include "default/inc/images/icon_nav_12.res"
+#include "default/inc/images/icon_nav_13.res"
+#include "default/inc/images/icon_nav_14.res"
+#include "default/inc/images/icon_nav_15.res"
+#include "default/inc/images/icon_nav_16.res"
+#include "default/inc/images/icon_nav_17.res"
+#include "default/inc/images/icon_nav_18.res"
+#include "default/inc/images/icon_nav_19.res"
+#include "default/inc/images/icon_nav_2.res"
+#include "default/inc/images/icon_nav_20.res"
+#include "default/inc/images/icon_nav_21.res"
+#include "default/inc/images/icon_nav_22.res"
+#include "default/inc/images/icon_nav_23.res"
+#include "default/inc/images/icon_nav_24.res"
+#include "default/inc/images/icon_nav_25.res"
+#include "default/inc/images/icon_nav_26.res"
+#include "default/inc/images/icon_nav_27.res"
+#include "default/inc/images/icon_nav_28.res"
+#include "default/inc/images/icon_nav_29.res"
+#include "default/inc/images/icon_nav_3.res"
+#include "default/inc/images/icon_nav_30.res"
+#include "default/inc/images/icon_nav_31.res"
+#include "default/inc/images/icon_nav_4.res"
+#include "default/inc/images/icon_nav_5.res"
+#include "default/inc/images/icon_nav_51.res"
+#include "default/inc/images/icon_nav_52.res"
+#include "default/inc/images/icon_nav_53.res"
+#include "default/inc/images/icon_nav_54.res"
+#include "default/inc/images/icon_nav_55.res"
+#include "default/inc/images/icon_nav_56.res"
+#include "default/inc/images/icon_nav_57.res"
+#include "default/inc/images/icon_nav_58.res"
+#include "default/inc/images/icon_nav_59.res"
+#include "default/inc/images/icon_nav_6.res"
+#include "default/inc/images/icon_nav_60.res"
+#include "default/inc/images/icon_nav_61.res"
+#include "default/inc/images/icon_nav_62.res"
+#include "default/inc/images/icon_nav_63.res"
+#include "default/inc/images/icon_nav_64.res"
+#include "default/inc/images/icon_nav_65.res"
+#include "default/inc/images/icon_nav_66.res"
+#include "default/inc/images/icon_nav_67.res"
+#include "default/inc/images/icon_nav_68.res"
+#include "default/inc/images/icon_nav_69.res"
+#include "default/inc/images/icon_nav_7.res"
+#include "default/inc/images/icon_nav_70.res"
+#include "default/inc/images/icon_nav_71.res"
+#include "default/inc/images/icon_nav_72.res"
+#include "default/inc/images/icon_nav_73.res"
+#include "default/inc/images/icon_nav_74.res"
+#include "default/inc/images/icon_nav_75.res"
+#include "default/inc/images/icon_nav_76.res"
+#include "default/inc/images/icon_nav_77.res"
+#include "default/inc/images/icon_nav_78.res"
+#include "default/inc/images/icon_nav_79.res"
+#include "default/inc/images/icon_nav_8.res"
+#include "default/inc/images/icon_nav_80.res"
+#include "default/inc/images/icon_nav_9.res"
+#include "default/inc/images/icon_next_n.res"
+#include "default/inc/images/icon_next_p.res"
+#include "default/inc/images/icon_outgoing_call.res"
+#include "default/inc/images/icon_pause_n.res"
+#include "default/inc/images/icon_pause_p.res"
+#include "default/inc/images/icon_play_n.res"
+#include "default/inc/images/icon_play_p.res"
+#include "default/inc/images/icon_pre_n.res"
+#include "default/inc/images/icon_pre_p.res"
+#include "default/inc/images/icon_riding_distance.res"
+#include "default/inc/images/icon_riding_time.res"
+#include "default/inc/images/icon_tmps_n.res"
+#include "default/inc/images/icon_tmps_w.res"
+#include "default/inc/images/icon_WiFi.res"
+#include "default/inc/images/interconnection_bg.res"
+#include "default/inc/images/left_bg_n.res"
+#include "default/inc/images/left_bg_p.res"
+#include "default/inc/images/linkgear_d_n.res"
+#include "default/inc/images/linkgear_d_p.res"
+#include "default/inc/images/linkgear_n_n.res"
+#include "default/inc/images/linkgear_n_p.res"
+#include "default/inc/images/linkgear_r_n.res"
+#include "default/inc/images/linkgear_r_p.res"
+#include "default/inc/images/link_elecRect_head.res"
+#include "default/inc/images/music_bar.res"
+#include "default/inc/images/music_bar_bg_n.res"
+#include "default/inc/images/pointer_0.res"
+#include "default/inc/images/pointer_1.res"
+#include "default/inc/images/pointer_2.res"
+#include "default/inc/images/power_0.res"
+#include "default/inc/images/power_1.res"
+#include "default/inc/images/power_2.res"
+#include "default/inc/images/power_3.res"
+#include "default/inc/images/power_4.res"
+#include "default/inc/images/power_5.res"
+#include "default/inc/images/power_6.res"
+#include "default/inc/images/power_7.res"
+#include "default/inc/images/power_8.res"
+#include "default/inc/images/power_9.res"
+#include "default/inc/images/power_bg.res"
+#include "default/inc/images/power_level_bg.res"
+#include "default/inc/images/power_level_n.res"
+#include "default/inc/images/power_level_p.res"
+#include "default/inc/images/power_pointer.res"
+#include "default/inc/images/power_progress.res"
+#include "default/inc/images/progress_n.res"
+#include "default/inc/images/progress_p.res"
+#include "default/inc/images/setting_bg.res"
+#include "default/inc/images/setting_bluebooth_close.res"
+#include "default/inc/images/setting_bluebooth_open.res"
+#include "default/inc/images/setting_line.res"
+#include "default/inc/images/setting_menu_selec.res"
+#include "default/inc/images/setting_page_down_n.res"
+#include "default/inc/images/setting_page_up_n.res"
+#include "default/inc/images/setting_selected.res"
+#include "default/inc/images/setting_tire_pressure_bg.res"
+#include "default/inc/images/speed_0.res"
+#include "default/inc/images/speed_1.res"
+#include "default/inc/images/speed_2.res"
+#include "default/inc/images/speed_3.res"
+#include "default/inc/images/speed_4.res"
+#include "default/inc/images/speed_5.res"
+#include "default/inc/images/speed_6.res"
+#include "default/inc/images/speed_7.res"
+#include "default/inc/images/speed_8.res"
+#include "default/inc/images/speed_9.res"
+#include "default/inc/images/top_abs_n.res"
+#include "default/inc/images/top_auto_high_beams_n.res"
+#include "default/inc/images/top_bluetooth_n.res"
+#include "default/inc/images/top_brake_failure_n.res"
+#include "default/inc/images/top_charge_n.res"
+#include "default/inc/images/top_ecu_n.res"
+#include "default/inc/images/top_gps_n.res"
+#include "default/inc/images/top_high_beam_n.res"
+#include "default/inc/images/top_high_temperature_n.res"
+#include "default/inc/images/top_left.res"
+#include "default/inc/images/top_left_n.res"
+#include "default/inc/images/top_lock_n.res"
+#include "default/inc/images/top_low_beam_n.res"
+#include "default/inc/images/top_low_temperature_n.res"
+#include "default/inc/images/top_motor_failure_n.res"
+#include "default/inc/images/top_ready.res"
+#include "default/inc/images/top_ready_n.res"
+#include "default/inc/images/top_right.res"
+#include "default/inc/images/top_right_n.res"
+#include "default/inc/images/top_signal_0_n.res"
+#include "default/inc/images/top_signal_1_n.res"
+#include "default/inc/images/top_signal_2_n.res"
+#include "default/inc/images/top_signal_3_n.res"
+#include "default/inc/images/top_system_failure_n.res"
+#include "default/inc/images/top_tcs_n.res"
+#include "default/inc/images/top_tire_pressure_n.res"
+#include "default/inc/images/unit_km_h.res"
+#include "default/inc/images/unit_mph.res"
+#include "default/inc/images/wallpaper.res"
 #else
 #endif /*WITH_STB_IMAGE*/
 #ifdef WITH_VGCANVAS
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
 #include "default/inc/fonts/default.res"
+#include "default/inc/fonts/default_2.res"
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_FS_RES*/
-#endif
 
 ret_t assets_init_default(void) {
   assets_manager_t* am = assets_manager();
 
-#ifndef STATIC_LOAD_RES
-  if (atc_awtk_load_res(am)) {
-	log_error("assets load failed, please check!\n");
-  }
-#else
 #ifdef WITH_FS_RES
   assets_manager_preload(am, ASSET_TYPE_STYLE, "default");
 #else
+  assets_manager_add(am, ui_component);
+  assets_manager_add(am, ui_device_page);
   assets_manager_add(am, ui_home_page);
+  assets_manager_add(am, ui_link_page);
+  assets_manager_add(am, ui_update_page);
   assets_manager_add(am, strings_en_US);
   assets_manager_add(am, strings_zh_CN);
   assets_manager_add(am, style_default);
-  assets_manager_add(am, style_home_page);
-  assets_manager_add(am, image_abs_r);
-  assets_manager_add(am, image_background);
-  assets_manager_add(am, image_big_0);
-  assets_manager_add(am, image_big_1);
-  assets_manager_add(am, image_big_2);
-  assets_manager_add(am, image_big_3);
-  assets_manager_add(am, image_big_4);
-  assets_manager_add(am, image_big_5);
-  assets_manager_add(am, image_big_6);
-  assets_manager_add(am, image_big_7);
-  assets_manager_add(am, image_big_8);
-  assets_manager_add(am, image_big_9);
-  assets_manager_add(am, image_engine_oil_r);
-  assets_manager_add(am, image_engine_warn_r);
-  assets_manager_add(am, image_fuel);
-  assets_manager_add(am, image_fuel_r);
-  assets_manager_add(am, image_hazard_r);
-  assets_manager_add(am, image_high_light_y);
-  assets_manager_add(am, image_hot_r);
-  assets_manager_add(am, image_left_gs_0);
-  assets_manager_add(am, image_left_gs_1);
-  assets_manager_add(am, image_left_gs_2);
-  assets_manager_add(am, image_left_gs_3);
-  assets_manager_add(am, image_left_gs_4);
-  assets_manager_add(am, image_left_gs_5);
-  assets_manager_add(am, image_left_y);
-  assets_manager_add(am, image_low_light_y);
-  assets_manager_add(am, image_right_gs_0);
-  assets_manager_add(am, image_right_gs_1);
-  assets_manager_add(am, image_right_gs_2);
-  assets_manager_add(am, image_right_gs_3);
-  assets_manager_add(am, image_right_gs_4);
-  assets_manager_add(am, image_right_gs_5);
-  assets_manager_add(am, image_right_y);
-  assets_manager_add(am, image_small_0);
-  assets_manager_add(am, image_small_1);
-  assets_manager_add(am, image_small_2);
-  assets_manager_add(am, image_small_3);
-  assets_manager_add(am, image_small_4);
-  assets_manager_add(am, image_small_5);
-  assets_manager_add(am, image_small_6);
-  assets_manager_add(am, image_small_7);
-  assets_manager_add(am, image_small_8);
-  assets_manager_add(am, image_small_9);
-  assets_manager_add(am, image_temp);
-  assets_manager_add(am, image_temp_r);
+  assets_manager_add(am, image_bg_center);
+  assets_manager_add(am, image_bg_cricle);
+  assets_manager_add(am, image_bg_halo_0);
+  assets_manager_add(am, image_bg_halo_1);
+  assets_manager_add(am, image_bg_halo_2);
+  assets_manager_add(am, image_box);
+  assets_manager_add(am, image_box_power_level_100_);
+  assets_manager_add(am, image_box_power_level_10_);
+  assets_manager_add(am, image_box_power_level_25_);
+  assets_manager_add(am, image_box_power_level_50_);
+  assets_manager_add(am, image_box_power_level_75_);
+  assets_manager_add(am, image_box_power_pointer);
+  assets_manager_add(am, image_box_power_progress_n);
+  assets_manager_add(am, image_box_power_progress_p);
+  assets_manager_add(am, image_call_huang);
+  assets_manager_add(am, image_call_pick);
+  assets_manager_add(am, image_dashboard_progress_0);
+  assets_manager_add(am, image_dashboard_progress_1);
+  assets_manager_add(am, image_dashboard_progress_2);
+  assets_manager_add(am, image_dock_bluetooth_n);
+  assets_manager_add(am, image_dock_bluetooth_p);
+  assets_manager_add(am, image_dock_instrument_n);
+  assets_manager_add(am, image_dock_instrument_p);
+  assets_manager_add(am, image_dock_music_n);
+  assets_manager_add(am, image_dock_music_p);
+  assets_manager_add(am, image_dock_navi_n);
+  assets_manager_add(am, image_dock_navi_p);
+  assets_manager_add(am, image_dock_settings_n);
+  assets_manager_add(am, image_dock_settings_p);
+  assets_manager_add(am, image_dog);
+  assets_manager_add(am, image_drv_mode_0);
+  assets_manager_add(am, image_drv_mode_1);
+  assets_manager_add(am, image_drv_mode_2);
+  assets_manager_add(am, image_gear_d_n);
+  assets_manager_add(am, image_gear_d_p);
+  assets_manager_add(am, image_gear_n_n);
+  assets_manager_add(am, image_gear_n_p);
+  assets_manager_add(am, image_gear_r_n);
+  assets_manager_add(am, image_gear_r_p);
+  assets_manager_add(am, image_icon_answer);
+  assets_manager_add(am, image_icon_call);
+  assets_manager_add(am, image_icon_incoming_call);
+  assets_manager_add(am, image_icon_media_cover_n);
+  assets_manager_add(am, image_icon_nav_0);
+  assets_manager_add(am, image_icon_nav_1);
+  assets_manager_add(am, image_icon_nav_10);
+  assets_manager_add(am, image_icon_nav_11);
+  assets_manager_add(am, image_icon_nav_12);
+  assets_manager_add(am, image_icon_nav_13);
+  assets_manager_add(am, image_icon_nav_14);
+  assets_manager_add(am, image_icon_nav_15);
+  assets_manager_add(am, image_icon_nav_16);
+  assets_manager_add(am, image_icon_nav_17);
+  assets_manager_add(am, image_icon_nav_18);
+  assets_manager_add(am, image_icon_nav_19);
+  assets_manager_add(am, image_icon_nav_2);
+  assets_manager_add(am, image_icon_nav_20);
+  assets_manager_add(am, image_icon_nav_21);
+  assets_manager_add(am, image_icon_nav_22);
+  assets_manager_add(am, image_icon_nav_23);
+  assets_manager_add(am, image_icon_nav_24);
+  assets_manager_add(am, image_icon_nav_25);
+  assets_manager_add(am, image_icon_nav_26);
+  assets_manager_add(am, image_icon_nav_27);
+  assets_manager_add(am, image_icon_nav_28);
+  assets_manager_add(am, image_icon_nav_29);
+  assets_manager_add(am, image_icon_nav_3);
+  assets_manager_add(am, image_icon_nav_30);
+  assets_manager_add(am, image_icon_nav_31);
+  assets_manager_add(am, image_icon_nav_4);
+  assets_manager_add(am, image_icon_nav_5);
+  assets_manager_add(am, image_icon_nav_51);
+  assets_manager_add(am, image_icon_nav_52);
+  assets_manager_add(am, image_icon_nav_53);
+  assets_manager_add(am, image_icon_nav_54);
+  assets_manager_add(am, image_icon_nav_55);
+  assets_manager_add(am, image_icon_nav_56);
+  assets_manager_add(am, image_icon_nav_57);
+  assets_manager_add(am, image_icon_nav_58);
+  assets_manager_add(am, image_icon_nav_59);
+  assets_manager_add(am, image_icon_nav_6);
+  assets_manager_add(am, image_icon_nav_60);
+  assets_manager_add(am, image_icon_nav_61);
+  assets_manager_add(am, image_icon_nav_62);
+  assets_manager_add(am, image_icon_nav_63);
+  assets_manager_add(am, image_icon_nav_64);
+  assets_manager_add(am, image_icon_nav_65);
+  assets_manager_add(am, image_icon_nav_66);
+  assets_manager_add(am, image_icon_nav_67);
+  assets_manager_add(am, image_icon_nav_68);
+  assets_manager_add(am, image_icon_nav_69);
+  assets_manager_add(am, image_icon_nav_7);
+  assets_manager_add(am, image_icon_nav_70);
+  assets_manager_add(am, image_icon_nav_71);
+  assets_manager_add(am, image_icon_nav_72);
+  assets_manager_add(am, image_icon_nav_73);
+  assets_manager_add(am, image_icon_nav_74);
+  assets_manager_add(am, image_icon_nav_75);
+  assets_manager_add(am, image_icon_nav_76);
+  assets_manager_add(am, image_icon_nav_77);
+  assets_manager_add(am, image_icon_nav_78);
+  assets_manager_add(am, image_icon_nav_79);
+  assets_manager_add(am, image_icon_nav_8);
+  assets_manager_add(am, image_icon_nav_80);
+  assets_manager_add(am, image_icon_nav_9);
+  assets_manager_add(am, image_icon_next_n);
+  assets_manager_add(am, image_icon_next_p);
+  assets_manager_add(am, image_icon_outgoing_call);
+  assets_manager_add(am, image_icon_pause_n);
+  assets_manager_add(am, image_icon_pause_p);
+  assets_manager_add(am, image_icon_play_n);
+  assets_manager_add(am, image_icon_play_p);
+  assets_manager_add(am, image_icon_pre_n);
+  assets_manager_add(am, image_icon_pre_p);
+  assets_manager_add(am, image_icon_riding_distance);
+  assets_manager_add(am, image_icon_riding_time);
+  assets_manager_add(am, image_icon_tmps_n);
+  assets_manager_add(am, image_icon_tmps_w);
+  assets_manager_add(am, image_icon_WiFi);
+  assets_manager_add(am, image_interconnection_bg);
+  assets_manager_add(am, image_left_bg_n);
+  assets_manager_add(am, image_left_bg_p);
+  assets_manager_add(am, image_linkgear_d_n);
+  assets_manager_add(am, image_linkgear_d_p);
+  assets_manager_add(am, image_linkgear_n_n);
+  assets_manager_add(am, image_linkgear_n_p);
+  assets_manager_add(am, image_linkgear_r_n);
+  assets_manager_add(am, image_linkgear_r_p);
+  assets_manager_add(am, image_link_elecRect_head);
+  assets_manager_add(am, image_music_bar);
+  assets_manager_add(am, image_music_bar_bg_n);
+  assets_manager_add(am, image_pointer_0);
+  assets_manager_add(am, image_pointer_1);
+  assets_manager_add(am, image_pointer_2);
+  assets_manager_add(am, image_power_0);
+  assets_manager_add(am, image_power_1);
+  assets_manager_add(am, image_power_2);
+  assets_manager_add(am, image_power_3);
+  assets_manager_add(am, image_power_4);
+  assets_manager_add(am, image_power_5);
+  assets_manager_add(am, image_power_6);
+  assets_manager_add(am, image_power_7);
+  assets_manager_add(am, image_power_8);
+  assets_manager_add(am, image_power_9);
+  assets_manager_add(am, image_power_bg);
+  assets_manager_add(am, image_power_level_bg);
+  assets_manager_add(am, image_power_level_n);
+  assets_manager_add(am, image_power_level_p);
+  assets_manager_add(am, image_power_pointer);
+  assets_manager_add(am, image_power_progress);
+  assets_manager_add(am, image_progress_n);
+  assets_manager_add(am, image_progress_p);
+  assets_manager_add(am, image_setting_bg);
+  assets_manager_add(am, image_setting_bluebooth_close);
+  assets_manager_add(am, image_setting_bluebooth_open);
+  assets_manager_add(am, image_setting_line);
+  assets_manager_add(am, image_setting_menu_selec);
+  assets_manager_add(am, image_setting_page_down_n);
+  assets_manager_add(am, image_setting_page_up_n);
+  assets_manager_add(am, image_setting_selected);
+  assets_manager_add(am, image_setting_tire_pressure_bg);
+  assets_manager_add(am, image_speed_0);
+  assets_manager_add(am, image_speed_1);
+  assets_manager_add(am, image_speed_2);
+  assets_manager_add(am, image_speed_3);
+  assets_manager_add(am, image_speed_4);
+  assets_manager_add(am, image_speed_5);
+  assets_manager_add(am, image_speed_6);
+  assets_manager_add(am, image_speed_7);
+  assets_manager_add(am, image_speed_8);
+  assets_manager_add(am, image_speed_9);
+  assets_manager_add(am, image_top_abs_n);
+  assets_manager_add(am, image_top_auto_high_beams_n);
+  assets_manager_add(am, image_top_bluetooth_n);
+  assets_manager_add(am, image_top_brake_failure_n);
+  assets_manager_add(am, image_top_charge_n);
+  assets_manager_add(am, image_top_ecu_n);
+  assets_manager_add(am, image_top_gps_n);
+  assets_manager_add(am, image_top_high_beam_n);
+  assets_manager_add(am, image_top_high_temperature_n);
+  assets_manager_add(am, image_top_left);
+  assets_manager_add(am, image_top_left_n);
+  assets_manager_add(am, image_top_lock_n);
+  assets_manager_add(am, image_top_low_beam_n);
+  assets_manager_add(am, image_top_low_temperature_n);
+  assets_manager_add(am, image_top_motor_failure_n);
+  assets_manager_add(am, image_top_ready);
+  assets_manager_add(am, image_top_ready_n);
+  assets_manager_add(am, image_top_right);
+  assets_manager_add(am, image_top_right_n);
+  assets_manager_add(am, image_top_signal_0_n);
+  assets_manager_add(am, image_top_signal_1_n);
+  assets_manager_add(am, image_top_signal_2_n);
+  assets_manager_add(am, image_top_signal_3_n);
+  assets_manager_add(am, image_top_system_failure_n);
+  assets_manager_add(am, image_top_tcs_n);
+  assets_manager_add(am, image_top_tire_pressure_n);
+  assets_manager_add(am, image_unit_km_h);
+  assets_manager_add(am, image_unit_mph);
+  assets_manager_add(am, image_wallpaper);
 #ifdef WITH_VGCANVAS
 #endif /*WITH_VGCANVAS*/
 #ifdef WITH_TRUETYPE_FONT
   assets_manager_add(am, font_default);
+  assets_manager_add(am, font_default_2);
 #else /*WITH_TRUETYPE_FONT*/
 #endif /*WITH_TRUETYPE_FONT*/
-#endif
 #endif
 
   tk_init_assets();

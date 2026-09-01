@@ -1,7 +1,7 @@
 import sys
 import awtk_locator as locator
 
-LONGSOPTS = ['awtk_root=', 'AWTK_ROOT=']
+LONGSOPTS = ['awtk_root=', 'AWTK_ROOT=', 'LINUX_FB=']
 def get_args(args, longsopts = []) :
     list_opts = []
     for arg in args:
@@ -36,6 +36,8 @@ ARGUMENTS = dict()
 if len(opts) > 0 :
     is_new_usage = True
     ARGUMENTS['AWTK_ROOT'] = opts[0]
+    if len(opts) > 1 :
+        ARGUMENTS['LINUX_FB'] = opts[1]
 else :
     ARGUMENTS['AWTK_ROOT'] = ''
 update_res(ARGUMENTS, is_new_usage)

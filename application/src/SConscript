@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-import os
+﻿import os
 import sys
 import platform
 
@@ -50,6 +49,6 @@ if cpppath:
     env.AppendUnique(CPPPATH=cpppath)
 env.AppendUnique(LIBPATH=libpath)
 
-sources = Glob('**/*.c') + Glob('*.c')
+sources = Glob('**/**/**/*.c') + Glob('**/**/**/**/*.c') + Glob('**/**/*.c') + Glob('**/*.c') + Glob('*.c')
 
-env.Program(os.path.join(BIN_DIR, 'demo'), sources, LIBS = libs)
+env.Program(os.path.join(BIN_DIR, 'demo'), sources, LIBS=libs)

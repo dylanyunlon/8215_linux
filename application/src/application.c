@@ -1,4 +1,6 @@
-﻿#include "awtk.h"
+#include "awtk.h"
+#include "../3rd/awtk-widget-qr/src/qr_register.h"
+#include "../3rd/awtk-widget-chart-view/src/chart_view_register.h"
 #include "common/navigator.h"
 #include "vehicle_services.h"
 #if defined(LINUX) || defined(APPLE) || defined(HAS_STDIO) || defined(WINDOWS)
@@ -22,7 +24,8 @@
  * 注册自定义控件
  */
 static ret_t custom_widgets_register(void) {
-
+  qr_register();
+  chart_view_register();
   return RET_OK;
 }
 
@@ -54,24 +57,8 @@ static date_time_vtable_t s_date_time_vtable_t = {
  * 当程序初始化完成时调用，全局只触发一次。
  */
 static ret_t application_on_launch(void) {
-  #if defined(LINUX) || defined(APPLE) || defined(HAS_STDIO) || defined(WINDOWS)
-  /*#ifdef ATC_SHOW_LOGO_BOOT
-  int fd = OpenAnimationDrv();
-  SendAnimationMsg(fd);
-  CloseAnimationDriver(fd);
-  printf(" exit vba");
-  #else
-  void *inst = bootani_connect();
-  bootani_send_cmd(inst, ANI_COMM_CMD_EXIT, 1);
-  bootani_disconnect(inst);
-  #endif*/
-  locale_info_change(locale_info(), "zh", "CN");
-  #else
-  locale_info_set(locale_info_create("zh", "CN"));
-  #endif
   date_time_global_init_ex(&s_date_time_vtable_t);
   window_manager_set_show_fps(window_manager(), TRUE);
-
   return RET_OK;
 }
 
@@ -96,14 +83,9 @@ ret_t application_init(void) {
   custom_widgets_register();
   application_on_launch();
 
-  if (strlen(APP_SYSTEM_BAR) > 0) {
-    navigator_to(APP_SYSTEM_BAR);
-  }
 
-  if (strlen(APP_BOTTOM_SYSTEM_BAR) > 0) {
-    navigator_to(APP_BOTTOM_SYSTEM_BAR);
-  }
 
+  // locale_info_change(locale_info(), "zh", "CN") ;
   return navigator_to(APP_START_PAGE);
 }
 
