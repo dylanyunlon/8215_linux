@@ -509,11 +509,18 @@ OutputState AlsaOut::Play(IBuffer *buffer, IBufferProvider* provider) {
         this->buffers.push_back(context);
 
         if (!playable(this->pcmHandle)) {
-            std::cerr << "AlsaOut: sanity check -- stream not playable. adding buffer to queue anyway\n";
+            /* Device is in XRUN or other non-playable state.
+             * Recover it so WriteLoop can continue writing. */
+            std::cerr << "AlsaOut: device not playable, recovering...\n";
+            int recoverErr = snd_pcm_prepare(this->pcmHandle);
+            if (recoverErr < 0) {
+                std::cerr << "AlsaOut: snd_pcm_prepare failed: "
+                          << snd_strerror(recoverErr) << "\n";
+            } else {
+                std::cerr << "AlsaOut: device recovered OK\n";
+            }
         }
-        else {
-            NOTIFY();
-        }
+        NOTIFY();
     }
 
     return OutputState::BufferWritten;

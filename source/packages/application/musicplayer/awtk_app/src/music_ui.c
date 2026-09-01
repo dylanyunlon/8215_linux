@@ -229,6 +229,7 @@ static void show_play_view(bool show) {
     widget_t* pw = find(W_PLAY_WIN);
     if (pw) {
         widget_set_visible(pw, show);
+        widget_set_sensitive(pw, show);
         s_play_view_visible = show;
     }
 }

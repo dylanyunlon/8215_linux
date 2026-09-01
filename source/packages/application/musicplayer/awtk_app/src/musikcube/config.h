@@ -16,3 +16,10 @@
 #include <cstring>
 #include <string>
 #include <memory>
+
+/* From musikcube support/DeleteDefaults.h — delete copy/assign shortcuts */
+#define DELETE_COPY_AND_ASSIGNMENT_DEFAULTS(ClassName) \
+    ClassName(const ClassName&) = delete; \
+    ClassName(const ClassName&&) = delete; \
+    ClassName& operator=(const ClassName&) = delete; \
+    ClassName& operator=(const ClassName&&) = delete;
