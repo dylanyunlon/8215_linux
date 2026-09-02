@@ -183,7 +183,7 @@ static void playback_thread(SoftPlayerContext* ctx, std::string filepath) {
                 break;
             }
 
-            /* If the output returns a positive value (BufferFull), wait */
+            /* If the output's internal queue is full, wait and retry */
             while ((int)result > 0 && !ctx->quit.load()) {
                 std::this_thread::sleep_for(std::chrono::milliseconds((int)result));
                 result = ctx->output->Play(&buffer, &provider);
@@ -193,6 +193,12 @@ static void playback_thread(SoftPlayerContext* ctx, std::string filepath) {
                 started = true;
                 printf("[SoftPlayer] First buffer written to ALSA\n");
             }
+
+            /* Throttle: wait until ALSA has consumed this buffer before
+             * decoding the next one.  Without this the decode loop runs
+             * at CPU speed (270s file decoded in 15s) and overwhelms the
+             * output queue, causing XRUN and silence. */
+            provider.WaitUntilDrained();
         }
     }
 

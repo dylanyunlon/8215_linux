@@ -77,6 +77,22 @@ static inline bool playable(snd_pcm_t* pcm) {
         return true;
     }
 
+    /* Auto-recover from XRUN / SETUP — don't just give up */
+    if (state == SND_PCM_STATE_XRUN ||
+        state == SND_PCM_STATE_SETUP ||
+        state == SND_PCM_STATE_SUSPENDED)
+    {
+        std::cerr << "AlsaOut: device not playable, recovering..."
+                  << " (state=" << (int)state << ")\n";
+        int err = snd_pcm_prepare(pcm);
+        if (err == 0) {
+            std::cerr << "AlsaOut: device recovered OK\n";
+            return true;
+        }
+        std::cerr << "AlsaOut: recovery failed: " << snd_strerror(err) << "\n";
+        return false;
+    }
+
     std::cerr << "AlsaOut: invalid device state: " << (int) state << "\n";
     return false;
 }
@@ -509,18 +525,11 @@ OutputState AlsaOut::Play(IBuffer *buffer, IBufferProvider* provider) {
         this->buffers.push_back(context);
 
         if (!playable(this->pcmHandle)) {
-            /* Device is in XRUN or other non-playable state.
-             * Recover it so WriteLoop can continue writing. */
-            std::cerr << "AlsaOut: device not playable, recovering...\n";
-            int recoverErr = snd_pcm_prepare(this->pcmHandle);
-            if (recoverErr < 0) {
-                std::cerr << "AlsaOut: snd_pcm_prepare failed: "
-                          << snd_strerror(recoverErr) << "\n";
-            } else {
-                std::cerr << "AlsaOut: device recovered OK\n";
-            }
+            std::cerr << "AlsaOut: sanity check -- stream not playable. adding buffer to queue anyway\n";
         }
-        NOTIFY();
+        else {
+            NOTIFY();
+        }
     }
 
     return OutputState::BufferWritten;

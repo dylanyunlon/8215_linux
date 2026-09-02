@@ -351,6 +351,8 @@ typedef struct {
     bool first_batch_sent;  /* 第一批是否已推过 */
 } scan_progress_ctx_t;
 
+static int s_last_pushed_count = 0; /* dedup: last playlist count pushed to player */
+
 static ret_t incremental_playlist_handler(const idle_info_t* idle) {
     int dev_idx = (int)(intptr_t)idle->ctx;
     if (dev_idx < 0 || dev_idx >= s_app.device_count) return RET_REMOVE;
@@ -358,6 +360,10 @@ static ret_t incremental_playlist_handler(const idle_info_t* idle) {
 
     storage_device_state_t* dev = &s_app.devices[dev_idx];
     if (!dev->music_list || dev->music_list->count == 0) return RET_REMOVE;
+
+    /* Only push when count actually grew — avoids 700+ redundant copies */
+    if (dev->music_list->count == s_last_pushed_count) return RET_REMOVE;
+    s_last_pushed_count = dev->music_list->count;
 
     if (s_app.player) {
         set_player_playlist_from_list(dev->music_list);
@@ -386,6 +392,8 @@ static void* scan_thread_func(void* arg) {
     int dev_idx = task->dev_idx;
     int my_generation = task->scan_generation;  /* Issue #51 */
     free(task);
+
+    s_last_pushed_count = 0;  /* reset dedup for new scan */
 
     pthread_mutex_lock(&s_app.mutex);
     if (dev_idx < 0 || dev_idx >= s_app.device_count) {

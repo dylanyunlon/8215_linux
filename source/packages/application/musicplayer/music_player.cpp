@@ -156,12 +156,15 @@ static void *position_poll_func(void *arg)
         on_position_changed_fn cb = nullptr;
         void *data = nullptr;
         int pos = 0;
+        int dur = -1;
 
         {
             std::lock_guard<std::mutex> lock(ctx->mtx);
             if (ctx->state == PLAYER_STATE_PLAYING && ctx->player_ready && ctx->position_cb) {
                 if (ctx->use_soft) {
                     pos = (int)(soft_player_get_position(ctx->soft) * 1000.0);
+                    double d = soft_player_get_duration(ctx->soft);
+                    if (d > 0.0) dur = (int)(d * 1000.0);
                 } else if (ctx->player) {
                     pos = (int)ctx->player->getPosition();
                 }
@@ -170,7 +173,7 @@ static void *position_poll_func(void *arg)
             }
         }
 
-        if (cb) cb(pos, -1, data);
+        if (cb) cb(pos, dur, data);
     }
     return NULL;
 }
