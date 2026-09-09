@@ -447,14 +447,20 @@ static void execute_search(void) {
 static ret_t on_list_item_click(void* ctx, event_t* e) {
     (void)ctx;
     widget_t* item = WIDGET(e->target);
+    printf(">>>>>>>>>> [CLICK] on_list_item_click FIRED <<<<<<<<<<\n");
     if (item) {
         int idx = widget_get_prop_int(item, "item_index", -1);
+        printf(">>>>>>>>>> [CLICK] idx=%d locked=%d <<<<<<<<<<\n",
+               idx, music_app_is_player_locked());
         if (idx >= 0) {
-            /* Issue #A4: safe_play 防止 preparing 期间重复触发 */
             int rc = music_app_safe_play(idx);
             if (rc == 0) {
                 show_play_view(true);
+            } else {
+                printf(">>>>>>>>>> [CLICK] BLOCKED! rc=%d <<<<<<<<<<\n", rc);
             }
+        } else {
+            printf(">>>>>>>>>> [CLICK] item_index NOT SET <<<<<<<<<<\n");
         }
     }
     return RET_OK;
@@ -635,9 +641,15 @@ static void rebuild_playlist_view(void) {
     s_page_count = end - s_page_offset;
 
     int i;
+    int created = 0;
+    printf("========== [REBUILD] start: total=%d page=%d-%d ==========\n",
+           total, s_page_offset, end);
     for (i = s_page_offset; i < end; i++) {
         const MusicInfo* info = music_app_get_track_info(i);
-        if (!info) continue;
+        if (!info) {
+            printf("---------- [REBUILD] get_track_info(%d) = NULL ----------\n", i);
+            continue;
+        }
         char tbuf[MUSIC_MAX_TAG_LEN];
         const char* title = safe_title(info, tbuf, sizeof(tbuf));
         char text[512];
@@ -652,7 +664,10 @@ static void rebuild_playlist_view(void) {
         widget_set_style_str(item, "bg_color", COLOR_BG);
         widget_on(item, EVT_CLICK, on_list_item_click, NULL);
         y += LIST_ITEM_H;
+        created++;
     }
+
+    printf("========== [REBUILD] done: created=%d ==========\n", created);
 
     /* Page down button */
     if (end < total) {
@@ -991,6 +1006,7 @@ ret_t music_ui_create(widget_t* win) {
     widget_set_name(pw, W_PLAY_WIN);
     widget_set_style_str(pw, "bg_color", COLOR_BG);
     widget_set_visible(pw, FALSE);
+    widget_set_sensitive(pw, FALSE);
 
     /* --- Cover art area (F133: cover_bg=211,120,242×242 + cover=275,185,114×114) --- */
     widget_t* cover_bg = image_create(pw, 200, 100, 250, 250);
@@ -999,6 +1015,7 @@ ret_t music_ui_create(widget_t* win) {
 
     widget_t* cover_art = image_create(pw, 245, 145, COVER_SZ, COVER_SZ);
     widget_set_name(cover_art, W_COVER_ART);
+    image_set_draw_type(cover_art, IMAGE_DRAW_SCALE_AUTO);
     image_set_image(cover_art, "media_player/icon_media_cover_n");
 
     /* --- Song info (F133: right side, vertical stack with icons) --- */
@@ -1182,16 +1199,19 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
     }
 
     case APP_EVENT_SCAN_STARTED: {
+        printf(">>>>>>>>>> [SCAN] STARTED event received <<<<<<<<<<\n");
         widget_t* lbl = find(W_LBL_STATUS);
         if (lbl) widget_set_text_utf8(lbl, "Scanning...");
         break;
     }
 
     case APP_EVENT_SCAN_FINISHED: {
+        int count = music_app_get_playlist_count();
+        printf(">>>>>>>>>> [SCAN] FINISHED event received, count=%d <<<<<<<<<<\n", count);
         widget_t* lbl = find(W_LBL_STATUS);
         if (lbl) {
             char b[128];
-            snprintf(b, sizeof(b), "%d tracks", music_app_get_playlist_count());
+            snprintf(b, sizeof(b), "%d tracks", count);
             widget_set_text_utf8(lbl, b);
         }
         break;
@@ -1232,9 +1252,23 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             if (img) {
                 const uint8_t* art = NULL; int art_sz = 0;
                 if (music_app_get_album_art(&art, &art_sz) == 0 && art && art_sz > 0) {
-                    FILE* fp = fopen("/tmp/album_art.jpg", "wb");
+                    /* Use rotating filename to defeat AWTK image cache.
+                     * Same path = AWTK returns stale cached bitmap. */
+                    static int s_art_seq = 0;
+                    char art_path[64];
+                    snprintf(art_path, sizeof(art_path), "/tmp/album_art_%d.jpg", s_art_seq);
+                    /* Remove previous file */
+                    if (s_art_seq > 0) {
+                        char prev_path[64];
+                        snprintf(prev_path, sizeof(prev_path), "/tmp/album_art_%d.jpg", s_art_seq - 1);
+                        remove(prev_path);
+                    }
+                    s_art_seq++;
+                    FILE* fp = fopen(art_path, "wb");
                     if (fp) { fwrite(art, 1, art_sz, fp); fclose(fp); }
-                    image_set_image(img, "file:///tmp/album_art.jpg");
+                    char uri[80];
+                    snprintf(uri, sizeof(uri), "file://%s", art_path);
+                    image_set_image(img, uri);
                 } else {
                     image_set_image(img, "media_player/icon_media_cover_n");
                 }
@@ -1257,8 +1291,8 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
         /* Issue #20: lightweight highlight */
         { int cur = music_app_get_current_index(); update_playlist_highlight(cur); }
 
-        /* If we're in list view, auto-switch to play view on track start */
-        if (!s_play_view_visible) show_play_view(true);
+        /* Don't auto-switch to play view — respect user's view choice.
+         * User can tap a song or tap the playing bar to enter play view. */
         break;
     }
 

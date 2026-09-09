@@ -54,7 +54,12 @@
 using namespace musik::core::sdk;
 
 static const char* TAG = "ffmpegdecoder";
-static IDebug* debug = nullptr;
+
+/* On embedded we don't have PluginFactory to call SetDebug(),
+ * so initialize with a static StderrDebug instance. */
+#include "../StderrDebug.h"
+static StderrDebug s_stderrDebug;
+static IDebug* debug = &s_stderrDebug;
 
 static std::unordered_set<AVCodecID> ignoreInvalidPacketCodecs = { AV_CODEC_ID_APE };
 

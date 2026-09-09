@@ -11,15 +11,26 @@
 #define EXPORT
 #define IMPORT
 
-#include <cstdint>
-#include <cstddef>
-#include <cstring>
-#include <string>
-#include <memory>
-
-/* From musikcube support/DeleteDefaults.h — delete copy/assign shortcuts */
+/* From musikcore/support/DeleteDefaults.h */
 #define DELETE_COPY_AND_ASSIGNMENT_DEFAULTS(ClassName) \
     ClassName(const ClassName&) = delete; \
     ClassName(const ClassName&&) = delete; \
     ClassName& operator=(const ClassName&) = delete; \
     ClassName& operator=(const ClassName&&) = delete;
+
+#include <cstdint>
+#include <cstddef>
+#include <cstring>
+#include <string>
+#include <memory>
+#include <cstdio>
+
+/* Replace musikcore/debug.h — just fprintf to stderr */
+namespace musik { namespace debug {
+    static inline void info(const std::string& tag, const std::string& msg) {
+        fprintf(stderr, "[%s] %s\n", tag.c_str(), msg.c_str());
+    }
+    static inline void error(const std::string& tag, const std::string& msg) {
+        fprintf(stderr, "[%s] ERROR: %s\n", tag.c_str(), msg.c_str());
+    }
+} }

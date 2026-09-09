@@ -57,9 +57,14 @@ CMUS_C_SRCS   = $(filter-out awtk_app/src/cmus/test_cmus_port.c, $(wildcard awtk
 LIB_C_SRCS    =
 LIB_CPP_SRCS  = music_scanner.cpp music_player.cpp
 
-# musikcube soft player sources
-SOFT_CPP_SRCS = awtk_app/src/musikcube/soft_player.cpp \
+# musikcube audio engine sources (GaplessTransport + Player/Stream/Buffer + FFmpeg + ALSA)
+SOFT_CPP_SRCS = awtk_app/src/musikcube/audio/GaplessTransport.cpp \
+                awtk_app/src/musikcube/audio/Player.cpp \
+                awtk_app/src/musikcube/audio/Stream.cpp \
+                awtk_app/src/musikcube/audio/Streams.cpp \
+                awtk_app/src/musikcube/audio/Outputs.cpp \
                 awtk_app/src/musikcube/audio/Buffer.cpp \
+                awtk_app/src/musikcube/io/DataStreamFactory.cpp \
                 awtk_app/src/musikcube/io/LocalFileStream.cpp \
                 awtk_app/src/musikcube/plugins/ffmpegdecoder/FfmpegDecoder.cpp \
                 awtk_app/src/musikcube/plugins/alsaout/AlsaOut.cpp

@@ -19,9 +19,14 @@ TARGET      = libmusicplayer.so
 # Source files (both are now C++)
 CPP_SRCS    = music_scanner.cpp music_player.cpp
 
-# musikcube soft player sources (FFmpeg decode + ALSA output)
-SOFT_CPP_SRCS = $(MUSIKCUBE_SRC)/soft_player.cpp \
+# musikcube audio engine sources (GaplessTransport + Player/Stream/Buffer + FFmpeg + ALSA)
+SOFT_CPP_SRCS = $(MUSIKCUBE_SRC)/audio/GaplessTransport.cpp \
+                $(MUSIKCUBE_SRC)/audio/Player.cpp \
+                $(MUSIKCUBE_SRC)/audio/Stream.cpp \
+                $(MUSIKCUBE_SRC)/audio/Streams.cpp \
+                $(MUSIKCUBE_SRC)/audio/Outputs.cpp \
                 $(MUSIKCUBE_SRC)/audio/Buffer.cpp \
+                $(MUSIKCUBE_SRC)/io/DataStreamFactory.cpp \
                 $(MUSIKCUBE_SRC)/io/LocalFileStream.cpp \
                 $(MUSIKCUBE_SRC)/plugins/ffmpegdecoder/FfmpegDecoder.cpp \
                 $(MUSIKCUBE_SRC)/plugins/alsaout/AlsaOut.cpp

@@ -37,6 +37,7 @@
 #include "../sdk/constants.h"
 #include "../sdk/IPreferences.h"
 #include <cstdint>
+#include <execinfo.h>
 
 static musik::core::sdk::IPreferences* prefs;
 
@@ -188,7 +189,11 @@ AlsaOut::~AlsaOut() {
 void AlsaOut::CloseDevice() {
     LOCK("CloseDevice()");
     if (this->pcmHandle) {
-        std::cerr << "AlsaOut: closing PCM handle\n";
+        /* Print backtrace hint — who is closing the PCM? */
+        void* callstack[8];
+        int frames = backtrace(callstack, 8);
+        std::cerr << "AlsaOut: closing PCM handle (caller stack " << frames << " frames):\n";
+        backtrace_symbols_fd(callstack, frames, 2);
         snd_pcm_close(this->pcmHandle);
         this->pcmHandle = nullptr;
         this->latency = 0.0;
