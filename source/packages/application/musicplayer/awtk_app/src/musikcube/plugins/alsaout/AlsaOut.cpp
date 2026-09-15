@@ -264,19 +264,57 @@ void AlsaOut::InitDevice() {
     std::string preferredDeviceId = this->GetPreferredDeviceId();
     bool preferredOk = false;
 
+    /* Open with SND_PCM_NONBLOCK to avoid blocking the calling thread
+     * while holding stateMutex.  If the sound card driver hasn't finished
+     * initializing (AudInitThread / card_audio_init), a blocking open
+     * would hold the mutex indefinitely, preventing Resume()/Stop() on
+     * other threads → deadlock (UI freeze on ACC resume).
+     *
+     * Retry up to ~2 seconds with 50ms sleep between attempts. */
+    static const int MAX_OPEN_RETRIES = 40;
+    static const int RETRY_SLEEP_MS   = 50;
+
     if (preferredDeviceId.size() > 0) {
-        if ((err = snd_pcm_open(&this->pcmHandle, preferredDeviceId.c_str(), SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
-            std::cerr << "AlsaOut: cannot opened preferred device id " << preferredDeviceId << ": " << snd_strerror(err) << std::endl;
-        }
-        else {
-            preferredOk = true;
+        for (int attempt = 0; attempt < MAX_OPEN_RETRIES; attempt++) {
+            err = snd_pcm_open(&this->pcmHandle, preferredDeviceId.c_str(),
+                               SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK);
+            if (err == 0) {
+                preferredOk = true;
+                break;
+            }
+            if (err != -EBUSY && err != -EAGAIN && err != -ENOENT) {
+                std::cerr << "AlsaOut: cannot open preferred device "
+                          << preferredDeviceId << ": " << snd_strerror(err) << std::endl;
+                break;
+            }
+            /* Device busy or not yet available — wait and retry */
+            std::this_thread::sleep_for(std::chrono::milliseconds(RETRY_SLEEP_MS));
         }
     }
 
-    if (!preferredOk && (err = snd_pcm_open(&this->pcmHandle, this->device.c_str(), SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
-        std::cerr << "AlsaOut: cannot open audio device 'default' :" << snd_strerror(err) << std::endl;
-        goto error;
+    if (!preferredOk) {
+        for (int attempt = 0; attempt < MAX_OPEN_RETRIES; attempt++) {
+            err = snd_pcm_open(&this->pcmHandle, this->device.c_str(),
+                               SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK);
+            if (err == 0) {
+                break;
+            }
+            if (err != -EBUSY && err != -EAGAIN && err != -ENOENT) {
+                std::cerr << "AlsaOut: cannot open audio device '"
+                          << this->device << "': " << snd_strerror(err) << std::endl;
+                goto error;
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(RETRY_SLEEP_MS));
+        }
+        if (!this->pcmHandle) {
+            std::cerr << "AlsaOut: device open timed out after "
+                      << (MAX_OPEN_RETRIES * RETRY_SLEEP_MS) << "ms\n";
+            goto error;
+        }
     }
+
+    /* Switch back to blocking mode for snd_pcm_writei simplicity */
+    snd_pcm_nonblock(this->pcmHandle, 0);
 
     if ((err = snd_pcm_hw_params_malloc(&hardware)) < 0) {
         std::cerr << "AlsaOut: cannot allocate hardware parameter structure " << snd_strerror(err) << std::endl;
@@ -330,8 +368,6 @@ void AlsaOut::InitDevice() {
         std::cerr << "AlsaOut: cannot prepare audio interface for use " << snd_strerror(err) << std::endl;
         goto error;
     }
-
-    snd_pcm_nonblock(pcmHandle, 0); /* operate in blocking mode for simplicity */
 
     std::cerr << "AlsaOut: device seems to be prepared for use!\n";
     this->initialized = true;
@@ -562,7 +598,14 @@ void AlsaOut::SetFormat(IBuffer *buffer) {
 
         this->CloseDevice();
 
+        /* Release the lock during InitDevice().  snd_pcm_open can retry
+         * with sleep when the sound card driver hasn't finished probing
+         * (AudInitThread).  Holding stateMutex across that wait would
+         * block Resume()/Stop() on other threads → UI deadlock.
+         * After InitDevice() we re-acquire and continue setup. */
+        lock.unlock();
         this->InitDevice();
+        lock.lock();
 
         if (this->pcmHandle) {
             int err = snd_pcm_set_params(

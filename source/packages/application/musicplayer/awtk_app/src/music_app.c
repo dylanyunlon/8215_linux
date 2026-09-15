@@ -102,6 +102,7 @@ static void build_folder_cache(void);
 static void build_classification_cache(void);
 static void load_lyrics_for_current(void);
 static void load_album_art_for_current(void);
+static void lrc_data_clear(lrc_data_t* lrc);
 
 /**
  * Helper: build TrackRef array from MusicList and set as player's playlist.
@@ -290,6 +291,20 @@ typedef struct {
     int resume_pos_ms;
 } scan_done_data_t;
 
+/* Issue #39: Delayed seek after resume — gives decode thread time to
+ * open the stream and initialize ALSA before seeking. */
+static ret_t delayed_resume_seek_timer(const timer_info_t* info) {
+    (void)info;
+    int pos = s_app.state.last_position_ms;
+    if (pos > 0 && s_app.player) {
+        printf("[music_app] Delayed seek to %d ms\n", pos);
+        music_player_seek(s_app.player, pos);
+    }
+    s_app.state.last_position_ms = 0;
+    s_app.state.last_path[0] = '\0';
+    return RET_REMOVE;
+}
+
 static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
     scan_done_data_t* sd = (scan_done_data_t*)idle->ctx;
     if (!sd) return RET_REMOVE;
@@ -319,11 +334,25 @@ static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
                resume_idx, resume_pos_ms);
         music_player_play(s_app.player, resume_idx);
         if (resume_pos_ms > 0) {
-            music_player_seek(s_app.player, resume_pos_ms);
+            /* Issue #39 fix: Delay seek to let the decode thread open the
+             * stream and initialize ALSA first. Seeking immediately after
+             * play() races with playerThreadLoop's OpenStream+AlsaOut init —
+             * if seek fires before ALSA is prepared, the output->Stop()+Resume()
+             * inside the seek path can leave the PCM handle in a broken state
+             * and freeze the decode thread (no more OnBufferProcessed callbacks),
+             * which eventually starves the UI position timer and appears to
+             * "hang" the entire player.
+             *
+             * A 500ms timer is enough for the decode thread to probe, open
+             * the codec, and do the first writei (which triggers ALSA prepare).
+             * The seek will then safely stop+resume a live PCM device. */
+            s_app.state.last_position_ms = resume_pos_ms;
+            timer_add(delayed_resume_seek_timer, NULL, 500);
+        } else {
+            /* Clear last_path so we don't re-seek on next scan */
+            s_app.state.last_path[0] = '\0';
+            s_app.state.last_position_ms = 0;
         }
-        /* Clear last_path so we don't re-seek on next scan */
-        s_app.state.last_path[0] = '\0';
-        s_app.state.last_position_ms = 0;
     }
 
     return RET_REMOVE;
@@ -707,6 +736,14 @@ static void on_player_state(PlayerState state, void* user_data) {
 static ret_t track_changed_load_media_idle(const idle_info_t* idle) {
     (void)idle;
     load_album_art_for_current();
+
+    /* Issue #8b: Force-invalidate lyrics cache on every track change.
+     * Without this, replaying the same track after deleting its .lrc file
+     * would still show stale cached lyrics instead of falling through
+     * to the embedded USLT extraction path. */
+    lrc_data_clear(&s_app.lyrics);
+    s_app.lyrics_path[0] = '\0';
+
     load_lyrics_for_current();
     return RET_REMOVE;
 }
@@ -1769,9 +1806,9 @@ static int parse_lrc_file(const char* lrc_path, lrc_data_t* out) {
  * This reuses the same ID3v2 tag-reading pattern as extract_apic_from_file().
  *==========================================================================*/
 
-/* Reuse helper from APIC code (already defined above) */
-/* static uint32_t read_be32_art(const uint8_t* p); */
-/* static uint32_t read_synchsafe_art(const uint8_t* p); */
+/* Reuse helper from APIC code (defined further below in Issue #7 section) */
+static uint32_t read_be32_art(const uint8_t* p);
+static uint32_t read_synchsafe_art(const uint8_t* p);
 
 /**
  * Extract USLT lyrics text from an MP3 file's ID3v2 tag.
