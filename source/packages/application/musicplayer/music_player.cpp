@@ -49,6 +49,7 @@ struct MusicPlayerContext {
     /* Playlist */
     std::vector<TrackRef>  playlist;
     int                    current_index;
+    int                    next_index;     /* gapless: index of PrepareNextTrack */
 
     /* Shuffle pool (consumption-based, Issue #19) */
     std::vector<int>       shuffle_pool;
@@ -134,9 +135,45 @@ static void on_transport_stream_state(MusicPlayerContext *ctx, StreamState ss, c
 {
     if (!ctx) return;
 
-    /* When a track finishes naturally, auto-advance to next.
-     * StreamState::Finished means ALSA has drained all buffers. */
-    if (ss == StreamState::Finished) {
+    /*
+     * musikcube PlaybackService::ProcessMessage pattern:
+     *
+     * Playing  → if nextIndex is set and URI matches, promote nextIndex
+     *            to current index, fire OnTrackChanged (updates UI info).
+     * AlmostDone → prepare the next track for gapless.
+     * Finished → auto-advance (only when no gapless next was started).
+     */
+    if (ss == StreamState::Playing) {
+        /* Gapless transition: nextPlayer just started playing.
+         * Update current_index so UI shows the new track info. */
+        on_track_changed_fn tcb = nullptr;
+        void *tdata = nullptr;
+        int new_idx = -1;
+
+        {
+            std::lock_guard<std::mutex> lock(ctx->mtx);
+            if (ctx->next_index >= 0 &&
+                ctx->next_index < (int)ctx->playlist.size())
+            {
+                /* Verify URI matches — same check musikcube does to guard
+                 * against rapid skip races */
+                if (uri == ctx->playlist[ctx->next_index].filepath) {
+                    ctx->current_index = ctx->next_index;
+                    ctx->next_index = -1;
+                    new_idx = ctx->current_index;
+                    tcb = ctx->track_cb;
+                    tdata = ctx->track_cb_data;
+                }
+            }
+        }
+
+        if (tcb && new_idx >= 0) {
+            printf("[MusicPlayer] Gapless transition → [%d/%d]: %s\n",
+                   new_idx + 1, (int)ctx->playlist.size(), uri.c_str());
+            tcb(new_idx, NULL, tdata);
+        }
+    }
+    else if (ss == StreamState::Finished) {
         /* Don't hold the lock across music_player_next — it takes the lock too */
         printf("[MusicPlayer] Track finished: %s, auto-next\n", uri.c_str());
         music_player_next(ctx);
@@ -167,6 +204,7 @@ static void on_transport_stream_state(MusicPlayerContext *ctx, StreamState ss, c
         }
 
         if (next >= 0 && next < count && ctx->transport) {
+            ctx->next_index = next;
             printf("[MusicPlayer] Preparing next track [%d]: %s\n",
                    next, ctx->playlist[next].filepath);
             ctx->transport->PrepareNextTrack(std::string(ctx->playlist[next].filepath));
@@ -259,6 +297,7 @@ MusicPlayerContext *music_player_create(void)
     ctx->use_soft = false;
     ctx->transport = nullptr;
     ctx->current_index = -1;
+    ctx->next_index = -1;
     ctx->state = PLAYER_STATE_IDLE;
     ctx->mode = PLAY_MODE_SEQUENTIAL;
     ctx->state_cb = NULL;
@@ -348,20 +387,53 @@ int music_player_set_playlist_refs(MusicPlayerContext *ctx,
 
     std::lock_guard<std::mutex> lock(ctx->mtx);
 
-    if (ctx->state == PLAYER_STATE_PLAYING) {
-        /* Don't stop playback when updating playlist.
-         * The scanner pushes incremental updates while music is playing.
-         * Just update the playlist data — the current track keeps playing. */
+    /*
+     * musikcube pattern (HotSwap / CopyFrom):
+     *   1. remember the playing track's identity (uid)
+     *   2. replace the playlist
+     *   3. IndexOf(playingId) to recover position in new list
+     *   4. if not found → NO_POSITION
+     *
+     * Our uid comes from MusicInfo.uid assigned during scan.
+     * For the incremental scan case the same file keeps the same uid,
+     * so the lookup will always succeed.
+     */
+    int playing_uid = -1;
+    if (ctx->current_index >= 0 &&
+        ctx->current_index < (int)ctx->playlist.size()) {
+        playing_uid = ctx->playlist[ctx->current_index].uid;
     }
 
     ctx->playlist.assign(refs, refs + count);
-    ctx->current_index = -1;
-    ctx->state = PLAYER_STATE_IDLE;
+
+    /* IndexOf(playing_uid) — linear scan, same as musikcube TrackList::IndexOf */
+    int restored = -1;
+    if (playing_uid >= 0) {
+        for (int i = 0; i < count; i++) {
+            if (refs[i].uid == playing_uid) {
+                restored = i;
+                break;
+            }
+        }
+    }
+
+    if (restored >= 0) {
+        /* HotSwap succeeded — keep current_index and state intact */
+        ctx->current_index = restored;
+        /* state stays PLAYING / PAUSED — don't touch */
+        printf("[MusicPlayer] Playlist set: %d tracks, %.1f KB (hot idx=%d)\n",
+               count, (double)ctx->playlist.size() * sizeof(TrackRef) / 1024.0,
+               restored);
+    } else {
+        /* Fresh playlist or track disappeared — reset like CopyFrom fallback */
+        ctx->current_index = -1;
+        ctx->state = PLAYER_STATE_IDLE;
+        printf("[MusicPlayer] Playlist set: %d tracks, %.1f KB\n",
+               count, (double)ctx->playlist.size() * sizeof(TrackRef) / 1024.0);
+    }
 
     generate_shuffle(ctx);
 
-    printf("[MusicPlayer] Playlist set: %d tracks, %.1f KB\n",
-           count, (double)ctx->playlist.size() * sizeof(TrackRef) / 1024.0);
     return 0;
 }
 
@@ -434,6 +506,7 @@ int music_player_play(MusicPlayerContext *ctx, int index)
     }
 
     ctx->current_index = index;
+    ctx->next_index = -1;  /* reset — Start() supersedes any pending gapless */
     const TrackRef &ref = ctx->playlist[index];
 
     printf("[MusicPlayer] Playing [%d/%d]: %s (%s)\n",

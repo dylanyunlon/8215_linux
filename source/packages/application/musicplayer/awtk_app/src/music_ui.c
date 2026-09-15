@@ -22,6 +22,7 @@
 
 #include "music_ui.h"
 #include "favorite_manager.h"
+#include "lyrics_view.h"
 /* music_app.h provides music_app_safe_play/next/prev with player lock check */
 
 #include <stdio.h>
@@ -57,6 +58,7 @@
 #define W_BTN_LIST     "btn_list"
 #define W_BTN_FAV      "btn_fav"
 #define W_LBL_LYRICS   "lbl_lyrics"
+#define W_LYRICS_VIEW  "lyrics_view"
 
 /* Tab button names */
 #define W_BTN_TAB_ALL     "btn_tab_all"
@@ -100,6 +102,7 @@ typedef enum {
  * Module state
  *==========================================================================*/
 static widget_t* s_win = NULL;
+static lyrics_view_ctx_t* s_lyrics = NULL;
 static bool s_play_view_visible = false;
 static bool s_slider_dragging = false;
 static int  s_last_highlight_idx = -1;
@@ -1115,22 +1118,12 @@ ret_t music_ui_create(widget_t* win) {
     widget_set_text_utf8(bf, "☆");
     widget_on(bf, EVT_CLICK, on_btn_fav_click, NULL);
 
-    /* --- Issue #60: Multi-line lyrics (right side of play view) --- */
+    /* --- Scrolling lyrics (between song info and progress bar) --- */
     {
-        int lx = 520, ly = 340, lw = 460, lh = 22;
-        const char* lrc_names[] = {"lbl_lrc_p2","lbl_lrc_p1",W_LBL_LYRICS,"lbl_lrc_n1","lbl_lrc_n2"};
-        const char* lrc_colors[] = {"#444444","#777777",COLOR_CYAN,"#777777","#444444"};
-        int lrc_sizes[] = {14, 16, 20, 16, 14};
-        int i;
-        for (i = 0; i < 5; i++) {
-            widget_t* ll = label_create(pw, lx, ly, lw, lh + (i==2?4:0));
-            widget_set_name(ll, lrc_names[i]);
-            widget_set_text_utf8(ll, "");
-            char fs[8]; snprintf(fs, sizeof(fs), "%d", lrc_sizes[i]);
-            widget_set_style_str(ll, "font_size", fs);
-            widget_set_style_str(ll, "text_color", lrc_colors[i]);
-            ly += lh + (i==2?4:0) + 2;
-        }
+        /* Area: below artist (y~290) to above progress (y~380)
+         * Span full width for centered text display */
+        int lx = 200, ly = 100, lw = 600, lh = 260;
+        s_lyrics = lyrics_view_create(pw, lx, ly, lw, lh);
     }
 
     printf("[music_ui] UI created (F133 layout)\n");
@@ -1138,6 +1131,10 @@ ret_t music_ui_create(widget_t* win) {
 }
 
 void music_ui_destroy(void) {
+    if (s_lyrics) {
+        lyrics_view_destroy(s_lyrics);
+        s_lyrics = NULL;
+    }
     s_win = NULL;
     printf("[music_ui] UI destroyed\n");
 }
@@ -1324,25 +1321,17 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
         widget_t* lt = find(W_TIME_TOTAL);
         if (lt && dur > 0) { format_time(buf, sizeof(buf), dur); widget_set_text_utf8(lt, buf); }
 
-        /* Issue #60: Multi-line lyrics */
+        /* Scrolling lyrics view */
         {
-            const lrc_data_t* lrc = music_app_get_lyrics();
-            const char* ln[] = {"lbl_lrc_p2","lbl_lrc_p1",W_LBL_LYRICS,"lbl_lrc_n1","lbl_lrc_n2"};
-            int offsets[] = {-2,-1,0,1,2};
-            if (lrc && lrc->count > 0) {
-                int li = music_app_get_lyrics_line(pos);
-                int j;
-                for (j = 0; j < 5; j++) {
-                    widget_t* ll = find(ln[j]);
-                    if (!ll) continue;
-                    int idx = li + offsets[j];
-                    widget_set_text_utf8(ll, (idx >= 0 && idx < lrc->count) ? lrc->lines[idx].text : "");
-                }
-            } else {
-                int j;
-                for (j = 0; j < 5; j++) {
-                    widget_t* ll = find(ln[j]);
-                    if (ll) widget_set_text_utf8(ll, "");
+            if (s_lyrics) {
+                const lrc_data_t* lrc = music_app_get_lyrics();
+                if (lrc && lrc->count > 0) {
+                    if (s_lyrics->lrc != lrc) {
+                        lyrics_view_set_data(s_lyrics, lrc);
+                    }
+                    lyrics_view_seek(s_lyrics, pos);
+                } else {
+                    lyrics_view_reset(s_lyrics);
                 }
             }
         }
