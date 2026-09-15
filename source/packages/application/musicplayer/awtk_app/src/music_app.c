@@ -1757,6 +1757,334 @@ static int parse_lrc_file(const char* lrc_path, lrc_data_t* out) {
     return out->count > 0 ? 0 : -1;
 }
 
+/*============================================================================
+ * Issue #8b: Extract embedded lyrics (USLT frame) from ID3v2 tag
+ *
+ * ID3v2 USLT frame layout:
+ *   [1 byte]  text encoding (0=ISO-8859-1, 1=UTF-16 BOM, 2=UTF-16BE, 3=UTF-8)
+ *   [3 bytes] language code (e.g. "eng", "zho", "chi", "\0\0\0")
+ *   [string]  content descriptor (null-terminated, encoding-dependent)
+ *   [string]  lyrics text (remaining bytes, encoding-dependent)
+ *
+ * This reuses the same ID3v2 tag-reading pattern as extract_apic_from_file().
+ *==========================================================================*/
+
+/* Reuse helper from APIC code (already defined above) */
+/* static uint32_t read_be32_art(const uint8_t* p); */
+/* static uint32_t read_synchsafe_art(const uint8_t* p); */
+
+/**
+ * Extract USLT lyrics text from an MP3 file's ID3v2 tag.
+ * @param filepath    Path to the audio file.
+ * @param out_text    Receives malloc'd UTF-8 text (caller must free).
+ * @param out_len     Receives text length in bytes (excluding null terminator).
+ * @return 0 on success, -1 if no USLT found.
+ */
+static int extract_uslt_from_file(const char* filepath,
+                                   char** out_text, int* out_len) {
+    FILE* fp = fopen(filepath, "rb");
+    if (!fp) return -1;
+
+    uint8_t header[10];
+    if (fread(header, 1, 10, fp) != 10) { fclose(fp); return -1; }
+
+    /* Verify ID3v2 header */
+    if (header[0] != 'I' || header[1] != 'D' || header[2] != '3') {
+        fclose(fp);
+        return -1;
+    }
+
+    uint8_t version_major = header[3];
+    uint32_t tag_size = read_synchsafe_art(&header[6]);
+
+    if (tag_size == 0 || tag_size > 10 * 1024 * 1024) {
+        fclose(fp);
+        return -1;
+    }
+
+    uint8_t* tag_data = (uint8_t*)malloc(tag_size);
+    if (!tag_data) { fclose(fp); return -1; }
+
+    if (fread(tag_data, 1, tag_size, fp) != tag_size) {
+        free(tag_data);
+        fclose(fp);
+        return -1;
+    }
+    fclose(fp);
+
+    /* Scan for USLT frame */
+    uint32_t pos = 0;
+    int found = -1;
+
+    while (pos + 10 <= tag_size) {
+        char frame_id[5];
+        memcpy(frame_id, &tag_data[pos], 4);
+        frame_id[4] = '\0';
+
+        /* End of frames: non-uppercase/digit first byte */
+        if (!isupper((unsigned char)frame_id[0]) &&
+            !isdigit((unsigned char)frame_id[0])) break;
+
+        uint32_t frame_size;
+        if (version_major >= 4) {
+            frame_size = read_synchsafe_art(&tag_data[pos + 4]);
+        } else {
+            frame_size = read_be32_art(&tag_data[pos + 4]);
+        }
+
+        /* uint16_t frame_flags = (tag_data[pos+8] << 8) | tag_data[pos+9]; */
+        pos += 10; /* skip frame header */
+        if (frame_size == 0 || pos + frame_size > tag_size) break;
+
+        if (strcmp(frame_id, "USLT") == 0 && frame_size > 4) {
+            uint32_t fpos = pos;
+            uint8_t encoding = tag_data[fpos++];
+
+            /* 3-byte language code (skip it) */
+            fpos += 3;
+
+            if (encoding == 0 || encoding == 3) {
+                /* ISO-8859-1 or UTF-8: null-terminated strings */
+
+                /* Skip content descriptor (null-terminated) */
+                while (fpos < pos + frame_size && tag_data[fpos] != 0) fpos++;
+                if (fpos < pos + frame_size) fpos++; /* skip null */
+
+                /* Remaining is lyrics text */
+                int text_len = (int)(pos + frame_size - fpos);
+                if (text_len > 0) {
+                    *out_text = (char*)malloc(text_len + 1);
+                    if (*out_text) {
+                        memcpy(*out_text, &tag_data[fpos], text_len);
+                        (*out_text)[text_len] = '\0';
+                        *out_len = text_len;
+                        found = 0;
+                    }
+                }
+            } else if (encoding == 1 || encoding == 2) {
+                /* UTF-16 with BOM (1) or UTF-16BE (2): double-null terminated */
+                int is_le = 0; /* default big-endian */
+
+                if (encoding == 1 && fpos + 2 <= pos + frame_size) {
+                    /* Check BOM for descriptor */
+                    if (tag_data[fpos] == 0xFF && tag_data[fpos + 1] == 0xFE) {
+                        is_le = 1; fpos += 2;
+                    } else if (tag_data[fpos] == 0xFE && tag_data[fpos + 1] == 0xFF) {
+                        is_le = 0; fpos += 2;
+                    }
+                }
+
+                /* Skip content descriptor (double-null terminated UTF-16) */
+                while (fpos + 1 < pos + frame_size) {
+                    if (tag_data[fpos] == 0 && tag_data[fpos + 1] == 0) {
+                        fpos += 2;
+                        break;
+                    }
+                    fpos += 2;
+                }
+
+                /* Check for lyrics BOM */
+                if (encoding == 1 && fpos + 2 <= pos + frame_size) {
+                    if (tag_data[fpos] == 0xFF && tag_data[fpos + 1] == 0xFE) {
+                        is_le = 1; fpos += 2;
+                    } else if (tag_data[fpos] == 0xFE && tag_data[fpos + 1] == 0xFF) {
+                        is_le = 0; fpos += 2;
+                    }
+                }
+
+                /* Convert UTF-16 to UTF-8 (simple BMP-only conversion) */
+                int u16_bytes = (int)(pos + frame_size - fpos);
+                int u16_chars = u16_bytes / 2;
+                if (u16_chars > 0) {
+                    /* Worst case: each UTF-16 char → 3 UTF-8 bytes */
+                    char* utf8 = (char*)malloc(u16_chars * 3 + 1);
+                    if (utf8) {
+                        int wi = 0;
+                        for (int i = 0; i < u16_chars; i++) {
+                            uint16_t ch;
+                            if (is_le) {
+                                ch = tag_data[fpos + i * 2] |
+                                     ((uint16_t)tag_data[fpos + i * 2 + 1] << 8);
+                            } else {
+                                ch = ((uint16_t)tag_data[fpos + i * 2] << 8) |
+                                     tag_data[fpos + i * 2 + 1];
+                            }
+                            /* Skip null chars and surrogates */
+                            if (ch == 0) continue;
+                            if (ch >= 0xD800 && ch <= 0xDFFF) continue;
+
+                            if (ch < 0x80) {
+                                utf8[wi++] = (char)ch;
+                            } else if (ch < 0x800) {
+                                utf8[wi++] = (char)(0xC0 | (ch >> 6));
+                                utf8[wi++] = (char)(0x80 | (ch & 0x3F));
+                            } else {
+                                utf8[wi++] = (char)(0xE0 | (ch >> 12));
+                                utf8[wi++] = (char)(0x80 | ((ch >> 6) & 0x3F));
+                                utf8[wi++] = (char)(0x80 | (ch & 0x3F));
+                            }
+                        }
+                        utf8[wi] = '\0';
+                        *out_text = utf8;
+                        *out_len = wi;
+                        found = 0;
+                    }
+                }
+            }
+
+            if (found == 0) break; /* got lyrics, stop scanning */
+        }
+
+        pos += frame_size;
+    }
+
+    free(tag_data);
+    return found;
+}
+
+/**
+ * Parse USLT text that contains LRC time tags into lrc_data_t.
+ * If no time tags found, treat each non-empty line as a standalone lyric
+ * with evenly-spaced timestamps (fallback for plain-text USLT without [mm:ss]).
+ */
+static int parse_uslt_to_lrc(const char* text, int text_len,
+                              int duration_ms, lrc_data_t* out) {
+    if (!text || text_len <= 0) return -1;
+
+    lrc_data_clear(out);
+
+    /* First pass: check if the text contains LRC time tags */
+    int has_lrc_tags = 0;
+    const char* p = text;
+    while (*p) {
+        if (*p == '[') {
+            const char* close = strchr(p, ']');
+            if (close && close - p > 3 && close - p < 15) {
+                char tag[16];
+                int tlen = (int)(close - p - 1);
+                memcpy(tag, p + 1, tlen);
+                tag[tlen] = '\0';
+                if (parse_lrc_time(tag) >= 0) {
+                    has_lrc_tags = 1;
+                    break;
+                }
+            }
+        }
+        p++;
+    }
+
+    if (has_lrc_tags) {
+        /* Has LRC tags — parse exactly like parse_lrc_file but from string */
+        const char* line_start = text;
+        while (line_start && *line_start) {
+            /* Find end of line */
+            const char* line_end = strchr(line_start, '\n');
+            int line_len = line_end ? (int)(line_end - line_start) : (int)strlen(line_start);
+
+            /* Copy line to temp buffer */
+            char line[1024];
+            if (line_len >= (int)sizeof(line)) line_len = (int)sizeof(line) - 1;
+            memcpy(line, line_start, line_len);
+            line[line_len] = '\0';
+
+            /* Strip \r */
+            char* cr = strchr(line, '\r');
+            if (cr) *cr = '\0';
+
+            if (line[0] != '\0') {
+                /* Extract time tags and text — same logic as parse_lrc_file */
+                const char* lp = line;
+                int times[16];
+                int time_count = 0;
+
+                while (*lp == '[' && time_count < 16) {
+                    const char* close = strchr(lp, ']');
+                    if (!close) break;
+
+                    char tag[32];
+                    int tlen = (int)(close - lp - 1);
+                    if (tlen <= 0 || tlen >= (int)sizeof(tag)) {
+                        lp = close + 1;
+                        continue;
+                    }
+
+                    memcpy(tag, lp + 1, tlen);
+                    tag[tlen] = '\0';
+
+                    int t = parse_lrc_time(tag);
+                    if (t >= 0) {
+                        times[time_count++] = t;
+                    }
+
+                    lp = close + 1;
+                }
+
+                const char* lyric_text = lp;
+                int ti;
+                for (ti = 0; ti < time_count; ti++) {
+                    lrc_data_add(out, times[ti], lyric_text);
+                }
+            }
+
+            line_start = line_end ? line_end + 1 : NULL;
+        }
+    } else {
+        /* No LRC tags — plain text lyrics.
+         * Distribute lines evenly across the track duration. */
+        /* Count non-empty lines first */
+        int n_lines = 0;
+        const char* lp = text;
+        while (lp && *lp) {
+            const char* nl = strchr(lp, '\n');
+            int llen = nl ? (int)(nl - lp) : (int)strlen(lp);
+            /* Skip empty lines and \r-only lines */
+            if (llen > 0 && !(llen == 1 && *lp == '\r')) {
+                n_lines++;
+            }
+            lp = nl ? nl + 1 : NULL;
+        }
+
+        if (n_lines <= 0) {
+            return -1;
+        }
+
+        /* Default duration if unknown: 4 minutes */
+        if (duration_ms <= 0) duration_ms = 240000;
+        int interval = duration_ms / (n_lines + 1);
+
+        int idx = 0;
+        lp = text;
+        while (lp && *lp) {
+            const char* nl = strchr(lp, '\n');
+            int llen = nl ? (int)(nl - lp) : (int)strlen(lp);
+
+            if (llen > 0 && !(llen == 1 && *lp == '\r')) {
+                char line[256];
+                if (llen >= (int)sizeof(line)) llen = (int)sizeof(line) - 1;
+                memcpy(line, lp, llen);
+                line[llen] = '\0';
+                /* Strip trailing \r */
+                char* cr = strchr(line, '\r');
+                if (cr) *cr = '\0';
+
+                lrc_data_add(out, interval * (idx + 1), line);
+                idx++;
+            }
+
+            lp = nl ? nl + 1 : NULL;
+        }
+    }
+
+    /* Sort by time */
+    if (out->count > 1) {
+        qsort(out->lines, out->count, sizeof(lrc_line_t), lrc_cmp);
+    }
+
+    printf("[music_app] Parsed embedded USLT: %d lines (lrc_tags=%d)\n",
+           out->count, has_lrc_tags);
+    return out->count > 0 ? 0 : -1;
+}
+
 static void load_lyrics_for_current(void) {
     const music_app_state_t* st = music_app_get_state();
     if (!st->current_info) return;
@@ -1771,7 +2099,7 @@ static void load_lyrics_for_current(void) {
     lrc_data_clear(&s_app.lyrics);
     s_app.lyrics_path[0] = '\0';
 
-    /* Build .lrc path: replace extension with .lrc */
+    /* Strategy 1: External .lrc file (highest priority) */
     char lrc_path[MUSIC_MAX_PATH_LEN];
     snprintf(lrc_path, sizeof(lrc_path), "%s", filepath);
     char* dot = strrchr(lrc_path, '.');
@@ -1782,10 +2110,26 @@ static void load_lyrics_for_current(void) {
                  sizeof(lrc_path) - strlen(lrc_path), ".lrc");
     }
 
-    /* Try to parse */
     if (parse_lrc_file(lrc_path, &s_app.lyrics) == 0) {
         snprintf(s_app.lyrics_path, sizeof(s_app.lyrics_path), "%s", filepath);
+        printf("[music_app] Lyrics loaded from external .lrc\n");
+        return;
     }
+
+    /* Strategy 2: Embedded ID3v2 USLT lyrics (fallback) */
+    char* uslt_text = NULL;
+    int uslt_len = 0;
+    if (extract_uslt_from_file(filepath, &uslt_text, &uslt_len) == 0) {
+        int dur = st->current_duration_ms > 0 ? st->current_duration_ms : 0;
+        if (parse_uslt_to_lrc(uslt_text, uslt_len, dur, &s_app.lyrics) == 0) {
+            snprintf(s_app.lyrics_path, sizeof(s_app.lyrics_path), "%s", filepath);
+            printf("[music_app] Lyrics loaded from embedded USLT (%d bytes)\n", uslt_len);
+        }
+        free(uslt_text);
+        return;
+    }
+
+    printf("[music_app] No lyrics found for %s\n", filepath);
 }
 
 const lrc_data_t* music_app_get_lyrics(void) {
