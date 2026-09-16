@@ -29,7 +29,8 @@ SOFT_CPP_SRCS = $(MUSIKCUBE_SRC)/audio/GaplessTransport.cpp \
                 $(MUSIKCUBE_SRC)/io/DataStreamFactory.cpp \
                 $(MUSIKCUBE_SRC)/io/LocalFileStream.cpp \
                 $(MUSIKCUBE_SRC)/plugins/ffmpegdecoder/FfmpegDecoder.cpp \
-                $(MUSIKCUBE_SRC)/plugins/alsaout/AlsaOut.cpp
+                $(MUSIKCUBE_SRC)/plugins/alsaout/AlsaOut.cpp \
+                $(AWTK_APP_SRC)/img_blur.cpp
 
 # cmus ID3/CUE parser sources (proper UTF-16/GBK support)
 CMUS_C_SRCS = $(AWTK_APP_SRC)/cmus_bridge.c \
@@ -104,6 +105,10 @@ $(TARGET): $(OBJS)
 
 %.o: $(AWTK_APP_SRC)/%.c
 	$(CC_C) $(CFLAGS) -std=c11 -c $< -o $@
+
+# img_blur.cpp lives in awtk_app/src/ (C++, uses FFmpeg + swscale)
+%.o: $(AWTK_APP_SRC)/%.cpp
+	$(CC) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)

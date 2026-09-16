@@ -2128,8 +2128,8 @@ static void load_lyrics_for_current(void) {
 
     const char* filepath = st->current_info->filepath;
 
-    /* Already loaded for this track? */
-    if (strcmp(s_app.lyrics_path, filepath) == 0 && s_app.lyrics.count > 0) {
+    /* Already processed this track? (covers both "found" and "not found") */
+    if (strcmp(s_app.lyrics_path, filepath) == 0) {
         return;
     }
 
@@ -2166,6 +2166,8 @@ static void load_lyrics_for_current(void) {
         return;
     }
 
+    /* Mark as processed even with no lyrics — prevents retry every 500ms */
+    snprintf(s_app.lyrics_path, sizeof(s_app.lyrics_path), "%s", filepath);
     printf("[music_app] No lyrics found for %s\n", filepath);
 }
 
@@ -2346,6 +2348,27 @@ int music_app_get_album_art(const uint8_t** out_data, int* out_size) {
         return 0;
     }
     return -1;
+}
+
+/**
+ * Extract APIC album art from any track (by playlist index) and write to a file.
+ * Used for preloading blur of next track. Returns 0 on success.
+ */
+int music_app_extract_art_to_file(int index, const char* out_path) {
+    const MusicInfo* info = music_app_get_track_info(index);
+    if (!info) return -1;
+
+    uint8_t* data = NULL;
+    int size = 0;
+    if (extract_apic_from_file(info->filepath, &data, &size) != 0)
+        return -1;
+
+    FILE* fp = fopen(out_path, "wb");
+    if (!fp) { free(data); return -1; }
+    fwrite(data, 1, size, fp);
+    fclose(fp);
+    free(data);
+    return 0;
 }
 
 /*============================================================================

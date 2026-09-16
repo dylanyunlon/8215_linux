@@ -23,6 +23,15 @@
 #include "music_ui.h"
 #include "favorite_manager.h"
 #include "lyrics_view.h"
+
+/* Album art blur (img_blur.cpp) */
+extern int img_blur_album_art(const char* src, const char* dst, float sigma, int scale);
+
+typedef void (*img_blur_done_cb)(const char* dst_path, void* user_data);
+extern void img_blur_album_art_async(const char* cache_key, const char* art_path,
+                                      const char* dst_path, float sigma,
+                                      img_blur_done_cb cb, void* ud);
+extern void img_blur_preload(const char* mp3_path, const char* art_file, float sigma);
 /* music_app.h provides music_app_safe_play/next/prev with player lock check */
 
 #include <stdio.h>
@@ -91,6 +100,13 @@
 #define SEARCH_MAX        200
 
 /*============================================================================
+ * Blur background async callbacks (declared after s_win)
+ *==========================================================================*/
+
+static ret_t on_blur_idle_update(const idle_info_t* info);
+static void on_blur_done(const char* dst_path, void* user_data);
+
+/*============================================================================
  * Active tab enum
  *==========================================================================*/
 typedef enum {
@@ -143,6 +159,30 @@ static const char* safe_title(const MusicInfo* info, char* buf, int buf_len) {
 static const char* safe_field(const char* s) {
     return (s[0] != '\0' && strcmp(s, "Unknown") != 0 && strcmp(s, "<Unknown>") != 0)
            ? s : "--";
+}
+
+/*============================================================================
+ * Blur background async callbacks (implementation)
+ *==========================================================================*/
+
+static ret_t on_blur_idle_update(const idle_info_t* info) {
+    char* path = (char*)info->ctx;
+    widget_t* bg = find(W_COVER_BG);
+    if (bg && path) {
+        char uri[80];
+        snprintf(uri, sizeof(uri), "file://%s", path);
+        image_set_image(bg, uri);
+        image_set_draw_type(bg, IMAGE_DRAW_SCALE_AUTO);
+        widget_invalidate_force(bg, NULL);
+    }
+    if (path) free(path);
+    return RET_REMOVE;
+}
+
+static void on_blur_done(const char* dst_path, void* user_data) {
+    (void)user_data;
+    char* copy = strdup(dst_path);
+    idle_queue(on_blur_idle_update, copy);
 }
 
 /*============================================================================
@@ -199,13 +239,13 @@ static ret_t on_btn_mode_click(void* ctx, event_t* e) {
 
 /* Issue #A3: Fast-forward / rewind button handlers
  * Mirrors Android KeyEvent.KEYCODE_MEDIA_FAST_FORWARD / REWIND */
-static ret_t on_btn_ff_click(void* ctx, event_t* e) {
+static ret_t __attribute__((unused)) on_btn_ff_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
     music_app_seek_forward(MUSIC_APP_SEEK_STEP_MS);
     return RET_OK;
 }
 
-static ret_t on_btn_rew_click(void* ctx, event_t* e) {
+static ret_t __attribute__((unused)) on_btn_rew_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
     music_app_seek_backward(MUSIC_APP_SEEK_STEP_MS);
     return RET_OK;
@@ -240,7 +280,7 @@ static void show_play_view(bool show) {
 /*============================================================================
  * Play mode icon update — uses F133 cycle/single/random images
  *==========================================================================*/
-static const char* mode_icons[] = {
+static const char* mode_icons[] __attribute__((unused)) = {
     "media_player/cycle_n",    /* PLAY_MODE_SEQUENTIAL (repeat all) */
     "media_player/cycle_n",    /* PLAY_MODE_REPEAT_ALL */
     "media_player/single_n",   /* PLAY_MODE_REPEAT_ONE */
@@ -1011,11 +1051,14 @@ ret_t music_ui_create(widget_t* win) {
     widget_set_visible(pw, FALSE);
     widget_set_sensitive(pw, FALSE);
 
-    /* --- Cover art area (F133: cover_bg=211,120,242×242 + cover=275,185,114×114) --- */
-    widget_t* cover_bg = image_create(pw, 200, 100, 250, 250);
+    /* --- Blurred album art background (full play window, lowest layer) --- */
+    widget_t* cover_bg = image_create(pw, 0, 0, 1024, 600);
     widget_set_name(cover_bg, W_COVER_BG);
-    image_set_image(cover_bg, "media_player/icon_media_cover_bg_n");
+    image_set_draw_type(cover_bg, IMAGE_DRAW_SCALE_AUTO);
+    /* Default: solid dark background until album art blur is ready */
+    widget_set_style_str(cover_bg, "bg_color", COLOR_BG);
 
+    /* --- Cover art (small, centered on top of blurred bg) --- */
     widget_t* cover_art = image_create(pw, 245, 145, COVER_SZ, COVER_SZ);
     widget_set_name(cover_art, W_COVER_ART);
     image_set_draw_type(cover_art, IMAGE_DRAW_SCALE_AUTO);
@@ -1170,7 +1213,8 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
                 const char* icon = (d->type == STORAGE_TYPE_SD)
                                    ? "media_player/icon_sd"
                                    : "media_player/icon_usb";
-                image_create(bar, 30, by, 40, 40);
+                widget_t* dev_icon = image_create(bar, 30, by, 40, 40);
+                image_set_image(dev_icon, icon);
 
                 widget_t* dbtn = button_create(bar, 10, by, DEV_BAR_W - 20, bh);
                 widget_set_text_utf8(dbtn, lb);
@@ -1259,6 +1303,10 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
                         char prev_path[64];
                         snprintf(prev_path, sizeof(prev_path), "/tmp/album_art_%d.jpg", s_art_seq - 1);
                         remove(prev_path);
+                        /* Also remove previous blur file */
+                        char prev_blur[64];
+                        snprintf(prev_blur, sizeof(prev_blur), "/tmp/album_blur_%d.jpg", s_art_seq - 1);
+                        remove(prev_blur);
                     }
                     s_art_seq++;
                     FILE* fp = fopen(art_path, "wb");
@@ -1266,8 +1314,46 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
                     char uri[80];
                     snprintf(uri, sizeof(uri), "file://%s", art_path);
                     image_set_image(img, uri);
+
+                    /* Generate blurred background from album art (async — no UI block) */
+                    {
+                        static char s_blur_path[64];
+                        snprintf(s_blur_path, sizeof(s_blur_path), "/tmp/album_blur_%d.jpg", s_art_seq - 1);
+
+                        /* Cache key = MP3 filepath (stable across temp file rotations) */
+                        const music_app_state_t* mst = music_app_get_state();
+                        const char* mp3_key = (mst && mst->current_info)
+                                              ? mst->current_info->filepath : art_path;
+
+                        img_blur_album_art_async(mp3_key, art_path, s_blur_path,
+                                                  10.0f, on_blur_done, NULL);
+
+                        /* Preload next track's blur in background */
+                        {
+                            int cur = music_app_get_current_index();
+                            int total = music_app_get_playlist_count();
+                            int next = (cur + 1 < total) ? cur + 1 : 0;
+                            if (next != cur && total > 1) {
+                                const MusicInfo* next_info = music_app_get_track_info(next);
+                                if (next_info) {
+                                    static char s_next_art[64];
+                                    snprintf(s_next_art, sizeof(s_next_art), "/tmp/album_art_next.jpg");
+                                    extern int music_app_extract_art_to_file(int index, const char* path);
+                                    if (music_app_extract_art_to_file(next, s_next_art) == 0) {
+                                        img_blur_preload(next_info->filepath, s_next_art, 10.0f);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } else {
                     image_set_image(img, "media_player/icon_media_cover_n");
+                    /* No album art — reset blur background to dark */
+                    widget_t* bg = find(W_COVER_BG);
+                    if (bg) {
+                        image_set_image(bg, "");
+                        widget_invalidate_force(bg, NULL);
+                    }
                 }
                 widget_invalidate_force(img, NULL);
             }
