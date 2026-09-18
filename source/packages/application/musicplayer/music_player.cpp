@@ -70,7 +70,9 @@ struct MusicPlayerContext {
     pthread_t            poll_thread;
     bool                 poll_running;
 
-    std::mutex           mtx;
+    /* recursive: transport callbacks (SetPlaybackState → on_transport_*)
+     * re-enter ctx->mtx from the same thread that called Pause/Resume. */
+    std::recursive_mutex  mtx;
 };
 
 /* --- State callback from MediaPlayer (硬解) --- */
@@ -85,7 +87,7 @@ static void media_state_callback_wrapper(int new_state, void *user_data)
     void *data;
 
     {
-        std::lock_guard<std::mutex> lock(ctx->mtx);
+        std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
 
         switch (new_state) {
         case MediaPlayer::PlayingState:  ctx->state = PLAYER_STATE_PLAYING; break;
@@ -114,7 +116,7 @@ static void on_transport_playback_state(MusicPlayerContext *ctx, PlaybackState p
     void *data;
 
     {
-        std::lock_guard<std::mutex> lock(ctx->mtx);
+        std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
 
         switch (ps) {
         case PlaybackState::Playing:  s = PLAYER_STATE_PLAYING; break;
@@ -151,7 +153,7 @@ static void on_transport_stream_state(MusicPlayerContext *ctx, StreamState ss, c
         int new_idx = -1;
 
         {
-            std::lock_guard<std::mutex> lock(ctx->mtx);
+            std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
             if (ctx->next_index >= 0 &&
                 ctx->next_index < (int)ctx->playlist.size())
             {
@@ -180,7 +182,7 @@ static void on_transport_stream_state(MusicPlayerContext *ctx, StreamState ss, c
     }
     /* When decoder is almost done, prepare the next track for gapless */
     else if (ss == StreamState::AlmostDone) {
-        std::lock_guard<std::mutex> lock(ctx->mtx);
+        std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
 
         int count = (int)ctx->playlist.size();
         if (count <= 0) return;
@@ -260,7 +262,7 @@ static void *position_poll_func(void *arg)
         int dur = -1;
 
         {
-            std::lock_guard<std::mutex> lock(ctx->mtx);
+            std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
             if (ctx->state == PLAYER_STATE_PLAYING && ctx->player_ready && ctx->position_cb) {
                 if (ctx->use_soft) {
 #ifdef USE_SOFT_PLAYER
@@ -385,7 +387,7 @@ int music_player_set_playlist_refs(MusicPlayerContext *ctx,
 {
     if (!ctx || !refs || count <= 0) return -1;
 
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
 
     /*
      * musikcube pattern (HotSwap / CopyFrom):
@@ -478,7 +480,7 @@ int music_player_play(MusicPlayerContext *ctx, int index)
 {
     if (!ctx || !ctx->player_ready) return -1;
 
-    std::unique_lock<std::mutex> lock(ctx->mtx);
+    std::unique_lock<std::recursive_mutex> lock(ctx->mtx);
 
     if (index == -1) {
         if (ctx->current_index >= 0 && ctx->state == PLAYER_STATE_PAUSED) {
@@ -542,7 +544,7 @@ int music_player_play(MusicPlayerContext *ctx, int index)
 int music_player_pause(MusicPlayerContext *ctx)
 {
     if (!ctx || !ctx->player_ready) return -1;
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     if (ctx->state == PLAYER_STATE_PLAYING) {
         if (ctx->use_soft) {
 #ifdef USE_SOFT_PLAYER
@@ -559,7 +561,7 @@ int music_player_pause(MusicPlayerContext *ctx)
 int music_player_resume(MusicPlayerContext *ctx)
 {
     if (!ctx || !ctx->player_ready) return -1;
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     if (ctx->state == PLAYER_STATE_PAUSED) {
         if (ctx->use_soft) {
 #ifdef USE_SOFT_PLAYER
@@ -576,7 +578,7 @@ int music_player_resume(MusicPlayerContext *ctx)
 int music_player_stop(MusicPlayerContext *ctx)
 {
     if (!ctx || !ctx->player_ready) return -1;
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     if (ctx->use_soft) {
 #ifdef USE_SOFT_PLAYER
         if (ctx->transport) ctx->transport->Stop();
@@ -594,7 +596,7 @@ int music_player_next(MusicPlayerContext *ctx)
 
     int next;
     {
-        std::lock_guard<std::mutex> lock(ctx->mtx);
+        std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
         next = ctx->current_index;
         int count = (int)ctx->playlist.size();
 
@@ -643,7 +645,7 @@ int music_player_prev(MusicPlayerContext *ctx)
 
     int prev;
     {
-        std::lock_guard<std::mutex> lock(ctx->mtx);
+        std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
         prev = ctx->current_index - 1;
         if (prev < 0) prev = (int)ctx->playlist.size() - 1;
     }
@@ -654,7 +656,7 @@ int music_player_prev(MusicPlayerContext *ctx)
 int music_player_seek(MusicPlayerContext *ctx, int position_ms)
 {
     if (!ctx || !ctx->player_ready) return -1;
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     if (ctx->use_soft) {
 #ifdef USE_SOFT_PLAYER
         if (ctx->transport) {
@@ -670,7 +672,7 @@ int music_player_seek(MusicPlayerContext *ctx, int position_ms)
 void music_player_set_mode(MusicPlayerContext *ctx, PlayMode mode)
 {
     if (!ctx) return;
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     ctx->mode = mode;
     if (mode == PLAY_MODE_SHUFFLE)
         generate_shuffle(ctx);
@@ -703,7 +705,7 @@ void music_player_set_state_callback(MusicPlayerContext *ctx,
                                      on_state_changed_fn cb, void *user_data)
 {
     if (!ctx) return;
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     ctx->state_cb = cb;
     ctx->state_cb_data = user_data;
 }
@@ -712,7 +714,7 @@ void music_player_set_track_callback(MusicPlayerContext *ctx,
                                      on_track_changed_fn cb, void *user_data)
 {
     if (!ctx) return;
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     ctx->track_cb = cb;
     ctx->track_cb_data = user_data;
 }
@@ -721,7 +723,7 @@ void music_player_set_position_callback(MusicPlayerContext *ctx,
                                         on_position_changed_fn cb, void *user_data)
 {
     if (!ctx) return;
-    std::lock_guard<std::mutex> lock(ctx->mtx);
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     ctx->position_cb = cb;
     ctx->position_cb_data = user_data;
 }

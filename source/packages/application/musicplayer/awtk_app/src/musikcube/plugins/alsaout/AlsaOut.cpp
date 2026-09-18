@@ -78,10 +78,22 @@ static inline bool playable(snd_pcm_t* pcm) {
         return true;
     }
 
-    /* Auto-recover from XRUN / SETUP — don't just give up */
+    /* SND_PCM_STATE_PAUSED (4): if hardware pause was triggered by some
+     * external path, unpause via snd_pcm_pause(0) so we can keep writing. */
+    if (state == SND_PCM_STATE_PAUSED) {
+        std::cerr << "AlsaOut: PCM in PAUSED state, unpausing hardware\n";
+        int err = snd_pcm_pause(pcm, 0);
+        if (err == 0) return true;
+        /* If unpause fails, fall through to prepare-recovery below */
+        std::cerr << "AlsaOut: snd_pcm_pause(0) failed: " << snd_strerror(err)
+                  << ", trying prepare\n";
+    }
+
+    /* Auto-recover from XRUN / SETUP / failed-unpause — don't just give up */
     if (state == SND_PCM_STATE_XRUN ||
         state == SND_PCM_STATE_SETUP ||
-        state == SND_PCM_STATE_SUSPENDED)
+        state == SND_PCM_STATE_SUSPENDED ||
+        state == SND_PCM_STATE_PAUSED)
     {
         std::cerr << "AlsaOut: device not playable, recovering..."
                   << " (state=" << (int)state << ")\n";
@@ -389,20 +401,37 @@ void AlsaOut::Stop() {
 
 void AlsaOut::Pause() {
     LOCK("pause");
-
-    if (this->pcmHandle) {
-        snd_pcm_pause(this->pcmHandle, 1);
-        this->paused = true;
-    }
+    this->paused = true;
+    /* Do NOT call snd_pcm_pause() here.
+     *
+     * Root cause of the deadlock (2026-09 field bug):
+     *   snd_pcm_pause(handle,1) stops the hardware from draining the ring
+     *   buffer.  WriteLoop runs in blocking mode (snd_pcm_nonblock=0), so
+     *   the next snd_pcm_writei() blocks forever once the buffer is full.
+     *   WriteLoop holds stateMutex while inside writei, so Resume() can
+     *   never acquire the mutex to call snd_pcm_pause(handle,0) → deadlock.
+     *
+     * Fix: set the paused flag only. WriteLoop checks this flag BEFORE
+     * calling writei and waits on the condition variable instead.
+     * Resume() clears the flag and notifies, so WriteLoop wakes up and
+     * continues writing.  The PCM stream stays RUNNING during "pause" —
+     * we just stop feeding it new samples; ALSA drains what's in the ring
+     * buffer (≤ 0.5s of latency audio) then the device goes silent via
+     * underrun, which we recover from on resume.  This is simpler and
+     * deadlock-free. */
+    NOTIFY();
+    std::cerr << "AlsaOut: paused (flag-based)\n";
 }
 
 void AlsaOut::Resume() {
     LOCK("resume");
-
-    if (this->pcmHandle) {
-        snd_pcm_pause(this->pcmHandle, 0);
+    if (this->paused) {
         this->paused = false;
+        /* If the PCM went into XRUN while we were paused (ring buffer
+         * drained), playable() will recover it automatically via
+         * snd_pcm_prepare() on the next WriteLoop iteration. */
         NOTIFY();
+        std::cerr << "AlsaOut: resumed\n";
     }
 }
 
@@ -429,7 +458,13 @@ void AlsaOut::WriteLoop() {
 
             {
                 LOCK("thread: waiting for buffer");
-                while (!quit && (!playable(this->pcmHandle) || !this->buffers.size())) {
+
+                /* Wait until: not quit, not paused, device playable, and
+                 * at least one buffer is queued.  Checking `paused` HERE
+                 * (before we pop a buffer and enter writei) is the fix for
+                 * the deadlock: we never call snd_pcm_writei while paused,
+                 * so we never block inside writei holding stateMutex. */
+                while (!quit && (this->paused || !playable(this->pcmHandle) || !this->buffers.size())) {
                     WAIT();
                 }
 
@@ -439,7 +474,7 @@ void AlsaOut::WriteLoop() {
                 this->buffers.pop_front();
             }
 
-            int err;
+            int err = 0;
 
             if (next) {
                 size_t samples = next->buffer->Samples();
@@ -458,7 +493,15 @@ void AlsaOut::WriteLoop() {
 
                 {
                     LOCK("WRITE_BUFFER()");
-                    if (this->pcmHandle) {
+
+                    /* Re-check paused under lock — if Pause() was called
+                     * between the pop above and this lock acquisition,
+                     * skip the write entirely; the buffer will be returned
+                     * to the provider below and the loop will re-check. */
+                    if (this->paused) {
+                        /* Don't write — just fall through to OnBufferProcessed */
+                    }
+                    else if (this->pcmHandle) {
                         if (s_needFloatToS16) {
                             /* Convert float [-1.0, 1.0] -> S16_LE [-32768, 32767] */
                             float* src = next->buffer->BufferPointer();
@@ -494,11 +537,11 @@ void AlsaOut::WriteLoop() {
                                 }
                             }
                         }
-                    }
-                }
 
-                if (err > 0 && err < (int) samplesPerChannel) {
-                    std::cerr << "AlsaOut: short write. expected=" << samplesPerChannel << ", actual=" << err << std::endl;
+                        if (err > 0 && err < (int) samplesPerChannel) {
+                            std::cerr << "AlsaOut: short write. expected=" << samplesPerChannel << ", actual=" << err << std::endl;
+                        }
+                    }
                 }
 
                 next->provider->OnBufferProcessed(next->buffer);
@@ -515,10 +558,14 @@ OutputState AlsaOut::Play(IBuffer *buffer, IBufferProvider* provider) {
     {
         LOCK("play");
 
-        if (this->paused) {
-            return OutputState::InvalidState;
-        }
-
+        /* Accept buffers even while paused — they queue up and WriteLoop
+         * will drain them when resumed.  Returning InvalidState here was
+         * part of the deadlock: the Player decode thread would spin-retry
+         * forever, and once WriteLoop got stuck in writei holding the
+         * mutex the entire player froze.
+         *
+         * We still cap the queue at BUFFER_COUNT so the decode thread
+         * doesn't run ahead unboundedly during a long pause. */
         if (this->CountBuffersWithProvider(provider) >= BUFFER_COUNT) {
             return OutputState::BufferFull;
         }
@@ -529,12 +576,16 @@ OutputState AlsaOut::Play(IBuffer *buffer, IBufferProvider* provider) {
 
         this->buffers.push_back(context);
 
-        if (!playable(this->pcmHandle)) {
-            std::cerr << "AlsaOut: sanity check -- stream not playable. adding buffer to queue anyway\n";
+        if (!this->paused) {
+            if (!playable(this->pcmHandle)) {
+                std::cerr << "AlsaOut: sanity check -- stream not playable. adding buffer to queue anyway\n";
+            }
+            else {
+                NOTIFY();
+            }
         }
-        else {
-            NOTIFY();
-        }
+        /* When paused, don't NOTIFY — WriteLoop is waiting on the paused
+         * flag anyway.  The buffers will be consumed after Resume(). */
     }
 
     return OutputState::BufferWritten;
