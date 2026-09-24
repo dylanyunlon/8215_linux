@@ -560,7 +560,7 @@ static ret_t on_cf_pointer_down(void* data, event_t* e) {
     ctx->touch_start_center = ctx->center_smooth;
     ctx->touch_moved_px = 0;
     ctx->snapping = 0;
-    widget_grab(ctx->container, ctx->container);
+    /* widget_grab removed — self-grab causes AWTK event loop deadlock */
     return RET_OK;
 }
 
@@ -590,7 +590,7 @@ static ret_t on_cf_pointer_up(void* data, event_t* e) {
     cover_flow_ctx_t* ctx = (cover_flow_ctx_t*)data;
     (void)e;
     ctx->touch_active = 0;
-    widget_ungrab(ctx->container, ctx->container);
+    /* widget_ungrab removed — matching grab was removed */
 
     if (ctx->touch_moved_px < CF_TAP_THRESHOLD) {
         int sel = (int)(ctx->center_smooth + 0.5f);

@@ -312,6 +312,13 @@ int music_app_get_lyrics_line(int time_ms);
  */
 int music_app_get_album_art(const uint8_t** out_data, int* out_size);
 
+/**
+ * @brief Extract album art (APIC) from any MP3 file path.
+ * Caller must free(*out_data) when done.
+ * @return 0 on success, -1 on failure.
+ */
+int music_app_extract_art(const char* filepath, uint8_t** out_data, int* out_size);
+
 /* --- ACC lifecycle (Issue #32, mirrors Android LocalService ACC handling) --- */
 
 /**

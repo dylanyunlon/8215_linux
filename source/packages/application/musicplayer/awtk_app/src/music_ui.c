@@ -1343,9 +1343,40 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
                         strncpy(cf_items[i].subtitle,
                                 safe_field(info->artist), CF_MAX_SUBTITLE - 1);
                         cf_items[i].uid = i;
-                        /* cover_path left empty for now — placeholder mode */
                     }
                 }
+
+                /* Extract art for only the initial visible range (±4 from center) */
+                int center = cur >= 0 ? cur : 0;
+                int vis_lo = center - CF_VISIBLE_RADIUS;
+                int vis_hi = center + CF_VISIBLE_RADIUS;
+                if (vis_lo < 0) vis_lo = 0;
+                if (vis_hi >= total) vis_hi = total - 1;
+                printf("[music_ui] Art extract range: center=%d lo=%d hi=%d\n",
+                       center, vis_lo, vis_hi);
+                for (i = vis_lo; i <= vis_hi; i++) {
+                    const MusicInfo* info = music_app_get_track_info(i);
+                    if (!info) { printf("[music_ui] art[%d]: no info\n", i); continue; }
+                    if (!info->filepath[0]) { printf("[music_ui] art[%d]: no filepath\n", i); continue; }
+                    printf("[music_ui] art[%d]: trying %s\n", i, info->filepath);
+                    uint8_t* art = NULL; int art_sz = 0;
+                    int rc = music_app_extract_art(info->filepath, &art, &art_sz);
+                    printf("[music_ui] art[%d]: rc=%d size=%d\n", i, rc, art_sz);
+                    if (rc == 0 && art && art_sz > 0) {
+                        char path[80];
+                        snprintf(path, sizeof(path), "/tmp/cf_art_%d.jpg", i);
+                        FILE* fp = fopen(path, "wb");
+                        if (fp) {
+                            fwrite(art, 1, art_sz, fp);
+                            fclose(fp);
+                            printf("[music_ui] art[%d]: wrote %s\n", i, path);
+                        }
+                        snprintf(cf_items[i].cover_path, CF_MAX_PATH,
+                                 "file://%s", path);
+                        free(art);
+                    }
+                }
+
                 cover_flow_set_items(s_cover_flow, cf_items, total);
                 if (cur >= 0) cover_flow_set_selected(s_cover_flow, cur);
                 free(cf_items);
@@ -1367,7 +1398,7 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             if (al) widget_set_text_utf8(al, safe_field(st->current_info->album));
         }
 
-        /* Sync cover_flow to current track index (no blur, no image load) */
+        /* Sync cover_flow to current track */
         {
             int cur = music_app_get_current_index();
             if (s_cover_flow && cur >= 0) {
