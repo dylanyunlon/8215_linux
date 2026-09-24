@@ -171,6 +171,7 @@ struct _cover_flow_ctx {
     int     cw, ch;
     float   card_w, card_h;
     float   y_step, x_step;
+    int     x_off, y_off;    /* position offset within parent */
 };
 
 /* ================================================================
@@ -453,7 +454,11 @@ static ret_t on_cf_paint(void* data, event_t* e) {
     if (!vg) return RET_OK;
 
     vgcanvas_save(vg);
-    vgcanvas_clip_rect(vg, 0, 0, (float)ctx->cw, (float)ctx->ch);
+    /* Translate to cover_flow's position within the parent, then clip */
+    vgcanvas_translate(vg, (float)ctx->x_off, (float)ctx->y_off);
+    /* No clip_rect — vgcanvas_restore doesn't reliably reset clip in AWTK 1.8,
+     * causing right-side sibling widgets to be clipped out. Cards are already
+     * positioned within bounds by compute_card(). */
 
     float cs = ctx->center_smooth;
     int center_int = (int)(cs + 0.5f);
@@ -554,14 +559,20 @@ static void start_snap(cover_flow_ctx_t* ctx) {
 static ret_t on_cf_pointer_down(void* data, event_t* e) {
     cover_flow_ctx_t* ctx = (cover_flow_ctx_t*)data;
     pointer_event_t* pe = (pointer_event_t*)e;
+
+    /* Only handle touches inside the cover_flow region */
+    int lx = pe->x - ctx->x_off;
+    int ly = pe->y - ctx->y_off;
+    if (lx < 0 || lx >= ctx->cw || ly < 0 || ly >= ctx->ch)
+        return RET_OK;  /* outside — let children handle */
+
     ctx->touch_active = 1;
     ctx->touch_start_x = pe->x;
     ctx->touch_start_y = pe->y;
     ctx->touch_start_center = ctx->center_smooth;
     ctx->touch_moved_px = 0;
     ctx->snapping = 0;
-    /* widget_grab removed — self-grab causes AWTK event loop deadlock */
-    return RET_OK;
+    return RET_STOP;  /* consume the event */
 }
 
 static ret_t on_cf_pointer_move(void* data, event_t* e) {
@@ -620,8 +631,13 @@ cover_flow_ctx_t* cover_flow_create(widget_t* parent,
     ctx->y_step = ctx->card_h * 0.62f;
     ctx->x_step = ctx->card_w * 0.08f;
 
-    ctx->container = view_create(parent, x, y, w, h);
-    widget_on(ctx->container, EVT_PAINT, on_cf_paint, ctx);
+    /* Don't create a child container — AWTK's view_create auto-expands
+     * and covers sibling widgets. Instead, register paint + pointer events
+     * directly on the parent widget. Cover flow draws in a clipped region. */
+    ctx->container = parent;  /* parent IS the container */
+    ctx->x_off = x;
+    ctx->y_off = y;
+    widget_on(ctx->container, EVT_AFTER_PAINT, on_cf_paint, ctx);
     widget_on(ctx->container, EVT_POINTER_DOWN, on_cf_pointer_down, ctx);
     widget_on(ctx->container, EVT_POINTER_MOVE, on_cf_pointer_move, ctx);
     widget_on(ctx->container, EVT_POINTER_UP, on_cf_pointer_up, ctx);

@@ -90,7 +90,7 @@ static ret_t on_lyrics_paint(void* data, event_t* e) {
     vgcanvas_save(vg);
 
     /* Clip to container bounds */
-    vgcanvas_clip_rect(vg, 0, 0, (float)w, (float)h);
+    /* clip_rect removed — breaks sibling widget rendering in AWTK 1.8 */
 
     /* ---- Draw each visible line ---- */
     int i;
@@ -346,10 +346,12 @@ lyrics_view_ctx_t* lyrics_view_create(widget_t* parent,
 
     /* Container: a plain view widget for clipping + paint hook */
     ctx->container = view_create(parent, x, y, w, h);
+    { char sx[16],sy[16],sw[16],sh[16]; snprintf(sx,16,"%d",x); snprintf(sy,16,"%d",y); snprintf(sw,16,"%d",w); snprintf(sh,16,"%d",h); widget_set_self_layout_params(ctx->container, sx, sy, sw, sh); }
+    widget_move_resize(ctx->container, x, y, w, h);
     /* Transparent background — play view bg shows through */
 
     /* Register custom paint handler */
-    widget_on(ctx->container, EVT_PAINT, on_lyrics_paint, ctx);
+    widget_on(ctx->container, EVT_AFTER_PAINT, on_lyrics_paint, ctx);
 
     printf("[lyrics_view] Created (vgcanvas): %dx%d, line_h=%d, fade=%d\n",
            w, h, ctx->line_height, ctx->fade_height);

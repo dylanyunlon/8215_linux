@@ -20,6 +20,8 @@
  * Copyright (C) AutoChips Inc. All rights reserved.
  */
 
+#pragma GCC diagnostic ignored "-Wunused-function"
+
 #include "music_ui.h"
 #include "favorite_manager.h"
 #include "lyrics_view.h"
@@ -236,13 +238,18 @@ static void show_play_view(bool show) {
         widget_set_visible(pw, show);
         widget_set_sensitive(pw, show);
         s_play_view_visible = show;
+        if (show) {
+            widget_t* title = find(W_TITLE);
+            widget_t* slider = find(W_SLIDER);
+            printf("[music_ui] show_play_view: pw=%p title=%p slider=%p\n", pw, title, slider);
+        }
     }
 }
 
 /*============================================================================
  * Play mode icon update — uses F133 cycle/single/random images
  *==========================================================================*/
-static const char* mode_icons[] = {
+static const char* __attribute__((unused)) mode_icons[] = {
     "media_player/cycle_n",    /* PLAY_MODE_SEQUENTIAL (repeat all) */
     "media_player/cycle_n",    /* PLAY_MODE_REPEAT_ALL */
     "media_player/single_n",   /* PLAY_MODE_REPEAT_ONE */
@@ -1069,68 +1076,63 @@ ret_t music_ui_create(widget_t* win) {
     /* Cover flow tap callback: play the selected song */
     cover_flow_set_callback(s_cover_flow, on_cover_flow_select, NULL);
 
-    /* --- Song info (right side, top) --- */
-    {
-        int ix = PV_RIGHT_X, iy = 60;
 
-        /* Title: large, white */
-        widget_t* lbl_title = label_create(pw, ix, iy, PV_RIGHT_W - PV_RIGHT_MARGIN, 36);
+    /* --- Song info (top) --- */
+    {
+    #define RP_X  PV_RIGHT_X
+    #define RP_W  (PV_RIGHT_W - PV_RIGHT_MARGIN)
+        int iy = 60;
+
+        widget_t* lbl_title = label_create(pw, RP_X, iy, RP_W, 36);
         widget_set_name(lbl_title, W_TITLE);
         widget_set_text_utf8(lbl_title, "No Track");
         widget_set_style_str(lbl_title, "font_size", "26");
         widget_set_style_str(lbl_title, "text_color", COLOR_WHITE);
         iy += 38;
 
-        /* Artist: medium, teal */
-        widget_t* lbl_artist = label_create(pw, ix, iy, PV_RIGHT_W - PV_RIGHT_MARGIN, 24);
+        widget_t* lbl_artist = label_create(pw, RP_X, iy, RP_W, 24);
         widget_set_name(lbl_artist, W_ARTIST);
         widget_set_text_utf8(lbl_artist, "--");
         widget_set_style_str(lbl_artist, "font_size", "14");
         widget_set_style_str(lbl_artist, "text_color", COLOR_TEAL);
         iy += 24;
 
-        /* Album: small, dim */
-        widget_t* lbl_album = label_create(pw, ix, iy, PV_RIGHT_W - PV_RIGHT_MARGIN, 20);
+        widget_t* lbl_album = label_create(pw, RP_X, iy, RP_W, 20);
         widget_set_name(lbl_album, W_ALBUM);
         widget_set_text_utf8(lbl_album, "--");
         widget_set_style_str(lbl_album, "font_size", "12");
         widget_set_style_str(lbl_album, "text_color", COLOR_DIM);
     }
 
-    /* --- Scrolling lyrics (vgcanvas, right side, main body) --- */
+    /* --- Scrolling lyrics --- */
     {
-        int lx = PV_RIGHT_X;
-        int ly = 150;                /* below song info */
-        int lw = PV_RIGHT_W - PV_RIGHT_MARGIN;
-        int lh = 220;                /* generous height for 9 lines */
-        s_lyrics = lyrics_view_create(pw, lx, ly, lw, lh);
+        int ly = 150;
+        int lh = 220;
+        s_lyrics = lyrics_view_create(pw, RP_X, ly, RP_W, lh);
     }
 
-    /* --- Progress bar area (right column, below lyrics) --- */
+    /* --- Progress bar --- */
     {
-        int px = PV_RIGHT_X;
         int py = 390;
-        int pw2 = PV_RIGHT_W - PV_RIGHT_MARGIN;
 
-        widget_t* lbl_cur = label_create(pw, px, py, 55, 20);
+        widget_t* lbl_cur = label_create(pw, RP_X, py, 55, 20);
         widget_set_name(lbl_cur, W_TIME_CUR);
         widget_set_text_utf8(lbl_cur, "00:00");
         widget_set_style_str(lbl_cur, "font_size", "12");
         widget_set_style_str(lbl_cur, "text_color", COLOR_DIM);
 
-        widget_t* lbl_total = label_create(pw, px + pw2 - 55, py, 55, 20);
+        widget_t* lbl_total = label_create(pw, RP_X + RP_W - 55, py, 55, 20);
         widget_set_name(lbl_total, W_TIME_TOTAL);
         widget_set_text_utf8(lbl_total, "00:00");
         widget_set_style_str(lbl_total, "font_size", "12");
         widget_set_style_str(lbl_total, "text_color", COLOR_DIM);
         widget_set_style_str(lbl_total, "text_align_h", "right");
 
-        /* Separator label hidden — times at left/right ends now */
         widget_t* sep = label_create(pw, 0, 0, 1, 1);
         widget_set_name(sep, W_TIME_SEP);
         widget_set_visible(sep, FALSE);
 
-        widget_t* slider = slider_create(pw, px + 60, py, pw2 - 120, 20);
+        widget_t* slider = slider_create(pw, RP_X + 60, py, RP_W - 120, 20);
         widget_set_name(slider, W_SLIDER);
         slider_set_min(slider, 0);
         slider_set_max(slider, 100);
@@ -1140,17 +1142,16 @@ ret_t music_ui_create(widget_t* win) {
         widget_on(slider, EVT_POINTER_UP, on_slider_up, NULL);
     }
 
-    /* --- Transport controls (right column, bottom) --- */
+    /* --- Transport controls --- */
     {
-        /* 8 buttons: mode, rew, prev, PLAY, next, ff, list, fav */
         int btn_sz = 52;
         int btn_gap = 10;
         int total_w = 8 * btn_sz + 7 * btn_gap;
-        int bx = PV_RIGHT_X + (PV_RIGHT_W - PV_RIGHT_MARGIN - total_w) / 2;
+        int bx = (RP_W - total_w) / 2;
         int by = 440;
 
         /* Play mode */
-        widget_t* bm = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_t* bm = button_create(pw, RP_X + bx, by, btn_sz, btn_sz);
         widget_set_name(bm, W_BTN_MODE);
         widget_set_text_utf8(bm, "All");
         widget_set_style_str(bm, "font_size", "14");
@@ -1159,26 +1160,26 @@ ret_t music_ui_create(widget_t* win) {
         bx += btn_sz + btn_gap;
 
         /* Rewind */
-        widget_t* brew = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_t* brew = button_create(pw, RP_X + bx, by, btn_sz, btn_sz);
         widget_set_text_utf8(brew, "◀◀");
         widget_set_style_str(brew, "font_size", "16");
-        widget_set_style_str(brew, "text_color", COLOR_WHITE);
+        widget_set_style_str(brew, "text_color", "#000000");
         widget_on(brew, EVT_CLICK, on_btn_rew_click, NULL);
         bx += btn_sz + btn_gap;
 
         /* Prev */
-        widget_t* bp = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_t* bp = button_create(pw, RP_X + bx, by, btn_sz, btn_sz);
         widget_set_name(bp, W_BTN_PREV);
         widget_set_text_utf8(bp, "|◀");
         widget_set_style_str(bp, "font_size", "18");
-        widget_set_style_str(bp, "text_color", COLOR_WHITE);
+        widget_set_style_str(bp, "text_color", "#000000");
         widget_on(bp, EVT_CLICK, on_btn_prev_click, NULL);
         bx += btn_sz + btn_gap;
 
         /* PLAY (larger, accent) */
         int play_sz = 66;
         int play_y = by - (play_sz - btn_sz) / 2;
-        widget_t* bpl = button_create(pw, bx - 5, play_y, play_sz, play_sz);
+        widget_t* bpl = button_create(pw, RP_X + bx - 5, play_y, play_sz, play_sz);
         widget_set_name(bpl, W_BTN_PLAY);
         widget_set_text_utf8(bpl, "\xe2\x96\xb6"); /* ▶ */
         widget_set_style_str(bpl, "font_size", "28");
@@ -1188,37 +1189,37 @@ ret_t music_ui_create(widget_t* win) {
         bx += play_sz + btn_gap + 5;
 
         /* Next */
-        widget_t* bn = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_t* bn = button_create(pw, RP_X + bx, by, btn_sz, btn_sz);
         widget_set_name(bn, W_BTN_NEXT);
         widget_set_text_utf8(bn, "\xe2\x96\xb6|"); /* ▶| */
         widget_set_style_str(bn, "font_size", "18");
-        widget_set_style_str(bn, "text_color", COLOR_WHITE);
+        widget_set_style_str(bn, "text_color", "#000000");
         widget_on(bn, EVT_CLICK, on_btn_next_click, NULL);
         bx += btn_sz + btn_gap;
 
         /* Fast-forward */
-        widget_t* bff = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_t* bff = button_create(pw, RP_X + bx, by, btn_sz, btn_sz);
         widget_set_text_utf8(bff, "\xe2\x96\xb6\xe2\x96\xb6"); /* ▶▶ */
         widget_set_style_str(bff, "font_size", "16");
-        widget_set_style_str(bff, "text_color", COLOR_WHITE);
+        widget_set_style_str(bff, "text_color", "#000000");
         widget_on(bff, EVT_CLICK, on_btn_ff_click, NULL);
         bx += btn_sz + btn_gap;
 
         /* List (back to list view) */
-        widget_t* bl = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_t* bl = button_create(pw, RP_X + bx, by, btn_sz, btn_sz);
         widget_set_name(bl, W_BTN_LIST);
         widget_set_text_utf8(bl, "\xe2\x89\xa1"); /* ≡ */
         widget_set_style_str(bl, "font_size", "22");
-        widget_set_style_str(bl, "text_color", COLOR_WHITE);
+        widget_set_style_str(bl, "text_color", "#000000");
         widget_on(bl, EVT_CLICK, on_btn_list_click, NULL);
         bx += btn_sz + btn_gap;
 
         /* Favorite */
-        widget_t* bf = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_t* bf = button_create(pw, RP_X + bx, by, btn_sz, btn_sz);
         widget_set_name(bf, W_BTN_FAV);
         widget_set_text_utf8(bf, "\xe2\x98\x86"); /* ☆ */
         widget_set_style_str(bf, "font_size", "22");
-        widget_set_style_str(bf, "text_color", COLOR_WHITE);
+        widget_set_style_str(bf, "text_color", "#000000");
         widget_on(bf, EVT_CLICK, on_btn_fav_click, NULL);
     }
 
@@ -1270,6 +1271,7 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
                 const char* icon = (d->type == STORAGE_TYPE_SD)
                                    ? "media_player/icon_sd"
                                    : "media_player/icon_usb";
+                (void)icon;
                 image_create(bar, 30, by, 40, 40);
 
                 widget_t* dbtn = button_create(bar, 10, by, DEV_BAR_W - 20, bh);

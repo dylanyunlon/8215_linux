@@ -66,7 +66,7 @@ OBJS        = $(C_OBJS)
 # ===========================================================================
 # Compiler & linker flags
 # ===========================================================================
-COMMON_FLAGS = -Wall -Wextra -Wno-unused-parameter -O2 -fPIC
+COMMON_FLAGS = -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -O2 -fPIC
 COMMON_FLAGS += -DAWTK_LINUX_FB
 COMMON_FLAGS += -DWITH_FS_RES  # Load assets from filesystem, not compiled-in
 COMMON_FLAGS += -DUSE_CMUS_ID3 # Enable cmus id3/cue parser via cmus_bridge
