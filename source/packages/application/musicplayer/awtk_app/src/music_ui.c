@@ -23,15 +23,7 @@
 #include "music_ui.h"
 #include "favorite_manager.h"
 #include "lyrics_view.h"
-
-/* Album art blur (img_blur.cpp) */
-extern int img_blur_album_art(const char* src, const char* dst, float sigma, int scale);
-
-typedef void (*img_blur_done_cb)(const char* dst_path, void* user_data);
-extern void img_blur_album_art_async(const char* cache_key, const char* art_path,
-                                      const char* dst_path, float sigma,
-                                      img_blur_done_cb cb, void* ud);
-extern void img_blur_preload(const char* mp3_path, const char* art_file, float sigma);
+#include "cover_flow.h"
 /* music_app.h provides music_app_safe_play/next/prev with player lock check */
 
 #include <stdio.h>
@@ -100,13 +92,6 @@ extern void img_blur_preload(const char* mp3_path, const char* art_file, float s
 #define SEARCH_MAX        200
 
 /*============================================================================
- * Blur background async callbacks (declared after s_win)
- *==========================================================================*/
-
-static ret_t on_blur_idle_update(const idle_info_t* info);
-static void on_blur_done(const char* dst_path, void* user_data);
-
-/*============================================================================
  * Active tab enum
  *==========================================================================*/
 typedef enum {
@@ -119,6 +104,7 @@ typedef enum {
  *==========================================================================*/
 static widget_t* s_win = NULL;
 static lyrics_view_ctx_t* s_lyrics = NULL;
+static cover_flow_ctx_t*  s_cover_flow = NULL;
 static bool s_play_view_visible = false;
 static bool s_slider_dragging = false;
 static int  s_last_highlight_idx = -1;
@@ -159,30 +145,6 @@ static const char* safe_title(const MusicInfo* info, char* buf, int buf_len) {
 static const char* safe_field(const char* s) {
     return (s[0] != '\0' && strcmp(s, "Unknown") != 0 && strcmp(s, "<Unknown>") != 0)
            ? s : "--";
-}
-
-/*============================================================================
- * Blur background async callbacks (implementation)
- *==========================================================================*/
-
-static ret_t on_blur_idle_update(const idle_info_t* info) {
-    char* path = (char*)info->ctx;
-    widget_t* bg = find(W_COVER_BG);
-    if (bg && path) {
-        char uri[80];
-        snprintf(uri, sizeof(uri), "file://%s", path);
-        image_set_image(bg, uri);
-        image_set_draw_type(bg, IMAGE_DRAW_SCALE_AUTO);
-        widget_invalidate_force(bg, NULL);
-    }
-    if (path) free(path);
-    return RET_REMOVE;
-}
-
-static void on_blur_done(const char* dst_path, void* user_data) {
-    (void)user_data;
-    char* copy = strdup(dst_path);
-    idle_queue(on_blur_idle_update, copy);
 }
 
 /*============================================================================
@@ -239,13 +201,13 @@ static ret_t on_btn_mode_click(void* ctx, event_t* e) {
 
 /* Issue #A3: Fast-forward / rewind button handlers
  * Mirrors Android KeyEvent.KEYCODE_MEDIA_FAST_FORWARD / REWIND */
-static ret_t __attribute__((unused)) on_btn_ff_click(void* ctx, event_t* e) {
+static ret_t on_btn_ff_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
     music_app_seek_forward(MUSIC_APP_SEEK_STEP_MS);
     return RET_OK;
 }
 
-static ret_t __attribute__((unused)) on_btn_rew_click(void* ctx, event_t* e) {
+static ret_t on_btn_rew_click(void* ctx, event_t* e) {
     (void)ctx; (void)e;
     music_app_seek_backward(MUSIC_APP_SEEK_STEP_MS);
     return RET_OK;
@@ -280,7 +242,7 @@ static void show_play_view(bool show) {
 /*============================================================================
  * Play mode icon update — uses F133 cycle/single/random images
  *==========================================================================*/
-static const char* mode_icons[] __attribute__((unused)) = {
+static const char* mode_icons[] = {
     "media_player/cycle_n",    /* PLAY_MODE_SEQUENTIAL (repeat all) */
     "media_player/cycle_n",    /* PLAY_MODE_REPEAT_ALL */
     "media_player/single_n",   /* PLAY_MODE_REPEAT_ONE */
@@ -939,6 +901,20 @@ static void update_playlist_highlight(int new_idx) {
 }
 
 /*============================================================================
+ * Cover Flow selection callback — tap on center card plays that song
+ *==========================================================================*/
+static void on_cover_flow_select(int index, const cover_flow_item_t* item, void* ud) {
+    (void)ud;
+    if (!item) return;
+    printf("[music_ui] cover_flow select: idx=%d uid=%d title=%s\n",
+           index, item->uid, item->title);
+    int rc = music_app_safe_play(item->uid);
+    if (rc != 0) {
+        printf("[music_ui] cover_flow play blocked: player preparing\n");
+    }
+}
+
+/*============================================================================
  * UI creation — F133 layout
  *
  * Root window (1024×600):
@@ -1042,8 +1018,26 @@ ret_t music_ui_create(widget_t* win) {
     widget_set_style_str(lv, "bg_color", COLOR_BG);
 
     /* ================================================================
-     * LAYER 2: Play view window (overlay, initially hidden)
-     * Mirrors F133 musicWindow id=110001
+     * LAYER 2: Play view — Mineradio-style layout (no blur bg)
+     *
+     *   ┌──────────────────────────────────────────────────────────┐
+     *   │ [←]                              SOFT DECODE · ALSA     │ y=0..40
+     *   │                                                          │
+     *   │  ┌─────────────┐   Title (26px, white)                   │
+     *   │  │ cover_flow  │   Artist (14px, mid-gray)               │
+     *   │  │ (280×440)   │   Album (12px, dim)                     │
+     *   │  │             │                                          │
+     *   │  │ swipe = 选歌│   ┌─────────────────────────┐           │
+     *   │  │ tap = 播放  │   │  Lyrics (vgcanvas)      │           │
+     *   │  │             │   │  9 lines, edge fade     │           │
+     *   │  │ PSP diagonal│   └─────────────────────────┘           │
+     *   │  └─────────────┘                                          │
+     *   │       00:00 ━━━━━━━━━━━━━━━━━━━━━━━━━━━ 03:46            │
+     *   │   [mode] [rew] [prev] [▶PLAY] [next] [ff] [list] [fav]  │
+     *   └──────────────────────────────────────────────────────────┘
+     *
+     * Background: pure COLOR_BG — NO gaussian blur (cover_flow cards
+     * provide all the visual weight, saves 50-200ms per track change)
      * ================================================================ */
     widget_t* pw = view_create(win, 0, 0, 1024, 600);
     widget_set_name(pw, W_PLAY_WIN);
@@ -1051,125 +1045,184 @@ ret_t music_ui_create(widget_t* win) {
     widget_set_visible(pw, FALSE);
     widget_set_sensitive(pw, FALSE);
 
-    /* --- Blurred album art background (full play window, lowest layer) --- */
-    widget_t* cover_bg = image_create(pw, 0, 0, 1024, 600);
-    widget_set_name(cover_bg, W_COVER_BG);
-    image_set_draw_type(cover_bg, IMAGE_DRAW_SCALE_AUTO);
-    /* Default: solid dark background until album art blur is ready */
-    widget_set_style_str(cover_bg, "bg_color", COLOR_BG);
-
-    /* --- Cover art (small, centered on top of blurred bg) --- */
-    widget_t* cover_art = image_create(pw, 245, 145, COVER_SZ, COVER_SZ);
-    widget_set_name(cover_art, W_COVER_ART);
-    image_set_draw_type(cover_art, IMAGE_DRAW_SCALE_AUTO);
-    image_set_image(cover_art, "media_player/icon_media_cover_n");
-
-    /* --- Song info (F133: right side, vertical stack with icons) --- */
-    int info_x = 520, info_y = 140;
-
-    /* Music icon + Title */
-    image_create(pw, info_x, info_y, 40, 40);
-    /* icon_music.png already in assets */
-
-    widget_t* lbl_title = label_create(pw, info_x + 50, info_y, 400, 36);
-    widget_set_name(lbl_title, W_TITLE);
-    widget_set_text_utf8(lbl_title, "No Track");
-    widget_set_style_str(lbl_title, "font_size", "24");
-    widget_set_style_str(lbl_title, "text_color", COLOR_WHITE);
-
-    /* CD icon + Album */
-    info_y += 55;
-    widget_t* lbl_album = label_create(pw, info_x + 50, info_y, 400, 32);
-    widget_set_name(lbl_album, W_ALBUM);
-    widget_set_text_utf8(lbl_album, "--");
-    widget_set_style_str(lbl_album, "font_size", "22");
-    widget_set_style_str(lbl_album, "text_color", COLOR_GRAY);
-
-    /* Singer icon + Artist */
-    info_y += 50;
-    widget_t* lbl_artist = label_create(pw, info_x + 50, info_y, 400, 32);
-    widget_set_name(lbl_artist, W_ARTIST);
-    widget_set_text_utf8(lbl_artist, "--");
-    widget_set_style_str(lbl_artist, "font_size", "22");
-    widget_set_style_str(lbl_artist, "text_color", COLOR_TEAL);
-
-    /* --- Progress bar area (F133: y=380-430) --- */
-    int prog_y = 385;
-
-    widget_t* lbl_cur = label_create(pw, 220, prog_y, 65, 28);
-    widget_set_name(lbl_cur, W_TIME_CUR);
-    widget_set_text_utf8(lbl_cur, "00:00");
-    widget_set_style_str(lbl_cur, "font_size", "18");
-    widget_set_style_str(lbl_cur, "text_color", COLOR_WHITE);
-
-    widget_t* sep = label_create(pw, 285, prog_y, 15, 28);
-    widget_set_name(sep, W_TIME_SEP);
-    widget_set_text_utf8(sep, "/");
-    widget_set_style_str(sep, "font_size", "18");
-    widget_set_style_str(sep, "text_color", COLOR_DIM);
-
-    widget_t* lbl_total = label_create(pw, 300, prog_y, 65, 28);
-    widget_set_name(lbl_total, W_TIME_TOTAL);
-    widget_set_text_utf8(lbl_total, "00:00");
-    widget_set_style_str(lbl_total, "font_size", "18");
-    widget_set_style_str(lbl_total, "text_color", COLOR_WHITE);
-
-    widget_t* slider = slider_create(pw, 220, prog_y + 35, 560, 20);
-    widget_set_name(slider, W_SLIDER);
-    slider_set_min(slider, 0);
-    slider_set_max(slider, 100);
-    slider_set_value(slider, 0);
-    widget_on(slider, EVT_VALUE_CHANGED, on_slider_changed, NULL);
-    widget_on(slider, EVT_POINTER_DOWN, on_slider_down, NULL);
-    widget_on(slider, EVT_POINTER_UP, on_slider_up, NULL);
-
-    /* --- Control buttons (F133: y=484, centered, 74×74 each) --- */
-    int cx = 220, cy = CTRL_BTN_Y, cs = CTRL_BTN_SZ, cg = 40;
-
-    widget_t* bm = button_create(pw, cx, cy, cs, cs);
-    widget_set_name(bm, W_BTN_MODE);
-    widget_set_text_utf8(bm, "All");
-    widget_on(bm, EVT_CLICK, on_btn_mode_click, NULL);
-
-    cx += cs + cg;
-    widget_t* bp = button_create(pw, cx, cy, cs, cs);
-    widget_set_name(bp, W_BTN_PREV);
-    widget_set_text_utf8(bp, "|◀");
-    widget_on(bp, EVT_CLICK, on_btn_prev_click, NULL);
-
-    cx += cs + cg;
-    widget_t* bpl = button_create(pw, cx, cy, cs, cs);
-    widget_set_name(bpl, W_BTN_PLAY);
-    widget_set_text_utf8(bpl, "▶");
-    widget_on(bpl, EVT_CLICK, on_btn_play_click, NULL);
-
-    cx += cs + cg;
-    widget_t* bn = button_create(pw, cx, cy, cs, cs);
-    widget_set_name(bn, W_BTN_NEXT);
-    widget_set_text_utf8(bn, "▶|");
-    widget_on(bn, EVT_CLICK, on_btn_next_click, NULL);
-
-    cx += cs + cg;
-    widget_t* bl = button_create(pw, cx, cy, cs, cs);
-    widget_set_name(bl, W_BTN_LIST);
-    widget_set_text_utf8(bl, "≡");
-    widget_on(bl, EVT_CLICK, on_btn_list_click, NULL);
-
-    cx += cs + cg;
-    widget_t* bf = button_create(pw, cx, cy, cs, cs);
-    widget_set_name(bf, W_BTN_FAV);
-    widget_set_text_utf8(bf, "☆");
-    widget_on(bf, EVT_CLICK, on_btn_fav_click, NULL);
-
-    /* --- Scrolling lyrics (between song info and progress bar) --- */
+    /* --- Back button (top-left) --- */
     {
-        /* Area: below artist (y~290) to above progress (y~380)
-         * Span full width for centered text display */
-        int lx = 200, ly = 100, lw = 600, lh = 260;
+        widget_t* back = button_create(pw, 16, 12, 50, 36);
+        widget_set_text_utf8(back, "\xe2\x86\x90"); /* ← */
+        widget_set_style_str(back, "font_size", "20");
+        widget_set_style_str(back, "text_color", COLOR_WHITE);
+        widget_on(back, EVT_CLICK, on_btn_list_click, NULL);
+    }
+
+    /* --- Geometry constants --- */
+    #define PV_CF_X       0        /* cover_flow: full left strip */
+    #define PV_CF_Y       0
+    #define PV_CF_W       370      /* ~36% of 1024 */
+    #define PV_CF_H       600      /* full height */
+    #define PV_RIGHT_X    380      /* right column left edge */
+    #define PV_RIGHT_W    620      /* right column width */
+    #define PV_RIGHT_MARGIN 24     /* right edge padding */
+
+    /* --- Cover Flow (left side, replaces static cover art) --- */
+    s_cover_flow = cover_flow_create(pw, PV_CF_X, PV_CF_Y, PV_CF_W, PV_CF_H);
+
+    /* Cover flow tap callback: play the selected song */
+    cover_flow_set_callback(s_cover_flow, on_cover_flow_select, NULL);
+
+    /* --- Song info (right side, top) --- */
+    {
+        int ix = PV_RIGHT_X, iy = 60;
+
+        /* Title: large, white */
+        widget_t* lbl_title = label_create(pw, ix, iy, PV_RIGHT_W - PV_RIGHT_MARGIN, 36);
+        widget_set_name(lbl_title, W_TITLE);
+        widget_set_text_utf8(lbl_title, "No Track");
+        widget_set_style_str(lbl_title, "font_size", "26");
+        widget_set_style_str(lbl_title, "text_color", COLOR_WHITE);
+        iy += 38;
+
+        /* Artist: medium, teal */
+        widget_t* lbl_artist = label_create(pw, ix, iy, PV_RIGHT_W - PV_RIGHT_MARGIN, 24);
+        widget_set_name(lbl_artist, W_ARTIST);
+        widget_set_text_utf8(lbl_artist, "--");
+        widget_set_style_str(lbl_artist, "font_size", "14");
+        widget_set_style_str(lbl_artist, "text_color", COLOR_TEAL);
+        iy += 24;
+
+        /* Album: small, dim */
+        widget_t* lbl_album = label_create(pw, ix, iy, PV_RIGHT_W - PV_RIGHT_MARGIN, 20);
+        widget_set_name(lbl_album, W_ALBUM);
+        widget_set_text_utf8(lbl_album, "--");
+        widget_set_style_str(lbl_album, "font_size", "12");
+        widget_set_style_str(lbl_album, "text_color", COLOR_DIM);
+    }
+
+    /* --- Scrolling lyrics (vgcanvas, right side, main body) --- */
+    {
+        int lx = PV_RIGHT_X;
+        int ly = 150;                /* below song info */
+        int lw = PV_RIGHT_W - PV_RIGHT_MARGIN;
+        int lh = 220;                /* generous height for 9 lines */
         s_lyrics = lyrics_view_create(pw, lx, ly, lw, lh);
     }
 
-    printf("[music_ui] UI created (F133 layout)\n");
+    /* --- Progress bar area (right column, below lyrics) --- */
+    {
+        int px = PV_RIGHT_X;
+        int py = 390;
+        int pw2 = PV_RIGHT_W - PV_RIGHT_MARGIN;
+
+        widget_t* lbl_cur = label_create(pw, px, py, 55, 20);
+        widget_set_name(lbl_cur, W_TIME_CUR);
+        widget_set_text_utf8(lbl_cur, "00:00");
+        widget_set_style_str(lbl_cur, "font_size", "12");
+        widget_set_style_str(lbl_cur, "text_color", COLOR_DIM);
+
+        widget_t* lbl_total = label_create(pw, px + pw2 - 55, py, 55, 20);
+        widget_set_name(lbl_total, W_TIME_TOTAL);
+        widget_set_text_utf8(lbl_total, "00:00");
+        widget_set_style_str(lbl_total, "font_size", "12");
+        widget_set_style_str(lbl_total, "text_color", COLOR_DIM);
+        widget_set_style_str(lbl_total, "text_align_h", "right");
+
+        /* Separator label hidden — times at left/right ends now */
+        widget_t* sep = label_create(pw, 0, 0, 1, 1);
+        widget_set_name(sep, W_TIME_SEP);
+        widget_set_visible(sep, FALSE);
+
+        widget_t* slider = slider_create(pw, px + 60, py, pw2 - 120, 20);
+        widget_set_name(slider, W_SLIDER);
+        slider_set_min(slider, 0);
+        slider_set_max(slider, 100);
+        slider_set_value(slider, 0);
+        widget_on(slider, EVT_VALUE_CHANGED, on_slider_changed, NULL);
+        widget_on(slider, EVT_POINTER_DOWN, on_slider_down, NULL);
+        widget_on(slider, EVT_POINTER_UP, on_slider_up, NULL);
+    }
+
+    /* --- Transport controls (right column, bottom) --- */
+    {
+        /* 8 buttons: mode, rew, prev, PLAY, next, ff, list, fav */
+        int btn_sz = 52;
+        int btn_gap = 10;
+        int total_w = 8 * btn_sz + 7 * btn_gap;
+        int bx = PV_RIGHT_X + (PV_RIGHT_W - PV_RIGHT_MARGIN - total_w) / 2;
+        int by = 440;
+
+        /* Play mode */
+        widget_t* bm = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_set_name(bm, W_BTN_MODE);
+        widget_set_text_utf8(bm, "All");
+        widget_set_style_str(bm, "font_size", "14");
+        widget_set_style_str(bm, "text_color", COLOR_CYAN);
+        widget_on(bm, EVT_CLICK, on_btn_mode_click, NULL);
+        bx += btn_sz + btn_gap;
+
+        /* Rewind */
+        widget_t* brew = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_set_text_utf8(brew, "◀◀");
+        widget_set_style_str(brew, "font_size", "16");
+        widget_set_style_str(brew, "text_color", COLOR_WHITE);
+        widget_on(brew, EVT_CLICK, on_btn_rew_click, NULL);
+        bx += btn_sz + btn_gap;
+
+        /* Prev */
+        widget_t* bp = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_set_name(bp, W_BTN_PREV);
+        widget_set_text_utf8(bp, "|◀");
+        widget_set_style_str(bp, "font_size", "18");
+        widget_set_style_str(bp, "text_color", COLOR_WHITE);
+        widget_on(bp, EVT_CLICK, on_btn_prev_click, NULL);
+        bx += btn_sz + btn_gap;
+
+        /* PLAY (larger, accent) */
+        int play_sz = 66;
+        int play_y = by - (play_sz - btn_sz) / 2;
+        widget_t* bpl = button_create(pw, bx - 5, play_y, play_sz, play_sz);
+        widget_set_name(bpl, W_BTN_PLAY);
+        widget_set_text_utf8(bpl, "\xe2\x96\xb6"); /* ▶ */
+        widget_set_style_str(bpl, "font_size", "28");
+        widget_set_style_str(bpl, "text_color", COLOR_BG);
+        widget_set_style_str(bpl, "bg_color", COLOR_CYAN);
+        widget_on(bpl, EVT_CLICK, on_btn_play_click, NULL);
+        bx += play_sz + btn_gap + 5;
+
+        /* Next */
+        widget_t* bn = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_set_name(bn, W_BTN_NEXT);
+        widget_set_text_utf8(bn, "\xe2\x96\xb6|"); /* ▶| */
+        widget_set_style_str(bn, "font_size", "18");
+        widget_set_style_str(bn, "text_color", COLOR_WHITE);
+        widget_on(bn, EVT_CLICK, on_btn_next_click, NULL);
+        bx += btn_sz + btn_gap;
+
+        /* Fast-forward */
+        widget_t* bff = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_set_text_utf8(bff, "\xe2\x96\xb6\xe2\x96\xb6"); /* ▶▶ */
+        widget_set_style_str(bff, "font_size", "16");
+        widget_set_style_str(bff, "text_color", COLOR_WHITE);
+        widget_on(bff, EVT_CLICK, on_btn_ff_click, NULL);
+        bx += btn_sz + btn_gap;
+
+        /* List (back to list view) */
+        widget_t* bl = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_set_name(bl, W_BTN_LIST);
+        widget_set_text_utf8(bl, "\xe2\x89\xa1"); /* ≡ */
+        widget_set_style_str(bl, "font_size", "22");
+        widget_set_style_str(bl, "text_color", COLOR_WHITE);
+        widget_on(bl, EVT_CLICK, on_btn_list_click, NULL);
+        bx += btn_sz + btn_gap;
+
+        /* Favorite */
+        widget_t* bf = button_create(pw, bx, by, btn_sz, btn_sz);
+        widget_set_name(bf, W_BTN_FAV);
+        widget_set_text_utf8(bf, "\xe2\x98\x86"); /* ☆ */
+        widget_set_style_str(bf, "font_size", "22");
+        widget_set_style_str(bf, "text_color", COLOR_WHITE);
+        widget_on(bf, EVT_CLICK, on_btn_fav_click, NULL);
+    }
+
+    printf("[music_ui] UI created (Mineradio layout)\n");
     return RET_OK;
 }
 
@@ -1177,6 +1230,10 @@ void music_ui_destroy(void) {
     if (s_lyrics) {
         lyrics_view_destroy(s_lyrics);
         s_lyrics = NULL;
+    }
+    if (s_cover_flow) {
+        cover_flow_destroy(s_cover_flow);
+        s_cover_flow = NULL;
     }
     s_win = NULL;
     printf("[music_ui] UI destroyed\n");
@@ -1213,8 +1270,7 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
                 const char* icon = (d->type == STORAGE_TYPE_SD)
                                    ? "media_player/icon_sd"
                                    : "media_player/icon_usb";
-                widget_t* dev_icon = image_create(bar, 30, by, 40, 40);
-                image_set_image(dev_icon, icon);
+                image_create(bar, 30, by, 40, 40);
 
                 widget_t* dbtn = button_create(bar, 10, by, DEV_BAR_W - 20, bh);
                 widget_set_text_utf8(dbtn, lb);
@@ -1271,6 +1327,30 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             else snprintf(b, sizeof(b), "%d tracks", total);
             widget_set_text_utf8(lbl, b);
         }
+
+        /* Rebuild cover_flow items from playlist */
+        if (s_cover_flow && total > 0) {
+            cover_flow_item_t* cf_items = (cover_flow_item_t*)calloc(
+                total, sizeof(cover_flow_item_t));
+            if (cf_items) {
+                int i;
+                for (i = 0; i < total; i++) {
+                    const MusicInfo* info = music_app_get_track_info(i);
+                    if (info) {
+                        char tbuf[MUSIC_MAX_TAG_LEN];
+                        const char* t = safe_title(info, tbuf, sizeof(tbuf));
+                        strncpy(cf_items[i].title, t, CF_MAX_TITLE - 1);
+                        strncpy(cf_items[i].subtitle,
+                                safe_field(info->artist), CF_MAX_SUBTITLE - 1);
+                        cf_items[i].uid = i;
+                        /* cover_path left empty for now — placeholder mode */
+                    }
+                }
+                cover_flow_set_items(s_cover_flow, cf_items, total);
+                if (cur >= 0) cover_flow_set_selected(s_cover_flow, cur);
+                free(cf_items);
+            }
+        }
         break;
     }
 
@@ -1287,75 +1367,11 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             if (al) widget_set_text_utf8(al, safe_field(st->current_info->album));
         }
 
-        /* Issue #57: Update album art (F133 refreshMusicInfo → /tmp/m1.jpg pattern) */
+        /* Sync cover_flow to current track index (no blur, no image load) */
         {
-            widget_t* img = find(W_COVER_ART);
-            if (img) {
-                const uint8_t* art = NULL; int art_sz = 0;
-                if (music_app_get_album_art(&art, &art_sz) == 0 && art && art_sz > 0) {
-                    /* Use rotating filename to defeat AWTK image cache.
-                     * Same path = AWTK returns stale cached bitmap. */
-                    static int s_art_seq = 0;
-                    char art_path[64];
-                    snprintf(art_path, sizeof(art_path), "/tmp/album_art_%d.jpg", s_art_seq);
-                    /* Remove previous file */
-                    if (s_art_seq > 0) {
-                        char prev_path[64];
-                        snprintf(prev_path, sizeof(prev_path), "/tmp/album_art_%d.jpg", s_art_seq - 1);
-                        remove(prev_path);
-                        /* Also remove previous blur file */
-                        char prev_blur[64];
-                        snprintf(prev_blur, sizeof(prev_blur), "/tmp/album_blur_%d.jpg", s_art_seq - 1);
-                        remove(prev_blur);
-                    }
-                    s_art_seq++;
-                    FILE* fp = fopen(art_path, "wb");
-                    if (fp) { fwrite(art, 1, art_sz, fp); fclose(fp); }
-                    char uri[80];
-                    snprintf(uri, sizeof(uri), "file://%s", art_path);
-                    image_set_image(img, uri);
-
-                    /* Generate blurred background from album art (async — no UI block) */
-                    {
-                        static char s_blur_path[64];
-                        snprintf(s_blur_path, sizeof(s_blur_path), "/tmp/album_blur_%d.jpg", s_art_seq - 1);
-
-                        /* Cache key = MP3 filepath (stable across temp file rotations) */
-                        const music_app_state_t* mst = music_app_get_state();
-                        const char* mp3_key = (mst && mst->current_info)
-                                              ? mst->current_info->filepath : art_path;
-
-                        img_blur_album_art_async(mp3_key, art_path, s_blur_path,
-                                                  10.0f, on_blur_done, NULL);
-
-                        /* Preload next track's blur in background */
-                        {
-                            int cur = music_app_get_current_index();
-                            int total = music_app_get_playlist_count();
-                            int next = (cur + 1 < total) ? cur + 1 : 0;
-                            if (next != cur && total > 1) {
-                                const MusicInfo* next_info = music_app_get_track_info(next);
-                                if (next_info) {
-                                    static char s_next_art[64];
-                                    snprintf(s_next_art, sizeof(s_next_art), "/tmp/album_art_next.jpg");
-                                    extern int music_app_extract_art_to_file(int index, const char* path);
-                                    if (music_app_extract_art_to_file(next, s_next_art) == 0) {
-                                        img_blur_preload(next_info->filepath, s_next_art, 10.0f);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    image_set_image(img, "media_player/icon_media_cover_n");
-                    /* No album art — reset blur background to dark */
-                    widget_t* bg = find(W_COVER_BG);
-                    if (bg) {
-                        image_set_image(bg, "");
-                        widget_invalidate_force(bg, NULL);
-                    }
-                }
-                widget_invalidate_force(img, NULL);
+            int cur = music_app_get_current_index();
+            if (s_cover_flow && cur >= 0) {
+                cover_flow_set_selected(s_cover_flow, cur);
             }
         }
 

@@ -43,6 +43,7 @@ APP_C_SRCS  = src/main.c \
               src/music_app.c \
               src/music_ui.c \
               src/lyrics_view.c \
+              src/cover_flow.c \
               src/usb_monitor.c \
               src/favorite_manager.c \
               src/cmus_bridge.c
