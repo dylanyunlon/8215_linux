@@ -89,8 +89,8 @@ static ret_t on_lyrics_paint(void* data, event_t* e) {
 
     vgcanvas_save(vg);
 
-    /* Clip to container bounds */
-    /* clip_rect removed — breaks sibling widget rendering in AWTK 1.8 */
+    /* Translate to lyrics area within parent */
+    vgcanvas_translate(vg, (float)ctx->x_off, (float)ctx->y_off);
 
     /* ---- Draw each visible line ---- */
     int i;
@@ -344,13 +344,13 @@ lyrics_view_ctx_t* lyrics_view_create(widget_t* parent,
     ctx->vy = 0;
     ctx->hx = 0;
 
-    /* Container: a plain view widget for clipping + paint hook */
-    ctx->container = view_create(parent, x, y, w, h);
-    { char sx[16],sy[16],sw[16],sh[16]; snprintf(sx,16,"%d",x); snprintf(sy,16,"%d",y); snprintf(sw,16,"%d",w); snprintf(sh,16,"%d",h); widget_set_self_layout_params(ctx->container, sx, sy, sw, sh); }
-    widget_move_resize(ctx->container, x, y, w, h);
-    /* Transparent background — play view bg shows through */
+    /* Don't create a child view — view_create auto-expands in AWTK 1.8.
+     * Use parent directly, store position offset for translate. */
+    ctx->container = parent;
+    ctx->x_off = x;
+    ctx->y_off = y;
 
-    /* Register custom paint handler */
+    /* Register custom paint handler on parent */
     widget_on(ctx->container, EVT_AFTER_PAINT, on_lyrics_paint, ctx);
 
     printf("[lyrics_view] Created (vgcanvas): %dx%d, line_h=%d, fade=%d\n",

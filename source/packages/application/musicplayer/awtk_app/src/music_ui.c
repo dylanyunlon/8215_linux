@@ -913,6 +913,15 @@ static void update_playlist_highlight(int new_idx) {
 static void on_cover_flow_select(int index, const cover_flow_item_t* item, void* ud) {
     (void)ud;
     if (!item) return;
+
+    /* Don't replay the same track that's already playing */
+    int cur = music_app_get_current_index();
+    if (cur == item->uid) {
+        printf("[music_ui] cover_flow: already playing idx=%d, toggle pause\n", cur);
+        music_app_toggle_play_pause();
+        return;
+    }
+
     printf("[music_ui] cover_flow select: idx=%d uid=%d title=%s\n",
            index, item->uid, item->title);
     int rc = music_app_safe_play(item->uid);

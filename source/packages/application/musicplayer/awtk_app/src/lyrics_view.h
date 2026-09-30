@@ -58,6 +58,7 @@ typedef struct _lyrics_view_ctx {
     int     container_w;         /* cached width */
     int     container_h;         /* cached height */
     int     fade_height;         /* top/bottom gradient fade zone (px) */
+    int     x_off, y_off;        /* position offset within parent */
 } lyrics_view_ctx_t;
 
 /**

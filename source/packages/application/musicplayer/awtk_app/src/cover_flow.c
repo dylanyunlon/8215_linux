@@ -600,8 +600,11 @@ static ret_t on_cf_pointer_move(void* data, event_t* e) {
 static ret_t on_cf_pointer_up(void* data, event_t* e) {
     cover_flow_ctx_t* ctx = (cover_flow_ctx_t*)data;
     (void)e;
+
+    /* Only process if pointer_down was inside cover_flow area */
+    if (!ctx->touch_active) return RET_OK;
+
     ctx->touch_active = 0;
-    /* widget_ungrab removed — matching grab was removed */
 
     if (ctx->touch_moved_px < CF_TAP_THRESHOLD) {
         int sel = (int)(ctx->center_smooth + 0.5f);
