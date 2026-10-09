@@ -633,15 +633,8 @@ int music_player_prev(MusicPlayerContext *ctx)
 {
     if (!ctx || ctx->playlist.empty()) return -1;
 
-    /* Grace period: if playing for > 2 seconds, restart current track
-     * instead of going to the previous one (like musikcube/Spotify) */
-    if (ctx->use_soft) {
-#ifdef USE_SOFT_PLAYER
-        if (ctx->transport && ctx->transport->Position() > PREVIOUS_GRACE_PERIOD) {
-            return music_player_play(ctx, ctx->current_index);
-        }
-#endif
-    }
+    /* Grace period removed — car infotainment: prev always goes to previous track.
+     * Original musikcube/Spotify behavior was: if playing > 2s, restart current. */
 
     int prev;
     {
