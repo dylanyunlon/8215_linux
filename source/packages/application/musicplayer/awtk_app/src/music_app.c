@@ -262,6 +262,11 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
                     }
                 }
                 if (should_stop) {
+                    /* Clear state BEFORE stop — prevents lyrics timer from
+                     * accessing freed track info during the stop sequence */
+                    s_app.state.current_info = NULL;
+                    s_app.lyrics_path[0] = '\0';
+                    lrc_data_clear(&s_app.lyrics);
                     pthread_mutex_unlock(&s_app.mutex);
                     music_app_stop();
                     pthread_mutex_lock(&s_app.mutex);
@@ -2091,8 +2096,8 @@ static void load_lyrics_for_current(void) {
 
     const char* filepath = st->current_info->filepath;
 
-    /* Already loaded for this track? */
-    if (strcmp(s_app.lyrics_path, filepath) == 0 && s_app.lyrics.count > 0) {
+    /* Already checked for this track? (lyrics_path is set even when none found) */
+    if (strcmp(s_app.lyrics_path, filepath) == 0) {
         return;
     }
 
@@ -2129,6 +2134,8 @@ static void load_lyrics_for_current(void) {
         return;
     }
 
+    /* Cache the path so we don't re-scan this track every 500ms */
+    snprintf(s_app.lyrics_path, sizeof(s_app.lyrics_path), "%s", filepath);
     printf("[music_app] No lyrics found for %s\n", filepath);
 }
 

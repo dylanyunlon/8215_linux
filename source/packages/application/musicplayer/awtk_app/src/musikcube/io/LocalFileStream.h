@@ -15,7 +15,7 @@ public:
 
     bool Open(const char* uri, musik::core::sdk::OpenFlags flags) override;
     bool Close() override;
-    void Interrupt() override {}
+    void Interrupt() override { Close(); }
     void Release() override { delete this; }
     bool Readable() override { return true; }
     bool Writable() override { return false; }

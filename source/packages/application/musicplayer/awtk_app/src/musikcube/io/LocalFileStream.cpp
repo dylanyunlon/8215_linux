@@ -37,9 +37,14 @@ bool LocalFileStream::Open(const char* uri, musik::core::sdk::OpenFlags flags) {
 }
 
 bool LocalFileStream::Close() {
-    if (this->file) {
-        fclose(this->file);
-        this->file = nullptr;
+    /* Thread-safe close: swap pointer to null first, then fclose.
+     * Prevents double-fclose race between Interrupt() (main thread)
+     * and decoder thread cleanup — both calling Close() simultaneously
+     * would cause free(): invalid pointer crash. */
+    FILE* f = this->file;
+    this->file = nullptr;
+    if (f) {
+        fclose(f);
     }
     return true;
 }
@@ -47,8 +52,14 @@ bool LocalFileStream::Close() {
 musik::core::sdk::PositionType LocalFileStream::Read(
     void* buffer, musik::core::sdk::PositionType readBytes)
 {
-    if (!this->file) return 0;
-    return (musik::core::sdk::PositionType)fread(buffer, 1, (size_t)readBytes, this->file);
+    FILE* f = this->file;  /* snapshot — may be nulled by Interrupt/Close */
+    if (!f) return 0;
+    auto result = (musik::core::sdk::PositionType)fread(buffer, 1, (size_t)readBytes, f);
+    if (result == 0 && (this->file == nullptr || ferror(f))) {
+        /* File closed by another thread, or I/O error (USB yanked) */
+        return 0;
+    }
+    return result;
 }
 
 bool LocalFileStream::SetPosition(musik::core::sdk::PositionType position) {

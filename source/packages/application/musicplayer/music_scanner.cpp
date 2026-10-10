@@ -639,7 +639,11 @@ static int scan_dir_recursive_cancellable(
             if (info->album[0] == '\0')
                 strncpy(info->album, "Unknown", MUSIC_MAX_TAG_LEN - 1);
 
-            /* count updated by music_list_append/sync_view */
+            /* Yield I/O between files — prevents audio stuttering when
+             * user starts playback during background scan. The scanner
+             * and decoder both read from the same USB device; without
+             * this yield the scanner saturates the USB bus. */
+            usleep(3000); /* 3ms per file — negligible for scan speed */
         }
     }
 

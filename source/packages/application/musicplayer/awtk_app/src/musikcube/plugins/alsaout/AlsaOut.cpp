@@ -401,11 +401,9 @@ void AlsaOut::Stop() {
 
         if (this->pcmHandle) {
             /* MPD pattern: drop pending buffers but keep the PCM handle alive.
-             * Don't close+reopen — AC83xx has limited hardware ASRC resources
-             * that aren't freed immediately on snd_pcm_close, causing
+             * AC83xx has limited hardware ASRC — close+reopen causes
              * "No free ASRC" storm on rapid track transitions. */
             snd_pcm_drop(this->pcmHandle);
-            /* Don't call CloseDevice() here — reuse the handle for next track */
         }
     }
 

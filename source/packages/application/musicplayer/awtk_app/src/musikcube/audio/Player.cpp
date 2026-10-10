@@ -81,19 +81,39 @@ void Player::Destroy() {
             return;
         }
 
-        /* Set Quit BEFORE Interrupt. Otherwise there's a race:
-         * Interrupt causes stream EOF → thread exits loop with finished=true
-         * → checks Exited() → Quit not set yet → Drain() → closes shared PCM
-         * → new Player is dead. */
+        /* Set Quit to signal decoder thread to exit */
         this->internalState = Player::Quit;
         this->writeToOutputCondition.notify_all();
-        this->thread->detach();
-        delete this->thread;
-        this->thread = nullptr;
     }
 
+    /* Interrupt stream FIRST — unblocks any fread/fseek that may be
+     * hanging on a removed USB device. Must be done BEFORE join(),
+     * otherwise join blocks forever waiting for the hung fread. */
     if (this->stream) {
         this->stream->Interrupt();
+    }
+
+    /* Swap-and-null: grab the thread pointer and null it atomically.
+     * This prevents double-entry when Destroy() is called simultaneously
+     * from the decoder thread (error callback) and the usb_monitor thread
+     * (music_player_stop). Only the first caller sees a non-null pointer. */
+    std::thread* t = this->thread;
+    this->thread = nullptr;
+
+    if (t) {
+        try {
+            if (t->joinable()) {
+                if (t->get_id() == std::this_thread::get_id()) {
+                    t->detach();
+                } else {
+                    t->join();
+                }
+            }
+        } catch (...) {
+            /* join/detach can throw if thread state is inconsistent
+             * (e.g. already joined by another caller). Safe to ignore. */
+        }
+        delete t;
     }
 }
 
