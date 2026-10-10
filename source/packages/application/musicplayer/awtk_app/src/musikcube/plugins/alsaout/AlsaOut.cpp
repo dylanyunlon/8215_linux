@@ -1,4 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
+#include <unistd.h>
 //
 // Copyright (c) 2007-2016 musikcube team
 //
@@ -201,14 +202,14 @@ AlsaOut::~AlsaOut() {
 void AlsaOut::CloseDevice() {
     LOCK("CloseDevice()");
     if (this->pcmHandle) {
-        /* Print backtrace hint — who is closing the PCM? */
-        void* callstack[8];
-        int frames = backtrace(callstack, 8);
-        std::cerr << "AlsaOut: closing PCM handle (caller stack " << frames << " frames):\n";
-        backtrace_symbols_fd(callstack, frames, 2);
+        std::cerr << "AlsaOut: closing PCM handle\n";
         snd_pcm_close(this->pcmHandle);
         this->pcmHandle = nullptr;
         this->latency = 0.0;
+        /* AC83xx ASRC hardware needs time to release after snd_pcm_close.
+         * Without this delay, the next snd_pcm_open grabs the ASRC before
+         * the driver finishes cleanup, causing "No free ASRC" storm. */
+        usleep(50000); /* 50ms — enough for ASRC release on AC83xx */
     }
 }
 
@@ -285,9 +286,21 @@ void AlsaOut::InitDevice() {
         }
     }
 
-    if (!preferredOk && (err = snd_pcm_open(&this->pcmHandle, this->device.c_str(), SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
-        std::cerr << "AlsaOut: cannot open audio device 'default' :" << snd_strerror(err) << std::endl;
-        goto error;
+    if (!preferredOk) {
+        /* Retry loop: AC83xx ASRC may still be releasing from previous close.
+         * Try up to 5 times with 50ms delay between attempts. */
+        for (int attempt = 0; attempt < 5; attempt++) {
+            err = snd_pcm_open(&this->pcmHandle, this->device.c_str(), SND_PCM_STREAM_PLAYBACK, 0);
+            if (err >= 0) break;
+            if (attempt < 4) {
+                std::cerr << "AlsaOut: open attempt " << (attempt+1) << " failed, retrying...\n";
+                usleep(50000);
+            }
+        }
+        if (err < 0) {
+            std::cerr << "AlsaOut: cannot open audio device after retries: " << snd_strerror(err) << std::endl;
+            goto error;
+        }
     }
 
     if ((err = snd_pcm_hw_params_malloc(&hardware)) < 0) {
@@ -387,8 +400,12 @@ void AlsaOut::Stop() {
         std::swap(this->buffers, toNotify);
 
         if (this->pcmHandle) {
+            /* MPD pattern: drop pending buffers but keep the PCM handle alive.
+             * Don't close+reopen — AC83xx has limited hardware ASRC resources
+             * that aren't freed immediately on snd_pcm_close, causing
+             * "No free ASRC" storm on rapid track transitions. */
             snd_pcm_drop(this->pcmHandle);
-            this->CloseDevice();
+            /* Don't call CloseDevice() here — reuse the handle for next track */
         }
     }
 

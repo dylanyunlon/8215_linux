@@ -633,8 +633,8 @@ static void rebuild_playlist_view(void) {
     if (s_page_offset < 0) s_page_offset = 0;
     if (s_page_offset >= total) s_page_offset = (total > 0) ? total - 1 : 0;
 
-    /* Page up button */
-    if (s_page_offset > 0) {
+    /* Page up button — only if playlist has valid data */
+    if (s_page_offset > 0 && total > 0 && music_app_get_track_info(0) != NULL) {
         widget_t* btn_up = button_create(list, 0, y, LIST_W, LIST_ITEM_H / 2);
         char up_text[64];
         snprintf(up_text, sizeof(up_text), "▲ Previous (%d-%d)",
@@ -681,8 +681,8 @@ static void rebuild_playlist_view(void) {
 
     printf("========== [REBUILD] done: created=%d ==========\n", created);
 
-    /* Page down button */
-    if (end < total) {
+    /* Page down button — only if we actually created items */
+    if (end < total && created > 0) {
         widget_t* btn_dn = button_create(list, 0, y, LIST_W, LIST_ITEM_H / 2);
         char dn_text[64];
         snprintf(dn_text, sizeof(dn_text), "▼ Next (%d-%d of %d)",
@@ -1302,6 +1302,10 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
     case APP_EVENT_STORAGE_UNMOUNTED: {
         widget_t* lbl = find(W_LBL_STATUS);
         if (lbl) widget_set_text_utf8(lbl, "Removed");
+        show_play_view(false);  /* 回到列表界面 */
+        s_page_offset = 0;     /* 重置分页 */
+        /* 清空 cover_flow */
+        if (s_cover_flow) cover_flow_set_items(s_cover_flow, NULL, 0);
         rebuild_playlist_view();
         break;
     }
