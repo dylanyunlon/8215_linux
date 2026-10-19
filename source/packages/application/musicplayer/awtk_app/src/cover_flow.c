@@ -264,22 +264,41 @@ static int cf_art_load(cf_art_cache_t* ac, const char* path, int item_idx) {
         return 1; /* sharp still usable */
     }
 
-    /* Step 3: Copy + Gaussian blur */
-    int sz = w * h * 4;
+    /* Step 3: Downscale to 128×128 then blur — distant cards are ~100px
+     * so blurring the full 899×899 image wastes 50× CPU for no visual gain.
+     * Nearest-neighbor downscale is fine since we blur it immediately after. */
+    #define BLUR_SIZE 128
+    int bw = BLUR_SIZE, bh = BLUR_SIZE;
+    int sz = bw * bh * 4;
     uint8_t* blurred = (uint8_t*)malloc(sz);
     if (!blurred) {
         bitmap_unlock_buffer(&ac->bmp[0]);
         return 1;
     }
-    memcpy(blurred, src, sz);
+    /* Nearest-neighbor downscale */
+    {
+        int bx, by;
+        for (by = 0; by < bh; by++) {
+            int sy = by * h / bh;
+            for (bx = 0; bx < bw; bx++) {
+                int sx = bx * w / bw;
+                int si = (sy * w + sx) * 4;
+                int di = (by * bw + bx) * 4;
+                blurred[di+0] = src[si+0];
+                blurred[di+1] = src[si+1];
+                blurred[di+2] = src[si+2];
+                blurred[di+3] = src[si+3];
+            }
+        }
+    }
     bitmap_unlock_buffer(&ac->bmp[0]);
 
-    gaussian_blur_rgba(blurred, w, h, DOF_BLUR_RADIUS);
+    gaussian_blur_rgba(blurred, bw, bh, DOF_BLUR_RADIUS);
 
     /* Step 4: Write blurred pixels as BMP to /tmp */
     snprintf(ac->blur_path, sizeof(ac->blur_path),
              "/tmp/cf_blur_%d.bmp", item_idx);
-    if (!write_bmp(ac->blur_path, blurred, w, h)) {
+    if (!write_bmp(ac->blur_path, blurred, bw, bh)) {
         printf("[cover_flow] Failed to write blur BMP: %s\n", ac->blur_path);
         free(blurred);
         return 1;
@@ -292,8 +311,8 @@ static int cf_art_load(cf_art_cache_t* ac, const char* path, int item_idx) {
     memset(&ac->bmp[1], 0, sizeof(bitmap_t));
     if (image_manager_get_bitmap(image_manager(), uri, &ac->bmp[1]) == RET_OK) {
         ac->loaded[1] = 1;
-        printf("[cover_flow] DOF blur ready: %s (%dx%d, r=%d)\n",
-               path, w, h, DOF_BLUR_RADIUS);
+        printf("[cover_flow] DOF blur ready: %s (%dx%d→%dx%d, r=%d)\n",
+               path, w, h, bw, bh, DOF_BLUR_RADIUS);
     }
 
     return 1;
