@@ -370,37 +370,15 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
                     printf("[music_app] Cache hit: %d tracks from %s\n",
                            list->count, db_path);
 
-                    /* Wait for async stop to finish before touching the player.
-                     * Mirrors VitamioPlayer.onSetDataSourceEvent():
-                     *   int timeout = 0;
-                     *   while (isAsyncReleasing()) {
-                     *       if (timeout++ > 99) break;
-                     *       Thread.sleep(10);
-                     *   }
-                     *   if (isAsyncReleasing()) { [Reject]; return; }
-                     */
-                    if (s_app.is_async_stopping) {
-                        printf("[music_app] Waiting for async stop to finish...\n");
-                        int wait_count = 0;
-                        while (s_app.is_async_stopping && wait_count < 100) {
-                            usleep(10000); /* 10ms */
-                            wait_count++;
-                        }
-                        if (s_app.is_async_stopping) {
-                            printf("[music_app] async stop still running after 1s, "
-                                   "skipping playlist set (scan will fix later)\n");
-                        } else {
-                            printf("[music_app] async stop finished after %d ms\n",
-                                   wait_count * 10);
-                        }
-                    }
-
-                    /* Instant UI — like plexify "render from cache instantly" */
-                    if (s_app.player && !s_app.is_async_stopping) {
+                    /* Instant UI — set playlist + notify.
+                     * Safe even while async_stop_thread is running: stop()
+                     * no longer holds ctx->mtx (hardware/software player has
+                     * its own synchronization), so set_playlist_refs proceeds
+                     * immediately. */
+                    if (s_app.player) {
                         set_player_playlist_from_list(list);
-                        post_ui_event(APP_EVENT_PLAYLIST_CHANGED, idx);
                     }
-                    /* If skipped: scan completion will set playlist + fire event */
+                    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, idx);
 
                     /* Restore last played position */
                     if (s_app.state.last_path[0] != '\0' && s_app.player) {
