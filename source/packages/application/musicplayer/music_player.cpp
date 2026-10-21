@@ -588,7 +588,19 @@ int music_player_resume(MusicPlayerContext *ctx)
 int music_player_stop(MusicPlayerContext *ctx)
 {
     if (!ctx || !ctx->player_ready) return -1;
-    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
+
+    /* Hardware stop may block for seconds on a vanished USB device
+     * (kernel close() timeout).  Do NOT hold ctx->mtx during this call.
+     *
+     * Reference projects never hold the playlist-level lock during
+     * a blocking hardware operation:
+     *   - AutoMediaPlayer: mMediaPlayerLockObj is separate from playlist state
+     *   - Gramophone: internalPlaybackThread.looper serializes, no shared mutex
+     *   - RetroMusicPlayer: musicPlayerHandlerThread, same pattern
+     *
+     * The hardware MediaPlayer has its own synchronization
+     * (cmd_sema/reply_sema command queue in atcmediaplayer.h).
+     * ctx->mtx protects only the playlist vector and state fields. */
     if (ctx->use_soft) {
 #ifdef USE_SOFT_PLAYER
         if (ctx->transport) ctx->transport->Stop();
@@ -596,6 +608,9 @@ int music_player_stop(MusicPlayerContext *ctx)
     } else {
         ctx->player->stop();
     }
+
+    /* Only hold mutex for the state update */
+    std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
     ctx->state = PLAYER_STATE_STOPPED;
     return 0;
 }

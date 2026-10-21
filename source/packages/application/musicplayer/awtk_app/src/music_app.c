@@ -398,8 +398,9 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
                     /* Instant UI — like plexify "render from cache instantly" */
                     if (s_app.player && !s_app.is_async_stopping) {
                         set_player_playlist_from_list(list);
+                        post_ui_event(APP_EVENT_PLAYLIST_CHANGED, idx);
                     }
-                    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, idx);
+                    /* If skipped: scan completion will set playlist + fire event */
 
                     /* Restore last played position */
                     if (s_app.state.last_path[0] != '\0' && s_app.player) {
