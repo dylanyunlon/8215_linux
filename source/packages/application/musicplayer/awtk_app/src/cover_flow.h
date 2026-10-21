@@ -70,12 +70,35 @@ void cover_flow_set_items(cover_flow_ctx_t* ctx,
 /** Get current center (selected) index. */
 int cover_flow_get_selected(cover_flow_ctx_t* ctx);
 
+/** Return the current number of items. */
+int cover_flow_get_item_count(cover_flow_ctx_t* ctx);
+
 /** Scroll to a specific index (animated). */
 void cover_flow_set_selected(cover_flow_ctx_t* ctx, int index);
+
+/**
+ * Update a single item's cover art path and reload its bitmap.
+ * Called from main thread after async art extraction completes.
+ * (Glide/Coil pattern: set_items() first with no covers → placeholder,
+ *  then update individual covers as they finish loading in background)
+ */
+void cover_flow_set_item_cover(cover_flow_ctx_t* ctx, int index,
+                                const char* cover_path);
 
 /** Register tap-on-center callback. */
 void cover_flow_set_callback(cover_flow_ctx_t* ctx,
                               cover_flow_select_fn fn, void* user_data);
+
+/**
+ * Scroll-settle callback — fired when snap animation finishes.
+ * UI uses this to trigger async cover art loading for newly visible items.
+ * (Glide/RecyclerView pattern: onScrollStateChanged → SCROLL_STATE_IDLE → load visible)
+ */
+typedef void (*cover_flow_settle_fn)(int center_index, void* user_data);
+
+/** Register scroll-settle callback. */
+void cover_flow_set_settle_callback(cover_flow_ctx_t* ctx,
+                                     cover_flow_settle_fn fn, void* user_data);
 
 /** Destroy and free. Call before parent widget is destroyed. */
 void cover_flow_destroy(cover_flow_ctx_t* ctx);

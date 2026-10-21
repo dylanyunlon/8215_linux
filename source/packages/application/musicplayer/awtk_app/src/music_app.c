@@ -13,7 +13,9 @@
  * Copyright (C) AutoChips Inc. All rights reserved.
  */
 
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE  /* for strdup, strcasestr */
+#endif
 
 #include "music_app.h"
 #include "favorite_manager.h"
@@ -102,6 +104,7 @@ static void build_folder_cache(void);
 static void build_classification_cache(void);
 static void load_lyrics_for_current(void);
 static void load_album_art_for_current(void);
+static void lrc_data_clear(lrc_data_t* lrc);
 
 /**
  * Helper: build TrackRef array from MusicList and set as player's playlist.
@@ -155,6 +158,50 @@ static void post_ui_event(music_app_event_t event, int param) {
         data->int_param = param;
         idle_queue(ui_event_dispatch, data);
     }
+}
+
+/*============================================================================
+ * Volume UUID — cache key for DB (Auxio associateBy { it.uri } pattern)
+ *
+ * plexify principle: "Stale beats empty, every time."
+ * Same UUID → load cached DB instantly → background diff scan
+ * Different UUID → new device, full scan
+ *==========================================================================*/
+static void get_volume_uuid(const char* dev_node, char* uuid_out, int uuid_sz) {
+    uuid_out[0] = '\0';
+    if (!dev_node || !dev_node[0]) return;
+
+    /* BusyBox blkid doesn't support -s/-o flags.
+     * Raw output: /dev/sda1: UUID="6165-6261" TYPE="vfat"
+     * Parse UUID="..." from the output. */
+    char cmd[512];
+    snprintf(cmd, sizeof(cmd), "blkid %s 2>/dev/null", dev_node);
+    FILE* fp = popen(cmd, "r");
+    if (!fp) return;
+
+    char buf[512];
+    if (fgets(buf, sizeof(buf), fp)) {
+        /* Find UUID=" and extract the value between quotes */
+        char* p = strstr(buf, "UUID=\"");
+        if (p) {
+            p += 6; /* skip UUID=" */
+            char* q = strchr(p, '"');
+            if (q) {
+                int len = q - p;
+                if (len >= uuid_sz) len = uuid_sz - 1;
+                memcpy(uuid_out, p, len);
+                uuid_out[len] = '\0';
+            }
+        }
+    }
+    pclose(fp);
+}
+
+static void get_cache_db_path(const char* uuid, char* path_out, int path_sz) {
+    if (uuid[0])
+        snprintf(path_out, path_sz, "%s/cache_%s.db", STATE_FILE_DIR, uuid);
+    else
+        snprintf(path_out, path_sz, "%s/music_0.db", STATE_FILE_DIR);
 }
 
 /*============================================================================
@@ -233,12 +280,82 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
             printf("[music_app] Storage mounted: %s (idx=%d)\n",
                    info->mount_point, idx);
 
+            /* Get volume UUID for cache keying (Auxio associateBy pattern) */
+            get_volume_uuid(info->dev_node,
+                            s_app.devices[idx].volume_uuid,
+                            sizeof(s_app.devices[idx].volume_uuid));
+            printf("[music_app] Volume UUID: '%s'\n",
+                   s_app.devices[idx].volume_uuid);
+
             /* Auto-switch to newly inserted device */
             s_app.state.current_device_idx = idx;
 
             pthread_mutex_unlock(&s_app.mutex);
 
             post_ui_event(APP_EVENT_STORAGE_MOUNTED, idx);
+
+            /*================================================================
+             * Issue #65: Stale-while-revalidate — plexify pattern
+             * "Stale beats empty, every time."
+             *
+             * 1. Try loading cached DB for this UUID
+             * 2. If hit → instant full list to UI + restore position
+             * 3. Always start background scan (diff mode if cache loaded)
+             *
+             * Auxio equivalent:
+             *   val cache = if (withCache) cache else WriteOnlyMutableCache(cache)
+             *   → cache hit → NeedsHydration (skip ID3 parse)
+             *   → cache miss → NewSong (full parse)
+             *===============================================================*/
+            {
+                char db_path[MUSIC_MAX_PATH_LEN];
+                get_cache_db_path(s_app.devices[idx].volume_uuid,
+                                  db_path, sizeof(db_path));
+
+                /* Try loading cached DB */
+                MusicList* list = s_app.devices[idx].music_list;
+                int loaded = music_db_load(list, db_path);
+
+                if (loaded > 0) {
+                    printf("[music_app] Cache hit: %d tracks from %s\n",
+                           list->count, db_path);
+
+                    /* Instant UI — like plexify "render from cache instantly" */
+                    if (s_app.player) {
+                        set_player_playlist_from_list(list);
+                    }
+                    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, idx);
+
+                    /* Restore last played position */
+                    if (s_app.state.last_path[0] != '\0' && s_app.player) {
+                        int i;
+                        for (i = 0; i < list->count; i++) {
+                            if (strcmp(list->items[i].filepath,
+                                       s_app.state.last_path) == 0) {
+                                printf("[music_app] Cache resume: track %d, pos %d ms\n",
+                                       i, s_app.state.last_position_ms);
+                                music_player_play(s_app.player, i);
+                                if (s_app.state.last_position_ms > 0) {
+                                    music_player_seek(s_app.player,
+                                                      s_app.state.last_position_ms);
+                                }
+                                s_app.state.last_path[0] = '\0';
+                                s_app.state.last_position_ms = 0;
+                                break;
+                            }
+                        }
+                    }
+
+                    /* Build caches from loaded data */
+                    build_folder_cache();
+                    build_classification_cache();
+                } else {
+                    printf("[music_app] Cache miss: no DB or empty for UUID '%s'\n",
+                           s_app.devices[idx].volume_uuid);
+                }
+            }
+
+            /* Always scan in background — diff if cache was loaded, full if not */
             scan_device_async(idx);
             return;
         }
@@ -293,6 +410,7 @@ typedef struct {
     int dev_idx;
     int resume_idx;
     int resume_pos_ms;
+    MusicList* scan_list;  /* non-NULL when scan used a temp list (cache-hit path) */
 } scan_done_data_t;
 
 static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
@@ -302,12 +420,50 @@ static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
     int dev_idx = sd->dev_idx;
     int resume_idx = sd->resume_idx;
     int resume_pos_ms = sd->resume_pos_ms;
+    MusicList* scan_list = sd->scan_list;
     free(sd);
 
-    if (dev_idx < 0 || dev_idx >= s_app.device_count) return RET_REMOVE;
-    if (dev_idx != s_app.state.current_device_idx) return RET_REMOVE;
+    if (dev_idx < 0 || dev_idx >= s_app.device_count) {
+        if (scan_list) music_list_destroy(scan_list);
+        return RET_REMOVE;
+    }
+    if (dev_idx != s_app.state.current_device_idx) {
+        if (scan_list) music_list_destroy(scan_list);
+        return RET_REMOVE;
+    }
 
     storage_device_state_t* dev = &s_app.devices[dev_idx];
+
+    /*================================================================
+     * Bug #1 fix: Atomic swap of scan results into dev->music_list.
+     *
+     * When cache was loaded before scan, the scan ran into a temporary
+     * scan_list so that dev->music_list (the cache data) stayed intact
+     * for UI reads during the entire scan.  Now that we're on the main
+     * thread (no concurrent UI reads), swap the fresh scan results in.
+     *===============================================================*/
+    if (scan_list) {
+        if (scan_list->count > 0 && dev->music_list) {
+            music_list_swap_contents(dev->music_list, scan_list);
+            printf("[music_app] Atomic swap: %d tracks from scan_list → dev->music_list\n",
+                   dev->music_list->count);
+
+            /* Re-resolve current_info after swap.
+             * current_info is a raw pointer into the old items[] which
+             * is now in scan_list and about to be freed. */
+            if (s_app.state.current_info != NULL && s_app.player) {
+                int cur_idx = music_player_get_current_index(s_app.player);
+                if (cur_idx >= 0 && cur_idx < dev->music_list->count) {
+                    s_app.state.current_info = &dev->music_list->items[cur_idx];
+                } else {
+                    s_app.state.current_info = NULL;
+                }
+            }
+        }
+        music_list_destroy(scan_list);
+        scan_list = NULL;
+    }
+
     if (!dev->music_list || dev->music_list->count == 0) return RET_REMOVE;
 
     /* Set lightweight TrackRef playlist — player only stores filepath+uid.
@@ -342,14 +498,26 @@ static ret_t scan_done_main_thread_handler(const idle_info_t* idle) {
 typedef struct {
     int dev_idx;
     int scan_generation;   /* Issue #51: generation at time of dispatch */
+    char volume_uuid[64];  /* Issue #65: snapshot at scan start, survives USB disconnect */
 } scan_task_t;
 
 /*============================================================================
- * Incremental playlist push — "扫到一批出一批"
+ * Incremental playlist push — 对标 Maestro Music Player 架构
  *
- * progress callback 每 SCAN_PROGRESS_INTERVAL(8) 首触发一次,
- * 把当前已扫到的歌曲立即推到 player playlist + UI.
- * 用户不用等全扫完就能看到歌、点播.
+ * Maestro pattern:
+ *   - importFolderFromTreeUri() 在后台 Dispatchers.IO 扫文件
+ *   - 每100首 flushBatch() → Room insertTracks() (静默写DB)
+ *   - 每20首 onProgress(count, title) (只推进度数字)
+ *   - Room Flow<List<Track>> 内部去抖 → LazyColumn 只重绘可见item
+ *   - 不在扫描期间反复重建整个歌曲列表
+ *
+ * 我们的映射:
+ *   - 首批8首: PLAYLIST_CHANGED → UI立即出列表+cover_flow (用户马上能看到歌)
+ *   - 后续增量: SCAN_PROGRESS → UI只更新count label ("Scanning... 397")
+ *   - 扫描完成: scan_done → PLAYLIST_CHANGED → UI一次性重建列表+cover_flow
+ *   - player playlist 每批更新 (用户随时能点播)
+ *
+ * 效果: 主线程零冻结, 对比之前125次全量遍历+封面读取
  *==========================================================================*/
 typedef struct {
     int dev_idx;
@@ -366,14 +534,31 @@ static ret_t incremental_playlist_handler(const idle_info_t* idle) {
     storage_device_state_t* dev = &s_app.devices[dev_idx];
     if (!dev->music_list || dev->music_list->count == 0) return RET_REMOVE;
 
-    /* Only push when count actually grew — avoids 700+ redundant copies */
+    /* Only push when count actually grew — avoids redundant copies */
     if (dev->music_list->count == s_last_pushed_count) return RET_REMOVE;
     s_last_pushed_count = dev->music_list->count;
 
+    /* Always update player playlist — user can tap and play at any time */
     if (s_app.player) {
         set_player_playlist_from_list(dev->music_list);
     }
-    post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+
+    /*
+     * Maestro分层: 首批 → PLAYLIST_CHANGED (UI构建列表+cover_flow)
+     *             后续 → SCAN_PROGRESS (只推count, 不碰UI列表)
+     *
+     * 对比Auxio: emitIndexingProgress(progress) 只更新进度数字
+     *           emitLibrary(result.library) 扫完后一次性原子交付
+     */
+    if (!dev->scan_done && s_last_pushed_count <= SCAN_PROGRESS_INTERVAL) {
+        /* 首批: 发 PLAYLIST_CHANGED, UI 构建8首的列表+cover_flow */
+        printf("[music_app] First batch %d tracks → PLAYLIST_CHANGED\n",
+               s_last_pushed_count);
+        post_ui_event(APP_EVENT_PLAYLIST_CHANGED, dev_idx);
+    } else {
+        /* 后续增量: 只发 SCAN_PROGRESS, UI 只更新 count label */
+        post_ui_event(APP_EVENT_SCAN_PROGRESS, dev_idx);
+    }
     return RET_REMOVE;
 }
 
@@ -381,7 +566,7 @@ static int scan_progress_cb(int current_count, void *ctx) {
     scan_progress_ctx_t *pctx = (scan_progress_ctx_t *)ctx;
     if (!pctx) return 0;
 
-    /* 推 playlist 到主线程 */
+    /* 推 playlist 更新到主线程 */
     idle_queue(incremental_playlist_handler, (void*)(intptr_t)pctx->dev_idx);
 
     if (!pctx->first_batch_sent) {
@@ -396,6 +581,8 @@ static void* scan_thread_func(void* arg) {
     scan_task_t* task = (scan_task_t*)arg;
     int dev_idx = task->dev_idx;
     int my_generation = task->scan_generation;  /* Issue #51 */
+    char task_uuid[64];
+    snprintf(task_uuid, sizeof(task_uuid), "%s", task->volume_uuid);
     free(task);
 
     s_last_pushed_count = 0;  /* reset dedup for new scan */
@@ -424,6 +611,29 @@ static void* scan_thread_func(void* arg) {
     char path[STORAGE_PATH_MAX];
     snprintf(path, sizeof(path), "%s", dev->mount_point);
     MusicList* list = dev->music_list;
+
+    /*===================================================================
+     * Bug #1 fix: If cache data is already loaded (list->count > 0),
+     * scan into a temporary list so that dev->music_list stays intact
+     * for UI reads (get_track_info, rebuild_playlist_view, cover_flow).
+     * The temp scan_list will be atomically swapped into dev->music_list
+     * on the main thread after scan completes.
+     *=================================================================*/
+    bool cache_was_loaded = (list && list->count > 0);
+    MusicList* scan_list = NULL;
+
+    if (cache_was_loaded) {
+        scan_list = music_list_create(MUSIC_MAX_FILES);
+        if (!scan_list) {
+            printf("[music_app] WARN: temp list alloc failed, scanning in-place\n");
+            cache_was_loaded = false;
+        } else {
+            list = scan_list;
+            printf("[music_app] Cache-hit path: scanning into temp list "
+                   "(dev->music_list has %d cached tracks)\n",
+                   dev->music_list->count);
+        }
+    }
     pthread_mutex_unlock(&s_app.mutex);
 
     post_ui_event(APP_EVENT_SCAN_STARTED, dev_idx);
@@ -453,12 +663,13 @@ static void* scan_thread_func(void* arg) {
         list, path,
         &dev->scan_generation,  /* cancel_flag: 指向 scan_generation */
         my_generation,          /* expected value */
-        scan_progress_cb,       /* 每8首推一次playlist到UI */
-        &progress_ctx);
+        cache_was_loaded ? NULL : scan_progress_cb,  /* no incremental push when cache loaded */
+        cache_was_loaded ? NULL : &progress_ctx);
 
     /* 检查扫描是否被取消（拔U盘或新扫描覆盖） */
     if (scan_ret == -2) {
         printf("[music_app] Scan cancelled for %s (gen=%d)\n", path, my_generation);
+        if (scan_list) music_list_destroy(scan_list);
         pthread_mutex_lock(&s_app.mutex);
         if (dev_idx < s_app.device_count) {
             s_app.devices[dev_idx].scanning = false;
@@ -474,6 +685,7 @@ static void* scan_thread_func(void* arg) {
         printf("[music_app] Scan results discarded (superseded gen %d vs %d)\n",
                my_generation, s_app.devices[dev_idx].scan_generation);
         s_app.devices[dev_idx].scanning = false;
+        if (scan_list) music_list_destroy(scan_list);
         pthread_mutex_unlock(&s_app.mutex);
         return NULL;
     }
@@ -493,10 +705,13 @@ static void* scan_thread_func(void* arg) {
      *   prepared statement: bind参数化（字段含任意字符都安全）
      *   事务批量: 10000条 INSERT → ~200ms
      *=====================================================================*/
+    /* Save to UUID-keyed cache DB (Auxio MutableCache.writeAll pattern)
+     * Use task's snapshot UUID — device may have been unplugged by now */
     char db_path[MUSIC_MAX_PATH_LEN];
-    snprintf(db_path, sizeof(db_path), "%s/music_%d.db", STATE_FILE_DIR, dev_idx);
     mkdir(STATE_FILE_DIR, 0755);
+    get_cache_db_path(task_uuid, db_path, sizeof(db_path));
     music_db_save(list, db_path);
+    printf("[music_app] Cache saved: %d tracks → %s\n", list->count, db_path);
 
     pthread_mutex_lock(&s_app.mutex);
     if (dev_idx < s_app.device_count) {
@@ -553,6 +768,7 @@ static void* scan_thread_func(void* arg) {
             sd->dev_idx = dev_idx;
             sd->resume_idx = -1;
             sd->resume_pos_ms = 0;
+            sd->scan_list = scan_list;  /* hand ownership to main thread */
 
             /* 对标 Android getLastMediaInfoPosition():
              * 在扫描结果中查找上次播放的文件，恢复播放位置 */
@@ -568,7 +784,13 @@ static void* scan_thread_func(void* arg) {
             }
 
             idle_queue(scan_done_main_thread_handler, sd);
+            scan_list = NULL;  /* ownership transferred */
         }
+    }
+
+    /* Safety: if scan_list was not handed off, free it */
+    if (scan_list) {
+        music_list_destroy(scan_list);
     }
 
     post_ui_event(APP_EVENT_SCAN_FINISHED, dev_idx);
@@ -589,6 +811,8 @@ static void scan_device_async(int dev_idx) {
     if (dev_idx >= 0 && dev_idx < s_app.device_count) {
         s_app.devices[dev_idx].scan_generation++;
         task->scan_generation = s_app.devices[dev_idx].scan_generation;
+        snprintf(task->volume_uuid, sizeof(task->volume_uuid), "%s",
+                 s_app.devices[dev_idx].volume_uuid);
     }
     pthread_mutex_unlock(&s_app.mutex);
 

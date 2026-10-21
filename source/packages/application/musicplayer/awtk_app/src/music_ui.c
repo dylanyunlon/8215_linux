@@ -30,6 +30,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <pthread.h>
+#include <unistd.h>
 
 /*============================================================================
  * Widget name constants
@@ -164,6 +166,213 @@ static void update_fav_button(void);
 static void show_play_view(bool show);
 static void show_search_ui(bool show);
 static void execute_search(void);
+
+/*============================================================================
+ * Issue #64 phase_2: Async cover art loader — single worker thread
+ *
+ * 对标 RetroMusicPlayer Glide 内部线程池 + Auxio Coil:
+ *
+ * Glide 架构 (RetroMusicPlayer AlbumCoverPagerAdapter):
+ *   - onViewCreated() → Glide.load(model).into(target)
+ *   - Glide 内部用 SourceExecutor (默认4线程) 串行排队加载
+ *   - Fragment 销毁时 Glide 自动取消该请求
+ *   - 内存/磁盘缓存: 第二次加载同一图片零I/O
+ *
+ * Coil 架构 (Auxio CoverView):
+ *   - bind() → CoilUtils.dispose(image) 取消旧请求
+ *   - imageLoader.enqueue(request) 加入队列
+ *   - OkHttp dispatcher (~4线程) 串行执行
+ *
+ * 我们的映射:
+ *   - 单个 worker thread (= Glide SourceExecutor 简化版)
+ *   - 请求队列: lo/hi range (新请求替换旧请求 = Coil dispose)
+ *   - 串行 fopen (不抢 USB I/O 带宽 = 播放器能正常读文件)
+ *   - access() 缓存检查 (= Glide disk cache hit)
+ *==========================================================================*/
+
+/* Worker thread state — single thread, like Glide's SourceExecutor */
+static pthread_t      s_art_thread;
+static pthread_mutex_t s_art_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t  s_art_cond  = PTHREAD_COND_INITIALIZER;
+static int s_art_req_lo   = -1;   /* pending request range */
+static int s_art_req_hi   = -1;
+static int s_art_req_total = 0;
+static int s_art_running  = 0;    /* worker thread alive */
+static int s_art_shutdown = 0;    /* signal to exit */
+
+typedef struct {
+    int index;
+    char cover_path[CF_MAX_PATH];
+} art_result_t;
+
+/* Main-thread callback: apply loaded cover to cover_flow item */
+static ret_t art_result_handler(const idle_info_t* idle) {
+    art_result_t* r = (art_result_t*)idle->ctx;
+    if (!r) return RET_REMOVE;
+
+    if (s_cover_flow && r->cover_path[0] != '\0') {
+        char uri[CF_MAX_PATH];
+        snprintf(uri, sizeof(uri), "file://%s", r->cover_path);
+        cover_flow_set_item_cover(s_cover_flow, r->index, uri);
+    }
+    free(r);
+    return RET_REMOVE;
+}
+
+/* Single worker thread — processes one request range at a time, sequentially.
+ * New async_extract_art_range() calls replace the pending range
+ * (= Coil CoilUtils.dispose + enqueue pattern). */
+static void* art_worker_main(void* arg) {
+    (void)arg;
+    while (1) {
+        int lo, hi, total;
+
+        /* Wait for work (= Glide SourceExecutor idle wait) */
+        pthread_mutex_lock(&s_art_mutex);
+        while (s_art_req_lo < 0 && !s_art_shutdown) {
+            pthread_cond_wait(&s_art_cond, &s_art_mutex);
+        }
+        if (s_art_shutdown) {
+            pthread_mutex_unlock(&s_art_mutex);
+            break;
+        }
+        /* Take the request and clear it */
+        lo = s_art_req_lo;
+        hi = s_art_req_hi;
+        total = s_art_req_total;
+        s_art_req_lo = -1;
+        s_art_req_hi = -1;
+        pthread_mutex_unlock(&s_art_mutex);
+
+        /* Process sequentially — one fopen at a time, no USB I/O contention */
+        int i;
+        for (i = lo; i <= hi && i < total; i++) {
+            /* Check if a newer request arrived → abandon current batch
+             * (= Coil dispose: new scroll position invalidates old range) */
+            pthread_mutex_lock(&s_art_mutex);
+            int cancelled = (s_art_req_lo >= 0);
+            pthread_mutex_unlock(&s_art_mutex);
+            if (cancelled) {
+                printf("[art_worker] Cancelled batch [%d..%d] at %d (new request pending)\n",
+                       lo, hi, i);
+                break;
+            }
+
+            /* Skip if already cached (= Glide disk cache hit) */
+            char check_path[80];
+            snprintf(check_path, sizeof(check_path), "/tmp/cf_art_%d.jpg", i);
+            if (access(check_path, F_OK) == 0) {
+                /* File exists but cover_flow might not have loaded it yet
+                 * (e.g. scrolled to this item after initial set_items) */
+                art_result_t* r = (art_result_t*)calloc(1, sizeof(art_result_t));
+                if (r) {
+                    r->index = i;
+                    snprintf(r->cover_path, CF_MAX_PATH, "%s", check_path);
+                    idle_queue(art_result_handler, r);
+                }
+                continue;
+            }
+
+            const MusicInfo* info = music_app_get_track_info(i);
+            if (!info || !info->filepath[0]) continue;
+
+            uint8_t* art = NULL;
+            int art_sz = 0;
+            int rc = music_app_extract_art(info->filepath, &art, &art_sz);
+
+            if (rc == 0 && art && art_sz > 0) {
+                FILE* fp = fopen(check_path, "wb");
+                if (fp) {
+                    fwrite(art, 1, art_sz, fp);
+                    fclose(fp);
+
+                    art_result_t* r = (art_result_t*)calloc(1, sizeof(art_result_t));
+                    if (r) {
+                        r->index = i;
+                        snprintf(r->cover_path, CF_MAX_PATH, "%s", check_path);
+                        idle_queue(art_result_handler, r);
+                    }
+                }
+                free(art);
+            }
+        }
+
+        /* Progressive expansion: after center±1 done, expand to ±CF_VISIBLE_RADIUS
+         * if no new request arrived (= Glide preload after primary load)  */
+        pthread_mutex_lock(&s_art_mutex);
+        int has_new = (s_art_req_lo >= 0);
+        pthread_mutex_unlock(&s_art_mutex);
+        if (!has_new && (hi - lo) < CF_VISIBLE_RADIUS * 2) {
+            int center = (lo + hi) / 2;
+            int exp_lo = center - CF_VISIBLE_RADIUS;
+            int exp_hi = center + CF_VISIBLE_RADIUS;
+            if (exp_lo < 0) exp_lo = 0;
+            if (exp_hi >= total) exp_hi = total - 1;
+            printf("[art_worker] Expanding to [%d..%d]\n", exp_lo, exp_hi);
+            /* Process expanded range inline (same thread, no new request) */
+            for (i = exp_lo; i <= exp_hi && i < total; i++) {
+                pthread_mutex_lock(&s_art_mutex);
+                has_new = (s_art_req_lo >= 0);
+                pthread_mutex_unlock(&s_art_mutex);
+                if (has_new) break;
+
+                char ep[80];
+                snprintf(ep, sizeof(ep), "/tmp/cf_art_%d.jpg", i);
+                if (access(ep, F_OK) == 0) {
+                    art_result_t* r = (art_result_t*)calloc(1, sizeof(art_result_t));
+                    if (r) {
+                        r->index = i;
+                        snprintf(r->cover_path, CF_MAX_PATH, "%s", ep);
+                        idle_queue(art_result_handler, r);
+                    }
+                    continue;
+                }
+                const MusicInfo* einfo = music_app_get_track_info(i);
+                if (!einfo || !einfo->filepath[0]) continue;
+                uint8_t* eart = NULL; int eart_sz = 0;
+                int erc = music_app_extract_art(einfo->filepath, &eart, &eart_sz);
+                if (erc == 0 && eart && eart_sz > 0) {
+                    FILE* efp = fopen(ep, "wb");
+                    if (efp) { fwrite(eart, 1, eart_sz, efp); fclose(efp); }
+                    art_result_t* r = (art_result_t*)calloc(1, sizeof(art_result_t));
+                    if (r) {
+                        r->index = i;
+                        snprintf(r->cover_path, CF_MAX_PATH, "%s", ep);
+                        idle_queue(art_result_handler, r);
+                    }
+                    free(eart);
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
+/* Submit a range for async art extraction.
+ * New call replaces any pending range (= Coil dispose + enqueue). */
+static void async_extract_art_range(int lo, int hi, int total) {
+    if (lo < 0) lo = 0;
+    if (hi >= total) hi = total - 1;
+
+    /* Start worker thread on first call (= Glide lazy init) */
+    if (!s_art_running) {
+        s_art_shutdown = 0;
+        if (pthread_create(&s_art_thread, NULL, art_worker_main, NULL) == 0) {
+            s_art_running = 1;
+            pthread_detach(s_art_thread);
+        }
+    }
+
+    /* Replace pending request (= Coil CoilUtils.dispose + enqueue) */
+    pthread_mutex_lock(&s_art_mutex);
+    s_art_req_lo = lo;
+    s_art_req_hi = hi;
+    s_art_req_total = total;
+    pthread_cond_signal(&s_art_cond);
+    pthread_mutex_unlock(&s_art_mutex);
+
+    printf("[music_ui] Art request queued: [%d..%d]\n", lo, hi);
+}
 
 /*============================================================================
  * Button click handlers
@@ -924,10 +1133,50 @@ static void on_cover_flow_select(int index, const cover_flow_item_t* item, void*
 
     printf("[music_ui] cover_flow select: idx=%d uid=%d title=%s\n",
            index, item->uid, item->title);
+
+    /* Load art for visible range around the tapped card.
+     * During fast scrolling, settle callback never fires (each snap is
+     * interrupted by the next pointer_down), so we trigger here too. */
+    {
+        int total = music_app_get_playlist_count();
+        if (total > 0) {
+            int lo = index - CF_VISIBLE_RADIUS;
+            int hi = index + CF_VISIBLE_RADIUS;
+            if (lo < 0) lo = 0;
+            if (hi >= total) hi = total - 1;
+            async_extract_art_range(lo, hi, total);
+        }
+    }
+
     int rc = music_app_safe_play(item->uid);
     if (rc != 0) {
         printf("[music_ui] cover_flow play blocked: player preparing\n");
     }
+}
+
+/* Issue #64: Scroll-settle callback — load covers for newly visible items.
+ * Mirrors RecyclerView.OnScrollListener → SCROLL_STATE_IDLE → Glide.load() */
+/* Issue #64: Scroll-settle callback — load covers for newly visible items.
+ *
+ * 对标 RetroMusicPlayer/Auxio: offscreenPageLimit=1
+ *   ViewPager 内存中只有 3 页 (current ± 1)
+ *   快滑时中间页的 Fragment 被销毁, Glide 自动取消请求
+ *   只有停下来的那一页封面被加载
+ *
+ * 我们: settle 时只加载 center ± 1 (3张, 对标 offscreenPageLimit=1)
+ *   而不是 ± 4 (9张, 每张230ms = 2s, 用户早滑走了)
+ *   worker 线程处理完 center ±1 后, 如果没有新请求, 再扩展到 ±4
+ */
+static void on_cover_flow_settle(int center_index, void* ud) {
+    (void)ud;
+    int total = music_app_get_playlist_count();
+    if (total <= 0) return;
+    /* offscreenPageLimit=1: only center ± 1 */
+    int lo = center_index - 1;
+    int hi = center_index + 1;
+    if (lo < 0) lo = 0;
+    if (hi >= total) hi = total - 1;
+    async_extract_art_range(lo, hi, total);
 }
 
 /*============================================================================
@@ -1084,6 +1333,10 @@ ret_t music_ui_create(widget_t* win) {
 
     /* Cover flow tap callback: play the selected song */
     cover_flow_set_callback(s_cover_flow, on_cover_flow_select, NULL);
+
+    /* Cover flow settle callback: load covers for newly visible items
+     * (Glide/RecyclerView pattern: onScrollStateChanged → IDLE → loadVisible) */
+    cover_flow_set_settle_callback(s_cover_flow, on_cover_flow_settle, NULL);
 
 
     /* --- Song info (top) --- */
@@ -1317,7 +1570,50 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
         break;
     }
 
+    case APP_EVENT_SCAN_PROGRESS: {
+        /*================================================================
+         * Issue #64: Maestro onProgress(count, title) pattern
+         *
+         * 对标 Maestro importFolderFromTreeUri():
+         *   if (importedCount % 20 == 0) onProgress(importedCount, title)
+         *   → ViewModel 里只更新一个 progress 数字
+         *   → UI 只显示 "Importing... 397 songs"
+         *   → 不碰列表, 不碰 adapter, 不碰 cover art
+         *
+         * 对标 Auxio emitIndexingProgress(progress):
+         *   → IndexingState.Indexing(progress)
+         *   → HomeFragment 只更新 ProgressBar
+         *   → 不碰 RecyclerView 任何 adapter
+         *
+         * 我们: 只更新 count label + status label, 零 widget 销毁/创建
+         *===============================================================*/
+        int count = music_app_get_playlist_count();
+        widget_t* lbl = find(W_LBL_COUNT);
+        if (lbl) {
+            char b[64];
+            snprintf(b, sizeof(b), "Scanning... %d", count);
+            widget_set_text_utf8(lbl, b);
+        }
+        widget_t* status = find(W_LBL_STATUS);
+        if (status) widget_set_text_utf8(status, "Scanning...");
+        break;
+    }
+
     case APP_EVENT_SCAN_FINISHED: {
+        /*================================================================
+         * Issue #64: Maestro flushBatch() + Room Flow 一次性交付 pattern
+         *
+         * 对标 Maestro: flushBatch() 最后一次 → Room Flow emit →
+         *   LazyColumn recompose → 完整列表渲染
+         *
+         * 对标 Auxio: emitLibrary(result.library) → onLibraryChanged()
+         *   → UI 一次性构建完整列表
+         *
+         * 我们: SCAN_FINISHED 后发 PLAYLIST_CHANGED
+         *   → rebuild_playlist_view() 一次
+         *   → cover_flow 全量构建一次
+         *   → 结束. 而不是之前的125次.
+         *===============================================================*/
         int count = music_app_get_playlist_count();
         printf(">>>>>>>>>> [SCAN] FINISHED event received, count=%d <<<<<<<<<<\n", count);
         widget_t* lbl = find(W_LBL_STATUS);
@@ -1326,8 +1622,10 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             snprintf(b, sizeof(b), "%d tracks", count);
             widget_set_text_utf8(lbl, b);
         }
-        break;
+        /* Fall through to PLAYLIST_CHANGED — 一次性重建列表+cover_flow
+         * (对标 Auxio emitLibrary → onLibraryChanged → UI构建完整列表) */
     }
+    /* fall through */
 
     case APP_EVENT_PLAYLIST_CHANGED: {
         const music_app_state_t* st = music_app_get_state();
@@ -1343,59 +1641,63 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             widget_set_text_utf8(lbl, b);
         }
 
-        /* Rebuild cover_flow items from playlist */
+        /* Rebuild cover_flow items from playlist
+         *
+         * Issue #64 phase_2: 对标 Glide/Coil 异步封面加载
+         *
+         * Glide pattern (RetroMusicPlayer AlbumCoverPagerAdapter):
+         *   getItem(pos) → Fragment创建 → Glide.load(model).into(target)
+         *   封面在后台线程解码, 主线程只拿到最终 bitmap
+         *
+         * 我们的映射:
+         *   Step 1: set_items 只填 title/artist (主线程, 快)
+         *           → cover_flow 立即渲染 placeholder (首字母)
+         *   Step 2: async_extract_art_range() 启动 worker threads
+         *           → 后台 fopen+fread ID3 APIC → 写 /tmp/cf_art_N.jpg
+         *   Step 3: idle_queue → cover_flow_set_item_cover() (主线程)
+         *           → 单个item重绘, 封面渐次出现
+         */
+        /*
+         * 对标 RetroMusicPlayer:
+         *   onQueueChanged()         → updateData(newDataSet) 重建carousel
+         *   onPlayingMetaChanged()   → setCurrentItem(position) 只滚动
+         *
+         * 我们: total变了(扫描完成/设备切换/文件夹播放) → 重建cover_flow
+         *       total没变(用户点播同一列表里的歌)     → 只滚动, 保留已有封面
+         */
         if (s_cover_flow && total > 0) {
-            cover_flow_item_t* cf_items = (cover_flow_item_t*)calloc(
-                total, sizeof(cover_flow_item_t));
-            if (cf_items) {
-                int i;
-                for (i = 0; i < total; i++) {
-                    const MusicInfo* info = music_app_get_track_info(i);
-                    if (info) {
-                        char tbuf[MUSIC_MAX_TAG_LEN];
-                        const char* t = safe_title(info, tbuf, sizeof(tbuf));
-                        strncpy(cf_items[i].title, t, CF_MAX_TITLE - 1);
-                        strncpy(cf_items[i].subtitle,
-                                safe_field(info->artist), CF_MAX_SUBTITLE - 1);
-                        cf_items[i].uid = i;
-                    }
-                }
-
-                /* Extract art for only the initial visible range (±4 from center) */
-                int center = cur >= 0 ? cur : 0;
-                int vis_lo = center - CF_VISIBLE_RADIUS;
-                int vis_hi = center + CF_VISIBLE_RADIUS;
-                if (vis_lo < 0) vis_lo = 0;
-                if (vis_hi >= total) vis_hi = total - 1;
-                printf("[music_ui] Art extract range: center=%d lo=%d hi=%d\n",
-                       center, vis_lo, vis_hi);
-                for (i = vis_lo; i <= vis_hi; i++) {
-                    const MusicInfo* info = music_app_get_track_info(i);
-                    if (!info) { printf("[music_ui] art[%d]: no info\n", i); continue; }
-                    if (!info->filepath[0]) { printf("[music_ui] art[%d]: no filepath\n", i); continue; }
-                    printf("[music_ui] art[%d]: trying %s\n", i, info->filepath);
-                    uint8_t* art = NULL; int art_sz = 0;
-                    int rc = music_app_extract_art(info->filepath, &art, &art_sz);
-                    printf("[music_ui] art[%d]: rc=%d size=%d\n", i, rc, art_sz);
-                    if (rc == 0 && art && art_sz > 0) {
-                        char path[80];
-                        snprintf(path, sizeof(path), "/tmp/cf_art_%d.jpg", i);
-                        FILE* fp = fopen(path, "wb");
-                        if (fp) {
-                            fwrite(art, 1, art_sz, fp);
-                            fclose(fp);
-                            printf("[music_ui] art[%d]: wrote %s\n", i, path);
+            int old_count = cover_flow_get_item_count(s_cover_flow);
+            if (old_count != total) {
+                /* Queue changed → full rebuild (like onQueueChanged) */
+                cover_flow_item_t* cf_items = (cover_flow_item_t*)calloc(
+                    total, sizeof(cover_flow_item_t));
+                if (cf_items) {
+                    int i;
+                    for (i = 0; i < total; i++) {
+                        const MusicInfo* info = music_app_get_track_info(i);
+                        if (info) {
+                            char tbuf[MUSIC_MAX_TAG_LEN];
+                            const char* t = safe_title(info, tbuf, sizeof(tbuf));
+                            strncpy(cf_items[i].title, t, CF_MAX_TITLE - 1);
+                            strncpy(cf_items[i].subtitle,
+                                    safe_field(info->artist), CF_MAX_SUBTITLE - 1);
+                            cf_items[i].uid = i;
                         }
-                        snprintf(cf_items[i].cover_path, CF_MAX_PATH,
-                                 "file://%s", path);
-                        free(art);
                     }
-                }
+                    cover_flow_set_items(s_cover_flow, cf_items, total);
+                    free(cf_items);
 
-                cover_flow_set_items(s_cover_flow, cf_items, total);
-                if (cur >= 0) cover_flow_set_selected(s_cover_flow, cur);
-                free(cf_items);
+                    /* Load covers for visible range */
+                    int center = cur >= 0 ? cur : 0;
+                    int vis_lo = center - CF_VISIBLE_RADIUS;
+                    int vis_hi = center + CF_VISIBLE_RADIUS;
+                    if (vis_lo < 0) vis_lo = 0;
+                    if (vis_hi >= total) vis_hi = total - 1;
+                    async_extract_art_range(vis_lo, vis_hi, total);
+                }
             }
+            /* Always scroll to current track (like onPlayingMetaChanged) */
+            if (cur >= 0) cover_flow_set_selected(s_cover_flow, cur);
         }
         break;
     }
@@ -1413,11 +1715,21 @@ void music_ui_on_app_event(music_app_event_t event, void* param) {
             if (al) widget_set_text_utf8(al, safe_field(st->current_info->album));
         }
 
-        /* Sync cover_flow to current track */
+        /* Sync cover_flow to current track + load art for visible range */
         {
             int cur = music_app_get_current_index();
             if (s_cover_flow && cur >= 0) {
                 cover_flow_set_selected(s_cover_flow, cur);
+                /* Trigger art loading around new position — set_selected is
+                 * programmatic (no settle callback), so we kick it here. */
+                int total = music_app_get_playlist_count();
+                if (total > 0) {
+                    int lo = cur - CF_VISIBLE_RADIUS;
+                    int hi = cur + CF_VISIBLE_RADIUS;
+                    if (lo < 0) lo = 0;
+                    if (hi >= total) hi = total - 1;
+                    async_extract_art_range(lo, hi, total);
+                }
             }
         }
 

@@ -451,6 +451,15 @@ void music_list_destroy(MusicList *list)
     delete list;  /* vector destructor frees all MusicInfo storage */
 }
 
+void music_list_swap_contents(MusicList *dst, MusicList *src)
+{
+    if (!dst || !src) return;
+    dst->vec.swap(src->vec);
+    dst->state = src->state;
+    dst->sync_view();
+    src->sync_view();
+}
+
 int music_scan_directory(MusicList *list, const char *dir_path)
 {
     if (!list || !dir_path) return -1;

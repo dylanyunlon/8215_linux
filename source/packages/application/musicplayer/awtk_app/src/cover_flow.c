@@ -168,6 +168,10 @@ struct _cover_flow_ctx {
     cover_flow_select_fn  on_select;
     void*                 select_ctx;
 
+    cover_flow_settle_fn  on_settle;
+    void*                 settle_ctx;
+    int     programmatic_snap;  /* 1 = set_selected, don't fire on_settle */
+
     int     cw, ch;
     float   card_w, card_h;
     float   y_step, x_step;
@@ -395,6 +399,13 @@ static void draw_card(vgcanvas_t* vg, const cover_flow_ctx_t* ctx,
         vgcanvas_fill(vg);
     }
 
+    /* Lazy art fallback: if cover_path was set (by set_item_cover or settle
+     * callback) but bitmap not yet loaded, load now on first draw.
+     * Covers edge cases where set_item_cover's idle_queue hasn't fired yet. */
+    if (ac && !ac->loaded[0] && item->cover_path[0] != '\0') {
+        cf_art_load(ac, item->cover_path, item_idx);
+    }
+
     /* Album art — sharp for center, Gaussian-blurred for distant cards */
     if (ac && ac->loaded[0]) {
         int use_blur = (!is_center && ac->loaded[1]);
@@ -549,6 +560,12 @@ static ret_t on_cf_tick(const timer_info_t* info) {
             ctx->center_smooth = ctx->snap_target;
             ctx->snapping = 0;
             ctx->selected_idx = (int)(ctx->center_smooth + 0.5f);
+            /* Notify UI — load covers for newly visible items
+             * Only for user swipes, not programmatic set_selected
+             * (= RecyclerView: onScrollStateChanged fires only for user scroll) */
+            if (ctx->on_settle && !ctx->programmatic_snap)
+                ctx->on_settle(ctx->selected_idx, ctx->settle_ctx);
+            ctx->programmatic_snap = 0;
         }
     } else if (!ctx->touch_active) {
         float diff = ctx->center_target - ctx->center_smooth;
@@ -569,6 +586,7 @@ static void start_snap(cover_flow_ctx_t* ctx) {
     ctx->snap_elapsed = 0;
     ctx->snap_duration = CF_SNAP_DURATION_MS;
     ctx->snapping = 1;
+    ctx->programmatic_snap = 0;  /* User swipe → fire on_settle when done */
     ctx->center_target = ctx->snap_target;
 }
 
@@ -711,8 +729,37 @@ void cover_flow_set_items(cover_flow_ctx_t* ctx,
     printf("[cover_flow] Items set: %d\n", ctx->item_count);
 }
 
+void cover_flow_set_item_cover(cover_flow_ctx_t* ctx, int index,
+                                const char* cover_path) {
+    if (!ctx || index < 0 || index >= ctx->item_count) return;
+    if (!cover_path || cover_path[0] == '\0') return;
+    if (!ctx->items || !ctx->art_cache) return;
+
+    /* Skip if same cover already loaded (= Glide memory cache hit) */
+    if (strcmp(ctx->items[index].cover_path, cover_path) == 0
+        && ctx->art_cache[index].bmp[0].w > 0) {
+        return;
+    }
+
+    /* Update the item's cover_path */
+    strncpy(ctx->items[index].cover_path, cover_path, CF_MAX_PATH - 1);
+    ctx->items[index].cover_path[CF_MAX_PATH - 1] = '\0';
+
+    /* Reload art for this single item */
+    cf_art_cache_free(&ctx->art_cache[index]);
+    cf_art_cache_init(&ctx->art_cache[index]);
+    cf_art_load(&ctx->art_cache[index], cover_path, index);
+
+    /* Repaint */
+    widget_invalidate_force(ctx->container, NULL);
+}
+
 int cover_flow_get_selected(cover_flow_ctx_t* ctx) {
     return ctx ? ctx->selected_idx : -1;
+}
+
+int cover_flow_get_item_count(cover_flow_ctx_t* ctx) {
+    return ctx ? ctx->item_count : 0;
 }
 
 void cover_flow_set_selected(cover_flow_ctx_t* ctx, int index) {
@@ -725,6 +772,7 @@ void cover_flow_set_selected(cover_flow_ctx_t* ctx, int index) {
     ctx->snap_elapsed = 0;
     ctx->snap_duration = CF_SNAP_DURATION_MS;
     ctx->snapping = 1;
+    ctx->programmatic_snap = 1;  /* Don't fire on_settle — covers already loaded */
 }
 
 void cover_flow_set_callback(cover_flow_ctx_t* ctx,
@@ -732,6 +780,13 @@ void cover_flow_set_callback(cover_flow_ctx_t* ctx,
     if (!ctx) return;
     ctx->on_select = fn;
     ctx->select_ctx = user_data;
+}
+
+void cover_flow_set_settle_callback(cover_flow_ctx_t* ctx,
+                                     cover_flow_settle_fn fn, void* user_data) {
+    if (!ctx) return;
+    ctx->on_settle = fn;
+    ctx->settle_ctx = user_data;
 }
 
 void cover_flow_destroy(cover_flow_ctx_t* ctx) {

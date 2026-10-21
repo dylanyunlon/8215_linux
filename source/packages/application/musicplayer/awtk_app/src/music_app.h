@@ -57,6 +57,7 @@ typedef struct {
     bool            id3_done;       /* ID3 parse completed */
     storage_type_t  type;
     char            mount_point[STORAGE_PATH_MAX];
+    char            volume_uuid[64]; /* vfat UUID e.g. "6165-6261", for DB cache key */
     MusicList*      music_list;     /* scan results */
     /* Issue #51: Scan generation counter for cancellation protection.
      * Incremented on each scan_device_async() call. The scan thread checks
@@ -119,6 +120,7 @@ typedef enum {
     APP_EVENT_PLAYLIST_CHANGED      = 8,
     APP_EVENT_ERROR                 = 9,
     APP_EVENT_FAVORITE_CHANGED      = 10,  /* Issue #1: favorite add/remove */
+    APP_EVENT_SCAN_PROGRESS         = 11,  /* Issue #64: scan progress (count only, no UI rebuild) */
 } music_app_event_t;
 
 /**

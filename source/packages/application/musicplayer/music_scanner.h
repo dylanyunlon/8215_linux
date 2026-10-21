@@ -145,6 +145,15 @@ MusicList *music_list_create(int capacity);
 /* Destroy a music list (frees all memory). */
 void music_list_destroy(MusicList *list);
 
+/**
+ * Atomically move all contents from src into dst.
+ * After this call dst holds the data that was in src, and src is empty.
+ * Both pointers must be non-NULL and created by music_list_create().
+ * Designed to be called from the main thread so that dst (which the UI
+ * reads via items/count) is updated without any window of count==0.
+ */
+void music_list_swap_contents(MusicList *dst, MusicList *src);
+
 /* Scan a directory recursively for audio files.
  * Populates list->items with MusicInfo entries.
  * Blocks until scan completes. Thread-safe if different lists used. */
