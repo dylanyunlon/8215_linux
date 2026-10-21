@@ -69,6 +69,11 @@ static struct {
      * Mirrors Android mAppData.mIsMediaPlayerLocked. */
     volatile bool           player_locked;
 
+    /* Async stop guard — mirrors VitamioPlayer.mIsAsyncReleasing.
+     * True while async_stop_thread is running music_app_stop().
+     * Player operations check this and [Reject] or wait. */
+    volatile bool           is_async_stopping;
+
     /* [GAP-9] Delayed auto-next timer ID */
     uint32_t                auto_next_timer_id;
 
@@ -180,20 +185,27 @@ static void* async_stop_thread_func(void* arg) {
     (void)arg;
     printf("[music_app] async_stop: stopping player on detached thread...\n");
     music_app_stop();
-    printf("[music_app] async_stop: player stopped.\n");
+    /* Clear the flag — mirrors AsyncHandler.releaseMediaPlayer():
+     *   mIsAsyncReleasing.set(false);  */
+    s_app.is_async_stopping = false;
+    printf("[music_app] async_stop: player stopped, flag cleared.\n");
     return NULL;
 }
 
 static void async_stop_player(void) {
+    /* Set flag BEFORE creating thread — mirrors VitamioPlayer.onStopPlayer():
+     *   mIsAsyncReleasing.set(true);
+     *   mAsyncHandler.sendMessage(MSG_RELEASE_MEDIAPLAYER);  */
+    s_app.is_async_stopping = true;
+
     pthread_t tid;
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
     if (pthread_create(&tid, &attr, async_stop_thread_func, NULL) != 0) {
-        /* Fallback: if thread creation fails, stop synchronously.
-         * This is the same as before — not ideal but won't lose the stop. */
         printf("[music_app] async_stop: thread create failed, stopping inline\n");
         music_app_stop();
+        s_app.is_async_stopping = false;
     }
     pthread_attr_destroy(&attr);
 }
@@ -358,8 +370,33 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
                     printf("[music_app] Cache hit: %d tracks from %s\n",
                            list->count, db_path);
 
+                    /* Wait for async stop to finish before touching the player.
+                     * Mirrors VitamioPlayer.onSetDataSourceEvent():
+                     *   int timeout = 0;
+                     *   while (isAsyncReleasing()) {
+                     *       if (timeout++ > 99) break;
+                     *       Thread.sleep(10);
+                     *   }
+                     *   if (isAsyncReleasing()) { [Reject]; return; }
+                     */
+                    if (s_app.is_async_stopping) {
+                        printf("[music_app] Waiting for async stop to finish...\n");
+                        int wait_count = 0;
+                        while (s_app.is_async_stopping && wait_count < 100) {
+                            usleep(10000); /* 10ms */
+                            wait_count++;
+                        }
+                        if (s_app.is_async_stopping) {
+                            printf("[music_app] async stop still running after 1s, "
+                                   "skipping playlist set (scan will fix later)\n");
+                        } else {
+                            printf("[music_app] async stop finished after %d ms\n",
+                                   wait_count * 10);
+                        }
+                    }
+
                     /* Instant UI — like plexify "render from cache instantly" */
-                    if (s_app.player) {
+                    if (s_app.player && !s_app.is_async_stopping) {
                         set_player_playlist_from_list(list);
                     }
                     post_ui_event(APP_EVENT_PLAYLIST_CHANGED, idx);
