@@ -385,9 +385,19 @@ void music_player_destroy(MusicPlayerContext *ctx)
 int music_player_set_playlist_refs(MusicPlayerContext *ctx,
                                    const TrackRef *refs, int count)
 {
-    if (!ctx || !refs || count <= 0) return -1;
+    if (!ctx) return -1;
 
     std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
+
+    /* ★ Fix: Allow clearing the playlist (refs=NULL, count=0).
+     * Called on USB removal so get_playlist_count() returns 0. */
+    if (!refs || count <= 0) {
+        ctx->playlist.clear();
+        ctx->current_index = -1;
+        ctx->state = PLAYER_STATE_IDLE;
+        printf("[MusicPlayer] Playlist cleared\n");
+        return 0;
+    }
 
     /*
      * musikcube pattern (HotSwap / CopyFrom):

@@ -161,6 +161,44 @@ static void post_ui_event(music_app_event_t event, int param) {
 }
 
 /*============================================================================
+ * Async stop — mirrors AutoMediaPlayer VitamioPlayer.AsyncHandler pattern:
+ *
+ *   VitamioPlayer.onStopPlayer():
+ *     mIsAsyncReleasing.set(true);
+ *     mAsyncHandler.sendMessage(MSG_RELEASE_MEDIAPLAYER);
+ *
+ *   AsyncHandler.releaseMediaPlayer():
+ *     mPlayerHandler.postDelayed(timeoutTask, 5000);  // 5s timeout
+ *     mMediaPlayer.release();                          // may block
+ *     mPlayerHandler.removeCallbacks(timeoutTask);
+ *     mIsAsyncReleasing.set(false);
+ *
+ * We use a detached pthread instead of HandlerThread (no Java Looper in C),
+ * so neither the USB monitor thread nor the AWTK main thread blocks.
+ *==========================================================================*/
+static void* async_stop_thread_func(void* arg) {
+    (void)arg;
+    printf("[music_app] async_stop: stopping player on detached thread...\n");
+    music_app_stop();
+    printf("[music_app] async_stop: player stopped.\n");
+    return NULL;
+}
+
+static void async_stop_player(void) {
+    pthread_t tid;
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    if (pthread_create(&tid, &attr, async_stop_thread_func, NULL) != 0) {
+        /* Fallback: if thread creation fails, stop synchronously.
+         * This is the same as before — not ideal but won't lose the stop. */
+        printf("[music_app] async_stop: thread create failed, stopping inline\n");
+        music_app_stop();
+    }
+    pthread_attr_destroy(&attr);
+}
+
+/*============================================================================
  * Volume UUID — cache key for DB (Auxio associateBy { it.uri } pattern)
  *
  * plexify principle: "Stale beats empty, every time."
@@ -368,8 +406,9 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
 
             /* [GAP-2] Only stop if current track is ON the unmounted device.
              * Android: checks mCurrentMediaInfo.mFilePath.contains(strPath) */
+            bool should_stop = false;
             if (idx == s_app.state.current_device_idx) {
-                bool should_stop = true;
+                should_stop = true;
                 if (s_app.state.current_info != NULL) {
                     /* Check if the current file path starts with the unmounted mount point */
                     if (strncmp(s_app.state.current_info->filepath,
@@ -384,16 +423,57 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
                     s_app.state.current_info = NULL;
                     s_app.lyrics_path[0] = '\0';
                     lrc_data_clear(&s_app.lyrics);
-                    pthread_mutex_unlock(&s_app.mutex);
-                    music_app_stop();
-                    pthread_mutex_lock(&s_app.mutex);
                 }
             }
 
             remove_device(idx);
+
+            /* ★ Fix: Clear the player's internal playlist so that
+             * music_app_get_playlist_count() returns 0 after removal.
+             * Without this, the player's C++ vector still holds the old
+             * TrackRefs, so SCAN_FINISHED → PLAYLIST_CHANGED rebuilds
+             * cover_flow with stale count (e.g. 1112) while
+             * get_track_info() returns NULL for every item. */
+            if (s_app.player) {
+                music_player_set_playlist_refs(s_app.player, NULL, 0);
+            }
+
             pthread_mutex_unlock(&s_app.mutex);
 
+            /* ★ Fix: Post UI event BEFORE calling stop().
+             *
+             * Problem: When paused, the hardware MediaPlayer::stop() sends
+             * a StopCmd to its command thread and waits for reply_sema.
+             * The command thread tries to close/cleanup file handles that
+             * point to the now-removed USB device.  The kernel close() on
+             * a vanished block device can block for seconds (USB timeout),
+             * so music_app_stop() hangs — and the old code had
+             * post_ui_event() AFTER stop(), meaning the UI never received
+             * APP_EVENT_STORAGE_UNMOUNTED and the play view stayed visible.
+             *
+             * When actively playing, the decoder's read thread hits an I/O
+             * error immediately, so stop() returns fast — that's why
+             * "playing + unplug" worked but "paused + unplug" didn't.
+             *
+             * Fix: post the UNMOUNTED event first so the UI switches to
+             * the empty list view immediately, then call stop() which may
+             * block but the user already sees the correct screen. */
             post_ui_event(APP_EVENT_STORAGE_UNMOUNTED, idx);
+
+            /* ★ Fix: Async stop on a detached thread — neither the USB
+             * monitor thread nor the AWTK main thread blocks.
+             *
+             * Mirrors AutoMediaPlayer VitamioPlayer.AsyncHandler:
+             *   mAsyncHandler.sendMessage(MSG_RELEASE_MEDIAPLAYER)
+             *   → releaseMediaPlayer() on HandlerThread (not UI thread)
+             *   → mMediaPlayer.release() may block for seconds
+             *
+             * Without this, the monitor thread's while-loop is stuck in
+             * music_app_stop() and the next USB "add" uevent is never
+             * processed — re-insert appears dead. */
+            if (should_stop) {
+                async_stop_player();
+            }
             return;
         }
     }
@@ -678,10 +758,23 @@ static void* scan_thread_func(void* arg) {
         return NULL;
     }
 
-    /* Issue #51: Double-check after scan completes. */
+    /* Issue #51: Double-check after scan completes.
+     * ★ Fix: Also check if device was removed entirely (dev_idx >= device_count).
+     * After USB removal, remove_device() decrements device_count.  The old code
+     * only checked generation mismatch INSIDE "dev_idx < device_count", so when
+     * the device was gone the entire check was skipped — the scan thread
+     * continued to save a partial cache and post SCAN_FINISHED, causing the UI
+     * to rebuild cover_flow with 1112 stale items (all get_track_info → NULL). */
     pthread_mutex_lock(&s_app.mutex);
-    if (dev_idx < s_app.device_count &&
-        s_app.devices[dev_idx].scan_generation != my_generation) {
+    if (dev_idx >= s_app.device_count) {
+        /* Device was removed during scan — discard everything */
+        printf("[music_app] Scan results discarded (device %d removed, count=%d)\n",
+               dev_idx, s_app.device_count);
+        if (scan_list) music_list_destroy(scan_list);
+        pthread_mutex_unlock(&s_app.mutex);
+        return NULL;
+    }
+    if (s_app.devices[dev_idx].scan_generation != my_generation) {
         printf("[music_app] Scan results discarded (superseded gen %d vs %d)\n",
                my_generation, s_app.devices[dev_idx].scan_generation);
         s_app.devices[dev_idx].scanning = false;
@@ -902,13 +995,24 @@ static ret_t player_state_idle_handler(const idle_info_t* idle) {
         pthread_mutex_lock(&s_app.mutex);
         s_app.state.last_position_ms = 0;
         s_app.state.current_position_ms = 0;
+        /* ★ Fix: Check if device still has a valid playlist.
+         * After USB removal, the STOPPED callback from MediaPlayer::stop()
+         * arrives via idle_queue.  By that time remove_device() has already
+         * destroyed the music_list, so auto-next would try to play from a
+         * gone device — potentially crashing or re-showing the play view. */
+        int dev_idx = s_app.state.current_device_idx;
+        bool has_playlist = (dev_idx >= 0 && dev_idx < s_app.device_count &&
+                             s_app.devices[dev_idx].music_list != NULL &&
+                             s_app.devices[dev_idx].music_list->count > 0);
         pthread_mutex_unlock(&s_app.mutex);
 
         if (s_app.auto_next_timer_id != TK_INVALID_ID) {
             timer_remove(s_app.auto_next_timer_id);
             s_app.auto_next_timer_id = TK_INVALID_ID;
         }
-        s_app.auto_next_timer_id = timer_add(delayed_auto_next_cb, NULL, 1000);
+        if (has_playlist) {
+            s_app.auto_next_timer_id = timer_add(delayed_auto_next_cb, NULL, 1000);
+        }
     }
 
     /* [GAP-11] Save state on pause/stop */
