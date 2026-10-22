@@ -182,28 +182,37 @@ static void post_ui_event(music_app_event_t event, int param) {
  * so neither the USB monitor thread nor the AWTK main thread blocks.
  *==========================================================================*/
 static void* async_stop_thread_func(void* arg) {
-    (void)arg;
-    printf("[music_app] async_stop: stopping player on detached thread...\n");
-    music_app_stop();
-    /* Clear the flag — mirrors AsyncHandler.releaseMediaPlayer():
-     *   mIsAsyncReleasing.set(false);  */
+    bool do_stop = (arg != NULL);
+
+    /* Clear playlist (needs ctx->mtx which may be held by a
+     * transport/decoder thread doing I/O on the vanished USB).
+     * Doing this here means the monitor thread NEVER touches ctx->mtx. */
+    if (s_app.player) {
+        music_player_set_playlist_refs(s_app.player, NULL, 0);
+    }
+
+    if (do_stop) {
+        printf("[music_app] async_stop: stopping player on detached thread...\n");
+        music_app_stop();
+        printf("[music_app] async_stop: player stopped.\n");
+    }
+
     s_app.is_async_stopping = false;
-    printf("[music_app] async_stop: player stopped, flag cleared.\n");
     return NULL;
 }
 
 static void async_stop_player(void) {
-    /* Set flag BEFORE creating thread — mirrors VitamioPlayer.onStopPlayer():
-     *   mIsAsyncReleasing.set(true);
-     *   mAsyncHandler.sendMessage(MSG_RELEASE_MEDIAPLAYER);  */
     s_app.is_async_stopping = true;
 
     pthread_t tid;
     pthread_attr_t attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    if (pthread_create(&tid, &attr, async_stop_thread_func, NULL) != 0) {
-        printf("[music_app] async_stop: thread create failed, stopping inline\n");
+    /* Pass (void*)1 if should_stop, NULL if just clearing playlist */
+    if (pthread_create(&tid, &attr, async_stop_thread_func, (void*)(intptr_t)1) != 0) {
+        printf("[music_app] async_stop: thread create failed, inline fallback\n");
+        if (s_app.player)
+            music_player_set_playlist_refs(s_app.player, NULL, 0);
         music_app_stop();
         s_app.is_async_stopping = false;
     }
@@ -444,15 +453,9 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
 
             remove_device(idx);
 
-            /* ★ Fix: Clear the player's internal playlist so that
-             * music_app_get_playlist_count() returns 0 after removal.
-             * Without this, the player's C++ vector still holds the old
-             * TrackRefs, so SCAN_FINISHED → PLAYLIST_CHANGED rebuilds
-             * cover_flow with stale count (e.g. 1112) while
-             * get_track_info() returns NULL for every item. */
-            if (s_app.player) {
-                music_player_set_playlist_refs(s_app.player, NULL, 0);
-            }
+            /* Playlist clear moved to async_stop_thread_func — the monitor
+             * thread must NEVER touch ctx->mtx because transport/decoder
+             * threads can hold it indefinitely on a vanished USB device. */
 
             pthread_mutex_unlock(&s_app.mutex);
 
@@ -487,9 +490,10 @@ static void on_storage_event(const storage_device_info_t* info, void* user_data)
              * Without this, the monitor thread's while-loop is stuck in
              * music_app_stop() and the next USB "add" uevent is never
              * processed — re-insert appears dead. */
-            if (should_stop) {
-                async_stop_player();
-            }
+            /* Always run async cleanup: clears player playlist (needs
+             * ctx->mtx) and optionally stops playback.  The monitor
+             * thread must not touch ctx->mtx directly. */
+            async_stop_player();
             return;
         }
     }
