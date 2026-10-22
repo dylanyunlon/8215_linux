@@ -1286,10 +1286,7 @@ const music_app_state_t* music_app_get_state(void) {
 
 void music_app_play(int index) {
     if (s_app.player) {
-        /* play is now async (prepareAsync pattern) — returns immediately,
-         * main thread never blocks, so player_locked is not needed here.
-         * Old sync path needed it to prevent UI freeze from concurrent
-         * play commands; async path handles this naturally. */
+        s_app.player_locked = true;  /* Issue #A4: lock until PLAYING callback */
         music_player_play(s_app.player, index);
     }
 }
@@ -1324,6 +1321,7 @@ void music_app_next(void) {
     }
     s_app.last_prev_next_ms = now;
     if (s_app.player) {
+        s_app.player_locked = true;  /* Issue #A4 */
         music_player_next(s_app.player);
     }
 }
@@ -1335,6 +1333,7 @@ void music_app_prev(void) {
     }
     s_app.last_prev_next_ms = now;
     if (s_app.player) {
+        s_app.player_locked = true;  /* Issue #A4 */
         music_player_prev(s_app.player);
     }
 }
