@@ -486,12 +486,75 @@ int music_player_get_current_index(MusicPlayerContext *ctx)
     return ctx ? ctx->current_index : -1;
 }
 
+/*============================================================================
+ * Async play — Android prepareAsync / RetroMusicPlayer setDataSource pattern
+ *
+ * Problem: transport->Start() calls ResetActivePlayer() → Player::Destroy()
+ * → thread.join() — blocks until old decoder thread exits.  If old decoder
+ * is paused or doing USB I/O, join hangs → AWTK main thread freezes.
+ *
+ * Fix: dispatch Start() to a detached worker thread.  Main thread returns
+ * immediately so UI stays responsive.  Callbacks fire from the worker
+ * thread, then get idle_queue'd to main thread by music_app.c.
+ *
+ * Mirrors Android MediaPlayer.prepareAsync():
+ *   setDataSource() → prepareAsync() → returns immediately
+ *   → internal thread does open/probe/decode
+ *   → onPrepared callback → start()
+ *==========================================================================*/
+
+struct PlayAsyncArgs {
+    MusicPlayerContext *ctx;
+    int index;
+    std::string filepath;
+    bool use_soft;
+};
+
+static void* play_async_thread(void* arg) {
+    PlayAsyncArgs* a = (PlayAsyncArgs*)arg;
+    if (!a) return nullptr;
+
+    MusicPlayerContext *ctx = a->ctx;
+
+    printf("[MusicPlayer] async_play: starting %s\n", a->filepath.c_str());
+
+    /* This is the blocking part — ResetActivePlayer → join old thread */
+    if (a->use_soft) {
+#ifdef USE_SOFT_PLAYER
+        if (ctx->transport) {
+            ctx->transport->Start(a->filepath);
+        }
+#endif
+    } else {
+        ctx->player->play(a->filepath);
+    }
+
+    /* Fire callbacks — they'll idle_queue to main thread */
+    {
+        std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
+        ctx->state = PLAYER_STATE_PLAYING;
+    }
+
+    on_track_changed_fn tcb = ctx->track_cb;
+    void *tdata = ctx->track_cb_data;
+    on_state_changed_fn scb = ctx->state_cb;
+    void *sdata = ctx->state_cb_data;
+
+    if (scb) scb(PLAYER_STATE_PLAYING, sdata);
+    if (tcb) tcb(a->index, nullptr, tdata);
+
+    printf("[MusicPlayer] async_play: done\n");
+    delete a;
+    return nullptr;
+}
+
 int music_player_play(MusicPlayerContext *ctx, int index)
 {
     if (!ctx || !ctx->player_ready) return -1;
 
     std::unique_lock<std::recursive_mutex> lock(ctx->mtx);
 
+    /* Resume from pause — fast path, no blocking I/O */
     if (index == -1) {
         if (ctx->current_index >= 0 && ctx->state == PLAYER_STATE_PAUSED) {
             if (ctx->use_soft) {
@@ -518,35 +581,32 @@ int music_player_play(MusicPlayerContext *ctx, int index)
     }
 
     ctx->current_index = index;
-    ctx->next_index = -1;  /* reset — Start() supersedes any pending gapless */
+    ctx->next_index = -1;
     const TrackRef &ref = ctx->playlist[index];
 
     printf("[MusicPlayer] Playing [%d/%d]: %s (%s)\n",
            index + 1, (int)ctx->playlist.size(), ref.filepath,
            ctx->use_soft ? "gapless" : "hw");
 
-    if (ctx->use_soft) {
-#ifdef USE_SOFT_PLAYER
-        if (ctx->transport) {
-            ctx->transport->Start(std::string(ref.filepath));
-        }
-#endif
-    } else {
-        std::string path(ref.filepath);
-        ctx->player->play(path);
-    }
-    ctx->state = PLAYER_STATE_PLAYING;
-
-    on_track_changed_fn tcb = ctx->track_cb;
-    void *tdata = ctx->track_cb_data;
-    on_state_changed_fn scb = ctx->state_cb;
-    void *sdata = ctx->state_cb_data;
+    /* Prepare async args before unlocking */
+    PlayAsyncArgs* args = new PlayAsyncArgs();
+    args->ctx = ctx;
+    args->index = index;
+    args->filepath = std::string(ref.filepath);
+    args->use_soft = ctx->use_soft;
 
     lock.unlock();
 
-    /* Fire state callback so player_locked gets cleared immediately */
-    if (scb) scb(PLAYER_STATE_PLAYING, sdata);
-    if (tcb) tcb(index, NULL, tdata);
+    /* Dispatch to worker thread — main thread returns immediately */
+    pthread_t tid;
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    if (pthread_create(&tid, &attr, play_async_thread, args) != 0) {
+        printf("[MusicPlayer] async_play: thread create failed, inline fallback\n");
+        play_async_thread(args);  /* fallback: blocking on main thread */
+    }
+    pthread_attr_destroy(&attr);
 
     return 0;
 }
