@@ -254,7 +254,7 @@ static void *position_poll_func(void *arg)
     MusicPlayerContext *ctx = (MusicPlayerContext *)arg;
 
     while (ctx->poll_running) {
-        usleep(500000); /* 500ms */
+        usleep(100000); /* 100ms — smoother lyrics (Android MediaPlayer default) */
 
         on_position_changed_fn cb = nullptr;
         void *data = nullptr;

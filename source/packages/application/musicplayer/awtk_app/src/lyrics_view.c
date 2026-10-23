@@ -407,7 +407,7 @@ void lyrics_view_seek(lyrics_view_ctx_t* ctx, int time_ms) {
     /* Vertical scroll animation */
     if (prev_line >= 0 && result >= 0) {
         int delta = result - prev_line;
-        float start_offset = (float)(-delta * ctx->line_height);
+        float start_offset = (float)(delta * ctx->line_height);
         if (start_offset > 100) start_offset = 100;
         if (start_offset < -100) start_offset = -100;
         ctx->vy = start_offset;
