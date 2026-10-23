@@ -1284,14 +1284,46 @@ const music_app_state_t* music_app_get_state(void) {
     return &s_app.state;
 }
 
-void music_app_play(int index) {
-    if (s_app.player) {
-        /* play is now async (prepareAsync pattern) — returns immediately,
-         * main thread never blocks, so player_locked is not needed here.
-         * Old sync path needed it to prevent UI freeze from concurrent
-         * play commands; async path handles this naturally. */
-        music_player_play(s_app.player, index);
+/*============================================================================
+ * Async play from UI thread — Android prepareAsync pattern
+ *
+ * music_player_play is synchronous (can block on Destroy→join).
+ * UI layer dispatches to worker thread so AWTK main loop stays responsive.
+ * Decoder-thread callers (auto-advance) call music_player_play directly
+ * from their own dispatch thread (see on_transport_stream_state Finished).
+ *==========================================================================*/
+typedef struct {
+    MusicPlayerContext* player;
+    int index;
+} play_async_ctx_t;
+
+static void* play_async_worker(void* arg) {
+    play_async_ctx_t* pa = (play_async_ctx_t*)arg;
+    if (pa) {
+        music_player_play(pa->player, pa->index);
+        free(pa);
     }
+    return NULL;
+}
+
+void music_app_play(int index) {
+    if (!s_app.player) return;
+
+    play_async_ctx_t* pa = (play_async_ctx_t*)calloc(1, sizeof(play_async_ctx_t));
+    if (!pa) return;
+    pa->player = s_app.player;
+    pa->index = index;
+
+    pthread_t tid;
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    if (pthread_create(&tid, &attr, play_async_worker, pa) != 0) {
+        /* fallback: inline (will block UI, but better than not playing) */
+        music_player_play(s_app.player, index);
+        free(pa);
+    }
+    pthread_attr_destroy(&attr);
 }
 
 void music_app_pause(void) {
