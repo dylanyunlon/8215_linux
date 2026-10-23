@@ -177,34 +177,25 @@ static void on_transport_stream_state(MusicPlayerContext *ctx, StreamState ss, c
     }
     else if (ss == StreamState::Finished) {
         /*================================================================
-         * Auto-advance must NOT run on the decoder thread!
+         * 对标原版 musikcube PlaybackService:
+         *   OnStreamEvent → POST_STREAM_MESSAGE(this, Finished, uri)
+         *   → messageQueue → ProcessMessage on queue thread
+         *   原版从不在 decoder 线程直接调 Next/Play.
          *
-         * Decoder thread A fires OnPlayerFinished → here
-         * music_player_next → music_player_play → transport->Start()
-         * → ResetActivePlayer → Destroy(A) → A.thread.join()
-         * → deadlock: A is waiting for A to exit
-         *
-         * Fix: dispatch to a detached thread. The new thread calls
-         * music_player_next (synchronous), which can safely join
-         * the old decoder thread because it's a different thread.
-         *
-         * Android equivalent: Handler.post(Runnable) from ExoPlayer
-         * callback to main looper for track advance.
+         * 我们: 通过 state callback 通知上层 (music_app.c).
+         * 上层在 on_state_changed 里用 idle_queue 投递 auto-next 到主线程.
+         * music_app_play 是 async dispatch, 主线程也不阻塞.
          *===============================================================*/
-        struct NextArgs { MusicPlayerContext *ctx; };
-        NextArgs *na = new NextArgs{ctx};
-        printf("[MusicPlayer] Track finished: %s, dispatching auto-next\n", uri.c_str());
-        pthread_t tid;
-        pthread_attr_t attr;
-        pthread_attr_init(&attr);
-        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-        pthread_create(&tid, &attr, [](void *arg) -> void* {
-            NextArgs *a = (NextArgs*)arg;
-            music_player_next(a->ctx);
-            delete a;
-            return nullptr;
-        }, na);
-        pthread_attr_destroy(&attr);
+        printf("[MusicPlayer] Track finished: %s, signaling STOPPED to upper layer\n", uri.c_str());
+        on_state_changed_fn cb;
+        void *data;
+        {
+            std::lock_guard<std::recursive_mutex> lock(ctx->mtx);
+            ctx->state = PLAYER_STATE_TRACK_FINISHED;
+            cb = ctx->state_cb;
+            data = ctx->state_cb_data;
+        }
+        if (cb) cb(PLAYER_STATE_TRACK_FINISHED, data);
     }
     /* When decoder is almost done, prepare the next track for gapless */
     else if (ss == StreamState::AlmostDone) {

@@ -1001,6 +1001,16 @@ static ret_t player_state_idle_handler(const idle_info_t* idle) {
         return RET_REMOVE;
     }
 
+    /* Track finished → auto-advance via main thread
+     * (musikcube POST_STREAM_MESSAGE → ProcessMessage pattern)
+     * Decoder thread signals here via state callback → idle_queue → main thread.
+     * music_app_next() → music_app_play() → async worker → safe to join old decoder. */
+    if (state == PLAYER_STATE_TRACK_FINISHED) {
+        printf("[music_app] Track finished, auto-next via main thread\n");
+        music_app_next();
+        return RET_REMOVE;
+    }
+
     /* Reset error counter on successful play */
     if (state == PLAYER_STATE_PLAYING) {
         s_app.error_count = 0;

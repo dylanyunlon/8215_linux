@@ -43,10 +43,11 @@ typedef enum {
 
 /* Player state */
 typedef enum {
-    PLAYER_STATE_IDLE    = 0,
-    PLAYER_STATE_PLAYING = 1,
-    PLAYER_STATE_PAUSED  = 2,
-    PLAYER_STATE_STOPPED = 3,
+    PLAYER_STATE_IDLE           = 0,
+    PLAYER_STATE_PLAYING        = 1,
+    PLAYER_STATE_PAUSED         = 2,
+    PLAYER_STATE_STOPPED        = 3,
+    PLAYER_STATE_TRACK_FINISHED = 4,  /* auto-advance signal (musikcube POST_STREAM_MESSAGE pattern) */
     PLAYER_STATE_ERROR   = 4,
 } PlayerState;
 
