@@ -119,6 +119,18 @@ EOT
   echo "[defconfig] ffmpeg enabled (decode-only list; swresample is always built by this Buildroot)"
 fi
 
+# The DA tree's vendor package alsa-plugins builds an AC3 plugin (a52) whenever libavcodec is in staging, and that
+# plugin uses an FFmpeg API that was removed long ago (avcodec_alloc_context, CODEC_ID_AC3, ...): once ffmpeg exists the
+# package fails to compile.  Music does not need the plugin, so turn the avcodec part off (idempotent, original kept as .orig).
+AP="$B/package/alsa-plugins/alsa-plugins.mk"
+if [ -f "$AP" ]; then
+  if grep -q 'disable-avcodec' "$AP"; then echo "[alsa-plugins] already --disable-avcodec"
+  elif grep -q 'autotools-package' "$AP"; then
+    [ -f "$AP.orig" ] || cp "$AP" "$AP.orig"
+    sed -i '/\$(eval \$(autotools-package))/i ALSA_PLUGINS_CONF_OPTS += --disable-avcodec' "$AP" && echo "[alsa-plugins] added --disable-avcodec (needed once ffmpeg is in staging)"
+  else echo "[alsa-plugins] WARNING: not an autotools .mk - add --disable-avcodec to its configure options by hand"; fi
+else echo "[alsa-plugins] package not present in this tree (nothing to do)"; fi
+
 echo; echo "--- readiness (needs a previous build in $TREE/out) ---"
 for l in libavformat libavcodec libavutil libswresample libasound libatcmediaplayer libatomic; do
   f=$(ls "$TREE"/out/staging/usr/lib/${l}.so* "$TREE"/out/staging/lib/${l}.so* "$TREE"/out/host/*/sysroot/usr/lib/${l}.* 2>/dev/null | head -1); printf '  %-18s %s\n' $l "${f:-MISSING}"; done
