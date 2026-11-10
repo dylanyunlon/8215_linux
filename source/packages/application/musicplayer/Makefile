@@ -45,6 +45,7 @@ OBJS        = $(CPP_OBJS) $(SOFT_OBJS) $(CMUS_OBJS)
 CFLAGS      = -Wall -Wextra -Wno-unused-parameter -fPIC -O2
 CFLAGS     += -DUSE_CMUS_ID3
 CFLAGS     += -DUSE_SOFT_PLAYER
+CFLAGS     += -I.
 CFLAGS     += -I$(AWTK_APP_SRC)
 CFLAGS     += -I$(AWTK_APP_SRC)/cmus
 CFLAGS     += -I$(MUSIKCUBE_SRC)

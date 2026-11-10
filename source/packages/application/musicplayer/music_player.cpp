@@ -28,6 +28,32 @@ using StreamState      = musik::core::sdk::StreamState;
 #include <pthread.h>
 #include <unistd.h>
 #include <ctime>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+/* ---------------------------------------------------------------------------
+ * libatcmediaplayer's MediaPlayer API differs between SDK trees:
+ *   AWTK-era header : void MediaPlayer::play(const std::string &filepath)
+ *   DA (LVGL) header: void MediaPlayer::play()   -- no way to hand it a file path
+ * Detect this at compile time.  When a path cannot be passed, the hardware
+ * player is never selected and the soft decoder (musikcube + FFmpeg + ALSA) is
+ * used instead; otherwise setup() could succeed and then play nothing.
+ * ------------------------------------------------------------------------- */
+namespace hwapi {
+template <typename P>
+auto can_play_path(int) -> decltype(std::declval<P &>().play(std::declval<const std::string &>()),
+                                    std::true_type());
+template <typename P>
+std::false_type can_play_path(...);
+}
+typedef decltype(hwapi::can_play_path<MediaPlayer>(0)) HwPlayPathSupport;
+static const bool kHwPlaysFile = HwPlayPathSupport::value;
+
+template <typename P>
+static inline void hw_play_path(P *p, const std::string &path, std::true_type) { p->play(path); }
+template <typename P>
+static inline void hw_play_path(P *, const std::string &, std::false_type) {}
 
 #define PREVIOUS_GRACE_PERIOD 2.0 /* seconds — if position > this, prev = restart */
 
@@ -328,8 +354,8 @@ MusicPlayerContext *music_player_create(void)
     ctx->poll_running = false;
     ctx->poll_thread = 0;
 
-    /* Try hardware decoder first */
-    ctx->player = new (std::nothrow) MediaPlayer();
+    /* Try hardware decoder first (only if this libatcmediaplayer can play a file path) */
+    ctx->player = kHwPlaysFile ? new (std::nothrow) MediaPlayer() : NULL;
     if (ctx->player && ctx->player->setup()) {
         ctx->player->setStateCallback(media_state_callback_wrapper, ctx);
         ctx->player_ready = true;
@@ -550,7 +576,7 @@ int music_player_play(MusicPlayerContext *ctx, int index)
 #endif
     } else {
         std::string path(ref.filepath);
-        ctx->player->play(path);
+        hw_play_path(ctx->player, path, HwPlayPathSupport());
     }
     ctx->state = PLAYER_STATE_PLAYING;
 

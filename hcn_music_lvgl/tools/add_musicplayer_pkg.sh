@@ -30,6 +30,8 @@ cat > "$PKG/musicplayer.mk" <<'EOF'
 #
 # musicplayer - local music engine (libmusicplayer.so) + CLI test tools
 #
+# The two dev tools (musicplayer_test, music_app_cli) are built/installed with a leading '-': a failure there must
+# not fail the package (libmusicplayer.so is what the UI needs).
 # Toolchain-neutral: uses Buildroot's TARGET_* variables, so it works for the musl/hard-float tree
 # (arm-buildroot-linux-musleabihf) as well as the old glibc one.  Needs FFmpeg + alsa-lib in the sysroot
 # (libavformat libavcodec libavutil libswresample libasound libatomic).
@@ -52,7 +54,7 @@ MUSICPLAYER_MAKE_OPTS = \
 define MUSICPLAYER_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) $(MUSICPLAYER_MAKE_OPTS) all
 	@echo "Building musicplayer test binary..."
-	$(TARGET_CXX) \
+	-$(TARGET_CXX) \
 		--sysroot=$(STAGING_DIR) \
 		-I$(TOPDIR)/../prebuild/multimedia/mediaplayerserver/include \
 		-I$(TOPDIR)/../prebuild/multimedia/libatcmultimedia/include \
@@ -67,7 +69,7 @@ define MUSICPLAYER_BUILD_CMDS
 		-L$(STAGING_DIR)/usr/lib -latcmediaplayer \
 		-lpthread -Wl,-rpath,/usr/lib
 	@echo "Building music_app_cli (full stack CLI test tool)..."
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) -f Makefile.cli \
+	-$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) -f Makefile.cli \
 		TOPDIR=$(TOPDIR)/.. \
 		CROSS_COMPILE=$(TARGET_CROSS) \
 		SYSROOT_DIR=$(STAGING_DIR)
@@ -81,8 +83,8 @@ endef
 
 define MUSICPLAYER_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(STAGING_DIR)/usr/lib/libmusicplayer.so $(TARGET_DIR)/usr/lib/libmusicplayer.so
-	$(INSTALL) -m 0755 -D $(@D)/musicplayer_test $(TARGET_DIR)/usr/bin/musicplayer_test
-	$(INSTALL) -m 0755 -D $(@D)/music_app_cli $(TARGET_DIR)/usr/bin/music_app_cli
+	-$(INSTALL) -m 0755 -D $(@D)/musicplayer_test $(TARGET_DIR)/usr/bin/musicplayer_test
+	-$(INSTALL) -m 0755 -D $(@D)/music_app_cli $(TARGET_DIR)/usr/bin/music_app_cli
 	mkdir -p $(TARGET_DIR)/data/music
 endef
 
@@ -101,12 +103,25 @@ DC=$B/configs/ac83xx_defconfig
 if grep -q '^BR2_PACKAGE_MUSICPLAYER=y' "$DC"; then echo "[defconfig] already set"; else
   [ -f "$DC.orig" ] || cp "$DC" "$DC.orig"
   grep -q '^BR2_PACKAGE_MUSICPLAYER_AWTK=y' "$DC" && sed -i 's/^BR2_PACKAGE_MUSICPLAYER_AWTK=y/BR2_PACKAGE_MUSICPLAYER_AWTK=n/' "$DC"
+  [ -n "$(tail -c1 "$DC")" ] && echo >> "$DC"
   echo 'BR2_PACKAGE_MUSICPLAYER=y' >> "$DC" && echo "[defconfig] BR2_PACKAGE_MUSICPLAYER=y"
+fi
+
+if grep -q '^BR2_PACKAGE_FFMPEG=y' "$DC"; then echo "[defconfig] ffmpeg already enabled"; else
+  [ -f "$DC.orig" ] || cp "$DC" "$DC.orig"
+  [ -n "$(tail -c1 "$DC")" ] && echo >> "$DC"
+  cat >> "$DC" <<'EOT'
+BR2_PACKAGE_FFMPEG=y
+BR2_PACKAGE_FFMPEG_DECODERS="mp3,mp3float,aac,flac,vorbis,wav,pcm_s16le,pcm_s24le,pcm_s32le,pcm_f32le,wmav1,wmav2,alac"
+BR2_PACKAGE_FFMPEG_DEMUXERS="mp3,aac,flac,ogg,wav,asf,mov,avi"
+BR2_PACKAGE_FFMPEG_PARSERS="mpegaudio,aac,flac,vorbis"
+EOT
+  echo "[defconfig] ffmpeg enabled (decode-only list; swresample is always built by this Buildroot)"
 fi
 
 echo; echo "--- readiness (needs a previous build in $TREE/out) ---"
 for l in libavformat libavcodec libavutil libswresample libasound libatcmediaplayer libatomic; do
-  f=$(ls "$TREE"/out/staging/usr/lib/${l}.so* "$TREE"/out/host/*/sysroot/usr/lib/${l}.* 2>/dev/null | head -1); printf '  %-18s %s\n' $l "${f:-MISSING}"; done
+  f=$(ls "$TREE"/out/staging/usr/lib/${l}.so* "$TREE"/out/staging/lib/${l}.so* "$TREE"/out/host/*/sysroot/usr/lib/${l}.* 2>/dev/null | head -1); printf '  %-18s %s\n' $l "${f:-MISSING}"; done
 for h in libavformat/avformat.h alsa/asoundlib.h; do
   [ -f "$TREE/out/staging/usr/include/$h" ] && echo "  header $h ok" || echo "  header $h MISSING"; done
 echo "next: rebuild the tree, then check out/staging/usr/lib/libmusicplayer.so"

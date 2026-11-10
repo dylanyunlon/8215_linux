@@ -38,7 +38,9 @@
 #include "../sdk/constants.h"
 #include "../sdk/IPreferences.h"
 #include <cstdint>
+#ifdef __GLIBC__
 #include <execinfo.h>
+#endif
 
 static musik::core::sdk::IPreferences* prefs;
 
