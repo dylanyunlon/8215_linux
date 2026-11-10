@@ -81,4 +81,12 @@ ext4 的 204 MiB 分区放得下；若换到小分区，可再加 `BR2_PACKAGE_F
 ## 已踩过的坑（续）
 6. 本树 `allmake.sh` 先于 buildroot 打印的 `Can't open perl script …/PartitionUtility_nor.pl` 只是噪音；真正的镜像失败看日志里的 `image size … exceeded` / `[ERROR]`。
 7. `BR2_PACKAGE_LVGL_HOME=y` 与 `BR2_PACKAGE_HCN_APPLICATION=y` 同开 → 上板后两个 UI 进程抢屏幕；刷机前关掉前者。
+8. `tools/enable_music_in_hcn_application.sh` 早期只复制 `ui_Music.[ch]`/`music_focus.[ch]`/字库，漏了后加的 `ui_Music_cf`/`music_art`/`music_search`/`music_pinyin`/`music_pinyin_table`/`ui_Music_style.h`，
+   表现为 `hcn_application` 的 CMake 在 `lvgl/lvgl_app/CMakeLists.txt` 的 `add_library(lvgl_app …)` 处报 `Cannot find source file` + `No SOURCES given`。
+   现在脚本每次都整体同步 `adapters/music` 与 `lvgl/lvgl_app`，并在末尾核对 CMake 音乐块列出的源文件是否都在；已打过补丁的树重跑即可补齐。
+
+## 分区表观察（待同事确认，未在板上验证）
+本树 `nand-256-ddr-256` 生成的 `scatter.nand.ext4.xml` **没有 `boot_misc` 分区**，logo 之后的分区（vba/metazone/kernel/system/usrdata）比设备上现有布局整体前移 2 MiB（大小不变）。
+`allmake.sh` 里 `boot_misc.bin` 是用 `dd … of=ac83xx.dtb.bin seek=$PRELOADER_DTB_OFFSET` 合并进 dtb 镜像的（`release_images/ac83xx.dtb.bin` 比 `out/images/` 里的大），
+所以这是本树的布局设计，不是漏项；但它和设备上较早那版（有独立 `boot_misc` 分区）不同。刷机应使用 `release_images/` 里的整包，按 ATCUpgradeTool 的整片流程，不要把本次产物单个分区地刷到旧布局的设备上。
 

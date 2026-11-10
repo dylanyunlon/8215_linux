@@ -12,15 +12,27 @@ for f in "$APP/CMakeLists.txt" "$MK" "$PACK/integration.patch" "$PACK/adapters/m
   [ -e "$f" ] || { echo "missing: $f"; exit 1; }; done
 [ -f "$TREE/out/staging/usr/lib/libmusicplayer.so" ] || { echo "libmusicplayer.so is not in out/staging yet: run STEP 1 and rebuild first"; exit 1; }
 
-if grep -q 'HCN_APP_MUSIC' "$APP/CMakeLists.txt"; then echo "[app] already integrated (HCN_APP_MUSIC found in CMakeLists.txt)"; else
+# 1) patch: dry-run first, touch nothing if it does not apply (skipped when already applied)
+if grep -q 'HCN_APP_MUSIC' "$APP/CMakeLists.txt"; then NEED_PATCH=0; echo "[app] integration.patch already applied"; else
   (cd "$APP" && patch -p1 --dry-run -s < "$PACK/integration.patch") || { echo "integration.patch does not apply cleanly: nothing was changed"; exit 1; }
-  mkdir -p "$APP/adapters" "$APP/lvgl/lvgl_app/fonts"
-  cp -r "$PACK/adapters/music" "$APP/adapters/"
-  cp "$PACK"/lvgl/lvgl_app/screens/ui_Music.[ch] "$APP/lvgl/lvgl_app/screens/"
-  cp "$PACK"/lvgl/lvgl_app/frameworks/music_focus.[ch] "$APP/lvgl/lvgl_app/frameworks/"
-  cp "$PACK"/lvgl/lvgl_app/fonts/music_font_*.c "$APP/lvgl/lvgl_app/fonts/"
-  (cd "$APP" && patch -p1 -s < "$PACK/integration.patch") && echo "[app] files copied, integration.patch applied"
+  NEED_PATCH=1
 fi
+# 2) files: always (re)sync everything under adapters/music and lvgl/lvgl_app from the pack
+#    (the pack only holds our own files, so nothing of HCN's is overwritten; safe to re-run)
+mkdir -p "$APP/adapters/music" "$APP/lvgl/lvgl_app"
+cp -r "$PACK/adapters/music/." "$APP/adapters/music/"
+cp -r "$PACK/lvgl/lvgl_app/." "$APP/lvgl/lvgl_app/"
+echo "[app] files synced from the pack"
+if [ "$NEED_PATCH" = 1 ]; then (cd "$APP" && patch -p1 -s < "$PACK/integration.patch") && echo "[app] integration.patch applied"; fi
+# 3) every source the CMake music block lists must exist, otherwise add_library() fails at configure time
+miss=0
+for f in $(awk '/^if\(HCN_APP_MUSIC\)/{f=1;next} /^endif\(\)/{f=0} f' "$APP/lvgl/lvgl_app/CMakeLists.txt" | grep -oE '[A-Za-z_]+/[A-Za-z0-9_./]+\.c'); do
+  [ -f "$APP/lvgl/lvgl_app/$f" ] || { echo "MISSING source listed in CMake: $f"; miss=1; }; done
+for h in ui_Music_style.h ui_Music.h ui_Music_cf.h music_art.h music_search.h music_pinyin.h; do
+  [ -f "$APP/lvgl/lvgl_app/screens/$h" ] || { echo "MISSING header: screens/$h"; miss=1; }; done
+[ -f "$APP/lvgl/lvgl_app/frameworks/music_focus.h" ] || { echo "MISSING header: frameworks/music_focus.h"; miss=1; }
+[ "$miss" = 0 ] || { echo "incomplete integration, fix the pack and re-run"; exit 1; }
+echo "[app] all CMake-listed sources and headers present"
 
 python3 - "$MK" <<'PY'
 import os, re, sys
