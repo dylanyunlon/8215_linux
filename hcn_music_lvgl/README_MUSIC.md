@@ -13,13 +13,20 @@ adapters/music/                      适配层（纯 C，不含 LVGL；和 adapt
   src/music_adapter.c
   CMakeLists.txt                       复用 musicplayer 包里 music_app.c / favorite_manager.c / usb_monitor.c
 lvgl/lvgl_app/screens/ui_Music.[ch]  界面（只显示；数据与操作全部走 music_app.h）
+lvgl/lvgl_app/screens/ui_Music_cf.[ch]     封面流
+lvgl/lvgl_app/screens/music_art.[ch]       封面解码 / 异步加载 + LRU 缓存 / 背景晕染（工作线程不碰 LVGL）
+lvgl/lvgl_app/screens/music_search.[ch]    搜索（子串 + 拼音首字母，扫描当前设备全部歌曲）
+lvgl/lvgl_app/screens/music_pinyin.[ch]    拼音首字母匹配；music_pinyin_table.c 由 tools/gen_pinyin_table.py 生成
+lvgl/lvgl_app/screens/ui_Music_style.h     配色/字体常量，MUSIC_UI_BACKDROP 开关
 lvgl/lvgl_app/frameworks/music_focus.[ch]   音频焦点桥（对应 bt_focus_adapter.c）
 lvgl/lvgl_app/fonts/music_font_{20,32}.c    生成的 CJK 字库（GB2312 一级 3755 字 + ASCII + 常用符号；压缩 4bpp，20px 约 0.57 MB + 32px 约 1.01 MB flash）
 tools/add_musicplayer_pkg.sh         第 1 步：musicplayer 包（工具链无关版 mk）装进 DA 树
 tools/enable_music_in_hcn_application.sh   第 2 步：音乐界面 + hcn_application.mk 改动
+tools/gen_pinyin_table.py            拼音首字母表生成（pip install pypinyin）
+tools/check_font_coverage.py         界面字符串是否都在字库里
 tools/gen_music_fonts.sh             字库生成脚本（python3+fonttools、node+npm、Noto Sans CJK）
 tools/music_ui_harness/              宿主机无头测试与截图（见下）
-integration.patch                    对你已有 6 个文件的改动：+79 / -1 行
+integration.patch                    对 6 个已有文件的改动（零上下文格式，只含新增行；`patch -p1` 照常应用，不带任何周围的 HCN 源码）
 screenshots/                         15 个界面状态
 ```
 
@@ -69,6 +76,20 @@ rm -rf <树>/out/build/ac83xx/hcn_application*      # 这棵树的 allmake.sh �
 5. 入口：fallback 变体的 Home「音乐」图标原来就调 `videofocusmanager_open_app(APP_MUSIC)`，注册后直接生效。
    template（仪表按键）变体用 `hcn_ui_shared_apps_open_music()`，**选哪个按键组合是产品决策**，我没有改 `home_page_key.c`。
 
+## 功能（与原 AWTK 界面对照）
+
+| 功能 | 做法 | 与原版的区别 |
+|---|---|---|
+| 多存储设备切换 | 顶栏设备胶囊（`U盘 · 48 首` / `SD卡 · 12 首`），≥2 个设备时出现，点按 `music_app_switch_device`，当前设备高亮 | 原版是侧栏 |
+| 搜索 | 「搜索」标签 + 输入框 + 键盘；结果复用虚拟列表，点结果播放（先 `restore_full_playlist` 再按设备列表下标播放） | 板级 `LV_USE_IME_PINYIN=0`，键盘只能打拉丁字母，所以**自带拼音首字母匹配**：`zjl` → 周杰伦；多音字任一读音都算（乐 y/l）。`music_pinyin_table.c` 由 `tools/gen_pinyin_table.py` 生成（GB2312 6763 字，约 40 KB flash） |
+| 快进/快退 | 上一首/下一首**长按**，每 350 ms 跳 `MUSIC_APP_SEEK_STEP_MS`（5 s）；短按仍是切歌，长按不会连带切歌 | 原版是两个独立按钮，控制行放不下 |
+| 封面流 | 封面上的「封面流」胶囊把右侧面板切成斜轴卡片流（中心 1.12×，远处 0.55× 并渐隐，±4 张）。上下拖动浏览，点侧边卡拉到中心，点中心卡播放；封面由 `music_art` 工作线程异步解码，24 张 LRU 缓存；播放曲目变化时自动跟随 | 原版是 NanoVG 绘制；这里是 LVGL 图片缩放，观感接近、渲染不同 |
+| 模糊封面背景 | 封面取 8×5 色块后放大成 256×150 的色彩晕染，4 倍显示在最底层，左侧卡片半透明让它透出来 | 是色彩晕染，不是高斯模糊；上板若全屏缩放绘制偏慢，编译加 `-DMUSIC_UI_BACKDROP=0` 关掉，其余不受影响 |
+| 歌词 | 当前行超长时横向循环滚动，其余行单行省略；上下边缘渐隐 | 垂直滚动仍是 LVGL 的整行动画 |
+
+内存：封面缓存最多 24×100 KB + 背景 150 KB + 当前封面 230 KB。工作线程不碰 LVGL 堆（`LV_USE_OS` 为 NONE），
+只用 malloc + stb_image，结果经 `idle_queue` 交回 GUI 线程。
+
 ## 设计要点
 
 ```
@@ -94,19 +115,36 @@ USB/扫描/播放线程 ─ idle_queue ─► 线程安全队列 ──(music_ad
 | 项 | 内容 | 结果 |
 |---|---|---|
 | 1 | 替换层：8 个生产线程 ×2000 个 idle，定时器一次/重复/重入/自删除 | ASan+UBSan、TSan 通过 |
-| 2 | 界面场景 33 项断言（滚动回收、各浏览模式与下钻、歌词跟随、空设备/扫描中/无收藏…）+ 25 轮创建销毁后 LVGL 堆差 **0 字节** | 通过 |
+| 2 | 界面场景 88 项断言，用**脚本化的真实指针**（按下/拖动/长按/抬起，含点击键盘 q、w 键的实际位置）：滚动回收、各浏览模式与下钻、歌词跟随与跑马灯、设备切换、长按快进快退（且不切歌）、搜索全流程、封面流拖动/点按/快速翻到头；创建销毁 25 轮（含封面流、搜索、设备切换） | 通过 |
+| 2b | 拼音首字母 + 搜索 64 项（多音字、畸形 UTF-8、超长文本/查询、结果截断）；封面模块 60 项（解码、圆角、背景、异步、去重、LRU、关闭时 60 个未完成请求）；字库覆盖检查 | ASan+UBSan，封面另加 TSan，通过 |
 | 3 | 音频焦点 224 项断言，对着**你仓库里真实的 `audiofocusmanager.c`**（来电打断/恢复、手动暂停、蓝牙音乐抢占、通话中不抢声、50 次连续打断） | 通过 |
 | 4 | 2、3 整体在 ASan+UBSan+LeakSanitizer 下重跑 | 0 错误 0 泄漏 |
 | 5 | 未改动的 `music_app.c` / `favorite_manager.c` / `usb_monitor.c` 在 C99 下对着替换层编译；`adapters/music` 用真实 CMakeLists 配置并编译 | 通过 |
 
-资源：界面开着时 LVGL 堆占用 277 KB（8 MB 池里，含 230 KB 封面缓冲）；字库 flash 约 1.6 MB。
+**测试用的 LVGL 与配置（已对着真实环境跑过）：** `run_tests.sh` 设 `LVGL_DIR=<树>/source/packages/cluster`（板级 LVGL 魔改源码）和
+`BOARD_LV_CONF=<树>/source/packages/cluster/lvgl/lv_conf.h`（板级真实配置）即可；脚本只关掉宿主机用不了的开关
+（OpenGLES/GLFW、fbdev、evdev、`ATCIMAGE`、PNG/JPEG、NEON 汇编、性能/内存监视器、日志）。
+不设这两个变量则用 vanilla LVGL v9.3.0 + 目录里自带的 9/21 版 lv_conf 副本。两种都全绿。
+（对着魔改源码需要包里带 `source/packages/cluster/lvgl/lvgl_private.h`；我这次用的是 vanilla 的同名文件补上的。）
 
-**没有验证、需要上板确认的：** GLFW/EGL 实际显示与触摸（板级 `liblvgl.a` 是魔改版，`lv_font_source_han_sans_sc_16_full_cjk`
-这类符号 vanilla 里就没有）、真实 libmusicplayer 播放与 U 盘热插拔、`lv_atcimage` 路径、启动耗时、整机 flash 余量。
-测试用的 `lv_conf` 是 9/21 提交里的副本；已用真实板级文件核对过字体相关项（`LV_MEM_SIZE`=8 MB、`LV_CACHE_DEF_SIZE`=0、`LV_FONT_FMT_TXT_LARGE`=1、`LV_USE_FONT_COMPRESSED`=1、默认字体 `lv_font_source_han_sans_sc_16_full_cjk`）全部一致，其余项还没逐行比对。那份里 `LV_USE_PERF_MONITOR`/`LV_USE_MEM_MONITOR` 是开着的，
-会在屏幕左下/右下叠加调试信息（我的截图里已关掉）。
+板级配置里与我早先那份副本不同、影响判断的几处：
+- **`LV_USE_STDLIB_MALLOC = LV_STDLIB_CLIB`**：LVGL 用 libc `malloc`，**没有内存池**（`LV_MEM_SIZE` 8 MB 不生效，我早先“8 MB 池”的说法不对）。
+  好处是 LeakSanitizer 能看到 LVGL 的每次分配，上面第 4 项因此比之前更严格；`lv_mem_monitor` 在此模式下无数据，所以那条“堆差 0 字节”的数值检查被跳过。
+  界面的主要常驻内存是 240×240 ARGB8888 封面缓冲（230 KB）加控件对象（内置分配器下测得 LVGL 内部占用约 277 KB）；板上 RSS 还没测，请上板后看 `/proc/<pid>/status` 的 `VmRSS`。
+- `LV_USE_DRAW_SW_ASM = NEON`、`LV_USE_DRAW_OPENGLES = 1`（GPU 绘制单元开着）、`LV_USE_LIBPNG` / `LV_USE_LIBJPEG_TURBO` / `LV_USE_ATCIMAGE` 都开着：
+  对我的代码没有接口影响（封面走 stb_image 预解码），但板上渲染走的是另一条绘制路径，**界面性能要上板实测**。
+- **`LV_USE_PERF_MONITOR` / `LV_USE_MEM_MONITOR` 仍是 1**：真机屏幕左下/右下会叠加调试信息（我的截图里已关掉）。
+  左下角那块会压到收藏按钮下沿，正式版建议关掉。
+
+字库 flash 约 1.6 MB。
+
+**没有验证、需要上板确认的：** GLFW/EGL 实际显示与触摸、真实 libmusicplayer 播放与 U 盘热插拔、`lv_atcimage` 与 GPU 绘制路径的实际表现、启动耗时、整机 flash 余量。
 
 ## 已知限制与顺带发现
+
+- **新增功能的上板风险**：全屏 4 倍缩放的背景、封面流的图片缩放，在板级 GL 绘制单元下的流畅度没测过（背景可用 `-DMUSIC_UI_BACKDROP=0` 关掉）；A7 上封面解码耗时、键盘按键手感同样待上板确认。
+- 搜索只做**首字母**（`zjl`），不支持全拼（`zhoujielun`）；键盘是 LVGL 自带拉丁键盘。
+- 封面流点中心卡才播放，滑动只浏览；播放曲目变化时自动回到当前曲目。
 
 - **启动时机**：`music_adapter_init()` 在 `hcn_ui_shared_apps_init()` 里，开机就扫盘并恢复上次状态。在意启动耗时可改成首次进入时再初始化。
 - **只做了触摸**，没有按键/旋钮焦点导航（template 变体是按键驱动的，要用的话还得做）。
