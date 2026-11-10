@@ -89,4 +89,34 @@ ext4 的 204 MiB 分区放得下；若换到小分区，可再加 `BR2_PACKAGE_F
 本树 `nand-256-ddr-256` 生成的 `scatter.nand.ext4.xml` **没有 `boot_misc` 分区**，logo 之后的分区（vba/metazone/kernel/system/usrdata）比设备上现有布局整体前移 2 MiB（大小不变）。
 `allmake.sh` 里 `boot_misc.bin` 是用 `dd … of=ac83xx.dtb.bin seek=$PRELOADER_DTB_OFFSET` 合并进 dtb 镜像的（`release_images/ac83xx.dtb.bin` 比 `out/images/` 里的大），
 所以这是本树的布局设计，不是漏项；但它和设备上较早那版（有独立 `boot_misc` 分区）不同。刷机应使用 `release_images/` 里的整包，按 ATCUpgradeTool 的整片流程，不要把本次产物单个分区地刷到旧布局的设备上。
+9. 启用 ffmpeg 后 `alsa-plugins`（DA 树里的厂商包）的 `pcm_a52.c` 编译失败（`avcodec_alloc_context`/`CODEC_ID_AC3`/`CH_LAYOUT_*` 未声明）：configure 在 staging 里发现 libavcodec 就会编 AC3 插件，
+   而它用的是早已移除的 FFmpeg 接口。音乐用不到这个插件，给该包加 `ALSA_PLUGINS_CONF_OPTS += --disable-avcodec`（`configure` 有 `--enable-avcodec` 开关）。`add_musicplayer_pkg.sh` 会自动加（原文件留 `.orig`）。
+   判断是否生效看日志里有没有编译 `pcm_a52`；`config.log` 里仍会出现 `creating a52/Makefile`，那不代表没生效。
+10. **关掉某个包后，它已装进 `out/target` 的文件不会被 Buildroot 删除。** 例：基线时 `BR2_PACKAGE_LVGL_HOME=y`，之后关掉，`out/target/ac83xx/etc/init.d/S01lvgl_home` 和 `usr/bin/lvgl_home` 仍在，
+    镜像里会同时起两个界面进程。处理：把这两个文件移出 `out/target`，再整编一次（只重做目标目录整理和镜像）。`enable_music_in_hcn_application.sh` 发现残留会提示。
+11. `nohup ./allmake.sh … &` 结束时 shell 显示的 `Done` 不代表成功（失败时 `allmake.sh` 也以 0 退出，只在日志里打印 `Build error, please check the log`）。
+    判断成败：`grep -n 'Build error' <日志>`；镜像阶段看 `partition size is`、`image size … exceeded`、`[CHECK] … limit=…`、`[ERROR]`。`u-boot` 首次 `make` 打印的 `System not configured - see README` + `Error 1` 是正常的（它随后自己配置）。
+12. 整编日志可能有近 20 万行：只 `grep -nE 'Error [0-9]+|error:|CMake Error'`，并看出错行之前约 30 行；编译输出里的 `PRINT_ERROR(...)` 之类是源码文本，不是错误。
+
+## 核对镜像内容（不用刷机，不需要 root）
+```
+debugfs -R 'ls /etc/init.d'                    release_images/system.img.ext4   # 只应有 S01hcn_application，没有 S01lvgl_home
+debugfs -R 'stat /usr/bin/hcn_application'      release_images/system.img.ext4   # Size 应与 out/target 里的一致
+debugfs -R 'ls -l /usr/lib'                     release_images/system.img.ext4 | grep -E 'libmusicplayer|libavcodec|libavformat|libasound'
+debugfs -R 'cat /etc/ld-musl-armhf.path'        release_images/system.img.ext4   # 无此文件 = 走 musl 默认搜索路径（含 /usr/lib），没问题
+```
+`S01hcn_application` 直接启动 `/usr/bin/hcn_application`，并给 `LD_LIBRARY_PATH` 前置 `/usr/lib/hcn_application`（镜像里没有这个目录，无害）。
+刷机用 `release_images/` 整包（里面的 `ac83xx.dtb.bin` 带 boot_misc，比 `out/images/` 里的大），按 ATCUpgradeTool 的整片流程；不要把单个分区镜像刷到旧布局的设备上。
+
+## 上板后检查（未验证，按序）
+```
+cat /proc/mtd | head -20                                   # 分区与 scatter 是否一致
+ps | grep -E 'hcn_application|lvgl_home'                   # 只应有 hcn_application
+LD_TRACE_LOADED_OBJECTS=1 /usr/bin/hcn_application 2>&1 | grep -iE 'not found|error'     # 缺库
+logread 2>/dev/null | grep -iE 'hcn_application|music' | tail -20
+```
+- Home 界面的「音乐」图标调用 `videofocusmanager_open_app(APP_MUSIC)`，并写一行 syslog `music app open requested, ret=…`（0 = 成功）。`hcn_app_config.cmake` 的 UI 变体是 `auto`：
+  若板上起来的是 template（仪表按键）变体，则没有这个图标，需要用 `hcn_ui_shared_apps_open_music()` 另行接按键（产品决策）。
+- 界面起不来/崩溃：`killall hcn_application; LD_LIBRARY_PATH=/usr/lib/hcn_application /usr/bin/hcn_application 2>&1 | head -60`，看 `[ui]`、`music` 开头的行。
+- 插 U 盘放 mp3：`ls /data/music` 应出现数据库/状态文件（程序自己 `mkdir`）。没有声音时可试 `-DMUSIC_FOCUS_SEND_POLICY=1`；全屏背景/封面流卡顿可试 `-DMUSIC_UI_BACKDROP=0`。
 
