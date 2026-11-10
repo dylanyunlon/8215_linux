@@ -51,5 +51,12 @@ if 'HCN_APP_MUSIC_SRC' not in s:
     s = s[:m.start(2)] + new + s[m.end(2):]
 open(p, 'w').write(s); print('[mk] patched: musicplayer dependency + -DHCN_APP_MUSIC_SRC')
 PY
+for f in "$TREE/out/target/ac83xx/etc/init.d/S01lvgl_home" "$TREE/out/target/ac83xx/usr/bin/lvgl_home"; do
+  if [ -e "$f" ]; then
+    echo "NOTE: stale $f"
+    echo "      Buildroot does not remove the files of a package that was disabled later (BR2_PACKAGE_LVGL_HOME)."
+    echo "      Move them out of out/target BEFORE the final build, otherwise the image starts two UI processes on one screen."
+  fi
+done
 echo; echo "next (reconfigure is needed, -rebuild alone will NOT re-run cmake configure):"
 echo "  rm -rf $TREE/out/build/ac83xx/hcn_application*  &&  ./allmake.sh -a <same args as before>"
