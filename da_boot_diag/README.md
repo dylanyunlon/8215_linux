@@ -12,13 +12,21 @@ DA 树（`/work2/tanyunlong/dylan/AC8215_DA`）用 `-a nand-256-ddr-256` 编的�
 | preloader、arm2 正常 | 能显示动画（读 boot_misc 失败会在 preloader `while(1)`） |
 | **是内核 panic** | bootargs 加 `panic=0` 后不再重启，停在最后一帧（DA 内核 `CONFIG_PANIC_TIMEOUT=10`） |
 | **panic 在用户态之前** | inittab 只起 adb + 背光闪烁：不闪、无 adb |
-| **panic 在 fb 驱动初始化之前** | fbcon + 在 `osd_init()` 关闭动画平面（`patch_osd.awk`）：画面不变黑、无文字。fb0 在 OSD 第 2 层（`MAINSURFACE_OSD2`），动画在第 1 层 |
+| ~~panic 在 fb 驱动初始化之前~~（**已撤回**） | fbcon + 在 `osd_init()` 关闭动画平面（`patch_osd.awk`）：画面不变黑、无文字。但 fb 在内核启动后一两秒就 probe，此时 arm2 仍在播动画、可能每帧重新打开第 1 层，所以“不变黑”不能证明 fb 没跑到。fb0 在 OSD 第 2 层（`MAINSURFACE_OSD2`），动画在第 1 层 |
 | 以下内置驱动不是原因 | 与 AWTK 对齐（`kernel_diag.sh apply`）：COMBO 关、VOUT/VCP/MALI/UMP/BACKLIGHT 改模块、FB1/SCO 关，结果不变（`diag_align`，内核 md5 `ee77371a…`） |
 
-当前头号嫌疑：**NAND 控制器 / FTL（`mtkd`，`prebuild/atc_ftl/atc_lib.a`）这条只有 NAND 板才真正执行的路径**。同事的 NOR 板用同一棵树、同一份内核配置与 DDR256 保留内存布局可以启动。
+禁用 NAND 节点（`diag_nonand`：`--disable ac83xx-nandflash`，`panic=10`）：**仍约 20 秒重启**。这不能排除 NAND 路径，见下。
+
+当前头号嫌疑：**内置的 metazone 驱动在启动阶段直接读写 NAND 上的 metazone 分区**。
+- `metazone_probe()`（`module_init`）里调用 `MTZ_Init()`；DA 为内置（AWTK 为模块，用户态才加载）。
+- `MTZ_Init()` 在 `#ifdef CONFIG_MTD_NAND_ATC` 下：`MTZ_InitFlashDriver()`、`nand_get_blocksize("metazone")`、`mtz_init_mtd_layout()`（`get_mtd_device_nm("metazone")`）、`mtz_scan_slots_for_latest()`；随后 `MTZ_InitWritableZone()` 在 `USE_RESERVED_MEMORY=1` 时先清零 preloader 已载入的 metazone 内存，再 `mtz_read_slot()` 从 NAND 重读。
+- 只有 NAND 板会真正执行这条路径；NAND 节点被禁用时它会拿到空的 mtd，同样可能崩溃——与 `diag_nonand` 仍重启一致。
+- `MetaZone_Read` 只检查索引范围、不检查是否已初始化；fb 只在 ioctl 里调用它。
+
 旁证：dts 里 NAND 节点 `nandflash@f001e400` 的第二段 reg 在 DA 为 `0xf001ec00 0x148`，AWTK（NAND 板可启动）为 `0x200`。
 
-下一步：`diag_nonand`——禁用 `ac83xx-nandflash` 节点 + `panic=10`。不再重启 ⇒ panic 在 NAND/FTL 路径（或挂根之后）；仍约 20 秒重启 ⇒ 与 NAND 无关，再用 `--disable` 分批排除其他外设（注意 metazone 内置，NAND 禁用后若它自身出错也会导致重启，此结果需复核）。
+下一步：`diag_nomtz`——`patch_mtz.awk` 在 `metazone_probe()` 里跳过 `MTZ_Init()`，NAND 保持启用，`panic=10`，inittab 只起 adb。
+不再重启且 adb 可进 ⇒ 就是 metazone 启动阶段的 NAND 初始化；仍约 20 秒重启 ⇒ 不是 metazone，需另找取内核日志的办法。
 
 ## 踩过的坑
 
@@ -38,6 +46,7 @@ DA 树（`/work2/tanyunlong/dylan/AC8215_DA`）用 `-a nand-256-ddr-256` 编的�
 | `mk_diag_pkg.sh SRC OUT [--bootargs ..] [--disable PAT].. [--inittab keep\|adb\|udev-adb-fb]` | 从 release_images 生成诊断包并自检 |
 | `disable_node.awk` | 按 compatible 把 dts 节点置为 disabled |
 | `patch_osd.awk` | 在 `osd_init()` 关闭开机动画平面，让 fbcon 可见 |
+| `patch_mtz.awk` | 在 `metazone_probe()` 里跳过 `MTZ_Init()`（原件备份 `~/dylan/metazone_drv.c.orig`，`kernel_diag.sh` 不管它） |
 
 例：生成 `diag_nonand`
 
@@ -51,6 +60,7 @@ bash da_boot_diag/mk_diag_pkg.sh $T/release_images ~/dylan/diag_nonand \
 
 ```bash
 T=/work2/tanyunlong/dylan/AC8215_DA bash da_boot_diag/kernel_diag.sh restore
+cp ~/dylan/metazone_drv.c.orig $(find $T/source/kernel/kernel-3.18/drivers/misc/atc/metazone -name metazone_drv.c | grep ac83xx)
 rm -rf $T/out/build/ac83xx/linux-local
 # 音乐改动：解开 ~/dylan/music_state_backup_1110_2140.tgz（tar xzf … -C /），或重跑 hcn_music_lvgl/tools 下的两个接入脚本
 ```
