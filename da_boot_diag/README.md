@@ -3,7 +3,14 @@
 板子：AC8215，256M NAND / 256M DDR（原厂 20260921 固件可启动，mtdparts 与旧树 `nand_ext4_256M` 一致，含独立 `boot_misc` 分区）。
 DA 树（`/work2/tanyunlong/dylan/AC8215_DA`）用 `-a nand-256-ddr-256` 编的包：开机动画播完约 20 秒后背光熄灭、重启，循环；adb 起不来，串口无输出。
 
-## 结论（截至 2026-11-11）
+## 结论（截至 2026-11-13）：根因已定位到预编译库
+
+**元凶是 DA 树里的 `prebuild/atc_ftl/atc_lib.a`**（NAND FTL 核心，闭源，链进内核）：同一份 DA 源码/配置/dtb/rootfs，只把它换成旧树的版本（MD5 `21c5372b…`，DA 版是 `129f1bfe…`），18 秒重启消失，adb 通。库里具体做了什么**未知**。
+完整过程、实验表、已撤回的推断见 [`DIAG_LOG_2026-11-12.md`](DIAG_LOG_2026-11-12.md)；遗留问题见 [`OPEN_ISSUES.md`](OPEN_ISSUES.md)。
+
+下面的 11-11 结论里，**metazone 嫌疑已被推翻**（DA 里 `mtz_init` 是 `late_initcall`，晚于 NAND；`diag_nomtz` 不再需要）。其余"已排除"项仍然成立。
+
+## 历史结论（截至 2026-11-11，metazone 部分已作废）
 
 | 结论 | 依据 |
 |---|---|
@@ -17,15 +24,15 @@ DA 树（`/work2/tanyunlong/dylan/AC8215_DA`）用 `-a nand-256-ddr-256` 编的�
 
 禁用 NAND 节点（`diag_nonand`：`--disable ac83xx-nandflash`，`panic=10`）：**仍约 20 秒重启**。这不能排除 NAND 路径，见下。
 
-当前头号嫌疑：**内置的 metazone 驱动在启动阶段直接读写 NAND 上的 metazone 分区**。
-- `metazone_probe()`（`module_init`）里调用 `MTZ_Init()`；DA 为内置（AWTK 为模块，用户态才加载）。
+~~当前头号嫌疑~~（**已作废**）：**内置的 metazone 驱动在启动阶段直接读写 NAND 上的 metazone 分区**。
+- `metazone_probe()`（`module_init`；**更正：DA 里 `mtz_init` 实为 `late_initcall`**）里调用 `MTZ_Init()`；DA 为内置（AWTK 为模块，用户态才加载）。
 - `MTZ_Init()` 在 `#ifdef CONFIG_MTD_NAND_ATC` 下：`MTZ_InitFlashDriver()`、`nand_get_blocksize("metazone")`、`mtz_init_mtd_layout()`（`get_mtd_device_nm("metazone")`）、`mtz_scan_slots_for_latest()`；随后 `MTZ_InitWritableZone()` 在 `USE_RESERVED_MEMORY=1` 时先清零 preloader 已载入的 metazone 内存，再 `mtz_read_slot()` 从 NAND 重读。
 - 只有 NAND 板会真正执行这条路径；NAND 节点被禁用时它会拿到空的 mtd，同样可能崩溃——与 `diag_nonand` 仍重启一致。
 - `MetaZone_Read` 只检查索引范围、不检查是否已初始化；fb 只在 ioctl 里调用它。
 
 旁证：dts 里 NAND 节点 `nandflash@f001e400` 的第二段 reg 在 DA 为 `0xf001ec00 0x148`，AWTK（NAND 板可启动）为 `0x200`。
 
-下一步：`diag_nomtz`——`patch_mtz.awk` 在 `metazone_probe()` 里跳过 `MTZ_Init()`，NAND 保持启用，`panic=10`，inittab 只起 adb。
+~~下一步：`diag_nomtz`~~（未做，不再需要）——`patch_mtz.awk` 在 `metazone_probe()` 里跳过 `MTZ_Init()`，NAND 保持启用，`panic=10`，inittab 只起 adb。
 不再重启且 adb 可进 ⇒ 就是 metazone 启动阶段的 NAND 初始化；仍约 20 秒重启 ⇒ 不是 metazone，需另找取内核日志的办法。
 
 ## 踩过的坑
