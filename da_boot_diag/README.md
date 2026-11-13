@@ -47,6 +47,7 @@ DA 树（`/work2/tanyunlong/dylan/AC8215_DA`）用 `-a nand-256-ddr-256` 编的�
 | `disable_node.awk` | 按 compatible 把 dts 节点置为 disabled |
 | `patch_osd.awk` | 在 `osd_init()` 关闭开机动画平面，让 fbcon 可见 |
 | `patch_mtz.awk` | 在 `metazone_probe()` 里跳过 `MTZ_Init()`（原件备份 `~/dylan/metazone_drv.c.orig`，`kernel_diag.sh` 不管它） |
+| `mk_adbfirst.sh SRC OUT` | 保留完整启动，但让 adb 在 `rcS` 之前最先起来，并让 `rcS` 跳过后面的 `S30adb`（完整系统下 adb 进不去时，用它取现场） |
 
 例：生成 `diag_nonand`
 
