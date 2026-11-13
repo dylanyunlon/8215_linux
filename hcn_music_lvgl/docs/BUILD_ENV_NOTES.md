@@ -120,3 +120,10 @@ logread 2>/dev/null | grep -iE 'hcn_application|music' | tail -20
 - 界面起不来/崩溃：`killall hcn_application; LD_LIBRARY_PATH=/usr/lib/hcn_application /usr/bin/hcn_application 2>&1 | head -60`，看 `[ui]`、`music` 开头的行。
 - 插 U 盘放 mp3：`ls /data/music` 应出现数据库/状态文件（程序自己 `mkdir`）。没有声音时可试 `-DMUSIC_FOCUS_SEND_POLICY=1`；全屏背景/封面流卡顿可试 `-DMUSIC_UI_BACKDROP=0`。
 
+
+## 2026-11-13 补充（DA 树在 NAND-256 板上重启的排查结论）
+- **`nor-64-ddr-256` 是同事的 NOR 板参数**（同一台整编机上别的账号在跑），不是本板的方向；本板始终是 `nand-256-ddr-256`。
+- **DA 树 `prebuild/atc_ftl/atc_lib.a`（MD5 `129f1bfe…`，无版本串，9/16）会让本板约 18 秒后重启**；旧树版（MD5 `21c5372b…`，`[MTKLib]Version 2026020331`）不会。正式修法：用旧版覆盖后**走 allmake 整编**（先备份 DA 版），并向同事确认这份库对应哪种板子。详见 `da_boot_diag/DIAG_LOG_2026-11-12.md`。
+- DA 树的 `prebuild/` 没有 git 历史；与旧树比，`multimedia`（14 个文件）、`opengles`（2）、`atcsurface`（2）、`libsettings_atc`、`imgresz`、`audio` 也不同。**这些是用户态库，没验证过，不要盲换。**
+- **手工编内核（不走 allmake）必须带两个环境变量，否则静默编出另一个内核**：`AC83XX_BOOT_DEVICE=nand`（`drivers/Kconfig` 用 `option env` 读它，缺了 `MTD/NAND/JFFS2` 整支被砍，内核挂不上根）和 `TOPDIR=<树根>/buildroot`（`atc-ftl`、`aud_linux`、`vout` 的 Makefile 用 `$(TOPDIR)/../prebuild/...`）。现成脚本：`da_boot_diag/xtool_build.sh`，编完要核对 `.config` 漂移为 0。
+- 「已踩过的坑」第 2 条（`LVGL_HOME` 与 `HCN_APPLICATION` 同开会抢屏）在 DA 完整包里**又出现了迹象**：rootfs 里 `S01hcn_application` 与 `S01lvgl_home` 同时存在，都后台启动；实测出 LVGL 画面但闪屏。**尚未验证因果**，见 `da_boot_diag/OPEN_ISSUES.md`。
