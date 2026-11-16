@@ -291,7 +291,11 @@ static MusicInfo *music_list_append(MusicList *list)
 {
     if (music_list_ensure_capacity(list) != 0) return nullptr;
 
-    list->vec.emplace_back();
+    try {
+        list->vec.emplace_back();
+    } catch (const std::bad_alloc &) {
+        return nullptr;   /* caller stops the scan with what it has */
+    }
     memset(&list->vec.back(), 0, sizeof(MusicInfo));
     list->sync_view();
     return &list->vec.back();
@@ -435,11 +439,22 @@ MusicList *music_list_create(int capacity)
 {
     if (capacity <= 0)
         capacity = MUSIC_INIT_CAPACITY;
+    /* capacity is only a hint: the vector grows on demand.  Callers pass
+     * MUSIC_MAX_FILES, and reserving that up front is 65536 * sizeof(MusicInfo)
+     * (2588 B) = ~162 MiB, which throws std::bad_alloc on 256MB-DDR boards
+     * (MemTotal ~179 MB) the moment a USB stick is inserted. */
+    if (capacity > MUSIC_INIT_CAPACITY)
+        capacity = MUSIC_INIT_CAPACITY;
 
     MusicList *list = new (std::nothrow) MusicList();
     if (!list) return nullptr;
 
-    list->vec.reserve(capacity);
+    try {
+        list->vec.reserve(capacity);
+    } catch (const std::bad_alloc &) {
+        delete list;
+        return nullptr;
+    }
     list->state = SCAN_IDLE;
     list->scan_path[0] = '\0';
     list->sync_view();

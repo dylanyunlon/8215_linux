@@ -113,7 +113,7 @@ debugfs -R 'cat /etc/ld-musl-armhf.path'        release_images/system.img.ext4  
 cat /proc/mtd | head -20                                   # 分区与 scatter 是否一致
 ps | grep -E 'hcn_application|lvgl_home'                   # 只应有 hcn_application
 LD_TRACE_LOADED_OBJECTS=1 /usr/bin/hcn_application 2>&1 | grep -iE 'not found|error'     # 缺库
-logread 2>/dev/null | grep -iE 'hcn_application|music' | tail -20
+grep -iE "hcn_application|music" /var/log/atclog/syslog.log | tail -20   # logread 不可用，见第 15 条
 ```
 - Home 界面的「音乐」图标调用 `videofocusmanager_open_app(APP_MUSIC)`，并写一行 syslog `music app open requested, ret=…`（0 = 成功）。`hcn_app_config.cmake` 的 UI 变体是 `auto`：
   若板上起来的是 template（仪表按键）变体，则没有这个图标，需要用 `hcn_ui_shared_apps_open_music()` 另行接按键（产品决策）。
@@ -127,3 +127,17 @@ logread 2>/dev/null | grep -iE 'hcn_application|music' | tail -20
 - DA 树的 `prebuild/` 没有 git 历史；与旧树比，`multimedia`（14 个文件）、`opengles`（2）、`atcsurface`（2）、`libsettings_atc`、`imgresz`、`audio` 也不同。**这些是用户态库，没验证过，不要盲换。**
 - **手工编内核（不走 allmake）必须带两个环境变量，否则静默编出另一个内核**：`AC83XX_BOOT_DEVICE=nand`（`drivers/Kconfig` 用 `option env` 读它，缺了 `MTD/NAND/JFFS2` 整支被砍，内核挂不上根）和 `TOPDIR=<树根>/buildroot`（`atc-ftl`、`aud_linux`、`vout` 的 Makefile 用 `$(TOPDIR)/../prebuild/...`）。现成脚本：`da_boot_diag/xtool_build.sh`，编完要核对 `.config` 漂移为 0。
 - 「已踩过的坑」第 2 条（`LVGL_HOME` 与 `HCN_APPLICATION` 同开会抢屏）在 DA 完整包里**又出现了迹象**：rootfs 里 `S01hcn_application` 与 `S01lvgl_home` 同时存在，都后台启动；实测出 LVGL 画面但闪屏。**尚未验证因果**，见 `da_boot_diag/OPEN_ISSUES.md`。
+
+## 2026-11-15 补充（正式整编与上板调试）
+13. **删掉 `out/target` 只删 `.stamp_target_installed` 重建，会丢文件。** 有两类东西不在"装目标目录"这一步写：
+    `host-gcc-final` 在主机安装的 `POST_INSTALL_HOOKS` 里把 `libstdc++`、`libgcc_s`、`libatomic` 拷进目标目录（标记 `.stamp_host_installed`）；
+    很多厂商包（如 `blueserver`、`wifi-public`）在 `INSTALL_STAGING_CMDS` 里写目标目录（标记 `.stamp_staging_installed`）。
+    漏了的后果：镜像缺 C++ 运行库，`hcn_application` 起不来，开机动画后无界面；蓝牙/wifi 配置和 `S83bluetoothmanagerservice` 也没了。
+    正确做法：同时删 `find out/build -name .stamp_staging_installed -delete` 和 `out/build/ac83xx/host-gcc-final-*/.stamp_host_installed`，再整编；
+    之后用 `debugfs -R "rdump / <dir>"` 解出新旧镜像 `diff -rq`，并用 `readelf -d` 核对 `hcn_application`、`libmusicplayer.so` 的依赖都在。
+14. 交互式 bash 里命令中不要写 `!!`（会被历史展开成上一条命令）。
+15. 板上 `syslogd` 不带 `-C`，`logread` 读不到任何东西；本地日志在 `/var/log/messages`，但 `hcn_application` 的 `syslog()` 在 **`/var/log/atclog/syslog.log`**（`-R` 转发后由 atclog 落盘）。`/var/log` 在 tmpfs 上，重启即清空。
+16. `hcn_application` 的 `printf` 开机时打到串口。看它要从 adb 里重启程序：在交互式 `adb shell` 里前台跑（输出是行缓冲，崩溃前的日志不会丢）；
+    `adb shell "... &"` 一次性执行时后台进程会随会话结束，重定向到文件时输出是整块缓冲，异常退出会丢最后一段。
+17. 只改了一个库或程序时不必刷机：`adb push` 到 `/tmp/lib`（或 `/tmp`），用 `LD_LIBRARY_PATH=/tmp/lib:/usr/lib/hcn_application` 前台启动验证，重启即恢复。
+18. 本板 DDR 256 MB（`MemTotal` 约 179 MB），按 512 MB 板写的固定大预分配会直接 `std::bad_alloc`（见 `da_boot_diag/OPEN_ISSUES.md` 第 6 节）。
