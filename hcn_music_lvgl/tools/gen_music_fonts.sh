@@ -10,7 +10,7 @@ OUT=${2:-$(dirname "$0")/../lvgl/lvgl_app/fonts}
 # LV_USE_FONT_COMPRESSED=1, so fonts may exceed 1 MB of bitmap and can be compressed.
 # Both must also be 1 when compiling these files.  Set MUSIC_FONT_COMPRESS=0 for a board without them.
 SIZES=${MUSIC_FONT_SIZES:-"20:4 32:4"}
-COMPRESS=${MUSIC_FONT_COMPRESS:-1}
+COMPRESS=${MUSIC_FONT_COMPRESS:-0}   # 默认不压缩：板上滑动列表时 RLE 解压占单帧渲染约 18%（x86 剖析），关压缩每帧省约 27%，二进制多约 0.9MB
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 
 python3 - "$TTC" "$TMP" <<'PY'
