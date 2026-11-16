@@ -47,12 +47,13 @@ void home_manager_click(const click_e click)
             hcn_ui_shared_apps_open_bluetooth();
             break;
 #endif
-#ifdef HCN_APP_HAVE_MUSIC
         case CLICK_SHORT_BACK:
-            /* 本地音乐：主界面 BACK 短按进入（虚拟按键为屏幕左侧中间）。 */
+            /* 本地音乐：主界面 BACK 短按进入（虚拟按键为屏幕左侧中间）。
+             * open_music 在 ui_shared_apps.c 里无条件定义，未编入音乐时为空函数，
+             * 所以这里不能再用 HCN_APP_HAVE_MUSIC 守卫：lvgl_ui_template 是独立静态库，
+             * 该宏只传给了 lvgl_app，守卫会让这段代码被整个编译掉。 */
             hcn_ui_shared_apps_open_music();
             break;
-#endif
         case CLICK_LONG_BACK:
             if(0 == speed_view_current() && window_manager_get() == WINDOW_MAIN)
                 mileage_clear_trip();
