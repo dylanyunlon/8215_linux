@@ -47,6 +47,12 @@ void home_manager_click(const click_e click)
             hcn_ui_shared_apps_open_bluetooth();
             break;
 #endif
+#ifdef HCN_APP_HAVE_MUSIC
+        case CLICK_SHORT_BACK:
+            /* 本地音乐：主界面 BACK 短按进入（虚拟按键为屏幕左侧中间）。 */
+            hcn_ui_shared_apps_open_music();
+            break;
+#endif
         case CLICK_LONG_BACK:
             if(0 == speed_view_current() && window_manager_get() == WINDOW_MAIN)
                 mileage_clear_trip();
