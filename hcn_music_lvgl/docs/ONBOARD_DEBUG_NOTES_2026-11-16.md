@@ -84,5 +84,20 @@ x86 剖析（`tools/music_ui_harness/da_bench.sh`，真实 `ui_Music.c`，连续
 1. 崩溃的 `pc`/`lr`（见 §4）。
 2. `displayinit.c`、`metazone_drv.c` 与 `.orig` 的差异（是否残留诊断补丁）。
 3. 扫描期间"应用以外的约 1 个核"是谁。
-4. 滑动时的 FPS，以及刷新周期是否值得改。
+4. 板上 `LV_DEF_REFR_PERIOD` 的实际值；滑动时的 FPS；§8 的刷新周期改动上板后的实际效果。
 5. 无压缩字体上板后的实际效果。
+
+## 8. 滑动 CPU：行内元素开销与刷新周期（2026-11-16 追加）
+
+板子是 **2 核**（`/sys/devices/system/cpu/online` = `0-1`；仓库旧树设备树写的 4 核不适用），**没有 cpufreq 接口**（`scaling_*` 都不存在，频率无法从系统读到，"低频下满载"的假设无法验证）。
+
+x86 基准（`BENCH_PROBE=1`，误差约 ±0.1 ms，看相对大小）：
+- `S.vlist` 的 `clip_corner` 没有开销（半径为 0，基线 1.65 ms，关掉 1.68 ms），已排除。
+- 逐个隐藏行内元素省下的时间合计约 1.26 ms，占一帧约 75%：副标题（歌手 · 专辑）约 0.37 ms、标题 0.28、序号 0.24、时长 0.16，小图标可忽略。**文字是大头**；要继续降单帧成本，减少每行可见文字量最有效（属于界面取舍，未改）。
+- 板级 `lv_conf` 事实：`LV_USE_DRAW_SW_ASM`=NEON（板上混合比 harness 快）、`LV_FONT_FMT_TXT_LARGE`=1（不压缩字体可用）、UI 单线程、图片缓存关。主循环 `lv_timer_handler()` + `usleep(5ms)`。
+
+改动：`ui_Music.c` 在 `S.vlist` 的 `SCROLL_BEGIN/SCROLL_END` 上切换 LVGL 刷新周期：滑动期间放宽到 `MUSIC_SCROLL_REFR_MS`（默认 33 ms，约 30 FPS），结束或离开本屏恢复 `LV_DEF_REFR_PERIOD`；`-DMUSIC_SCROLL_REFR_MS=0` 关闭。harness 里验证了行为（16 → 33 → 16，滑动途中离开本屏也恢复）和 89 项 UI 场景断言。
+
+**前提尚未确认**：harness 自带的 `lv_conf.h` 是 9/21 版副本，其中 `LV_DEF_REFR_PERIOD` 为 16（60 FPS），**板上现在的值要看** `source/packages/cluster/lvgl/lv_conf.h`。若板上已经是 33，这个改动不起作用（无害）。预期（假设）：滑动期间主线程再除去约 12% 的基础开销后大致减半。**这个预期没有板上数据支持。** 代价：滑动时帧率降到约 30 FPS，观感比 60 FPS 略粗。
+
+附带修正：`shots.c` 里"有封面时背景图可见"的断言在 880da8c6e 关闭背景后一直是红的（当时没跑这一项），已改为随 `MUSIC_UI_BACKDROP` 分支判断。

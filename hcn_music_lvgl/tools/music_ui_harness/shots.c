@@ -1,5 +1,6 @@
 /* Headless driver: real ui_Music screen + fake music_app.  Renders PNG frames and asserts behaviour. */
 #include "lvgl/lvgl.h"
+#include "ui_Music_style.h"   /* MUSIC_UI_BACKDROP */
 #include "ui_Music.h"
 #include "ui_Music_cf.h"
 #include "music_art.h"
@@ -154,11 +155,19 @@ int main(void) {
     /* ================= new features ================= */
     fake_set_current(3, 83000); ev(APP_EVENT_TRACK_CHANGED, 3); run(100);
 
-    /* A. blurred backdrop follows the cover; no art = plain background */
+    /* A. blurred backdrop.  MUSIC_UI_BACKDROP=1: follows the cover (no art = plain background).
+     *    MUSIC_UI_BACKDROP=0 (default since 880da8c6e): never shown, whatever the cover does. */
     { lv_obj_t *bd = lv_obj_get_child(scr, 0);                        /* first child of the screen = backdrop image */
+#if MUSIC_UI_BACKDROP
       CHECK(!lv_obj_has_flag(bd, LV_OBJ_FLAG_HIDDEN));
       fake_set_art(false); ev(APP_EVENT_TRACK_CHANGED, 3); run(100); CHECK(lv_obj_has_flag(bd, LV_OBJ_FLAG_HIDDEN));
-      fake_set_art(true); ev(APP_EVENT_TRACK_CHANGED, 3); run(100); CHECK(!lv_obj_has_flag(bd, LV_OBJ_FLAG_HIDDEN)); }
+      fake_set_art(true); ev(APP_EVENT_TRACK_CHANGED, 3); run(100); CHECK(!lv_obj_has_flag(bd, LV_OBJ_FLAG_HIDDEN));
+#else
+      CHECK(lv_obj_has_flag(bd, LV_OBJ_FLAG_HIDDEN));
+      fake_set_art(false); ev(APP_EVENT_TRACK_CHANGED, 3); run(100); CHECK(lv_obj_has_flag(bd, LV_OBJ_FLAG_HIDDEN));
+      fake_set_art(true); ev(APP_EVENT_TRACK_CHANGED, 3); run(100); CHECK(lv_obj_has_flag(bd, LV_OBJ_FLAG_HIDDEN));
+#endif
+    }
 
     /* B. two storage devices: chips appear, tapping one switches the device */
     CHECK(!visible_text(scr, "SD卡 · 12 首"));

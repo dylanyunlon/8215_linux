@@ -1,7 +1,7 @@
 /* 连续滑动列表的渲染基准：真实 ui_Music 界面 + fake_music_app，每帧让列表滚动 N 像素，量 lv_timer_handler() 的耗时。
  * 只量 CPU 软件绘制（x86，FULL 渲染模式，不含板上 lv_opengles_texture 每帧整屏上传纹理的部分），
  * 绝对值不能对应到 A7；用来比较改动前后的相对变化、以及配合 gprof 看时间花在哪（见 bench.sh）。
- * 帧数: BENCH_FRAMES（默认 300）。*/
+ * 帧数: BENCH_FRAMES（默认 300）。BENCH_PROBE=1: 另外量 clip_corner 开关和逐个隐藏行内元素的单帧开销。*/
 /* Headless driver: real ui_Music screen + fake music_app.  Renders PNG frames and asserts behaviour. */
 #include "lvgl/lvgl.h"
 #include "ui_Music.h"
@@ -101,6 +101,27 @@ int main(void) {
     lv_obj_t *scr = NULL; ui_Music_screen_init(&scr); lv_screen_load(scr); run(400);
     lv_obj_t *vl = vlist_of(scr); if (!vl) { printf("no vlist\n"); return 1; }
     int n = getenv("BENCH_FRAMES") ? atoi(getenv("BENCH_FRAMES")) : 300;
+    if (getenv("BENCH_PROBE")) {
+        int nrow = (int)lv_obj_get_child_count(vl);
+        printf("vlist 子对象 %d 个, 半径 %d, clip_corner=%d\n", nrow, (int)lv_obj_get_style_radius(vl, 0), (int)lv_obj_get_style_clip_corner(vl, 0));
+        bench("基线", vl, 400, 14);
+        lv_obj_set_style_clip_corner(vl, false, 0);
+        bench("关闭 vlist 的 clip_corner", vl, 400, 14);
+        lv_obj_set_style_clip_corner(vl, true, 0);
+        /* 逐个隐藏每一行的第 k 个子对象(用透明度 0，行重绑定时不会被重置) */
+        lv_obj_t *r0 = NULL; for (int i = 0; i < nrow; i++) { lv_obj_t *c = lv_obj_get_child(vl, i); if (lv_obj_get_child_count(c) > 2) { r0 = c; break; } }
+        int nk = r0 ? (int)lv_obj_get_child_count(r0) : 0;
+        printf("每行子对象 %d 个\n", nk);
+        for (int k = 0; k < nk; k++) {
+            lv_obj_t *c0 = lv_obj_get_child(r0, k);
+            char nm[96]; const char *t = lv_obj_check_type(c0, &lv_label_class) ? lv_label_get_text(c0) : "(非文本)";
+            snprintf(nm, sizeof nm, "隐藏第 %d 个 [%.14s] %dx%d", k, t, (int)lv_obj_get_width(c0), (int)lv_obj_get_height(c0));
+            for (int i = 0; i < nrow; i++) { lv_obj_t *r = lv_obj_get_child(vl, i); if (lv_obj_get_child_count(r) == (uint32_t)nk) lv_obj_set_style_opa(lv_obj_get_child(r, k), 0, 0); }
+            bench(nm, vl, 400, 14);
+            for (int i = 0; i < nrow; i++) { lv_obj_t *r = lv_obj_get_child(vl, i); if (lv_obj_get_child_count(r) == (uint32_t)nk) lv_obj_set_style_opa(lv_obj_get_child(r, k), LV_OPA_COVER, 0); }
+        }
+        return 0;
+    }
     bench("热身", vl, 60, 14);
     bench("滑动 14px/帧 (中速)", vl, n, 14);
     bench("滑动 28px/帧 (快速甩动)", vl, n, 28);
