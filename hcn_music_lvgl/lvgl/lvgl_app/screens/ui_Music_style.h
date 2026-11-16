@@ -20,10 +20,12 @@ LV_FONT_DECLARE(music_font_32);
 #define C_ACCENT    lv_color_hex(0x7BB191)
 #define C_ACCENT_BG lv_color_hex(0x25392E)
 
-/* Blurred cover backdrop = one 256x150 image drawn at 4x behind everything.  If the board's GL draw unit turns out to be slow
- * with full-screen scaled images, build with -DMUSIC_UI_BACKDROP=0 (plain dark background, nothing else changes). */
+/* 模糊封面背景 = 一张 256x150 的图放大 4 倍（带抗锯齿）垫在全屏最底下。
+ * 板上实测：软件渲染下，快速滑动列表时界面线程占单核 60%~70%，原因是每次重绘都要重做这层缩放。
+ * 定案：默认关闭，背景固定为纯色 C_BG；关闭时变暗遮罩一并隐藏，换歌也不再生成模糊图。
+ * 需要时可用 -DMUSIC_UI_BACKDROP=1 打开（旧的缩放方案，滑动会很吃 CPU）。 */
 #ifndef MUSIC_UI_BACKDROP
-#define MUSIC_UI_BACKDROP 1
+#define MUSIC_UI_BACKDROP 0
 #endif
 
 #define F_BODY   (&music_font_20)
