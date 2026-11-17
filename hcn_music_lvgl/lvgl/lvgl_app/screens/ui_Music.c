@@ -312,29 +312,6 @@ static void vlist_sync(bool force)
 
 static void on_vlist_scroll(lv_event_t *e) { LV_UNUSED(e); vlist_sync(false); }
 
-/* 滑动期间放宽刷新周期：板上渲染是单线程 CPU 软绘 + 每帧整屏纹理上传，滑动时每个刷新周期都会整帧重画，
- * 帧率越高占用越高。把滑动期间的刷新周期放宽到 MUSIC_SCROLL_REFR_MS（默认 33ms ≈ 30FPS），
- * 滑动结束或离开本屏立即恢复 LV_DEF_REFR_PERIOD。设为 0 则不改动刷新周期。 */
-#ifndef MUSIC_SCROLL_REFR_MS
-#define MUSIC_SCROLL_REFR_MS 33
-#endif
-static void refr_period_set(lv_obj_t *obj, uint32_t ms)
-{
-    lv_display_t *d = obj ? lv_obj_get_display(obj) : NULL;
-    lv_timer_t *t = d ? lv_display_get_refr_timer(d) : NULL;
-    if (t) lv_timer_set_period(t, ms);
-}
-static void on_vlist_scroll_rate(lv_event_t *e)
-{
-    if (MUSIC_SCROLL_REFR_MS == 0) return;
-    refr_period_set(lv_event_get_target_obj(e), lv_event_get_code(e) == LV_EVENT_SCROLL_BEGIN ? MUSIC_SCROLL_REFR_MS : LV_DEF_REFR_PERIOD);
-}
-static void on_scr_unloaded_rate(lv_event_t *e)
-{
-    if (MUSIC_SCROLL_REFR_MS == 0) return;
-    refr_period_set(lv_event_get_target_obj(e), LV_DEF_REFR_PERIOD);
-}
-
 static void vlist_reload(bool to_top)
 {
     int count = list_count();
@@ -1022,9 +999,6 @@ static void build_right(lv_obj_t *scr)
     S.vspacer = plain(S.vlist, 0, 0, 1, 1);
     build_rows(S.vlist);
     lv_obj_add_event_cb(S.vlist, on_vlist_scroll, LV_EVENT_SCROLL, NULL);
-    lv_obj_add_event_cb(S.vlist, on_vlist_scroll_rate, LV_EVENT_SCROLL_BEGIN, NULL);
-    lv_obj_add_event_cb(S.vlist, on_vlist_scroll_rate, LV_EVENT_SCROLL_END, NULL);
-    lv_obj_add_event_cb(S.scr, on_scr_unloaded_rate, LV_EVENT_SCREEN_UNLOADED, NULL);
 
     S.lyrics = plain(p, LIST_X, LIST_Y, LIST_W, LIST_H);
     lv_obj_add_flag(S.lyrics, LV_OBJ_FLAG_SCROLLABLE | LV_OBJ_FLAG_HIDDEN);

@@ -84,7 +84,7 @@ x86 剖析（`tools/music_ui_harness/da_bench.sh`，真实 `ui_Music.c`，连续
 1. 崩溃的 `pc`/`lr`（见 §4）。
 2. `displayinit.c`、`metazone_drv.c` 与 `.orig` 的差异（是否残留诊断补丁）。
 3. 扫描期间"应用以外的约 1 个核"是谁。
-4. 板上 `LV_DEF_REFR_PERIOD` 的实际值；滑动时的 FPS；§8 的刷新周期改动上板后的实际效果。
+4. 平台层的窗口定时器（§8）：是否值得加设置周期的接口/只在脏时上屏，需要驱动维护者确认。
 5. 无压缩字体上板后的实际效果。
 
 ## 8. 滑动 CPU：行内元素开销与刷新周期（2026-11-16 追加）
@@ -96,8 +96,29 @@ x86 基准（`BENCH_PROBE=1`，误差约 ±0.1 ms，看相对大小）：
 - 逐个隐藏行内元素省下的时间合计约 1.26 ms，占一帧约 75%：副标题（歌手 · 专辑）约 0.37 ms、标题 0.28、序号 0.24、时长 0.16，小图标可忽略。**文字是大头**；要继续降单帧成本，减少每行可见文字量最有效（属于界面取舍，未改）。
 - 板级 `lv_conf` 事实：`LV_USE_DRAW_SW_ASM`=NEON（板上混合比 harness 快）、`LV_FONT_FMT_TXT_LARGE`=1（不压缩字体可用）、UI 单线程、图片缓存关。主循环 `lv_timer_handler()` + `usleep(5ms)`。
 
-改动：`ui_Music.c` 在 `S.vlist` 的 `SCROLL_BEGIN/SCROLL_END` 上切换 LVGL 刷新周期：滑动期间放宽到 `MUSIC_SCROLL_REFR_MS`（默认 33 ms，约 30 FPS），结束或离开本屏恢复 `LV_DEF_REFR_PERIOD`；`-DMUSIC_SCROLL_REFR_MS=0` 关闭。harness 里验证了行为（16 → 33 → 16，滑动途中离开本屏也恢复）和 89 项 UI 场景断言。
+~~曾经的改动~~（已撤回）：`ui_Music.c` 曾在 `S.vlist` 的 `SCROLL_BEGIN/SCROLL_END` 上把**显示的**刷新定时器周期放宽到 33 ms。**这在板上无效，已撤回**（`ui_Music.c` 恢复为 `71b57353033cfa40b1c4d9dc52d86cbc`）。原因：板上帧节奏不是由显示自己的刷新周期决定的，见下。
 
-**前提尚未确认**：harness 自带的 `lv_conf.h` 是 9/21 版副本，其中 `LV_DEF_REFR_PERIOD` 为 16（60 FPS），**板上现在的值要看** `source/packages/cluster/lvgl/lv_conf.h`。若板上已经是 33，这个改动不起作用（无害）。预期（假设）：滑动期间主线程再除去约 12% 的基础开销后大致减半。**这个预期没有板上数据支持。** 代价：滑动时帧率降到约 30 FPS，观感比 60 FPS 略粗。
+**板上渲染节奏的真实来源**（读了 vanilla LVGL v9.3.0 的 `lv_glfw_window.c`，并在 126 上用 `grep`/`sed` 核对了板上魔改版同一段，结构一致，只多了一句无条件的 `GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, 0))`）：
+- `lv_glfw_timer_init()` 用 **`LV_DEF_REFR_PERIOD`（板上 = 16 ms）** 创建一个窗口定时器 `window_update_handler`，周期在创建时固定。
+- 它**每个周期无条件**执行：`glfwPollEvents` → 清屏 → `lv_refr_now(显示)`（只有脏区才真的渲染）→ 绑定默认帧缓冲 → `lv_opengles_render_texture`（画整屏纹理）→ `glfwSwapBuffers`。
+- `lv_refr_now()` 直接调用 `lv_display_refr_timer()`，**不看显示自己的刷新周期**；`LV_USE_PERF_MONITOR` 打开时显示的刷新定时器也不会暂停。所以改显示的刷新周期不会改变帧节奏。
+- sysmon 的 FPS = 刷新函数每秒被调用的次数（`refr_cnt`），**不是**实际重画的帧数（实际重画是另一个计数 `redraw_cnt`）。界面静止时叠加层仍显示约 50 FPS，原因就在这里，不说明有东西在持续重绘。
+- 推断（**未测量**）：静止时主线程约 10%~12% 的 CPU 基线，很可能就是这个每 16 ms 一次的"清屏 + 整屏纹理 + 交换缓冲"。要降低它或降低滑动时的帧数，需要改**平台层**：例如给 `lv_glfw_window.c` 加一个设置窗口定时器周期的函数，或让它只在 `lv_refr_now` 真的渲染了东西时才画纹理/交换缓冲。GLFW 窗口可能还在合成别的纹理（CarPlay、倒车画面），这个改动要由维护该驱动的人确认。
 
 附带修正：`shots.c` 里"有封面时背景图可见"的断言在 880da8c6e 关闭背景后一直是红的（当时没跑这一项），已改为随 `MUSIC_UI_BACKDROP` 分支判断。
+
+## 9. 过夜测试结论（2026-11-17）
+
+**没有崩溃，也没有卡死。** 之前看到的"卡死"是 Ctrl+C 之后的假象：
+
+- 在 adb 下用 `run_app.sh | Tee-Object` 前台跑，程序是 adb 会话的子进程。程序启动 pid 714（开机自动起的那份是 93）。
+- 程序**连续稳定运行约 14.9 小时**（11/16 17:30 到 11/17 08:24），`[music_app] No lyrics` 出现 174 次（约 174 首），无 OOM（`dmesg` 从开机起完整，无 `Out of memory`/`Killed process`/`aee`），内存可用约 99 MB，无 `/tmp/aee`。
+- 约 08:22:21 用户按了 Ctrl+C，adb 管道断开。程序**不知道**，继续正常播放；约 08:24:05 它往已断开的管道写数据，收到 SIGPIPE 被杀，帧缓冲留着死前最后一帧。
+- 佐证：抓到的帧缓冲显示《同桌的你》**02:45 / 04:30**；日志里这首歌的主线程换歌处理（`[music_app] Album art`）在 53715.53 秒，即 08:21:20；08:21:20 + 2分45秒 = 08:24:05，比日志最后写入（08:22:21）晚 1 分 44 秒，说明 Ctrl+C 之后界面仍在正常更新，不是 08:22:21 卡住。
+- 程序里没有处理 `SIGPIPE`（在仓库可见源码里 0 处 `SIGPIPE`/`MSG_NOSIGNAL`/`signal(`），任何往已关闭管道/套接字的写都会让它无声死掉。建议在 `lvgl/main.c` 的 `main()` 开头加 `signal(SIGPIPE, SIG_IGN);`（团队文件，未改）。
+- 过夜测试不要用 `Tee-Object` 挂着，用开机自启的那份加日志模式 `monitor.sh`（`MON_LOG=… MON_INTERVAL=30`）。
+
+其它发现：
+- 字体只含 GB2312 **一级**汉字 3755 个，二级汉字（如「咻」U+54BB，区位 6361）缺字，每次重绘都会写一条 `lv_draw_letter: glyph dsc. not found` 警告（滑动/动画时约每 60 ms 两条）。可补二级汉字或设后备字体。
+- U 盘 FAT 文件系统有错误：`FAT-fs (sda1): invalid cluster chain`（同一时刻出错的是 `那些年_219765.mp3` 这个拷贝）。建议 `chkdsk X: /f`。程序遇到后继续正常，未造成崩溃。
+- harness 的 `shots`（UI 场景）里"封面流相邻封面异步加载"那一项（`shots.c:233/234`）**不稳定**：同一份代码 6 次里有 5 次失败，与 ui_Music.c 的改动无关，是等待 900 ms 的时序问题，需要另行修（可轮询等待而不是固定等待）。之前记录的"89 项通过"只是碰巧跑过。
