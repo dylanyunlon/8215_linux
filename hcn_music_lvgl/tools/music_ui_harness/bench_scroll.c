@@ -1,7 +1,8 @@
 /* 连续滑动列表的渲染基准：真实 ui_Music 界面 + fake_music_app，每帧让列表滚动 N 像素，量 lv_timer_handler() 的耗时。
  * 只量 CPU 软件绘制（x86，FULL 渲染模式，不含板上 lv_opengles_texture 每帧整屏上传纹理的部分），
  * 绝对值不能对应到 A7；用来比较改动前后的相对变化、以及配合 gprof 看时间花在哪（见 bench.sh）。
- * 帧数: BENCH_FRAMES（默认 300）。BENCH_PROBE=1: 另外量 clip_corner 开关和逐个隐藏行内元素的单帧开销。*/
+ * 帧数: BENCH_FRAMES（默认 300）。BENCH_PROBE=1: 另外量 clip_corner 开关和逐个隐藏行内元素的单帧开销。
+ * BENCH_TASKS=1: 数连续滑动时每帧各类绘制任务的个数、按行内角色分开的文字任务数、静态/非静态文字，用来估算板上 GL 绘制单元的负担（FULL 渲染模式会连左侧面板一起画，板上 DIRECT 只画脏区，看行内角色那几行）。*/
 /* Headless driver: real ui_Music screen + fake music_app.  Renders PNG frames and asserts behaviour. */
 #include "lvgl/lvgl.h"
 #include "ui_Music.h"
@@ -69,6 +70,36 @@ static lv_obj_t *vlist_of(lv_obj_t *scr) {            /* the scrollable 520px-wi
 }
 
 
+
+/* ---- 绘制任务统计: 数每个刷新里各类绘制任务的个数（板上 GL 绘制单元按任务类型走不同路径） ---- */
+static int g_cnt[32]; static int g_lbl_nonstatic, g_lbl_static; static long g_lbl_px, g_other_px, g_lbl_chars;
+static struct { lv_obj_t *o; int n; int stat; } g_obj_cnt[256]; static int g_obj_n;
+static void tasks_cb(lv_event_t *e) {
+    lv_draw_task_t *t = lv_event_get_draw_task(e);
+    lv_draw_task_type_t ty = lv_draw_task_get_type(t);
+    if ((int)ty < 32) g_cnt[(int)ty]++;
+    lv_area_t a; lv_draw_task_get_area(t, &a); long px = (long)lv_area_get_width(&a) * lv_area_get_height(&a);
+    if (ty == LV_DRAW_TASK_TYPE_LABEL) {
+        lv_draw_label_dsc_t *d = lv_draw_task_get_label_dsc(t);
+        if (d && d->text_static) g_lbl_static++; else g_lbl_nonstatic++;
+        { lv_obj_t *ob = ((lv_draw_dsc_base_t *)d)->obj; int k; for (k = 0; k < g_obj_n; k++) if (g_obj_cnt[k].o == ob) break;
+          if (k == g_obj_n && g_obj_n < 256) { g_obj_cnt[k].o = ob; g_obj_cnt[k].n = 0; g_obj_n++; } if (k < 256) g_obj_cnt[k].n++; }
+        if (d && d->text) g_lbl_chars += (long)lv_strlen(d->text);
+        g_lbl_px += px;
+    } else g_other_px += px;
+}
+static void flag_tree(lv_obj_t *o) {
+    lv_obj_add_flag(o, LV_OBJ_FLAG_SEND_DRAW_TASK_EVENTS);
+    lv_obj_add_event_cb(o, tasks_cb, LV_EVENT_DRAW_TASK_ADDED, NULL);
+    uint32_t n = lv_obj_get_child_count(o); for (uint32_t i = 0; i < n; i++) flag_tree(lv_obj_get_child(o, i));
+}
+static const char *ty_name(int t) {
+    switch (t) { case LV_DRAW_TASK_TYPE_FILL: return "FILL(填充)"; case LV_DRAW_TASK_TYPE_BORDER: return "BORDER(边框)";
+      case LV_DRAW_TASK_TYPE_BOX_SHADOW: return "BOX_SHADOW(阴影)"; case LV_DRAW_TASK_TYPE_LABEL: return "LABEL(文字)";
+      case LV_DRAW_TASK_TYPE_IMAGE: return "IMAGE(图片)"; case LV_DRAW_TASK_TYPE_LAYER: return "LAYER(图层)";
+      case LV_DRAW_TASK_TYPE_LINE: return "LINE"; case LV_DRAW_TASK_TYPE_ARC: return "ARC"; case LV_DRAW_TASK_TYPE_TRIANGLE: return "TRIANGLE";
+      case LV_DRAW_TASK_TYPE_MASK_RECTANGLE: return "MASK_RECT"; case LV_DRAW_TASK_TYPE_MASK_BITMAP: return "MASK_BITMAP"; default: return "其它"; }
+}
 static int g_ptr_dummy;
 static void ptr_read(lv_indev_t *i, lv_indev_data_t *d) { LV_UNUSED(i); d->point.x=0; d->point.y=0; d->state=LV_INDEV_STATE_RELEASED; }
 
@@ -120,6 +151,27 @@ int main(void) {
             bench(nm, vl, 400, 14);
             for (int i = 0; i < nrow; i++) { lv_obj_t *r = lv_obj_get_child(vl, i); if (lv_obj_get_child_count(r) == (uint32_t)nk) lv_obj_set_style_opa(lv_obj_get_child(r, k), LV_OPA_COVER, 0); }
         }
+        return 0;
+    }
+
+    if (getenv("BENCH_TASKS")) {
+        flag_tree(scr);
+        lv_obj_scroll_to_y(vl, 0, LV_ANIM_OFF); lv_tick_inc(40); lv_timer_handler();
+        const int N = 100, PX = 14; int y = 0;
+        memset(g_cnt, 0, sizeof g_cnt); g_lbl_nonstatic = g_lbl_static = 0; g_lbl_px = g_other_px = g_lbl_chars = 0;
+        for (int f = 0; f < N; f++) { y += PX; lv_obj_scroll_to_y(vl, y, LV_ANIM_OFF); lv_tick_inc(33); lv_timer_handler(); }
+        printf("连续滑动 %d 帧(每帧 %d px)，平均每帧的绘制任务:\n", N, PX);
+        int total = 0; for (int t = 0; t < 32; t++) if (g_cnt[t]) { printf("  %-22s %6.1f 个\n", ty_name(t), g_cnt[t] / (double)N); total += g_cnt[t]; }
+        printf("  %-22s %6.1f 个\n", "合计", total / (double)N);
+        { /* 按行内角色汇总: 行 = vlist 的子对象，子对象顺序 bar,lead,title,sub,dur,fav,chev */
+          const char *role[] = {"bar","lead(序号/图标)","title(标题)","sub(歌手·专辑)","dur(时长)","fav(♥)","chev(›)"}; double agg[7] = {0};
+          uint32_t nr = lv_obj_get_child_count(vl);
+          for (uint32_t i = 0; i < nr; i++) { lv_obj_t *row = lv_obj_get_child(vl, i); if (lv_obj_get_child_count(row) != 7) continue;
+              for (int c = 0; c < 7; c++) { lv_obj_t *ch = lv_obj_get_child(row, c); for (int k = 0; k < g_obj_n; k++) if (g_obj_cnt[k].o == ch) agg[c] += g_obj_cnt[k].n; } }
+          printf("按行内角色，平均每帧的文字任务数:\n"); for (int c = 1; c < 7; c++) printf("  %-18s %5.1f 个\n", role[c], agg[c] / N); }
+        printf("其中文字: 非静态 %.1f 个 + 静态 %.1f 个；平均每帧文字约 %.0f 个字符\n", g_lbl_nonstatic / (double)N, g_lbl_static / (double)N, g_lbl_chars / (double)N);
+        printf("文字任务面积合计 %.0f 万像素/帧 (按 ARGB8888 约 %.2f MB/帧要光栅化并上传); 其它任务面积 %.0f 万像素/帧\n",
+               g_lbl_px / (double)N / 1e4, g_lbl_px / (double)N * 4 / 1048576.0, g_other_px / (double)N / 1e4);
         return 0;
     }
     bench("热身", vl, 60, 14);

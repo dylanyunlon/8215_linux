@@ -98,7 +98,7 @@ x86 基准（`BENCH_PROBE=1`，误差约 ±0.1 ms，看相对大小）：
 
 ~~曾经的改动~~（已撤回）：`ui_Music.c` 曾在 `S.vlist` 的 `SCROLL_BEGIN/SCROLL_END` 上把**显示的**刷新定时器周期放宽到 33 ms。**这在板上无效，已撤回**（`ui_Music.c` 恢复为 `71b57353033cfa40b1c4d9dc52d86cbc`）。原因：板上帧节奏不是由显示自己的刷新周期决定的，见下。
 
-**板上渲染节奏的真实来源**（读了 vanilla LVGL v9.3.0 的 `lv_glfw_window.c`，并在 126 上用 `grep`/`sed` 核对了板上魔改版同一段，结构一致，只多了一句无条件的 `GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, 0))`）：
+**板上渲染节奏的真实来源**（读了 vanilla LVGL v9.3.0 的 `lv_glfw_window.c`，并在 126 上用 `grep`/`sed` 核对了板上魔改版同一段，结构一致，只多了一句无条件的"绑定默认帧缓冲"调用）：
 - `lv_glfw_timer_init()` 用 **`LV_DEF_REFR_PERIOD`（板上 = 16 ms）** 创建一个窗口定时器 `window_update_handler`，周期在创建时固定。
 - 它**每个周期无条件**执行：`glfwPollEvents` → 清屏 → `lv_refr_now(显示)`（只有脏区才真的渲染）→ 绑定默认帧缓冲 → `lv_opengles_render_texture`（画整屏纹理）→ `glfwSwapBuffers`。
 - `lv_refr_now()` 直接调用 `lv_display_refr_timer()`，**不看显示自己的刷新周期**；`LV_USE_PERF_MONITOR` 打开时显示的刷新定时器也不会暂停。所以改显示的刷新周期不会改变帧节奏。
@@ -127,9 +127,33 @@ x86 基准（`BENCH_PROBE=1`，误差约 ±0.1 ms，看相对大小）：
 
 板级 `lv_conf.h` 实测（126 上 `grep`）：`LV_USE_DRAW_OPENGLES 1`、`LV_USE_OPENGLES_DEBUG 0`（`GL_CALL` 就是普通调用，无 `glGetError` 开销）、`LV_USE_LOG 1`/`LV_LOG_LEVEL_WARN`、`LV_USE_SYSMON 1`、`LV_USE_PERF_MONITOR 1`、`LV_USE_MEM_MONITOR 1`（FPS/CPU 与内存叠加层在板上屏幕上一直显示，产品版应关）。包名 `lvgl-9.3.0`（`out/build/ac83xx/lvgl-9.3.0`）。BUILD_ENV_NOTES 里早就记了 `LV_USE_DRAW_OPENGLES = 1`，但我之前没意识到它会让整个渲染模型不同。
 
-按 vanilla LVGL v9.3.0 的源码（**板上 `lv_draw_opengles.c`、`lv_opengles_texture.c` 是否被改过还没看到，需确认**）：
+以下先按 vanilla LVGL v9.3.0 的源码描述，**板上实际的差异见 §11（已拿到板上明文并逐文件对比）**：
 - `lv_opengles_texture.c` 里 `flush_cb` 的整屏 `glTexImage2D` 上传被 `#if !LV_USE_DRAW_OPENGLES` 包住，板上这一段**不会编进去**。
 - `lv_draw_opengles.c` 的 `evaluate()` 把几乎所有绘制任务指派给 GL 绘制单元。只有"无圆角、无渐变的纯色填充"直接用 GL 画；**其余（文字、边框、圆角填充、阴影、图片…）走 `draw_to_texture()`**：在 CPU 上用软件绘制画进一块临时 ARGB8888 缓冲，`glGenTextures` + `glTexImage2D` 上传 + `glGenerateMipmap`，再用一个贴图四边形画到目标。结果按绘制描述符做 LRU 缓存（128 项）。
 - 代码里的注释写明：**`text_static` 为假的文字不缓存，画完立刻丢弃**。我们的列表行文字都是 `lv_label_set_text`（复制，非静态）；`LV_LABEL_LONG_DOT` 溢出时 LVGL 还会用内部缓冲，同样不是静态。**推断（未在板上测量）**：滑动时每帧每个可见文字标签都要经历"CPU 光栅化 → 建纹理 → 上传 → 生成 mipmap → 画 → 丢弃"，这很可能是滑动时主线程用户态 60%~70% 的主要来源，比 §6 里 x86 纯软件基准显示的还重。
 - 因此 §6 里 x86 基准（纯软件绘制）只能说明各元素的**相对**占比，不能代表板上的绝对开销。字体不压缩只省"光栅化"那一段，省多少取决于它在每个标签总开销里占多少。
 - 窗口定时器（§8）每个周期无条件 `lv_refr_now` + 画整屏纹理 + `glfwSwapBuffers`，这部分在 GL 绘制单元模型下仍成立。
+
+## 11. 板上 LVGL 与 vanilla v9.3.0 的实际差异（2026-11-17，已读到明文）
+
+服务器上 `source/packages/cluster/lvgl` 的 `.c/.h` 是被文档加密软件保护的（文件头是加密软件的标记，直接 `tar` 出来是密文）；`md5sum` 读到的是明文，所以清单对比可信。取明文的办法是把文件先拷成 `.md` 名字放进临时目录再打包，打完删临时目录。**这些受保护的源码不进本仓库。**
+
+清单对比（1639 个 `.c/.h`）：只有 **15 个文件**与 vanilla v9.3.0 不同，其余逐字节相同。15 个是：`lvgl.h`、`lv_obj.h`、`lv_obj_draw.c`、`lv_draw_rect.c/.h`、`lv_draw_opengles.c`、`lv_linux_fbdev.c`、`lv_glfw_window.c`、`lv_glfw_window_private.h`、`lv_opengles_debug.h`、`lv_opengles_driver.c`、`lv_opengles_texture.c`、`lv_conf_internal.h`、`lv_init.c`、`lv_cache_entry.c`。
+
+对滑动成本有影响的差异（只写结论，不贴代码）：
+- 显示纹理驱动的 `flush_cb` 仍被 `#if !LV_USE_DRAW_OPENGLES` 包住：**板上不存在"每帧整屏上传纹理"**（§6 里的相应说法作废）。
+- `create_texture` 里**去掉了 mipmap 生成**，纹理用 `GL_BGRA_EXT` 格式上传：vanilla 的"每个文字标签每帧生成 mipmap"对板上不成立。
+- GL 绘制单元的纹理缓存容量是 `lv_conf.h` 里的配置项（板上 **256**）；缓存键里加了**任务类型**和**对象指针**，所以每个控件一份缓存、不同行之间不共享。
+- **"非静态文字不进缓存、画完立刻丢弃"这条规则板上没改**：我们的列表行文字都是复制进去的（非静态），所以滑动时每帧每个文字标签都要重新光栅化并上传。
+- 不透明纯色填充走"清屏加裁剪"的快速路径，新增 `bg_cover` 标志（`lv_obj_draw.c`、`lv_draw_rect.c/.h` 是它的配套）。
+- GLES2 着色器；每个 GL 辅助函数都会查一次当前 EGL 显示/上下文（每次绘制约 20 次 EGL 查询，平台层固定开销）。
+- 窗口层（`lv_glfw_window.c`）：显示自己的刷新定时器回调被置空，渲染只由窗口定时器（周期 `LV_DEF_REFR_PERIOD`=16 ms）驱动，每个周期无条件清屏、刷新、画整屏纹理、交换缓冲；没有节流或"静止跳过"。
+- 其余（`lv_cache_entry.c` 初始化修正、`lv_init.c` 注册 ATC 图片解码器、`lv_conf_internal.h`、`lv_linux_fbdev.c`、几个头文件）与滑动成本无关。
+
+板级 `lv_conf.h` 的相关取值：`LV_DRAW_OPENGLES_TEXTURE_CACHE_COUNT 256`、`LV_CACHE_DEF_SIZE 0`、`LV_USE_DRAW_SW_ASM` = NEON、`LV_USE_OS` = NONE、`LV_FONT_FMT_TXT_LARGE 1`、`LV_USE_FONT_COMPRESSED 1`、`LV_USE_STDLIB_MALLOC` = CLIB、`LV_USE_OPENGLES_DEBUG 0`。
+
+**确定的计数**（`tools/music_ui_harness` 的 `BENCH_TASKS=1`，真实音乐界面连续滑动，板上 DIRECT 模式下只画脏区）：平均每帧约 25 个文字任务（序号 6、标题 6、歌手·专辑 6、时长 6、♥ 0.8），**全部是非静态文字**。harness 是 FULL 渲染模式，会连左侧面板也重画（约 48 个），不能当板上的数。每个任务在板上实际花多少时间**没有测量**。
+
+不能简单把标题和歌手·专辑改成静态文字：`LV_LABEL_LONG_DOT` 的省略号对静态文字不生效，长标题会被硬截断。序号、时长、♥、› 可以改成静态（按任务数约一半，按像素面积约 15%），收益不确定，未改。
+
+**下一步要在板上量**：给板上的 GL 绘制单元加一套默认关闭的统计（环境变量 `HCN_GL_STATS=1` 打开，每秒向 stderr 打一行：各类任务数、缓存未命中、非静态文字丢弃次数、新建纹理数和字节数、以及 `execute_drawing`/缓存未命中/`create_texture` 三段线程 CPU 毫秒数）。该补丁基于受保护源码，不入库。读法：滑动那几秒里"缓存未命中（光栅化+上传）"的毫秒数，对比同一秒主线程的 CPU；若占大头，下一步是让文字能被缓存（按内容而不是按指针），否则换方向。
