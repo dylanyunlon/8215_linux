@@ -73,7 +73,7 @@ x86 剖析（`tools/music_ui_harness/da_bench.sh`，真实 `ui_Music.c`，连续
 
 已将 `music_font_20.c` / `music_font_32.c` 换成不压缩版，`gen_music_fonts.sh` 默认 `MUSIC_FONT_COMPRESS=0`。代价：二进制约 +0.9MB（20px +176KB，32px +712KB）。位图超过 1MB，板上 `lv_conf.h` 需要 `LV_FONT_FMT_TXT_LARGE=1`（脚本注释记载板上已开）。**这个字体版本还没上板验证。**
 
-板上用 `lv_opengles_texture`（`lvgl/main.c`），源码里 `flush_cb` 在每帧最后一次 flush 时用 `glTexImage2D` 上传**整张** 1024×600 纹理，与变化面积无关。这一部分在宿主机上测不了，可能占很大比例。
+~~板上用 `lv_opengles_texture`，每帧用 `glTexImage2D` 上传整张纹理~~（**此说法对板上很可能不成立，见 §10**）。
 
 待你读数（屏幕上的 LVGL 性能叠加层）：快速滑动时的 **FPS** 和 CPU。
 - FPS 接近 60 且 CPU≈90%：帧率太高，降刷新周期到 33ms 应能近似减半。
@@ -122,3 +122,14 @@ x86 基准（`BENCH_PROBE=1`，误差约 ±0.1 ms，看相对大小）：
 - 字体只含 GB2312 **一级**汉字 3755 个，二级汉字（如「咻」U+54BB，区位 6361）缺字，每次重绘都会写一条 `lv_draw_letter: glyph dsc. not found` 警告（滑动/动画时约每 60 ms 两条）。可补二级汉字或设后备字体。
 - U 盘 FAT 文件系统有错误：`FAT-fs (sda1): invalid cluster chain`（同一时刻出错的是 `那些年_219765.mp3` 这个拷贝）。建议 `chkdsk X: /f`。程序遇到后继续正常，未造成崩溃。
 - harness 的 `shots`（UI 场景）里"封面流相邻封面异步加载"那一项（`shots.c:233/234`）**不稳定**：同一份代码 6 次里有 5 次失败，与 ui_Music.c 的改动无关，是等待 900 ms 的时序问题，需要另行修（可轮询等待而不是固定等待）。之前记录的"89 项通过"只是碰巧跑过。
+
+## 10. 更正：板上走的是"GL 绘制单元"，不是"CPU 画整屏再上传"（2026-11-17）
+
+板级 `lv_conf.h` 实测（126 上 `grep`）：`LV_USE_DRAW_OPENGLES 1`、`LV_USE_OPENGLES_DEBUG 0`（`GL_CALL` 就是普通调用，无 `glGetError` 开销）、`LV_USE_LOG 1`/`LV_LOG_LEVEL_WARN`、`LV_USE_SYSMON 1`、`LV_USE_PERF_MONITOR 1`、`LV_USE_MEM_MONITOR 1`（FPS/CPU 与内存叠加层在板上屏幕上一直显示，产品版应关）。包名 `lvgl-9.3.0`（`out/build/ac83xx/lvgl-9.3.0`）。BUILD_ENV_NOTES 里早就记了 `LV_USE_DRAW_OPENGLES = 1`，但我之前没意识到它会让整个渲染模型不同。
+
+按 vanilla LVGL v9.3.0 的源码（**板上 `lv_draw_opengles.c`、`lv_opengles_texture.c` 是否被改过还没看到，需确认**）：
+- `lv_opengles_texture.c` 里 `flush_cb` 的整屏 `glTexImage2D` 上传被 `#if !LV_USE_DRAW_OPENGLES` 包住，板上这一段**不会编进去**。
+- `lv_draw_opengles.c` 的 `evaluate()` 把几乎所有绘制任务指派给 GL 绘制单元。只有"无圆角、无渐变的纯色填充"直接用 GL 画；**其余（文字、边框、圆角填充、阴影、图片…）走 `draw_to_texture()`**：在 CPU 上用软件绘制画进一块临时 ARGB8888 缓冲，`glGenTextures` + `glTexImage2D` 上传 + `glGenerateMipmap`，再用一个贴图四边形画到目标。结果按绘制描述符做 LRU 缓存（128 项）。
+- 代码里的注释写明：**`text_static` 为假的文字不缓存，画完立刻丢弃**。我们的列表行文字都是 `lv_label_set_text`（复制，非静态）；`LV_LABEL_LONG_DOT` 溢出时 LVGL 还会用内部缓冲，同样不是静态。**推断（未在板上测量）**：滑动时每帧每个可见文字标签都要经历"CPU 光栅化 → 建纹理 → 上传 → 生成 mipmap → 画 → 丢弃"，这很可能是滑动时主线程用户态 60%~70% 的主要来源，比 §6 里 x86 纯软件基准显示的还重。
+- 因此 §6 里 x86 基准（纯软件绘制）只能说明各元素的**相对**占比，不能代表板上的绝对开销。字体不压缩只省"光栅化"那一段，省多少取决于它在每个标签总开销里占多少。
+- 窗口定时器（§8）每个周期无条件 `lv_refr_now` + 画整屏纹理 + `glfwSwapBuffers`，这部分在 GL 绘制单元模型下仍成立。
